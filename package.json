@@ -1,0 +1,27 @@
+{
+  "name": "httpsnippet",
+  "version": "1.0.0",
+  "description": "HTTP Request snippet generator for *most* languages",
+  "main": "./src/index.js",
+  "bin": "./bin/httpsnippet.js",
+  "scripts": {
+    "test": "mocha -R spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:ahmadnassri/httpsnippet"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ahmadnassri/httpsnippet/issues"
+  },
+  "homepage": "https://github.com/ahmadnassri/httpsnippet",
+  "devDependencies": {
+    "mocha": "^2.0.1",
+    "should": "^4.2.0"
+  },
+  "dependencies": {
+    "commander": "^2.6.0",
+    "debug": "^2.1.1"
+  }
+}

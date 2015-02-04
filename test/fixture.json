@@ -1,0 +1,32 @@
+{
+  "method": "POST",
+  "url": "http://api.domain.com/path/",
+  "httpVersion": "HTTP/1.1",
+  "queryString": [
+    {
+      "name": "foo",
+      "value": "bar"
+    },
+    {
+      "name": "baz",
+      "value": "abc"
+    }
+  ],
+  "headers": [
+    {
+      "name": "Accept",
+      "value": "text/plain"
+    },
+    {
+      "name": "Cookie",
+      "value": "ijafhIAGWF3Awf93f"
+    }
+  ],
+  "headersSize": 44,
+  "bodySize": 14,
+  "postData": {
+      "size": 14,
+      "mimeType": "application/json",
+      "text": "{\"foo\": \"bar\"}"
+  }
+}
