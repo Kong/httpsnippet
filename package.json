@@ -1,9 +1,9 @@
 {
-  "name": "httpsnippet",
   "version": "1.0.0",
+  "name": "httpsnippet",
   "description": "HTTP Request snippet generator for *most* languages",
   "main": "./src/index.js",
-  "bin": "./bin/httpsnippet.js",
+  "bin": "./bin/httpsnippet",
   "scripts": {
     "test": "mocha -R spec"
   },

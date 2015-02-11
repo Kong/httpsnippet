@@ -1,32 +1,26 @@
 {
   "method": "POST",
-  "url": "http://api.domain.com/path/",
+  "url": "http://httpconsole.com/debug",
   "httpVersion": "HTTP/1.1",
   "queryString": [
-    {
-      "name": "foo",
-      "value": "bar"
-    },
-    {
-      "name": "baz",
-      "value": "abc"
-    }
+    { "name": "foo", "value": "bar" },
+    { "name": "foo", "value": "baz" },
+    { "name": "baz", "value": "abc" }
   ],
   "headers": [
-    {
-      "name": "Accept",
-      "value": "text/plain"
-    },
-    {
-      "name": "Cookie",
-      "value": "ijafhIAGWF3Awf93f"
-    }
+    { "name": "Accept", "value": "text/plain" },
+    { "name": "Content-Type", "value": "application/json" },
+    { "name": "X-Pretty-Print", "value": "2" }
+  ],
+  "cookies":  [
+    { "name": "foo", "value": "bar", "path": "/", "domain": "www.httpconsole.com", "expires": "2015-02-11T04:28:14.821Z", "httpOnly": false, "secure": false },
+    { "name": "bar", "value": "baz", "path": "/", "domain": "www.httpconsole.com", "expires": "2015-02-11T04:28:14.821Z", "httpOnly": false, "secure": false }
   ],
   "headersSize": 44,
   "bodySize": 14,
   "postData": {
-      "size": 14,
-      "mimeType": "application/json",
-      "text": "{\"foo\": \"bar\"}"
+    "size": 14,
+    "mimeType": "application/json",
+    "text": "{\"foo\": \"bar\"}"
   }
 }

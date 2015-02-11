@@ -5,13 +5,9 @@ var util = require('util');
 module.exports = function (req, opts) {
   var code = [];
 
-  code.push(util.format('curl --request %s', req.method));
+  code.push('wget --quiet');
 
-  code.push(util.format('--url "%s"', req.url));
-
-  if (req.httpVersion === 'HTTP/1.0') {
-    code.push('--http1.0');
-  }
+  code.push(util.format('--method %s', req.method));
 
   // construct cookies argument
   if (req.cookies && req.cookies.length) {
@@ -19,7 +15,7 @@ module.exports = function (req, opts) {
       return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value);
     });
 
-    code.push(util.format('--cookie "%s"', cookies.join('; ')));
+    code.push(util.format('--header "Cookie: %s"', cookies.join('; ')));
   }
 
   if (req.headers && req.headers.length) {
@@ -29,8 +25,12 @@ module.exports = function (req, opts) {
   }
 
   if (req.postData) {
-    code.push('--data ' + JSON.stringify(req.postData.text));
+    code.push('--body-data ' + JSON.stringify(req.postData.text));
   }
+
+  code.push('--output-document');
+
+  code.push(util.format('- "%s"', req.url));
 
   return code.join(' \\\n     ');
 };
