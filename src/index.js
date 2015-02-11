@@ -3,17 +3,9 @@
 var mapper = require('./mapper');
 var url = require('url');
 
-var curl = require('./targets/curl');
-var php = require('./targets/php');
-var wget = require('./targets/wget');
+var targets = require('./targets');
 
 module.exports = function (req, lang, opts) {
-  var targets = {
-    curl: curl,
-    php: php,
-    wget: wget
-  };
-
   // construct query string object
   req.queryObj = {};
   req.headersObj = {};
