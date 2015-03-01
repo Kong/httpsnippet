@@ -203,8 +203,6 @@ For more information on SemVer, please visit <http://semver.org/>.
 
 Licensed under [The MIT License](LICENSE).
 
-----
-
 [license-url]: https://github.com/ahmadnassri/httpsnippet/blob/master/LICENSE
 
 [travis-url]: https://travis-ci.org/ahmadnassri/httpsnippet

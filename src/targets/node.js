@@ -2,10 +2,14 @@
 
 var util = require('util');
 
-module.exports = function (opts) {
+module.exports = function (options) {
+  var opts = util._extend({
+    indent: '  '
+  }, options);
+
   var code = [];
 
-  var options = {
+  var reqOpts = {
     method: this.source.method,
     hostname: this.source.uriObj.hostname,
     port: this.source.uriObj.port,
@@ -19,27 +23,42 @@ module.exports = function (opts) {
       return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value);
     });
 
-    options.headers.Cookie = cookies.join('; ');
+    reqOpts.headers.Cookie = cookies.join('; ');
   }
 
-  code.push('var options = ' + JSON.stringify(options, null, 2));
+  code.push('var http = require("http");');
 
-  code.push([
-    'var req = http.request(options, function (res) {',
-    'console.log("STATUS: " + res.statusCode);',
-    'console.log("HEADERS: " + JSON.stringify(res.headers));',
-    'res.setEncoding("utf8");',
-    'res.on("data", function (chunk) {',
-    '  console.log("BODY: " + chunk);',
-    '});'
-  ].join('\n  ') + '\n});');
+  code.push(null);
+
+  code.push(util.format('var options = %s;', JSON.stringify(reqOpts, null, 2)));
+
+  code.push(null);
+
+  code.push('var req = http.request(options, function (res) {');
+
+  code.push(opts.indent + 'var chunks = [];');
+
+  code.push(null);
+
+  code.push(opts.indent + 'res.on("data", function (chunk) {');
+  code.push(opts.indent + opts.indent + 'chunks.push(chunk);');
+  code.push(opts.indent + '});');
+
+  code.push(null);
+
+  code.push(opts.indent + 'res.on("end", function () {');
+  code.push(opts.indent + opts.indent + 'var body = Buffer.concat(chunks);');
+  code.push(opts.indent + '});');
+  code.push('});');
 
   if (this.source.postData) {
-    code.push(util.format('this.source.write(%s)', JSON.stringify(this.source.postData.text)));
+    code.push(null);
+    code.push(util.format('req.write(%s)', JSON.stringify(this.source.postData.text)));
   }
 
-  code.push('this.source.end();');
+  code.push('req.end();');
 
+  code.push(null);
   return code.join('\n');
 };
 
