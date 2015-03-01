@@ -5,7 +5,15 @@
   "main": "./src/index.js",
   "bin": "./bin/httpsnippet",
   "scripts": {
-    "test": "mocha --recursive --reporter spec"
+    "test": "mocha --recursive --reporter spec",
+    "coverage": "mocha -r blanket -R mocha-lcov-reporter > test/report/lcov.info",
+    "html-cov": "mocha -r blanket -R html-cov > test/report/coverage.html",
+    "codeclimate": "codeclimate < test/report/lcov.info"
+  },
+  "config":{
+    "blanket": {
+      "pattern": "src"
+    }
   },
   "repository": {
     "type": "git",
@@ -17,7 +25,10 @@
   },
   "homepage": "https://github.com/ahmadnassri/httpsnippet",
   "devDependencies": {
+    "blanket": "^1.1.6",
+    "codeclimate-test-reporter": "0.0.4",
     "mocha": "^2.1.0",
+    "mocha-lcov-reporter": "0.0.2",
     "should": "^5.0.1"
   },
   "dependencies": {
