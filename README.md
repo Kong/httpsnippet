@@ -69,10 +69,7 @@ httpsnippet my-api-endpoint.json --langauge php --output ./snippets
 ```
 
 ```shell
-tree snippets
-```
-
-```
+$ tree snippets
 snippets/
 └── my-api-endpoint.php
 ```
@@ -84,10 +81,7 @@ httpsnippet /*.json --langauge nodejs --output ./snippets
 ```
 
 ```shell
-tree sources/
-```
-
-```
+$ tree sources/
 sources/
 ├── endpoint-1.json
 ├── endpoint-2.json
@@ -95,10 +89,7 @@ sources/
 ```
 
 ```shell
-tree snippets/
-```
-
-```
+$ tree snippets/
 snippets/
 ├── endpoint-1.js
 ├── endpoint-2.js
@@ -110,15 +101,19 @@ snippets/
 
 ```js
 var httpsnippet = require('httpsnippet');
-var snippet = new httpsnippet(source);
+
+var snippet = new httpsnippet({
+  method: 'GET',
+  url: 'http://httpconsole.com/echo'
+});
 
 // generate cURL output
 console.log(snippet.curl({
-  indent: '  ';
+  indent: '\t';
 }));
 
 // generate nodeJS output
-snippet.nodejs();
+console.log(snippet.nodejs());
 ```
 
 ## Documentation
