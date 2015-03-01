@@ -5,7 +5,6 @@ var util = require('util');
 module.exports = function (options) {
   var opts = util._extend({
     short: false,
-    lineBreaks: true,
     indent: '    '
   }, options);
 
@@ -38,5 +37,5 @@ module.exports = function (options) {
     code.push(util.format('%s %s', opts.short ? '-d' : '--data', JSON.stringify(this.source.postData.text)));
   }
 
-  return code.join(opts.lineBreaks ? ' \\\n' + opts.indent : ' ');
+  return code.join(opts.indent !== false ? ' \\\n' + opts.indent : ' ');
 };

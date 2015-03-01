@@ -4,7 +4,6 @@ var util = require('util');
 
 module.exports = function (options) {
   var opts = util._extend({
-    lineBreaks: true,
     indent: '    '
   }, options);
 
@@ -35,5 +34,5 @@ module.exports = function (options) {
     });
   }
 
-  return code.join(opts.lineBreaks ? ' \\\n' + opts.indent : ' ');
+  return code.join(opts.indent !== false ? ' \\\n' + opts.indent : ' ');
 };

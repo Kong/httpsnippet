@@ -8,7 +8,7 @@ require('should');
 describe('httpie', function () {
   it('should convert simple request to httpie command', function (done) {
     var result = new HTTPSnippet(fixtures.simple).httpie({
-      lineBreaks: false
+      indent: false
     });
 
     result.should.be.a.String;
@@ -19,7 +19,6 @@ describe('httpie', function () {
 
   it('should use custom indentation', function (done) {
     var result = new HTTPSnippet(fixtures.simple).httpie({
-      lineBreaks: true,
       indent: '@'
     });
 
