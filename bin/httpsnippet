@@ -3,6 +3,7 @@
 'use strict';
 
 var cmd = require('commander');
+var async = require('async');
 var debug = require('debug')('httpsnippet');
 var fs = require('fs');
 var HTTPSnippet = require('../src');
@@ -22,34 +23,91 @@ if (!cmd.args.length || !cmd.language) {
   cmd.help();
 }
 
-var output = {};
+if (cmd.output) {
+  var dir = path.resolve(cmd.output);
 
-cmd.args.map(function (file) {
-  var stats = fs.statSync(file);
-
-  if (stats.isFile()) {
-    var data = fs.readFileSync(file);
-
-    var source = JSON.parse(data);
-
-    var snippet = new HTTPSnippet(source);
-    var code = snippet[cmd.language].apply(snippet);
-
-    output[file] = code;
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
   }
-});
+}
 
-Object.keys(output).map(function (file) {
-  if (cmd.output) {
-    var name = path.basename(file, path.extname(file));
+async.waterfall([
+  function isFile (next) {
+    var iterator = function (item, cb) {
+      cb(fs.statSync(item).isFile());
+    };
 
-    var filename = path.format({
-      dir: path.resolve(cmd.output),
-      base: name + HTTPSnippet.extname(cmd.language)
+    async.filter(cmd.args, iterator, function (results) {
+      next(null, results);
     });
+  },
 
-    fs.writeFile(filename, output[file]);
-  } else {
-    console.log(chalk.cyan.bold.underline(file), chalk.cyan.bold(':'), '\n', output[file], '\n');
+  function read (files, next) {
+    var iterator = function (file, cb) {
+      fs.readFile(file, cb);
+    };
+
+    async.map(files, iterator, function (err, results) {
+      next(err, files, results);
+    });
+  },
+
+  function parse (files, buffers, next) {
+    var iterator = function (buffer, cb) {
+      try {
+        cb(null, JSON.parse(buffer));
+      } catch (e) {
+        debug('failed to parse source json');
+        cb('fail', null);
+      }
+    };
+
+    async.map(buffers, iterator, function (err, results) {
+      next(err, files, results);
+    });
+  },
+
+  function snippet (files, sources, next) {
+    var iterator = function (source, cb) {
+      var snippet = new HTTPSnippet(source);
+      cb(null, snippet[cmd.language].apply(snippet));
+    };
+
+    async.map(sources, iterator, function (err, results) {
+      next(err, files, results);
+    });
+  },
+
+  function writeOutput (files, snippets, next) {
+    if (cmd.output) {
+      var iterator = function (file) {
+        var index = files.indexOf(file);
+        var name = path.basename(file, path.extname(file));
+
+        var filename = path.format({
+          dir: dir,
+          base: name + HTTPSnippet.extname(cmd.language)
+        });
+
+        fs.writeFile(filename, snippets[index]);
+      };
+
+      async.each(files, iterator);
+    }
+
+    next(null, files, snippets);
+  },
+
+  function log (files, snippets, next) {
+    if (!cmd.output) {
+      var iterator = function (file) {
+        var index = files.indexOf(file);
+        console.log(chalk.cyan.bold.underline(file), chalk.cyan.bold(':'), '\n', snippets[index], '\n');
+      };
+
+      async.each(files, iterator);
+    }
   }
+], function (err, files, result) {
+  console.log(result);
 });
