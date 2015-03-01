@@ -7,7 +7,7 @@ module.exports = function (options) {
     body: false,
     cert: false,
     headers: false,
-    indent: '    ',
+    indent: '  ',
     pretty: false,
     print: false,
     short: false,

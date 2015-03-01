@@ -4,7 +4,7 @@ var util = require('util');
 
 module.exports = function (options) {
   var opts = util._extend({
-    indent: '    ',
+    indent: '  ',
     short: false,
     verbose: false
   }, options);

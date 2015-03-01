@@ -5,7 +5,7 @@ var util = require('util');
 module.exports = function (options) {
   var opts = util._extend({
     short: false,
-    indent: '    '
+    indent: '  '
   }, options);
 
   var code = [];
