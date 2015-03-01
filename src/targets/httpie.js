@@ -105,6 +105,12 @@ module.exports = function (options) {
   return code.join(opts.indent !== false ? ' \\\n' + opts.indent : ' ');
 };
 
-module.exports.extname = function () {
-  return '.sh';
+module.exports.info = function () {
+  return {
+    key: 'httpie',
+    ext: '.sh',
+    title: 'HTTPie',
+    link: 'http://httpie.org/',
+    description: 'a CLI, cURL-like tool for humans'
+  };
 };

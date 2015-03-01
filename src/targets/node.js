@@ -63,6 +63,12 @@ module.exports = function (options) {
   return code.join('\n');
 };
 
-module.exports.extname = function () {
-  return '.js';
+module.exports.info = function () {
+  return {
+    key: 'node',
+    ext: '.js',
+    title: 'Node.JS',
+    link: 'http://nodejs.org/api/http.html#http_http_request_options_callback',
+    description: 'Node.js native HTTP interface'
+  };
 };

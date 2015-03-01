@@ -102,6 +102,12 @@ module.exports = function (options) {
   return code.join('\n');
 };
 
-module.exports.extname = function () {
-  return '.php';
+module.exports.info = function () {
+  return {
+    key: 'php',
+    ext: '.php',
+    title: 'PHP',
+    link: 'http://php.net/manual/en/book.curl.php',
+    description: 'PHP with libcurl'
+  };
 };

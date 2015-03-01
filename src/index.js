@@ -73,6 +73,6 @@ module.exports._targets = function () {
   return Object.keys(targets);
 };
 
-module.exports.extname = function (lang) {
-  return targets[lang].extname();
+module.exports.info = function (lang) {
+  return targets[lang].info();
 };

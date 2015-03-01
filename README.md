@@ -122,7 +122,7 @@ At the heart of this module is the [HAR Request object](http://www.softwareishar
 
 ### Output Targets
 
-output [targets](/src/targets) are simple modules that expose a constructor *(which handles the transformation)* and a utility method `extname` *(used in CLI for writing output into disk)*
+output [targets](/src/targets) are simple modules that expose a constructor *(which handles the transformation)* and a utility `info` method
 
 ```js
 module.exports = function (opts) {
@@ -133,8 +133,14 @@ module.exports = function (opts) {
   // return processed output as string
 };
 
-module.exports.extname = function () {
-  // return preferred filename extention
+module.exports.info = function () {
+  // return target info
+  return {
+    key: 'node',    // target key
+    ext: '.js',     // preferred extension
+    title: '',      // target label
+    description: '' // target description
+  }
 };
 ```
 
