@@ -2,7 +2,12 @@
 
 var util = require('util');
 
-module.exports = function (opts) {
+module.exports = function (options) {
+  var opts = util._extend({
+    lineBreaks: true,
+    indent: '    '
+  }, options);
+
   var code = [];
 
   if (this.source.postData) {
@@ -30,5 +35,5 @@ module.exports = function (opts) {
     });
   }
 
-  return code.join(' \\\n     ');
+  return code.join(opts.lineBreaks ? ' \\\n' + opts.indent : ' ');
 };
