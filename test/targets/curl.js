@@ -39,4 +39,16 @@ describe('cURL', function () {
 
     done();
   });
+
+  it('should use custom indentation', function (done) {
+    var result = new HTTPSnippet(fixtures.simple).curl({
+      lineBreaks: true,
+      indent: '@'
+    });
+
+    result.should.be.a.String;
+    result.replace(/\\\n/g, '').should.eql('curl --request POST @--url "http://httpconsole.com/debug?foo=bar" @--cookie "bar=baz" @--header "Content-Type: application/json" @--data "{\\"foo\\": \\"bar\\"}"');
+
+    done();
+  });
 });
