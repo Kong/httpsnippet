@@ -29,6 +29,19 @@ describe('wget', function () {
     done();
   });
 
+  it('should ask for verbose output', function (done) {
+    var result = new HTTPSnippet(fixtures.simple).wget({
+      short: true,
+      indent: false,
+      verbose: true
+    });
+
+    result.should.be.a.String;
+    result.should.eql('wget -v --method POST --header "Cookie: bar=baz" --header "Content-Type: application/json" --body-data "{\\"foo\\": \\"bar\\"}" -O - "http://httpconsole.com/debug"');
+
+    done();
+  });
+
   it('should use custom indentation', function (done) {
     var result = new HTTPSnippet(fixtures.simple).wget({
       indent: '@'
