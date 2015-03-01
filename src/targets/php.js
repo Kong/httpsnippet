@@ -70,7 +70,7 @@ module.exports = function (options) {
       return util.format('"%s: %s"', header.name, header.value);
     });
 
-    curlopts.push(util.format('CURLOPT_HTTPHEADER => array(\n%s%s%s\n%s),', opts.indent, opts.indent, headers.join(',\n\t\t'), opts.indent));
+    curlopts.push(util.format('CURLOPT_HTTPHEADER => array(\n%s%s%s\n%s),', opts.indent, opts.indent, headers.join(',\n' + opts.indent + opts.indent), opts.indent));
   }
 
   code.push(opts.indent + curlopts.join('\n' + opts.indent));
