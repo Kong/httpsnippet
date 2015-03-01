@@ -24,12 +24,14 @@ describe('HTTPSnippet', function () {
       host: 'httpconsole.com',
       hostname: 'httpconsole.com',
       href: 'http://httpconsole.com/debug',
-      path: '/debug',
+      path: '/debug?foo=bar',
       pathname: '/debug',
       port: null,
       protocol: 'http:',
-      query: null,
-      search: null,
+      query: {
+        foo: 'bar'
+      },
+      search: 'foo=bar',
       slashes: true
     });
 
@@ -72,6 +74,15 @@ describe('HTTPSnippet', function () {
 
     req.fullUrl.should.be.a.String;
     req.fullUrl.should.eql('http://httpconsole.com/debug?key=value&baz=abc&foo=bar&foo=baz');
+
+    done();
+  });
+
+  it('should fix "path" property of "uriObj" to match queryString', function (done) {
+    var req = new HTTPSnippet(fixtures.query).getSource();
+
+    req.uriObj.path.should.be.a.String;
+    req.uriObj.path.should.eql('/debug?key=value&baz=abc&foo=bar&foo=baz');
 
     done();
   });

@@ -2,6 +2,7 @@
 
 var debug = require('debug')('httpsnippet');
 var mapper = require('./mapper');
+var qs = require('querystring');
 var targets = require('./targets');
 var url = require('url');
 var util = require('util');
@@ -35,24 +36,24 @@ var HTTPSnippet = function (req, lang) {
   // deconstruct the uri
   this.source.uriObj = url.parse(this.source.url, true, true);
 
-  // search property is evil
-  // prevents re-construction with new query values
-  this.source.uriObj.search = null;
-
   // merge all possible queryString values
   this.source.queryString = util._extend(this.source.uriObj.query, this.source.queryObj);
 
-  // update the query object
-  this.source.uriObj.query = this.source.queryString;
-
-  // construct a full url
-  this.source.fullUrl = url.format(this.source.uriObj);
-
-  // reset queryString in url
+  // reset uriObj values for a clean url
   this.source.uriObj.query = null;
+  this.source.uriObj.search = null;
+  this.source.uriObj.path = this.source.uriObj.pathname;
 
   // keep the base url clean of queryString
   this.source.url = url.format(this.source.uriObj);
+
+  // update the uri object
+  this.source.uriObj.query = this.source.queryString;
+  this.source.uriObj.search = qs.stringify(this.source.queryString);
+  this.source.uriObj.path = this.source.uriObj.pathname + '?' + this.source.uriObj.search;
+
+  // construct a full url
+  this.source.fullUrl = url.format(this.source.uriObj);
 };
 
 HTTPSnippet.prototype.getSource = function () {
