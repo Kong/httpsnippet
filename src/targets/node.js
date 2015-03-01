@@ -2,20 +2,20 @@
 
 var util = require('util');
 
-module.exports = function (req, opts) {
+module.exports = function (opts) {
   var code = [];
 
   var options = {
-    method: req.method,
-    hostname: req.uriObj.hostname,
-    port: req.uriObj.port,
-    path: req.uriObj.path,
-    headers: req.headersObj
+    method: this.source.method,
+    hostname: this.source.uriObj.hostname,
+    port: this.source.uriObj.port,
+    path: this.source.uriObj.path,
+    headers: this.source.headersObj
   };
 
   // construct cookies argument
-  if (req.cookies && req.cookies.length) {
-    var cookies = req.cookies.map(function (cookie) {
+  if (this.source.cookies && this.source.cookies.length) {
+    var cookies = this.source.cookies.map(function (cookie) {
       return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value);
     });
 
@@ -34,11 +34,11 @@ module.exports = function (req, opts) {
     '});'
   ].join('\n  ') + '\n});');
 
-  if (req.postData) {
-    code.push(util.format('req.write(%s)', JSON.stringify(req.postData.text)));
+  if (this.source.postData) {
+    code.push(util.format('this.source.write(%s)', JSON.stringify(this.source.postData.text)));
   }
 
-  code.push('req.end();');
+  code.push('this.source.end();');
 
   return code.join('\n');
 };

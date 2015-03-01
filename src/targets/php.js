@@ -2,7 +2,7 @@
 
 var util = require('util');
 
-module.exports = function (req, opts) {
+module.exports = function (opts) {
   var code = [];
 
   code.push('$curl = curl_init();');
@@ -10,11 +10,11 @@ module.exports = function (req, opts) {
   var options = [{
     escape: true,
     name: 'CURLOPT_port',
-    value: req.uriObj.port
+    value: this.source.uriObj.port
   }, {
     escape: true,
     name: 'CURLOPT_URL',
-    value: req.url
+    value: this.source.url
   }, {
     escape: false,
     name: 'CURLOPT_RETURNTRANSFER',
@@ -22,15 +22,15 @@ module.exports = function (req, opts) {
   }, {
     escape: false,
     name: 'CURLOPT_HTTP_VERSION',
-    value: req.httpVersion === 'HTTP/1.0' ? 'CURL_HTTP_VERSION_1_0' : 'CURL_HTTP_VERSION_1_1'
+    value: this.source.httpVersion === 'HTTP/1.0' ? 'CURL_HTTP_VERSION_1_0' : 'CURL_HTTP_VERSION_1_1'
   }, {
     escape: true,
     name: 'CURLOPT_CUSTOMREQUEST',
-    value: req.method
+    value: this.source.method
   }, {
     escape: true,
     name: 'CURLOPT_POSTFIELDS',
-    value: req.postData ? req.postData.text : undefined
+    value: this.source.postData ? this.source.postData.text : undefined
   }];
 
   code.push('curl_setopt_array($curl, array(');
@@ -44,8 +44,8 @@ module.exports = function (req, opts) {
   });
 
   // construct cookies
-  if (req.cookies && req.cookies.length) {
-    var cookies = req.cookies.map(function (cookie) {
+  if (this.source.cookies && this.source.cookies.length) {
+    var cookies = this.source.cookies.map(function (cookie) {
       return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value);
     });
 
@@ -53,8 +53,8 @@ module.exports = function (req, opts) {
   }
 
   // construct cookies
-  if (req.headers && req.headers.length) {
-    var headers = req.headers.map(function (header) {
+  if (this.source.headers && this.source.headers.length) {
+    var headers = this.source.headers.map(function (header) {
       return util.format('"%s: %s"', header.name, header.value);
     });
 

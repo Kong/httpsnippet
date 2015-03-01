@@ -2,35 +2,41 @@
 
 var util = require('util');
 
-module.exports = function (req, opts) {
+module.exports = function (options) {
+  var opts = util._extend({
+    short: false,
+    lineBreaks: true,
+    indent: '    '
+  }, options);
+
   var code = [];
 
-  code.push(util.format('curl --request %s', req.method));
+  code.push(util.format('curl %s %s', opts.short ? '-X' : '--request', this.source.method));
 
-  code.push(util.format('--url "%s"', req.url));
+  code.push(util.format('%s"%s"', opts.short ? '' : '--url ', this.source.fullUrl));
 
-  if (req.httpVersion === 'HTTP/1.0') {
-    code.push('--http1.0');
+  if (this.source.httpVersion === 'HTTP/1.0') {
+    code.push(opts.short ? '-0' : '--http1.0');
   }
 
   // construct cookies argument
-  if (req.cookies && req.cookies.length) {
-    var cookies = req.cookies.map(function (cookie) {
+  if (this.source.cookies && this.source.cookies.length) {
+    var cookies = this.source.cookies.map(function (cookie) {
       return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value);
     });
 
-    code.push(util.format('--cookie "%s"', cookies.join('; ')));
+    code.push(util.format('%s "%s"', opts.short ? '-b' : '--cookie', cookies.join('; ')));
   }
 
-  if (req.headers && req.headers.length) {
-    req.headers.map(function (header) {
-      code.push(util.format('--header "%s: %s"', header.name, header.value));
+  if (this.source.headers && this.source.headers.length) {
+    this.source.headers.map(function (header) {
+      code.push(util.format('%s "%s: %s"', opts.short ? '-H' : '--header', header.name, header.value));
     });
   }
 
-  if (req.postData) {
-    code.push('--data ' + JSON.stringify(req.postData.text));
+  if (this.source.postData) {
+    code.push(util.format('%s %s', opts.short ? '-d' : '--data', JSON.stringify(this.source.postData.text)));
   }
 
-  return code.join(' \\\n     ');
+  return code.join(opts.lineBreaks ? ' \\\n' + opts.indent : ' ');
 };

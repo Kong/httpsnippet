@@ -5,7 +5,7 @@
   "main": "./src/index.js",
   "bin": "./bin/httpsnippet",
   "scripts": {
-    "test": "mocha -R spec"
+    "test": "mocha --recursive --reporter spec"
   },
   "repository": {
     "type": "git",
@@ -17,8 +17,8 @@
   },
   "homepage": "https://github.com/ahmadnassri/httpsnippet",
   "devDependencies": {
-    "mocha": "^2.0.1",
-    "should": "^4.2.0"
+    "mocha": "^2.1.0",
+    "should": "^5.0.1"
   },
   "dependencies": {
     "commander": "^2.6.0",

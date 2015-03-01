@@ -1,0 +1,10 @@
+{
+  "method": "POST",
+  "url": "http://httpconsole.com/debug?key=value",
+  "httpVersion": "HTTP/1.1",
+  "queryString": [
+    { "name": "foo", "value": "bar" },
+    { "name": "foo", "value": "baz" },
+    { "name": "baz", "value": "abc" }
+  ]
+}

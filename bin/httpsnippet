@@ -14,11 +14,11 @@ commander
   .option('-l, --language <language>', 'target language')
   .parse(process.argv);
 
-if (commander.args.length == 0 || !commander.language) {
+if (commander.args.length === 0 || !commander.language) {
   commander.help();
 }
 
-var sources = commander.args.map(function (file) {
+commander.args.map(function (file) {
   fs.stat(file, function (err, stats) {
     if (err) {
       return debug(err);
