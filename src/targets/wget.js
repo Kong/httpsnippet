@@ -2,10 +2,20 @@
 
 var util = require('util');
 
-module.exports = function (opts) {
+module.exports = function (options) {
+  var opts = util._extend({
+    indent: '    ',
+    short: false,
+    verbose: false
+  }, options);
+
   var code = [];
 
-  code.push('wget --quiet');
+  if (opts.verbose) {
+    code.push(util.format('wget %s', opts.short ? '-v' : '--verbose'));
+  } else {
+    code.push(util.format('wget %s', opts.short ? '-q' : '--quiet'));
+  }
 
   code.push(util.format('--method %s', this.source.method));
 
@@ -28,9 +38,9 @@ module.exports = function (opts) {
     code.push('--body-data ' + JSON.stringify(this.source.postData.text));
   }
 
-  code.push('--output-document');
+  code.push(opts.short ? '-O' : '--output-document');
 
   code.push(util.format('- "%s"', this.source.url));
 
-  return code.join(' \\\n     ');
+  return code.join(opts.indent !== false ? ' \\\n' + opts.indent : ' ');
 };
