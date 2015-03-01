@@ -6,38 +6,50 @@ var cmd = require('commander');
 var debug = require('debug')('httpsnippet');
 var fs = require('fs');
 var HTTPSnippet = require('../src');
+var path = require('path');
 var pkg = require('../package.json');
+var chalk = require('chalk');
 
 cmd
   .version(pkg.version)
-  .usage('<file> [options]')
+  .usage('[options] <file>')
   .option('-l, --language <language>', 'target language')
+  .option('-o, --output <directory>', 'write output to directory')
+  .option('-n, --output-name <name>', 'output file name')
   .parse(process.argv);
 
-if (cmd.args.length === 0 || !cmd.language) {
+if (!cmd.args.length || !cmd.language) {
   cmd.help();
 }
 
+var output = {};
+
 cmd.args.map(function (file) {
-  fs.stat(file, function (err, stats) {
-    if (err) {
-      return debug(err);
-    }
+  var stats = fs.statSync(file);
 
-    if (stats.isFile()) {
-      fs.readFile(file, function (err, data) {
-        if (err) {
-          return debug(err);
-        }
+  if (stats.isFile()) {
+    var data = fs.readFileSync(file);
 
-        var source = JSON.parse(data);
+    var source = JSON.parse(data);
 
-        var snippet = new HTTPSnippet(source);
+    var snippet = new HTTPSnippet(source);
+    var code = snippet[cmd.language].apply(snippet);
 
-        var code = snippet[cmd.language].apply(snippet);
+    output[file] = code;
+  }
+});
 
-        console.log(code, '\n');
-      });
-    }
-  });
+Object.keys(output).map(function (file) {
+  if (cmd.output) {
+    var name = path.basename(file, path.extname(file));
+
+    var filename = path.format({
+      dir: path.resolve(cmd.output),
+      base: name + HTTPSnippet.extname(cmd.language)
+    });
+
+    fs.writeFile(filename, output[file]);
+  } else {
+    console.log(chalk.cyan.bold.underline(file), chalk.cyan.bold(':'), '\n', output[file], '\n');
+  }
 });
