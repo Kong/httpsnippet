@@ -30,7 +30,7 @@ module.exports = function (options) {
 
   code.push(null);
 
-  code.push(util.format('var options = %s;', JSON.stringify(reqOpts, null, 2)));
+  code.push(util.format('var options = %s;', JSON.stringify(reqOpts, null, opts.indent)));
 
   code.push(null);
 
@@ -59,6 +59,7 @@ module.exports = function (options) {
   code.push('req.end();');
 
   code.push(null);
+
   return code.join('\n');
 };
 
