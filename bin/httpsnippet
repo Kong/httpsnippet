@@ -14,12 +14,12 @@ var chalk = require('chalk');
 cmd
   .version(pkg.version)
   .usage('[options] <file>')
-  .option('-l, --language <language>', 'target language')
+  .option('-t, --target <target>', 'target ouput')
   .option('-o, --output <directory>', 'write output to directory')
   .option('-n, --output-name <name>', 'output file name')
   .parse(process.argv);
 
-if (!cmd.args.length || !cmd.language) {
+if (!cmd.args.length || !cmd.target) {
   cmd.help();
 }
 
@@ -70,7 +70,7 @@ async.waterfall([
   function snippet (files, sources, next) {
     var iterator = function (source, cb) {
       var snippet = new HTTPSnippet(source);
-      cb(null, snippet[cmd.language].apply(snippet));
+      cb(null, snippet[cmd.target].apply(snippet));
     };
 
     async.map(sources, iterator, function (err, results) {
@@ -86,7 +86,7 @@ async.waterfall([
 
         var filename = path.format({
           dir: dir,
-          base: name + HTTPSnippet.extname(cmd.language)
+          base: name + HTTPSnippet.extname(cmd.target)
         });
 
         fs.writeFile(filename, snippets[index]);
