@@ -108,6 +108,4 @@ async.waterfall([
       async.each(files, iterator);
     }
   }
-], function (err, files, result) {
-  console.log(result);
-});
+]);
