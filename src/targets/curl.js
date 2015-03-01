@@ -41,3 +41,7 @@ module.exports = function (options) {
 
   return code.join(opts.indent !== false ? ' \\\n' + opts.indent : ' ');
 };
+
+module.exports.extname = function () {
+  return '.sh';
+};

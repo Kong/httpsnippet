@@ -4,7 +4,7 @@ var util = require('util');
 
 module.exports = function (options) {
   var opts = util._extend({
-    indent: '    ',
+    indent: '  ',
     noTags: false,
     closingTag: false
   }, options);
@@ -13,9 +13,11 @@ module.exports = function (options) {
 
   if (!opts.noTags) {
     code.push('<?php');
+    code.push('');
   }
 
   code.push('$curl = curl_init();');
+  code.push('');
 
   var curlOptions = [{
     escape: true,
@@ -68,13 +70,15 @@ module.exports = function (options) {
       return util.format('"%s: %s"', header.name, header.value);
     });
 
-    curlopts.push(util.format('CURLOPT_HTTPHEADER => array(\n\t\t%s\n\t),', headers.join(',\n\t\t')));
+    curlopts.push(util.format('CURLOPT_HTTPHEADER => array(\n%s%s%s\n%s),', opts.indent, opts.indent, headers.join(',\n\t\t'), opts.indent));
   }
 
-  code.push('\t' + curlopts.join('\n\t'));
+  code.push(opts.indent + curlopts.join('\n' + opts.indent));
 
   code.push('));');
+  code.push('');
   code.push('$response = curl_exec($curl);');
+  code.push('');
   code.push('curl_close($curl);');
 
   if (opts.closingTag) {
@@ -82,4 +86,8 @@ module.exports = function (options) {
   }
 
   return code.join('\n');
+};
+
+module.exports.extname = function () {
+  return '.php';
 };

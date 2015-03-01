@@ -42,3 +42,7 @@ module.exports = function (opts) {
 
   return code.join('\n');
 };
+
+module.exports.extname = function () {
+  return '.js';
+};
