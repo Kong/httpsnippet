@@ -4,6 +4,7 @@ var util = require('util');
 
 module.exports = function (options) {
   var opts = util._extend({
+    queryParams: false,
     body: false,
     cert: false,
     headers: false,
@@ -62,13 +63,27 @@ module.exports = function (options) {
     flags.push(util.format('--timeout=%s', opts.timeout));
   }
 
-  code.push(util.format('http %s%s %s', flags.length ? flags.join(' ') + ' ' : '', this.source.method, this.source.url));
+  code.push(util.format('http %s%s %s', flags.length ? flags.join(' ') + ' ' : '', this.source.method, opts.queryParams ? this.source.url : this.source.fullUrl));
+
+  var self = this;
 
   // construct query params
-  if (this.source.queryString && this.source.queryString.length) {
-    this.source.queryString.map(function (query) {
-      code.push(util.format('%s==%s', query.name, query.value));
-    });
+  if (opts.queryParams && this.source.queryString) {
+    var queryStringKeys = Object.keys(this.source.queryString);
+
+    if (queryStringKeys.length) {
+      queryStringKeys.map(function (name) {
+        var value = self.source.queryString[name];
+
+        if (util.isArray(value)) {
+          value.map(function (val) {
+            code.push(util.format('%s==%s', name, val));
+          });
+        } else {
+          code.push(util.format('%s==%s', name, value));
+        }
+      });
+    }
   }
 
   // construct headers

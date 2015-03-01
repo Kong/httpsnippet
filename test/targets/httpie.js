@@ -11,7 +11,7 @@ describe('HTTPie', function () {
     });
 
     result.should.be.a.String;
-    result.should.eql('echo "{\\"foo\\": \\"bar\\"}" |  http POST http://httpconsole.com/debug Content-Type:application/json Cookie:bar=baz');
+    result.should.eql('echo "{\\"foo\\": \\"bar\\"}" |  http POST http://httpconsole.com/debug?foo=bar Content-Type:application/json Cookie:bar=baz');
 
     done();
   });
@@ -23,7 +23,7 @@ describe('HTTPie', function () {
     });
 
     result.should.be.a.String;
-    result.should.eql('echo "{\\"foo\\": \\"bar\\"}" |  http --verbose POST http://httpconsole.com/debug Content-Type:application/json Cookie:bar=baz');
+    result.should.eql('echo "{\\"foo\\": \\"bar\\"}" |  http --verbose POST http://httpconsole.com/debug?foo=bar Content-Type:application/json Cookie:bar=baz');
 
     done();
   });
@@ -47,7 +47,19 @@ describe('HTTPie', function () {
     });
 
     result.should.be.a.String;
-    result.replace(/\\\n/g, '').should.eql('echo "{\\"foo\\": \\"bar\\"}" |  @http POST http://httpconsole.com/debug @Content-Type:application/json @Cookie:bar=baz');
+    result.replace(/\\\n/g, '').should.eql('echo "{\\"foo\\": \\"bar\\"}" |  @http POST http://httpconsole.com/debug?foo=bar @Content-Type:application/json @Cookie:bar=baz');
+
+    done();
+  });
+
+  it('should use queryString parameters', function (done) {
+    var result = new HTTPSnippet(fixtures.query).httpie({
+      indent: false,
+      queryParams: true
+    });
+
+    result.should.be.a.String;
+    result.replace(/\\\n/g, '').should.eql('http POST http://httpconsole.com/debug key==value baz==abc foo==bar foo==baz');
 
     done();
   });
