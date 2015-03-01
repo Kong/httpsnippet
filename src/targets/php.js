@@ -2,12 +2,22 @@
 
 var util = require('util');
 
-module.exports = function (opts) {
+module.exports = function (options) {
+  var opts = util._extend({
+    indent: '    ',
+    noTags: false,
+    closingTag: false
+  }, options);
+
   var code = [];
+
+  if (!opts.noTags) {
+    code.push('<?php');
+  }
 
   code.push('$curl = curl_init();');
 
-  var options = [{
+  var curlOptions = [{
     escape: true,
     name: 'CURLOPT_port',
     value: this.source.uriObj.port
@@ -37,7 +47,7 @@ module.exports = function (opts) {
 
   var curlopts = [];
 
-  options.map(function (option) {
+  curlOptions.map(function (option) {
     if (option.value) {
       curlopts.push(util.format('%s => %s,', option.name, option.escape ? JSON.stringify(option.value) : option.value));
     }
@@ -66,6 +76,10 @@ module.exports = function (opts) {
   code.push('));');
   code.push('$response = curl_exec($curl);');
   code.push('curl_close($curl);');
+
+  if (opts.closingTag) {
+    code.push('?>');
+  }
 
   return code.join('\n');
 };
