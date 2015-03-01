@@ -6,6 +6,8 @@ module.exports = function (options) {
   var opts = util._extend({
     indent: '  ',
     noTags: false,
+    maxRedirects: 10,
+    timeout: 30,
     closingTag: false
   }, options);
 
@@ -21,16 +23,28 @@ module.exports = function (options) {
 
   var curlOptions = [{
     escape: true,
-    name: 'CURLOPT_port',
+    name: 'CURLOPT_PORT',
     value: this.source.uriObj.port
   }, {
     escape: true,
     name: 'CURLOPT_URL',
-    value: this.source.url
+    value: this.source.fullUrl
   }, {
     escape: false,
     name: 'CURLOPT_RETURNTRANSFER',
     value: 'true'
+  }, {
+    escape: true,
+    name: 'CURLOPT_ENCODING',
+    value: ''
+  }, {
+    escape: false,
+    name: 'CURLOPT_MAXREDIRS',
+    value: opts.maxRedirects
+  }, {
+    escape: false,
+    name: 'CURLOPT_TIMEOUT',
+    value: opts.timeout
   }, {
     escape: false,
     name: 'CURLOPT_HTTP_VERSION',
@@ -50,7 +64,7 @@ module.exports = function (options) {
   var curlopts = [];
 
   curlOptions.map(function (option) {
-    if (option.value) {
+    if (!~[null, undefined].indexOf(option.value)) {
       curlopts.push(util.format('%s => %s,', option.name, option.escape ? JSON.stringify(option.value) : option.value));
     }
   });
