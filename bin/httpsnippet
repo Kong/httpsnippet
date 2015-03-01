@@ -2,23 +2,23 @@
 
 'use strict';
 
-var commander = require('commander');
+var cmd = require('commander');
 var debug = require('debug')('httpsnippet');
 var fs = require('fs');
-var httpsnippet = require('../src');
+var HTTPSnippet = require('../src');
 var pkg = require('../package.json');
 
-commander
+cmd
   .version(pkg.version)
   .usage('<file> [options]')
   .option('-l, --language <language>', 'target language')
   .parse(process.argv);
 
-if (commander.args.length === 0 || !commander.language) {
-  commander.help();
+if (cmd.args.length === 0 || !cmd.language) {
+  cmd.help();
 }
 
-commander.args.map(function (file) {
+cmd.args.map(function (file) {
   fs.stat(file, function (err, stats) {
     if (err) {
       return debug(err);
@@ -30,11 +30,13 @@ commander.args.map(function (file) {
           return debug(err);
         }
 
-        var har = JSON.parse(data);
+        var source = JSON.parse(data);
 
-        var code = httpsnippet(har, commander.language);
+        var snippet = new HTTPSnippet(source);
 
-        console.log(code);
+        var code = snippet[cmd.language].apply(snippet);
+
+        console.log(code, '\n');
       });
     }
   });
