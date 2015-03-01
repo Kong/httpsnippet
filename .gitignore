@@ -1,3 +1,5 @@
 .DS_Store
 npm-debug.log
 node_modules
+test/lcov.info
+test/coverage.html

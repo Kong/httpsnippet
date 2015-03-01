@@ -6,9 +6,9 @@
   "bin": "./bin/httpsnippet",
   "scripts": {
     "test": "mocha --recursive --reporter spec",
-    "coverage": "mocha -r blanket -R mocha-lcov-reporter > test/report/lcov.info",
-    "html-cov": "mocha -r blanket -R html-cov > test/report/coverage.html",
-    "codeclimate": "codeclimate < test/report/lcov.info"
+    "coverage": "mocha -r blanket -R mocha-lcov-reporter > test/lcov.info",
+    "html-cov": "mocha -r blanket -R html-cov > test/coverage.html",
+    "codeclimate": "codeclimate < test/lcov.info"
   },
   "config":{
     "blanket": {
