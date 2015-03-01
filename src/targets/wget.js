@@ -40,7 +40,7 @@ module.exports = function (options) {
 
   code.push(opts.short ? '-O' : '--output-document');
 
-  code.push(util.format('- "%s"', this.source.url));
+  code.push(util.format('- "%s"', this.source.fullUrl));
 
   return code.join(opts.indent !== false ? ' \\\n' + opts.indent : ' ');
 };

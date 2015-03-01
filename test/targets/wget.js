@@ -11,7 +11,7 @@ describe('Wget', function () {
     });
 
     result.should.be.a.String;
-    result.should.eql('wget --quiet --method POST --header "Cookie: bar=baz" --header "Content-Type: application/json" --body-data "{\\"foo\\": \\"bar\\"}" --output-document - "http://httpconsole.com/debug"');
+    result.should.eql('wget --quiet --method POST --header "Cookie: bar=baz" --header "Content-Type: application/json" --body-data "{\\"foo\\": \\"bar\\"}" --output-document - "http://httpconsole.com/debug?foo=bar"');
 
     done();
   });
@@ -23,7 +23,7 @@ describe('Wget', function () {
     });
 
     result.should.be.a.String;
-    result.should.eql('wget -q --method POST --header "Cookie: bar=baz" --header "Content-Type: application/json" --body-data "{\\"foo\\": \\"bar\\"}" -O - "http://httpconsole.com/debug"');
+    result.should.eql('wget -q --method POST --header "Cookie: bar=baz" --header "Content-Type: application/json" --body-data "{\\"foo\\": \\"bar\\"}" -O - "http://httpconsole.com/debug?foo=bar"');
 
     done();
   });
@@ -36,7 +36,7 @@ describe('Wget', function () {
     });
 
     result.should.be.a.String;
-    result.should.eql('wget -v --method POST --header "Cookie: bar=baz" --header "Content-Type: application/json" --body-data "{\\"foo\\": \\"bar\\"}" -O - "http://httpconsole.com/debug"');
+    result.should.eql('wget -v --method POST --header "Cookie: bar=baz" --header "Content-Type: application/json" --body-data "{\\"foo\\": \\"bar\\"}" -O - "http://httpconsole.com/debug?foo=bar"');
 
     done();
   });
@@ -47,7 +47,7 @@ describe('Wget', function () {
     });
 
     result.should.be.a.String;
-    result.replace(/\\\n/g, '').should.eql('wget --quiet @--method POST @--header "Cookie: bar=baz" @--header "Content-Type: application/json" @--body-data "{\\"foo\\": \\"bar\\"}" @--output-document @- "http://httpconsole.com/debug"');
+    result.replace(/\\\n/g, '').should.eql('wget --quiet @--method POST @--header "Cookie: bar=baz" @--header "Content-Type: application/json" @--body-data "{\\"foo\\": \\"bar\\"}" @--output-document @- "http://httpconsole.com/debug?foo=bar"');
 
     done();
   });
