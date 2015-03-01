@@ -2,8 +2,7 @@
 
 var fixtures = require('./fixtures');
 var HTTPSnippet = require('../src');
-
-require('should');
+var should = require('should');
 
 describe('HTTPSnippet', function () {
   it('should list all available targets', function (done) {

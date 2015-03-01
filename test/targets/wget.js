@@ -2,8 +2,7 @@
 
 var fixtures = require('../fixtures');
 var HTTPSnippet = require('../../src');
-
-require('should');
+var should = require('should');
 
 describe('wget', function () {
   it('should convert simple request to wget command', function (done) {

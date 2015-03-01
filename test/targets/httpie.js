@@ -2,8 +2,7 @@
 
 var fixtures = require('../fixtures');
 var HTTPSnippet = require('../../src');
-
-require('should');
+var should = require('should');
 
 describe('httpie', function () {
   it('should convert simple request to httpie command', function (done) {

@@ -1,8 +1,7 @@
 'use strict';
 
 var mapper = require('../src/mapper');
-
-require('should');
+var should = require('should');
 
 describe('Mapper', function () {
   it('should convert array object pair to key-value object', function (done) {
