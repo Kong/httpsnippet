@@ -26,8 +26,8 @@ async.filter(Object.keys(targets), isSingleTarget, function (results) {
         info.key.should.be.a.String.and.equal(key);
         info.should.not.have.property('family');
 
-        info.ext.should.be.a.String;
         info.title.should.be.a.String;
+        info.extname.should.be.a.String;
 
         done();
       });
@@ -37,6 +37,24 @@ async.filter(Object.keys(targets), isSingleTarget, function (results) {
 
 async.filter(Object.keys(targets), isTargetFamily, function (families) {
   async.each(families, function (family) {
+    describe(family + ' _familyInfo()', function () {
+      var target = targets[family];
+
+      it('should have _familyInfo method', function (done) {
+        target.should.have.property('_familyInfo');
+        target._familyInfo.should.be.a.Function;
+
+        var info = target._familyInfo();
+
+        info.key.should.be.a.String.and.equal(family);
+
+        info.title.should.be.a.String;
+        info.extname.should.be.a.String;
+
+        done();
+      });
+    });
+
     async.each(Object.keys(targets[family]), function (key) {
       var target = targets[family][key];
 
@@ -53,9 +71,8 @@ async.filter(Object.keys(targets), isTargetFamily, function (families) {
 
           info.key.should.be.a.String.and.equal(key);
 
-          info.family.should.be.a.String;
-          info.ext.should.be.a.String;
           info.title.should.be.a.String;
+          info.family.should.be.a.String;
 
           done();
         });
