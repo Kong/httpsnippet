@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "name": "httpsnippet",
   "description": "HTTP Request snippet generator for *most* languages",
   "main": "./src/index.js",
