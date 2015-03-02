@@ -15,12 +15,19 @@ cmd
   .version(pkg.version)
   .usage('[options] <file>')
   .option('-t, --target <target>', 'target ouput')
+  .option('-f, --family [family]', 'target family')
   .option('-o, --output <directory>', 'write output to directory')
   .option('-n, --output-name <name>', 'output file name')
   .parse(process.argv);
 
 if (!cmd.args.length || !cmd.target) {
   cmd.help();
+}
+
+// short hand
+if (cmd.target && !cmd.family) {
+  cmd.family = cmd.target;
+  delete cmd.target;
 }
 
 if (cmd.output) {
@@ -70,7 +77,7 @@ async.waterfall([
   function snippet (files, sources, next) {
     var iterator = function (source, cb) {
       var snippet = new HTTPSnippet(source);
-      cb(null, snippet[cmd.target].apply(snippet));
+      cb(null, snippet.convert(cmd.family, cmd.target));
     };
 
     async.map(sources, iterator, function (err, results) {
@@ -84,9 +91,11 @@ async.waterfall([
         var index = files.indexOf(file);
         var name = path.basename(file, path.extname(file));
 
+        console.info(cmd.family, cmd.target);
+
         var filename = path.format({
           dir: dir,
-          base: name + HTTPSnippet.info(cmd.target).ext
+          base: name + HTTPSnippet.info(cmd.family, cmd.target).ext
         });
 
         fs.writeFile(filename, snippets[index]);

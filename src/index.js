@@ -60,11 +60,21 @@ HTTPSnippet.prototype.getSource = function () {
   return this.source;
 };
 
-HTTPSnippet.prototype.convert = function (familyName, target, opts) {
+HTTPSnippet.prototype.convert = function (family, target, opts) {
   if (!opts && target) {
     opts = target;
   }
 
+  var func = this._matchTarget(family, target);
+
+  if (func) {
+    return func.call(this, opts);
+  }
+
+  return false;
+};
+
+HTTPSnippet.prototype._matchTarget = function (familyName, target) {
   // does it exist?
   if (targets[familyName] === undefined) {
     return false;
@@ -75,14 +85,13 @@ HTTPSnippet.prototype.convert = function (familyName, target, opts) {
 
   // childless targets
   if (typeof family === 'function') {
-    return family.call(this, opts);
+    return family;
   }
-
   // find the first possibel target
   var firstTarget = Object.keys(family).pop();
 
   // shorthand
-  if (typeof target === 'object') {
+  if (!target || typeof target === 'object') {
     target = firstTarget;
   }
 
@@ -95,7 +104,7 @@ HTTPSnippet.prototype.convert = function (familyName, target, opts) {
 
     // last chance
     if (typeof family[target] === 'function') {
-      return family[target].call(this, opts);
+      return family[target];
     }
   }
 
@@ -110,6 +119,12 @@ module.exports._targets = function () {
   return Object.keys(targets);
 };
 
-module.exports.info = function (lang) {
-  return targets[lang].info();
+module.exports.info = function (family, target) {
+  var result = HTTPSnippet.prototype._matchTarget.call(null, family, target);
+
+  if (result) {
+    return result.info();
+  }
+
+  return false;
 };

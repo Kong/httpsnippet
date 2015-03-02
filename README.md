@@ -108,12 +108,15 @@ var snippet = new httpsnippet({
 });
 
 // generate cURL output
-console.log(snippet.curl({
+console.log(snippet.convert('curl', {
   indent: '\t';
 }));
 
 // generate nodeJS output
 console.log(snippet.convert('node'));
+
+// generate PHP output
+console.log(snippet.convert('php', 'curl'));
 ```
 
 ## Documentation
@@ -136,11 +139,12 @@ module.exports = function (opts) {
 module.exports.info = function () {
   // return target info
   return {
-    key: 'node',    // target key
+    family: 'node', // target family
+    key: 'native',  // target key
     ext: '.js',     // preferred extension
     title: '',      // target label
     description: '' // target description
-  }
+  };
 };
 ```
 
