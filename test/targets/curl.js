@@ -6,7 +6,7 @@ var should = require('should');
 
 describe('cURL', function () {
   it('should convert simple request to cURL command', function (done) {
-    var result = new HTTPSnippet(fixtures.simple).curl({
+    var result = new HTTPSnippet(fixtures.simple).convert('curl', {
       indent: false
     });
 
@@ -17,7 +17,7 @@ describe('cURL', function () {
   });
 
   it('should use short options', function (done) {
-    var result = new HTTPSnippet(fixtures.simple).curl({
+    var result = new HTTPSnippet(fixtures.simple).convert('curl', {
       short: true,
       indent: false
     });
@@ -29,7 +29,7 @@ describe('cURL', function () {
   });
 
   it('should use --http1.0 for HTTP/1.0', function (done) {
-    var result = new HTTPSnippet(fixtures.http1).curl({
+    var result = new HTTPSnippet(fixtures.http1).convert('curl', {
       indent: false
     });
 
@@ -40,7 +40,7 @@ describe('cURL', function () {
   });
 
   it('should use custom indentation', function (done) {
-    var result = new HTTPSnippet(fixtures.simple).curl({
+    var result = new HTTPSnippet(fixtures.simple).convert('curl', {
       indent: '@'
     });
 

@@ -113,7 +113,7 @@ console.log(snippet.curl({
 }));
 
 // generate nodeJS output
-console.log(snippet.nodejs());
+console.log(snippet.convert('node'));
 ```
 
 ## Documentation

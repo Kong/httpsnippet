@@ -1,12 +1,12 @@
 'use strict';
 
-var fixtures = require('../fixtures');
-var HTTPSnippet = require('../../src');
+var fixtures = require('../../fixtures');
+var HTTPSnippet = require('../../../src');
 var should = require('should');
 
 describe('PHP', function () {
-  it('should convert full request to cURL command', function (done) {
-    var result = new HTTPSnippet(fixtures.full).php({
+  it('should convert full request to php script', function (done) {
+    var result = new HTTPSnippet(fixtures.full).convert('php', 'curl', {
       indent: '\t'
     });
 

@@ -6,7 +6,7 @@ var should = require('should');
 
 describe('HTTPie', function () {
   it('should convert simple request to HTTPie command', function (done) {
-    var result = new HTTPSnippet(fixtures.simple).httpie({
+    var result = new HTTPSnippet(fixtures.simple).convert('httpie', {
       indent: false
     });
 
@@ -17,7 +17,7 @@ describe('HTTPie', function () {
   });
 
   it('should ask for verbose output', function (done) {
-    var result = new HTTPSnippet(fixtures.simple).httpie({
+    var result = new HTTPSnippet(fixtures.simple).convert('httpie', {
       indent: false,
       verbose: true
     });
@@ -29,7 +29,7 @@ describe('HTTPie', function () {
   });
 
   it('should add flags', function (done) {
-    var result = new HTTPSnippet(fixtures.short).httpie({
+    var result = new HTTPSnippet(fixtures.short).convert('httpie', {
       indent: false,
       cert: 'foo',
       verbose: true
@@ -42,7 +42,7 @@ describe('HTTPie', function () {
   });
 
   it('should use custom indentation', function (done) {
-    var result = new HTTPSnippet(fixtures.simple).httpie({
+    var result = new HTTPSnippet(fixtures.simple).convert('httpie', {
       indent: '@'
     });
 
@@ -53,7 +53,7 @@ describe('HTTPie', function () {
   });
 
   it('should use queryString parameters', function (done) {
-    var result = new HTTPSnippet(fixtures.query).httpie({
+    var result = new HTTPSnippet(fixtures.query).convert('httpie', {
       indent: false,
       queryParams: true
     });

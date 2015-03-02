@@ -65,7 +65,8 @@ module.exports = function (options) {
 
 module.exports.info = function () {
   return {
-    key: 'node',
+    family: 'node',
+    key: 'native',
     ext: '.js',
     title: 'Node.JS',
     link: 'http://nodejs.org/api/http.html#http_http_request_options_callback',

@@ -60,10 +60,47 @@ HTTPSnippet.prototype.getSource = function () {
   return this.source;
 };
 
-// add each target as a prototype
-for (var lang in targets) {
-  HTTPSnippet.prototype[lang] = targets[lang];
-}
+HTTPSnippet.prototype.convert = function (familyName, target, opts) {
+  if (!opts && target) {
+    opts = target;
+  }
+
+  // does it exist?
+  if (targets[familyName] === undefined) {
+    return false;
+  }
+
+  // isolate the family
+  var family = targets[familyName];
+
+  // childless targets
+  if (typeof family === 'function') {
+    return family.call(this, opts);
+  }
+
+  // find the first possibel target
+  var firstTarget = Object.keys(family).pop();
+
+  // shorthand
+  if (typeof target === 'object') {
+    target = firstTarget;
+  }
+
+  // asking for a particular target
+  if (typeof target === 'string') {
+    // attempt to call the first one we find
+    if (typeof family[target] !== 'function') {
+      target = firstTarget;
+    }
+
+    // last chance
+    if (typeof family[target] === 'function') {
+      return family[target].call(this, opts);
+    }
+  }
+
+  return false;
+};
 
 // exports
 

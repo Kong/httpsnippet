@@ -6,7 +6,7 @@ var should = require('should');
 
 describe('Wget', function () {
   it('should convert simple request to Wget command', function (done) {
-    var result = new HTTPSnippet(fixtures.simple).wget({
+    var result = new HTTPSnippet(fixtures.simple).convert('wget', {
       indent: false
     });
 
@@ -17,7 +17,7 @@ describe('Wget', function () {
   });
 
   it('should use short options', function (done) {
-    var result = new HTTPSnippet(fixtures.simple).wget({
+    var result = new HTTPSnippet(fixtures.simple).convert('wget', {
       short: true,
       indent: false
     });
@@ -29,7 +29,7 @@ describe('Wget', function () {
   });
 
   it('should ask for verbose output', function (done) {
-    var result = new HTTPSnippet(fixtures.simple).wget({
+    var result = new HTTPSnippet(fixtures.simple).convert('wget', {
       short: true,
       indent: false,
       verbose: true
@@ -42,7 +42,7 @@ describe('Wget', function () {
   });
 
   it('should use custom indentation', function (done) {
-    var result = new HTTPSnippet(fixtures.simple).wget({
+    var result = new HTTPSnippet(fixtures.simple).convert('wget', {
       indent: '@'
     });
 
