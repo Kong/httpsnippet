@@ -40,6 +40,10 @@ async.filter(Object.keys(targets), isTargetFamily, function (families) {
     async.each(Object.keys(targets[family]), function (key) {
       var target = targets[family][key];
 
+      if (key === '_familyInfo') {
+        return;
+      }
+
       describe(family + '[' + key + ']' + '.info()', function () {
         it('should have info method', function (done) {
           target.should.have.property('info');

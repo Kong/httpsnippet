@@ -87,19 +87,20 @@ HTTPSnippet.prototype._matchTarget = function (familyName, target) {
   if (typeof family === 'function') {
     return family;
   }
-  // find the first possibel target
-  var firstTarget = Object.keys(family).pop();
+
+  // find the first default target
+  var defaultTarget = family._familyInfo().default;
 
   // shorthand
   if (!target || typeof target === 'object') {
-    target = firstTarget;
+    target = defaultTarget;
   }
 
   // asking for a particular target
   if (typeof target === 'string') {
     // attempt to call the first one we find
     if (typeof family[target] !== 'function') {
-      target = firstTarget;
+      target = defaultTarget;
     }
 
     // last chance
@@ -119,12 +120,61 @@ module.exports._targets = function () {
   return Object.keys(targets);
 };
 
-module.exports.info = function (family, target) {
-  var result = HTTPSnippet.prototype._matchTarget.call(null, family, target);
-
-  if (result) {
-    return result.info();
+module.exports._familyInfo = function (family) {
+  if (targets[family] && targets[family]._familyInfo) {
+    return targets[family]._familyInfo();
   }
 
   return false;
+};
+
+module.exports.info = function (family, target) {
+  if (!targets[family]) {
+    return false;
+  }
+
+  if (typeof targets[family] === 'function') {
+    return targets[family].info();
+  }
+
+  // get all info for all family members
+  if (!target && typeof targets[family] === 'object') {
+    var results = {
+      family: family
+    };
+
+    results.members = Object.keys(targets[family])
+      .filter(function (key) {
+        return key !== '_familyInfo';
+      })
+
+      .map(function (target) {
+        var info = targets[family][target].info();
+
+        delete info.family;
+
+        return info;
+      });
+
+    return results;
+  }
+
+  if (typeof targets[family] === 'object' && typeof targets[family][target] === 'function') {
+    return targets[family][target].info();
+  }
+};
+
+module.exports.extname = function (family, target) {
+  if (!targets[family]) {
+    return '';
+  }
+
+  if (typeof targets[family] === 'function') {
+    return targets[family].info().extname;
+  }
+
+  // get all info for all family members
+  if (!target && typeof targets[family] === 'object') {
+    return targets[family]._familyInfo().extname;
+  }
 };

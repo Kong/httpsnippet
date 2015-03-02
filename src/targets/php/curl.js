@@ -106,8 +106,7 @@ module.exports.info = function () {
   return {
     family: 'php',
     key: 'curl',
-    ext: '.php',
-    title: 'PHP',
+    title: 'cURL',
     link: 'http://php.net/manual/en/book.curl.php',
     description: 'PHP with libcurl'
   };

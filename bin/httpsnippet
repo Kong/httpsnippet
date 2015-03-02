@@ -91,11 +91,9 @@ async.waterfall([
         var index = files.indexOf(file);
         var name = path.basename(file, path.extname(file));
 
-        console.info(cmd.family, cmd.target);
-
         var filename = path.format({
           dir: dir,
-          base: name + HTTPSnippet.info(cmd.family, cmd.target).ext
+          base: name + HTTPSnippet.extname(cmd.family, cmd.target)
         });
 
         fs.writeFile(filename, snippets[index]);

@@ -45,9 +45,9 @@ module.exports = function (options) {
 module.exports.info = function () {
   return {
     key: 'curl',
-    ext: '.sh',
     title: 'cURL',
     link: 'http://curl.haxx.se/',
-    description: 'curl is a command line tool and library for transferring data with URL syntax'
+    description: 'curl is a command line tool and library for transferring data with URL syntax',
+    extname: '.sh'
   };
 };

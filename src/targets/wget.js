@@ -48,9 +48,9 @@ module.exports = function (options) {
 module.exports.info = function () {
   return {
     key: 'wget',
-    ext: '.sh',
     title: 'Wget',
     link: 'https://www.gnu.org/software/wget/',
-    description: 'a free software package for retrieving files using HTTP, HTTPS'
+    description: 'a free software package for retrieving files using HTTP, HTTPS',
+    extname: '.sh'
   };
 };

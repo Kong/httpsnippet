@@ -108,9 +108,9 @@ module.exports = function (options) {
 module.exports.info = function () {
   return {
     key: 'httpie',
-    ext: '.sh',
     title: 'HTTPie',
     link: 'http://httpie.org/',
-    description: 'a CLI, cURL-like tool for humans'
+    description: 'a CLI, cURL-like tool for humans',
+    extname: '.sh'
   };
 };
