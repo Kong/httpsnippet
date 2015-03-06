@@ -21,7 +21,7 @@ module.exports = function (options) {
   var code = [];
 
   // start with body pipe
-  if (this.source.postData) {
+  if (this.source.postData && this.source.postData.text) {
     code.push(util.format('echo %s | ', JSON.stringify(this.source.postData.text)));
   }
 
@@ -84,6 +84,13 @@ module.exports = function (options) {
         }
       });
     }
+  }
+
+  // construct post params
+  if (this.source.postData && !this.source.postData.text && this.source.postData.params && this.source.postData.params.length) {
+    this.source.postData.params.map(function (param) {
+      code.push(util.format('%s:%s', param.name, param.value));
+    });
   }
 
   // construct headers
