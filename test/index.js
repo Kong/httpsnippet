@@ -9,7 +9,7 @@ describe('HTTPSnippet', function () {
     var targets = HTTPSnippet._targets().sort();
 
     targets.should.be.an.Array;
-    targets.should.eql(['curl', 'httpie', 'node', 'php', 'wget']);
+    targets.should.eql(['curl', 'httpie', 'node', 'ocaml', 'php', 'wget']);
 
     done();
   });
