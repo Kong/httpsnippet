@@ -10,7 +10,7 @@ describe('OCaml', function () {
       indent: '\t'
     });
 
-    result.replace(/\n/g, '').should.eql('open Cohttp_lwt_unixopen Lwtlet uri = Uri.of_string "http://httpconsole.com/debug?baz=abc&foo=bar&foo=baz" inlet headers = Header.init ()\t|> fun h -> Header.add h "Accept" "text/plain"\t|> fun h -> Header.add h "Content-Type" "application/json"\t|> fun h -> Header.add h "X-Pretty-Print" "2"\t|> fun h -> Header.add h "Cookie" "foo=bar; bar=baz"inlet body = "{\\"foo\\": \\"bar\\"}" inClient.call ~headers ~body (Code.method_of_string "POST") uri>>= fun (res, body_stream) ->\t(* Do stuff with the result *)');
+    result.replace(/\n/g, '').should.eql('open Cohttp_lwt_unixopen Lwtlet uri = Uri.of_string "http://mockbin.com/request?baz=abc&foo=bar&foo=baz" inlet headers = Header.init ()\t|> fun h -> Header.add h "Accept" "text/plain"\t|> fun h -> Header.add h "Content-Type" "application/json"\t|> fun h -> Header.add h "X-Pretty-Print" "2"\t|> fun h -> Header.add h "Cookie" "foo=bar; bar=baz"inlet body = "{\\"foo\\": \\"bar\\"}" inClient.call ~headers ~body (Code.method_of_string "POST") uri>>= fun (res, body_stream) ->\t(* Do stuff with the result *)');
 
     done();
   });
@@ -20,7 +20,7 @@ describe('OCaml', function () {
       indent: '\t'
     });
 
-    result.replace(/\n/g, '').should.eql('open Cohttp_lwt_unixopen Lwtlet uri = Uri.of_string "http://httpconsole.com/debug?key=value&baz=abc&foo=bar&foo=baz" inClient.call (Code.method_of_string "POST") uri>>= fun (res, body_stream) ->\t(* Do stuff with the result *)');
+    result.replace(/\n/g, '').should.eql('open Cohttp_lwt_unixopen Lwtlet uri = Uri.of_string "http://mockbin.com/request?key=value&baz=abc&foo=bar&foo=baz" inClient.call (Code.method_of_string "POST") uri>>= fun (res, body_stream) ->\t(* Do stuff with the result *)');
 
     done();
   });
@@ -30,7 +30,7 @@ describe('OCaml', function () {
       indent: '\t'
     });
 
-    result.replace(/\n/g, '').should.eql('open Cohttp_lwt_unixopen Lwtlet uri = Uri.of_string "http://httpconsole.com/debug?foo=bar" inlet headers = Header.init ()\t|> fun h -> Header.add h "Content-Type" "application/json"\t|> fun h -> Header.add h "Cookie" "bar=baz"inlet body = "{\\"foo\\": \\"bar\\"}" inClient.call ~headers ~body (Code.method_of_string "POST") uri>>= fun (res, body_stream) ->\t(* Do stuff with the result *)');
+    result.replace(/\n/g, '').should.eql('open Cohttp_lwt_unixopen Lwtlet uri = Uri.of_string "http://mockbin.com/request?foo=bar" inlet headers = Header.init ()\t|> fun h -> Header.add h "Content-Type" "application/json"\t|> fun h -> Header.add h "Cookie" "bar=baz"inlet body = "{\\"foo\\": \\"bar\\"}" inClient.call ~headers ~body (Code.method_of_string "POST") uri>>= fun (res, body_stream) ->\t(* Do stuff with the result *)');
 
     done();
   });
@@ -40,7 +40,7 @@ describe('OCaml', function () {
       indent: '\t'
     });
 
-    result.replace(/\n/g, '').should.eql('open Cohttp_lwt_unixopen Lwtlet uri = Uri.of_string "http://httpconsole.com/echo" inClient.call (Code.method_of_string "GET") uri>>= fun (res, body_stream) ->\t(* Do stuff with the result *)');
+    result.replace(/\n/g, '').should.eql('open Cohttp_lwt_unixopen Lwtlet uri = Uri.of_string "http://mockbin.com/echo" inClient.call (Code.method_of_string "GET") uri>>= fun (res, body_stream) ->\t(* Do stuff with the result *)');
 
     done();
   });
@@ -50,7 +50,7 @@ describe('OCaml', function () {
       indent: '\t'
     });
 
-    result.replace(/\n/g, '').should.eql('open Cohttp_lwt_unixopen Lwtlet uri = Uri.of_string "http://httpconsole.com/debug" inClient.call (Code.method_of_string "GET") uri>>= fun (res, body_stream) ->\t(* Do stuff with the result *)');
+    result.replace(/\n/g, '').should.eql('open Cohttp_lwt_unixopen Lwtlet uri = Uri.of_string "http://mockbin.com/request" inClient.call (Code.method_of_string "GET") uri>>= fun (res, body_stream) ->\t(* Do stuff with the result *)');
 
     done();
   });

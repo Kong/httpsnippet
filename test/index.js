@@ -21,11 +21,11 @@ describe('HTTPSnippet', function () {
     req.uriObj.should.eql({
       auth: null,
       hash: null,
-      host: 'httpconsole.com',
-      hostname: 'httpconsole.com',
-      href: 'http://httpconsole.com/debug',
-      path: '/debug?foo=bar',
-      pathname: '/debug',
+      host: 'mockbin.com',
+      hostname: 'mockbin.com',
+      href: 'http://mockbin.com/request',
+      path: '/request?foo=bar',
+      pathname: '/request',
       port: null,
       protocol: 'http:',
       query: {
@@ -64,7 +64,7 @@ describe('HTTPSnippet', function () {
     var req = new HTTPSnippet(fixtures.query).getSource();
 
     req.url.should.be.a.String;
-    req.url.should.eql('http://httpconsole.com/debug');
+    req.url.should.eql('http://mockbin.com/request');
 
     done();
   });
@@ -73,7 +73,7 @@ describe('HTTPSnippet', function () {
     var req = new HTTPSnippet(fixtures.query).getSource();
 
     req.fullUrl.should.be.a.String;
-    req.fullUrl.should.eql('http://httpconsole.com/debug?key=value&baz=abc&foo=bar&foo=baz');
+    req.fullUrl.should.eql('http://mockbin.com/request?key=value&baz=abc&foo=bar&foo=baz');
 
     done();
   });
@@ -82,7 +82,7 @@ describe('HTTPSnippet', function () {
     var req = new HTTPSnippet(fixtures.query).getSource();
 
     req.uriObj.path.should.be.a.String;
-    req.uriObj.path.should.eql('/debug?key=value&baz=abc&foo=bar&foo=baz');
+    req.uriObj.path.should.eql('/request?key=value&baz=abc&foo=bar&foo=baz');
 
     done();
   });

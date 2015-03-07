@@ -1,6 +1,6 @@
 {
   "method": "POST",
-  "url": "http://httpconsole.com/debug?key=value",
+  "url": "http://mockbin.com/request?key=value",
   "httpVersion": "HTTP/1.1",
   "queryString": [
     { "name": "foo", "value": "bar" },

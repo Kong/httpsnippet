@@ -1,6 +1,6 @@
 {
   "method": "POST",
-  "url": "http://httpconsole.com/debug",
+  "url": "http://mockbin.com/request",
   "httpVersion": "HTTP/1.1",
   "queryString": [],
   "cookies":  [],

@@ -11,7 +11,7 @@ describe('HTTPie', function () {
     });
 
     result.should.be.a.String;
-    result.should.eql('echo "{\\"foo\\": \\"bar\\"}" |  http POST http://httpconsole.com/debug?foo=bar Content-Type:application/json Cookie:bar=baz');
+    result.should.eql('echo "{\\"foo\\": \\"bar\\"}" |  http POST http://mockbin.com/request?foo=bar Content-Type:application/json Cookie:bar=baz');
 
     done();
   });
@@ -23,7 +23,7 @@ describe('HTTPie', function () {
     });
 
     result.should.be.a.String;
-    result.should.eql('echo "{\\"foo\\": \\"bar\\"}" |  http --verbose POST http://httpconsole.com/debug?foo=bar Content-Type:application/json Cookie:bar=baz');
+    result.should.eql('echo "{\\"foo\\": \\"bar\\"}" |  http --verbose POST http://mockbin.com/request?foo=bar Content-Type:application/json Cookie:bar=baz');
 
     done();
   });
@@ -36,7 +36,7 @@ describe('HTTPie', function () {
     });
 
     result.should.be.a.String;
-    result.should.eql('http --verbose --cert=foo GET http://httpconsole.com/echo');
+    result.should.eql('http --verbose --cert=foo GET http://mockbin.com/echo');
 
     done();
   });
@@ -47,7 +47,7 @@ describe('HTTPie', function () {
     });
 
     result.should.be.a.String;
-    result.replace(/\\\n/g, '').should.eql('echo "{\\"foo\\": \\"bar\\"}" |  @http POST http://httpconsole.com/debug?foo=bar @Content-Type:application/json @Cookie:bar=baz');
+    result.replace(/\\\n/g, '').should.eql('echo "{\\"foo\\": \\"bar\\"}" |  @http POST http://mockbin.com/request?foo=bar @Content-Type:application/json @Cookie:bar=baz');
 
     done();
   });
@@ -59,7 +59,7 @@ describe('HTTPie', function () {
     });
 
     result.should.be.a.String;
-    result.replace(/\\\n/g, '').should.eql('http POST http://httpconsole.com/debug key==value baz==abc foo==bar foo==baz');
+    result.replace(/\\\n/g, '').should.eql('http POST http://mockbin.com/request key==value baz==abc foo==bar foo==baz');
 
     done();
   });
