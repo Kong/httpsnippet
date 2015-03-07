@@ -34,13 +34,13 @@ module.exports = function (options) {
 
   // request body
   if (this.source.postData.text) {
-    code.push(util.format('%s %s', opts.short ? '-F' : '--form', JSON.stringify(this.source.postData.text)));
+    code.push(util.format('%s %s', opts.short ? '-d' : '--data', JSON.stringify(this.source.postData.text)));
   }
 
   // construct post params
   if (!this.source.postData.text && this.source.postData.params && this.source.postData.params.length) {
     this.source.postData.params.map(function (param) {
-      code.push(util.format('%s "%s=%s"', opts.short ? '-d' : '--data', param.name, param.value));
+      code.push(util.format('%s "%s=%s"', opts.short ? '-F' : '--form', param.name, param.value));
     });
   }
 

@@ -11,7 +11,7 @@ describe('cURL', function () {
     });
 
     result.should.be.a.String;
-    result.should.eql('curl --request POST --url "http://mockbin.com/request?foo=bar" --header "Content-Type: application/json" --cookie "bar=baz" --form "{\\"foo\\": \\"bar\\"}"');
+    result.should.eql('curl --request POST --url "http://mockbin.com/request?foo=bar" --header "Content-Type: application/json" --cookie "bar=baz" --data "{\\"foo\\": \\"bar\\"}"');
 
     done();
   });
@@ -23,7 +23,7 @@ describe('cURL', function () {
     });
 
     result.should.be.a.String;
-    result.should.eql('curl -X POST "http://mockbin.com/request?foo=bar" -H "Content-Type: application/json" -b "bar=baz" -F "{\\"foo\\": \\"bar\\"}"');
+    result.should.eql('curl -X POST "http://mockbin.com/request?foo=bar" -H "Content-Type: application/json" -b "bar=baz" -d "{\\"foo\\": \\"bar\\"}"');
 
     done();
   });
@@ -45,7 +45,7 @@ describe('cURL', function () {
     });
 
     result.should.be.a.String;
-    result.replace(/\\\n/g, '').should.eql('curl --request POST @--url "http://mockbin.com/request?foo=bar" @--header "Content-Type: application/json" @--cookie "bar=baz" @--form "{\\"foo\\": \\"bar\\"}"');
+    result.replace(/\\\n/g, '').should.eql('curl --request POST @--url "http://mockbin.com/request?foo=bar" @--header "Content-Type: application/json" @--cookie "bar=baz" @--data "{\\"foo\\": \\"bar\\"}"');
 
     done();
   });
