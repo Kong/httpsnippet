@@ -60,12 +60,13 @@ module.exports = function (options) {
   code.push('>>= fun (res, body_stream) ->');
   code.push(opts.indent + '(* Do stuff with the result *)');
 
-  return code.join(opts.indent !== false ? ' \n' + opts.indent : ' ');
+  return code.join('\n');
 };
 
 module.exports.info = function () {
   return {
-    key: 'ocaml',
+    family: 'ocaml',
+    key: 'cohttp',
     title: 'OCaml',
     link: 'https://github.com/mirage/ocaml-cohttp',
     description: 'Cohttp is a very lightweight HTTP server using Lwt or Async for OCaml',
