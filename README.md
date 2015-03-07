@@ -64,6 +64,36 @@ Options:
 
 process single file:
 
+###### my-api-endpoint.json
+
+```json
+{
+  "method": "POST",
+  "url": "http://mockbin.com/request",
+  "httpVersion": "HTTP/1.1",
+  "queryString": [
+    { "name": "foo", "value": "bar" },
+    { "name": "foo", "value": "baz" },
+    { "name": "baz", "value": "abc" }
+  ],
+  "headers": [
+    { "name": "Accept", "value": "text/plain" },
+    { "name": "Content-Type", "value": "application/json" },
+    { "name": "X-Pretty-Print", "value": "2" }
+  ],
+  "cookies":  [
+    { "name": "foo", "value": "bar", "path": "/", "domain": "www.mockbin.com", "expires": "2015-02-11T04:28:14.821Z", "httpOnly": false, "secure": false },
+    { "name": "bar", "value": "baz", "path": "/", "domain": "www.mockbin.com", "expires": "2015-02-11T04:28:14.821Z", "httpOnly": false, "secure": false }
+  ],
+  "headersSize": 44,
+  "bodySize": 14,
+  "postData": {
+    "size": 14,
+    "mimeType": "application/json",
+    "text": "{\"foo\": \"bar\"}"
+  }
+}
+```
 ```shell
 httpsnippet my-api-endpoint.json --langauge php --output ./snippets
 ```
@@ -104,7 +134,7 @@ var httpsnippet = require('httpsnippet');
 
 var snippet = new httpsnippet({
   method: 'GET',
-  url: 'http://httpconsole.com/echo'
+  url: 'http://mockbin.com/request'
 });
 
 // generate cURL output
