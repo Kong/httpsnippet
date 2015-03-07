@@ -18,11 +18,11 @@ module.exports = function (options) {
   };
 
   // construct cookies argument
-  if (this.source.cookies && this.source.cookies.length) {
-    var cookies = this.source.cookies.map(function (cookie) {
-      return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value);
-    });
+  var cookies = this.source.cookies.map(function (cookie) {
+    return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value);
+  });
 
+  if (cookies.length) {
     reqOpts.headers.Cookie = cookies.join('; ');
   }
 

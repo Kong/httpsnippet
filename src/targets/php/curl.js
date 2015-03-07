@@ -70,20 +70,20 @@ module.exports = function (options) {
   });
 
   // construct cookies
-  if (this.source.cookies && this.source.cookies.length) {
-    var cookies = this.source.cookies.map(function (cookie) {
-      return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value);
-    });
+  var cookies = this.source.cookies.map(function (cookie) {
+    return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value);
+  });
 
+  if (cookies.length) {
     curlopts.push(util.format('CURLOPT_COOKIE => "%s",', cookies.join('; ')));
   }
 
   // construct cookies
-  if (this.source.headers && this.source.headers.length) {
-    var headers = this.source.headers.map(function (header) {
-      return util.format('"%s: %s"', header.name, header.value);
-    });
+  var headers = this.source.headers.map(function (header) {
+    return util.format('"%s: %s"', header.name, header.value);
+  });
 
+  if (headers.length) {
     curlopts.push(util.format('CURLOPT_HTTPHEADER => array(\n%s%s%s\n%s),', opts.indent, opts.indent, headers.join(',\n' + opts.indent + opts.indent), opts.indent));
   }
 

@@ -20,19 +20,17 @@ module.exports = function (options) {
   code.push(util.format('--method %s', this.source.method));
 
   // construct cookies argument
-  if (this.source.cookies && this.source.cookies.length) {
-    var cookies = this.source.cookies.map(function (cookie) {
-      return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value);
-    });
+  var cookies = this.source.cookies.map(function (cookie) {
+    return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value);
+  });
 
+  if (cookies.length) {
     code.push(util.format('--header "Cookie: %s"', cookies.join('; ')));
   }
 
-  if (this.source.headers && this.source.headers.length) {
-    this.source.headers.map(function (header) {
-      code.push(util.format('--header "%s: %s"', header.name, header.value));
-    });
-  }
+  this.source.headers.map(function (header) {
+    code.push(util.format('--header "%s: %s"', header.name, header.value));
+  });
 
   if (this.source.postData) {
     code.push('--body-data ' + JSON.stringify(this.source.postData.text));

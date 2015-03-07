@@ -68,45 +68,41 @@ module.exports = function (options) {
   var self = this;
 
   // construct query params
-  if (opts.queryParams && this.source.queryString) {
+  if (opts.queryParams) {
     var queryStringKeys = Object.keys(this.source.queryString);
 
-    if (queryStringKeys.length) {
-      queryStringKeys.map(function (name) {
-        var value = self.source.queryString[name];
+    queryStringKeys.map(function (name) {
+      var value = self.source.queryString[name];
 
-        if (util.isArray(value)) {
-          value.map(function (val) {
-            code.push(util.format('%s==%s', name, val));
-          });
-        } else {
-          code.push(util.format('%s==%s', name, value));
-        }
-      });
-    }
-  }
-
-  // construct post params
-  if (this.source.postData && !this.source.postData.text && this.source.postData.params && this.source.postData.params.length) {
-    this.source.postData.params.map(function (param) {
-      code.push(util.format('%s:%s', param.name, param.value));
+      if (util.isArray(value)) {
+        value.map(function (val) {
+          code.push(util.format('%s==%s', name, val));
+        });
+      } else {
+        code.push(util.format('%s==%s', name, value));
+      }
     });
   }
 
   // construct headers
-  if (this.source.headers && this.source.headers.length) {
-    this.source.headers.map(function (header) {
-      code.push(util.format('%s:%s', header.name, header.value));
-    });
-  }
+  this.source.headers.map(function (header) {
+    code.push(util.format('%s:%s', header.name, header.value));
+  });
 
   // construct cookies argument
-  if (this.source.cookies && this.source.cookies.length) {
-    var cookies = this.source.cookies.map(function (cookie) {
-      return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value);
-    });
+  var cookies = this.source.cookies.map(function (cookie) {
+    return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value);
+  });
 
+  if (cookies.length) {
     code.push(util.format('Cookie:%s', cookies.join('; ')));
+  }
+
+  // construct post params
+  if (!this.source.postData.text && this.source.postData.params && this.source.postData.params.length) {
+    this.source.postData.params.map(function (param) {
+      code.push(util.format('%s:%s', param.name, param.value));
+    });
   }
 
   return code.join(opts.indent !== false ? ' \\\n' + opts.indent : ' ');
