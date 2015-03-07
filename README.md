@@ -62,9 +62,9 @@ Options:
 
 #### Example
 
-process single file:
+process single file (assumes [HAR Request Object](http://www.softwareishard.com/blog/har-12-spec/#request) Format):
 
-###### my-api-endpoint.json
+###### EXAMPLE: *my-api-endpoint.json*
 
 ```json
 {
