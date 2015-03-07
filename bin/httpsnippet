@@ -2,14 +2,14 @@
 
 'use strict';
 
-var cmd = require('commander');
 var async = require('async');
+var chalk = require('chalk');
+var cmd = require('commander');
 var debug = require('debug')('httpsnippet');
 var fs = require('fs');
 var HTTPSnippet = require('../src');
 var path = require('path');
 var pkg = require('../package.json');
-var chalk = require('chalk');
 
 cmd
   .version(pkg.version)
@@ -65,7 +65,7 @@ async.waterfall([
         cb(null, JSON.parse(buffer));
       } catch (e) {
         debug('failed to parse source json');
-        cb('fail', null);
+        cb('failed to parse source json', null);
       }
     };
 
@@ -76,7 +76,16 @@ async.waterfall([
 
   function snippet (files, sources, next) {
     var iterator = function (source, cb) {
-      var snippet = new HTTPSnippet(source);
+      var snippet;
+
+      try {
+        snippet = new HTTPSnippet(source);
+      } catch (e) {
+        debug(e);
+
+        return cb(!e[0] ? 'invalid input' : (e[0].field + ' ' + e[0].message), null);
+      }
+
       cb(null, snippet.convert(cmd.family, cmd.target));
     };
 
@@ -109,10 +118,14 @@ async.waterfall([
     if (!cmd.output) {
       var iterator = function (file) {
         var index = files.indexOf(file);
-        console.log(chalk.cyan.bold.underline(file), chalk.cyan.bold(':'), '\n', snippets[index], '\n');
+        console.log('%s:\n%s\n', chalk.cyan.bold.underline(file), snippets[index]);
       };
 
       async.each(files, iterator);
     }
   }
-]);
+], function (err, result) {
+  if (err) {
+    console.log('%s: %s', chalk.red.bold('ERROR'), err);
+  }
+});

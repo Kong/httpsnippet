@@ -5,55 +5,70 @@ var mapper = require('./mapper');
 var qs = require('querystring');
 var targets = require('./targets');
 var url = require('url');
+var validate = require('har-validator');
 var util = require('util');
 
 // constructor
 var HTTPSnippet = function (req, lang) {
   this.source = util._extend({}, req);
 
-  // construct query string object
-  this.source.queryObj = {};
-  this.source.headersObj = {};
+  // add optional properties to make validation successful
+  this.source.httpVersion = this.source.httpVersion || 'HTTP/1.1';
+  this.source.queryString = this.source.queryString || [];
+  this.source.headers = this.source.headers || [];
+  this.source.cookies = this.source.cookies || [];
+  this.source.postData = this.source.postData || {};
+  this.source.postData.mimeType = this.source.postData.mimeType || 'application/x-www-form-urlencoded';
 
-  if (this.source.url === undefined) {
-    throw new Error('a request url is required');
-  }
+  this.source.bodySize = 0;
+  this.source.headersSize = 0;
+  this.source.postData.size = 0;
 
-  // construct query objects
-  if (this.source.queryString && this.source.queryString.length) {
-    debug('queryString found, constructing queryString pair map');
+  validate.request(this.source, function (err, valid) {
+    if (!valid) {
+      throw err;
+    }
 
-    this.source.queryString.map(mapper(this.source.queryObj));
-  }
+    // construct query string object
+    this.source.queryObj = {};
+    this.source.headersObj = {};
 
-  // construct headers objects
-  if (this.source.headers && this.source.headers.length) {
-    debug('headers found, constructing header pair map');
+    // construct query objects
+    if (this.source.queryString && this.source.queryString.length) {
+      debug('queryString found, constructing queryString pair map');
 
-    this.source.headers.map(mapper(this.source.headersObj));
-  }
+      this.source.queryString.map(mapper(this.source.queryObj));
+    }
 
-  // deconstruct the uri
-  this.source.uriObj = url.parse(this.source.url, true, true);
+    // construct headers objects
+    if (this.source.headers && this.source.headers.length) {
+      debug('headers found, constructing header pair map');
 
-  // merge all possible queryString values
-  this.source.queryString = util._extend(this.source.uriObj.query, this.source.queryObj);
+      this.source.headers.map(mapper(this.source.headersObj));
+    }
 
-  // reset uriObj values for a clean url
-  this.source.uriObj.query = null;
-  this.source.uriObj.search = null;
-  this.source.uriObj.path = this.source.uriObj.pathname;
+    // deconstruct the uri
+    this.source.uriObj = url.parse(this.source.url, true, true);
 
-  // keep the base url clean of queryString
-  this.source.url = url.format(this.source.uriObj);
+    // merge all possible queryString values
+    this.source.queryString = util._extend(this.source.uriObj.query, this.source.queryObj);
 
-  // update the uri object
-  this.source.uriObj.query = this.source.queryString;
-  this.source.uriObj.search = qs.stringify(this.source.queryString);
-  this.source.uriObj.path = this.source.uriObj.pathname + '?' + this.source.uriObj.search;
+    // reset uriObj values for a clean url
+    this.source.uriObj.query = null;
+    this.source.uriObj.search = null;
+    this.source.uriObj.path = this.source.uriObj.pathname;
 
-  // construct a full url
-  this.source.fullUrl = url.format(this.source.uriObj);
+    // keep the base url clean of queryString
+    this.source.url = url.format(this.source.uriObj);
+
+    // update the uri object
+    this.source.uriObj.query = this.source.queryString;
+    this.source.uriObj.search = qs.stringify(this.source.queryString);
+    this.source.uriObj.path = this.source.uriObj.pathname + '?' + this.source.uriObj.search;
+
+    // construct a full url
+    this.source.fullUrl = url.format(this.source.uriObj);
+  }.bind(this));
 };
 
 HTTPSnippet.prototype.getSource = function () {

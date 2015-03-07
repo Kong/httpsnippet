@@ -10,7 +10,7 @@
     "html-cov": "mocha -r blanket -R html-cov > test/coverage.html",
     "codeclimate": "codeclimate < test/lcov.info"
   },
-  "config":{
+  "config": {
     "blanket": {
       "pattern": "src"
     }
@@ -36,6 +36,7 @@
     "chalk": "^1.0.0",
     "commander": "^2.6.0",
     "debug": "^2.1.1",
+    "har-validator": "^1.1.2",
     "requireindex": "^1.1.0"
   }
 }

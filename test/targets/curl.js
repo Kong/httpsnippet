@@ -11,7 +11,7 @@ describe('cURL', function () {
     });
 
     result.should.be.a.String;
-    result.should.eql('curl --request POST --url "http://httpconsole.com/debug?foo=bar" --cookie "bar=baz" --header "Content-Type: application/json" --data "{\\"foo\\": \\"bar\\"}"');
+    result.should.eql('curl --request POST --url "http://httpconsole.com/debug?foo=bar" --cookie "bar=baz" --header "Content-Type: application/json" --form "{\\"foo\\": \\"bar\\"}"');
 
     done();
   });
@@ -23,7 +23,7 @@ describe('cURL', function () {
     });
 
     result.should.be.a.String;
-    result.should.eql('curl -X POST "http://httpconsole.com/debug?foo=bar" -b "bar=baz" -H "Content-Type: application/json" -d "{\\"foo\\": \\"bar\\"}"');
+    result.should.eql('curl -X POST "http://httpconsole.com/debug?foo=bar" -b "bar=baz" -H "Content-Type: application/json" -F "{\\"foo\\": \\"bar\\"}"');
 
     done();
   });
@@ -45,7 +45,7 @@ describe('cURL', function () {
     });
 
     result.should.be.a.String;
-    result.replace(/\\\n/g, '').should.eql('curl --request POST @--url "http://httpconsole.com/debug?foo=bar" @--cookie "bar=baz" @--header "Content-Type: application/json" @--data "{\\"foo\\": \\"bar\\"}"');
+    result.replace(/\\\n/g, '').should.eql('curl --request POST @--url "http://httpconsole.com/debug?foo=bar" @--cookie "bar=baz" @--header "Content-Type: application/json" @--form "{\\"foo\\": \\"bar\\"}"');
 
     done();
   });
