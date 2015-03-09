@@ -95,7 +95,7 @@ process single file (assumes [HAR Request Object](http://www.softwareishard.com/
 }
 ```
 ```shell
-httpsnippet my-api-endpoint.json --langauge php --output ./snippets
+httpsnippet my-api-endpoint.json --target php --output ./snippets
 ```
 
 ```shell
@@ -107,7 +107,7 @@ snippets/
 process multiple files:
 
 ```shell
-httpsnippet /*.json --langauge nodejs --output ./snippets
+httpsnippet /*.json --family node --target native --output ./snippets
 ```
 
 ```shell

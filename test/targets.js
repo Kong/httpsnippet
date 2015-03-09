@@ -21,9 +21,9 @@ var clearInfo = function (key, cb) {
   cb(!~['info', 'index'].indexOf(key));
 };
 
-var itShouldHaveTests = function (test, key) {
+var itShouldHaveTests = function (test, func, key) {
   it(key + ' should have tests', function (done) {
-    test.should.be.exist;
+    test.should.have.property(func);
     done();
   });
 };
@@ -44,7 +44,7 @@ var itShouldHaveInfo = function (targets, key) {
 
 var itShouldHaveRequestTestOutputFixture = function (request, target, path) {
   it('should have output test for ' + request, function (done) {
-    Object.keys(output).should.containEql(target + '/' + path + request + snippet.extname(target));
+    Object.keys(output).indexOf(target + '/' + path + request + snippet.extname(target)).should.be.greaterThan(-1);
 
     done();
   });
@@ -66,12 +66,23 @@ var itShouldGenerateOutput = function (request, path, target, client) {
   }
 };
 
+describe('Available Targets', function () {
+  var targets = snippet.availableTargets();
+
+  targets.map(function (target) {
+    it('available-targets.json should include ' + target.title, function (done) {
+      fixtures['available-targets'].should.containEql(target);
+      done();
+    });
+  });
+});
+
 // test all the things!
 async.each(Object.keys(targets), function (target) {
   describe(targets[target].info.title, function () {
     itShouldHaveInfo(targets, target);
 
-    itShouldHaveTests(tests[target], target);
+    itShouldHaveTests(tests, target, target);
 
     if (typeof tests[target] === 'function') {
       tests[target](snippet, fixtures);
@@ -94,9 +105,9 @@ async.each(Object.keys(targets), function (target) {
         describe(client, function () {
           itShouldHaveInfo(targets[target], client);
 
-          itShouldHaveTests(tests[target][client], client);
+          itShouldHaveTests(tests[target], client, client);
 
-          if (typeof tests[target][client] === 'function') {
+          if (tests[target] && typeof tests[target][client] === 'function') {
             tests[target][client](snippet, fixtures);
           }
 

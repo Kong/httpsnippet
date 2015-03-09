@@ -5,13 +5,13 @@ var HTTPSnippet = require('../src');
 var should = require('should');
 
 describe('HTTPSnippet', function () {
-  it('should list all available targets', function (done) {
-    var targets = HTTPSnippet.availableTargets();
+  var targets = HTTPSnippet.availableTargets();
 
-    targets.should.be.an.Array;
-    targets.should.eql(fixtures['available-targets']);
-
-    done();
+  targets.map(function (target) {
+    it('availableTargets should include ' + target.title, function (done) {
+      fixtures['available-targets'].should.containEql(target);
+      done();
+    });
   });
 
   it('should add "uriObj" to source object', function (done) {
