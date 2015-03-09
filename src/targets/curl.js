@@ -38,7 +38,7 @@ module.exports = function (options) {
   }
 
   // construct post params
-  if (!this.source.postData.text && this.source.postData.params && this.source.postData.params.length) {
+  if (!this.source.postData.text && this.source.postData.params) {
     this.source.postData.params.map(function (param) {
       code.push(util.format('%s "%s=%s"', opts.short ? '-F' : '--form', param.name, param.value));
     });
@@ -47,12 +47,10 @@ module.exports = function (options) {
   return code.join(opts.indent !== false ? ' \\\n' + opts.indent : ' ');
 };
 
-module.exports.info = function () {
-  return {
-    key: 'curl',
-    title: 'cURL',
-    link: 'http://curl.haxx.se/',
-    description: 'curl is a command line tool and library for transferring data with URL syntax',
-    extname: '.sh'
-  };
+module.exports.info = {
+  key: 'curl',
+  title: 'cURL',
+  link: 'http://curl.haxx.se/',
+  description: 'curl is a command line tool and library for transferring data with URL syntax',
+  extname: '.sh'
 };

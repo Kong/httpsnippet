@@ -30,29 +30,39 @@ module.exports = function (options) {
     }
 
     if (cookiesPresent) {
-      var cookie = this.source.cookies.map(function(c){return c.name + '=' + c.value;}).join('; ');
+      var cookie = this.source.cookies.map(function (cookie) {
+        return cookie.name + '=' + cookie.value;
+      }).join('; ');
+
       code.push(util.format(opts.indent + '|> fun h -> Header.add h "Cookie" "%s"', cookie));
     }
+
     code.push('in');
   }
 
   // Add body
   var bodyPresent = this.source.postData && this.source.postData.text;
+
   if (bodyPresent) {
-    //Just text
+    // Just text
     code.push(util.format('let body = %s in', JSON.stringify(this.source.postData.text)));
   } else if (this.source.postData && !this.source.postData.text && this.source.postData.params && this.source.postData.params.length) {
     // Post params
     bodyPresent = true;
-    var body = this.source.postData.params.map(function(p){return p.name + '=' + p.value;}).join('&');
+
+    var body = this.source.postData.params.map(function (param) {
+      return param.name + '=' + param.value;
+    }).join('&');
+
     code.push(util.format('let body = "%s" in', body));
   }
 
   // Do the request
   code.push('');
+
   code.push(util.format('Client.call %s%s(Code.method_of_string "%s") uri',
-    (headersPresent || cookiesPresent) ? "~headers " : "",
-    bodyPresent ? "~body " : "",
+    (headersPresent || cookiesPresent) ? '~headers ' : '',
+    bodyPresent ? '~body ' : '',
     this.source.method
   ));
 
@@ -63,13 +73,9 @@ module.exports = function (options) {
   return code.join('\n');
 };
 
-module.exports.info = function () {
-  return {
-    family: 'ocaml',
-    key: 'cohttp',
-    title: 'OCaml',
-    link: 'https://github.com/mirage/ocaml-cohttp',
-    description: 'Cohttp is a very lightweight HTTP server using Lwt or Async for OCaml',
-    extname: '.ml'
-  };
+module.exports.info = {
+  key: 'cohttp',
+  title: 'OCaml',
+  link: 'https://github.com/mirage/ocaml-cohttp',
+  description: 'Cohttp is a very lightweight HTTP server using Lwt or Async for OCaml'
 };

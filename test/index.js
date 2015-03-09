@@ -6,16 +6,16 @@ var should = require('should');
 
 describe('HTTPSnippet', function () {
   it('should list all available targets', function (done) {
-    var targets = HTTPSnippet._targets().sort();
+    var targets = HTTPSnippet.availableTargets();
 
     targets.should.be.an.Array;
-    targets.should.eql(['curl', 'httpie', 'node', 'ocaml', 'php', 'wget']);
+    targets.should.eql(fixtures['available-targets']);
 
     done();
   });
 
   it('should add "uriObj" to source object', function (done) {
-    var req = new HTTPSnippet(fixtures.simple).getSource();
+    var req = new HTTPSnippet(fixtures.requests.query).source;
 
     req.uriObj.should.be.an.Object;
     req.uriObj.should.eql({
@@ -23,15 +23,20 @@ describe('HTTPSnippet', function () {
       hash: null,
       host: 'mockbin.com',
       hostname: 'mockbin.com',
-      href: 'http://mockbin.com/request',
-      path: '/request?foo=bar',
-      pathname: '/request',
+      href: 'http://mockbin.com/har?key=value',
+      path: '/har?key=value&baz=abc&foo=bar&foo=baz',
+      pathname: '/har',
       port: null,
       protocol: 'http:',
       query: {
-        foo: 'bar'
+        baz: 'abc',
+        key: 'value',
+        foo: [
+          'bar',
+          'baz'
+        ]
       },
-      search: 'foo=bar',
+      search: 'key=value&baz=abc&foo=bar&foo=baz',
       slashes: true
     });
 
@@ -39,56 +44,62 @@ describe('HTTPSnippet', function () {
   });
 
   it('should add "queryObj" to source object', function (done) {
-    var req = new HTTPSnippet(fixtures.simple).getSource();
+    var req = new HTTPSnippet(fixtures.requests.query).source;
 
     req.queryObj.should.be.an.Object;
     req.queryObj.should.eql({
-      foo: 'bar'
+      baz: 'abc',
+      key: 'value',
+      foo: [
+        'bar',
+        'baz'
+      ]
     });
 
     done();
   });
 
   it('should add "headersObj" to source object', function (done) {
-    var req = new HTTPSnippet(fixtures.simple).getSource();
+    var req = new HTTPSnippet(fixtures.requests.headers).source;
 
     req.headersObj.should.be.an.Object;
     req.headersObj.should.eql({
-      'Content-Type': 'application/json'
+      'Accept': 'application/json',
+      'X-Foo': 'Bar'
     });
 
     done();
   });
 
   it('should modify orignal url to strip query string', function (done) {
-    var req = new HTTPSnippet(fixtures.query).getSource();
+    var req = new HTTPSnippet(fixtures.requests.query).source;
 
     req.url.should.be.a.String;
-    req.url.should.eql('http://mockbin.com/request');
+    req.url.should.eql('http://mockbin.com/har');
 
     done();
   });
 
   it('should add "fullUrl" to source object', function (done) {
-    var req = new HTTPSnippet(fixtures.query).getSource();
+    var req = new HTTPSnippet(fixtures.requests.query).source;
 
     req.fullUrl.should.be.a.String;
-    req.fullUrl.should.eql('http://mockbin.com/request?key=value&baz=abc&foo=bar&foo=baz');
+    req.fullUrl.should.eql('http://mockbin.com/har?key=value&baz=abc&foo=bar&foo=baz');
 
     done();
   });
 
   it('should fix "path" property of "uriObj" to match queryString', function (done) {
-    var req = new HTTPSnippet(fixtures.query).getSource();
+    var req = new HTTPSnippet(fixtures.requests.query).source;
 
     req.uriObj.path.should.be.a.String;
-    req.uriObj.path.should.eql('/request?key=value&baz=abc&foo=bar&foo=baz');
+    req.uriObj.path.should.eql('/har?key=value&baz=abc&foo=bar&foo=baz');
 
     done();
   });
 
   it('should parse and queryString in the url into querString object', function (done) {
-    var req = new HTTPSnippet(fixtures.query).getSource();
+    var req = new HTTPSnippet(fixtures.requests.query).source;
 
     req.queryString.should.be.a.Obj;
     req.queryString.should.eql({

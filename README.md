@@ -169,7 +169,6 @@ module.exports = function (opts) {
 module.exports.info = function () {
   // return target info
   return {
-    family: 'node', // target family
     key: 'native',  // target key
     ext: '.js',     // preferred extension
     title: '',      // target label

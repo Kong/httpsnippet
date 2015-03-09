@@ -102,12 +102,9 @@ module.exports = function (options) {
   return code.join('\n');
 };
 
-module.exports.info = function () {
-  return {
-    family: 'php',
-    key: 'curl',
-    title: 'cURL',
-    link: 'http://php.net/manual/en/book.curl.php',
-    description: 'PHP with libcurl'
-  };
+module.exports.info = {
+  key: 'curl',
+  title: 'cURL',
+  link: 'http://php.net/manual/en/book.curl.php',
+  description: 'PHP with libcurl'
 };

@@ -14,20 +14,14 @@ var pkg = require('../package.json');
 cmd
   .version(pkg.version)
   .usage('[options] <file>')
-  .option('-t, --target <target>', 'target ouput')
-  .option('-f, --family [family]', 'target family')
+  .option('-t, --target <target>', 'target output')
+  .option('-c, --client [client]', 'target client library')
   .option('-o, --output <directory>', 'write output to directory')
   .option('-n, --output-name <name>', 'output file name')
   .parse(process.argv);
 
 if (!cmd.args.length || !cmd.target) {
   cmd.help();
-}
-
-// short hand
-if (cmd.target && !cmd.family) {
-  cmd.family = cmd.target;
-  delete cmd.target;
 }
 
 if (cmd.output) {
@@ -86,7 +80,7 @@ async.waterfall([
         return cb(!e[0] ? 'invalid input' : (e[0].field + ' ' + e[0].message), null);
       }
 
-      cb(null, snippet.convert(cmd.family, cmd.target));
+      cb(null, snippet.convert(cmd.target, cmd.client));
     };
 
     async.map(sources, iterator, function (err, results) {
@@ -102,10 +96,10 @@ async.waterfall([
 
         var filename = path.format({
           dir: dir,
-          base: name + HTTPSnippet.extname(cmd.family, cmd.target)
+          base: name + HTTPSnippet.extname(cmd.target)
         });
 
-        fs.writeFile(filename, snippets[index]);
+        fs.writeFile(filename, snippets[index] + '\n');
       };
 
       async.each(files, iterator);

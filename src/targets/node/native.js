@@ -1,6 +1,7 @@
 'use strict';
 
 var util = require('util');
+var reducer = require('.,/../../reducer');
 
 module.exports = function (options) {
   var opts = util._extend({
@@ -28,6 +29,10 @@ module.exports = function (options) {
 
   code.push('var http = require("http");');
 
+  if (!this.source.postData.text && this.source.postData.params) {
+    code.push('var querystring = require("querystring");');
+  }
+
   code.push(null);
 
   code.push(util.format('var options = %s;', JSON.stringify(reqOpts, null, opts.indent)));
@@ -51,24 +56,27 @@ module.exports = function (options) {
   code.push(opts.indent + '});');
   code.push('});');
 
-  if (this.source.postData) {
-    code.push(null);
-    code.push(util.format('req.write(%s)', JSON.stringify(this.source.postData.text)));
+  code.push(null);
+
+  if (this.source.postData.text) {
+    code.push(util.format('req.write(%s);', JSON.stringify(this.source.postData.text)));
+  }
+
+  if (!this.source.postData.text && this.source.postData.params) {
+    var postData = this.source.postData.params.reduce(reducer, {});
+
+    code.push(util.format('var postData = querystring.stringify(%s);', JSON.stringify(postData)));
+    code.push(util.format('req.write(postData);'));
   }
 
   code.push('req.end();');
 
-  code.push(null);
-
   return code.join('\n');
 };
 
-module.exports.info = function () {
-  return {
-    family: 'node',
-    key: 'native',
-    title: 'HTTP',
-    link: 'http://nodejs.org/api/http.html#http_http_request_options_callback',
-    description: 'Node.js native HTTP interface'
-  };
+module.exports.info = {
+  key: 'native',
+  title: 'HTTP',
+  link: 'http://nodejs.org/api/http.html#http_http_request_options_callback',
+  description: 'Node.js native HTTP interface'
 };

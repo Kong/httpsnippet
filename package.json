@@ -5,7 +5,7 @@
   "main": "./src/index.js",
   "bin": "./bin/httpsnippet",
   "scripts": {
-    "test": "mocha --recursive --reporter spec",
+    "test": "mocha --reporter nyan",
     "coverage": "mocha -r blanket -R mocha-lcov-reporter > test/lcov.info",
     "html-cov": "mocha -r blanket -R html-cov > test/coverage.html",
     "codeclimate": "codeclimate < test/lcov.info"
@@ -27,6 +27,7 @@
   "devDependencies": {
     "blanket": "^1.1.6",
     "codeclimate-test-reporter": "0.0.4",
+    "glob": "^5.0.1",
     "mocha": "^2.1.0",
     "mocha-lcov-reporter": "0.0.2",
     "should": "^5.0.1"
@@ -37,6 +38,6 @@
     "commander": "^2.6.0",
     "debug": "^2.1.1",
     "har-validator": "^1.1.2",
-    "requireindex": "^1.1.0"
+    "require-directory": "^2.1.0"
   }
 }

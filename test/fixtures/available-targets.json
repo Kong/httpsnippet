@@ -1,0 +1,64 @@
+[
+  {
+    "key": "curl",
+    "title": "cURL",
+    "link": "http://curl.haxx.se/",
+    "description": "curl is a command line tool and library for transferring data with URL syntax",
+    "extname": ".sh"
+  },
+  {
+    "key": "httpie",
+    "title": "HTTPie",
+    "link": "http://httpie.org/",
+    "description": "a CLI, cURL-like tool for humans",
+    "extname": ".sh"
+  },
+  {
+    "key": "node",
+    "title": "Node.JS",
+    "extname": ".js",
+    "default": "native",
+    "clients": [
+      {
+        "key": "native",
+        "title": "HTTP",
+        "link": "http://nodejs.org/api/http.html#http_http_request_options_callback",
+        "description": "Node.js native HTTP interface"
+      }
+    ]
+  },
+  {
+    "key": "ocaml",
+    "title": "OCaml",
+    "extname": ".ml",
+    "default": "cohttp",
+    "clients": [
+      {
+        "key": "cohttp",
+        "title": "OCaml",
+        "link": "https://github.com/mirage/ocaml-cohttp",
+        "description": "Cohttp is a very lightweight HTTP server using Lwt or Async for OCaml"
+      }
+    ]
+  },
+  {
+    "key": "php",
+    "title": "PHP",
+    "extname": ".php",
+    "default": "curl",
+    "clients": [
+      {
+        "key": "curl",
+        "title": "cURL",
+        "link": "http://php.net/manual/en/book.curl.php",
+        "description": "PHP with libcurl"
+      }
+    ]
+  }, {
+    "key": "wget",
+    "title": "Wget",
+    "link": "https://www.gnu.org/software/wget/",
+    "description": "a free software package for retrieving files using HTTP, HTTPS",
+    "extname": ".sh"
+  }
+]

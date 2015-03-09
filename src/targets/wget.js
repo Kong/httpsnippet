@@ -32,7 +32,7 @@ module.exports = function (options) {
     code.push(util.format('--header "%s: %s"', header.name, header.value));
   });
 
-  if (this.source.postData) {
+  if (this.source.postData.text) {
     code.push('--body-data ' + JSON.stringify(this.source.postData.text));
   }
 
@@ -43,12 +43,10 @@ module.exports = function (options) {
   return code.join(opts.indent !== false ? ' \\\n' + opts.indent : ' ');
 };
 
-module.exports.info = function () {
-  return {
-    key: 'wget',
-    title: 'Wget',
-    link: 'https://www.gnu.org/software/wget/',
-    description: 'a free software package for retrieving files using HTTP, HTTPS',
-    extname: '.sh'
-  };
+module.exports.info = {
+  key: 'wget',
+  title: 'Wget',
+  link: 'https://www.gnu.org/software/wget/',
+  description: 'a free software package for retrieving files using HTTP, HTTPS',
+  extname: '.sh'
 };

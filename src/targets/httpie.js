@@ -108,12 +108,10 @@ module.exports = function (options) {
   return code.join(opts.indent !== false ? ' \\\n' + opts.indent : ' ');
 };
 
-module.exports.info = function () {
-  return {
-    key: 'httpie',
-    title: 'HTTPie',
-    link: 'http://httpie.org/',
-    description: 'a CLI, cURL-like tool for humans',
-    extname: '.sh'
-  };
+module.exports.info = {
+  key: 'httpie',
+  title: 'HTTPie',
+  link: 'http://httpie.org/',
+  description: 'a CLI, cURL-like tool for humans',
+  extname: '.sh'
 };

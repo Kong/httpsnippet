@@ -1,3 +1,3 @@
 'use strict';
 
-module.exports = require('requireindex')(__dirname);
+module.exports = require('require-directory')(module, {exclude: /output/});

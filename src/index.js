@@ -1,7 +1,7 @@
 'use strict';
 
 var debug = require('debug')('httpsnippet');
-var mapper = require('./mapper');
+var reducer = require('./reducer');
 var qs = require('querystring');
 var targets = require('./targets');
 var url = require('url');
@@ -37,21 +37,21 @@ var HTTPSnippet = function (req, lang) {
     if (this.source.queryString && this.source.queryString.length) {
       debug('queryString found, constructing queryString pair map');
 
-      this.source.queryString.map(mapper(this.source.queryObj));
+      this.source.queryObj = this.source.queryString.reduce(reducer, {});
     }
 
     // construct headers objects
     if (this.source.headers && this.source.headers.length) {
       debug('headers found, constructing header pair map');
 
-      this.source.headers.map(mapper(this.source.headersObj));
+      this.source.headersObj = this.source.headers.reduce(reducer, {});
     }
 
     // deconstruct the uri
     this.source.uriObj = url.parse(this.source.url, true, true);
 
     // merge all possible queryString values
-    this.source.queryString = util._extend(this.source.uriObj.query, this.source.queryObj);
+    this.source.queryObj = this.source.queryString = util._extend(this.source.uriObj.query, this.source.queryObj);
 
     // reset uriObj values for a clean url
     this.source.uriObj.query = null;
@@ -71,16 +71,12 @@ var HTTPSnippet = function (req, lang) {
   }.bind(this));
 };
 
-HTTPSnippet.prototype.getSource = function () {
-  return this.source;
-};
-
-HTTPSnippet.prototype.convert = function (family, target, opts) {
-  if (!opts && target) {
-    opts = target;
+HTTPSnippet.prototype.convert = function (target, client, opts) {
+  if (!opts && client) {
+    opts = client;
   }
 
-  var func = this._matchTarget(family, target);
+  var func = this._matchTarget(target, client);
 
   if (func) {
     return func.call(this, opts);
@@ -89,107 +85,49 @@ HTTPSnippet.prototype.convert = function (family, target, opts) {
   return false;
 };
 
-HTTPSnippet.prototype._matchTarget = function (familyName, target) {
+HTTPSnippet.prototype._matchTarget = function (target, client) {
   // does it exist?
-  if (targets[familyName] === undefined) {
+  if (!targets.hasOwnProperty(target)) {
     return false;
   }
 
-  // isolate the family
-  var family = targets[familyName];
-
-  // childless targets
-  if (typeof family === 'function') {
-    return family;
+  if (typeof targets[target] === 'function') {
+    return targets[target];
   }
-
-  // find the first default target
-  var defaultTarget = family._familyInfo().default;
 
   // shorthand
-  if (!target || typeof target === 'object') {
-    target = defaultTarget;
+  if (typeof client === 'string' && typeof targets[target][client] === 'function') {
+    return targets[target][client];
   }
 
-  // asking for a particular target
-  if (typeof target === 'string') {
-    // attempt to call the first one we find
-    if (typeof family[target] !== 'function') {
-      target = defaultTarget;
-    }
-
-    // last chance
-    if (typeof family[target] === 'function') {
-      return family[target];
-    }
-  }
-
-  return false;
+  // default target
+  return targets[target][targets[target].info.default];
 };
 
 // exports
-
 module.exports = HTTPSnippet;
 
-module.exports._targets = function () {
-  return Object.keys(targets);
+module.exports.availableTargets = function () {
+  return Object.keys(targets).map(function (key) {
+    var target = util._extend({}, targets[key].info);
+    var clients = Object.keys(targets[key])
+
+    .filter(function (prop) {
+      return !~['info', 'index'].indexOf(prop);
+    })
+
+    .map(function (client) {
+      return targets[key][client].info;
+    });
+
+    if (clients.length) {
+      target.clients = clients;
+    }
+
+    return target;
+  });
 };
 
-module.exports._familyInfo = function (family) {
-  if (targets[family] && targets[family]._familyInfo) {
-    return targets[family]._familyInfo();
-  }
-
-  return false;
-};
-
-module.exports.info = function (family, target) {
-  if (!targets[family]) {
-    return false;
-  }
-
-  if (typeof targets[family] === 'function') {
-    return targets[family].info();
-  }
-
-  // get all info for all family members
-  if (!target && typeof targets[family] === 'object') {
-    var results = {
-      family: family
-    };
-
-    results.members = Object.keys(targets[family])
-      .filter(function (key) {
-        return key !== '_familyInfo';
-      })
-
-      .map(function (target) {
-        var info = targets[family][target].info();
-
-        delete info.family;
-
-        return info;
-      });
-
-    return results;
-  }
-
-  if (typeof targets[family] === 'object' && typeof targets[family][target] === 'function') {
-    return targets[family][target].info();
-  }
-};
-
-module.exports.extname = function (family, target) {
-  if (!targets[family]) {
-    return '';
-  }
-
-  if (typeof targets[family] === 'function') {
-    return targets[family].info().extname;
-  }
-
-  // get all info for all family members
-  if (!target && typeof targets[family] === 'object') {
-    return targets[family]._familyInfo().extname;
-  }
+module.exports.extname = function (target) {
+  return targets[target] ? targets[target].info.extname : '';
 };
