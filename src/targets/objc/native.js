@@ -3,6 +3,10 @@
 var util = require('util');
 
 module.exports = function (options) {
+  var opts = util._extend({
+    timeout: '10'
+  }, options);
+
   var code = [];
 
   // Dependencies
@@ -13,7 +17,7 @@ module.exports = function (options) {
   // Create request object
   code.push('NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"' + this.source.fullUrl + '"]');
   code.push('                                                       cachePolicy:NSURLRequestUseProtocolCachePolicy');
-  code.push('                                                   timeoutInterval:10.0];');
+  code.push('                                                   timeoutInterval:' + parseInt(opts.timeout, 10).toFixed(1) + '];');
   code.push('[request setHTTPMethod:@"' + this.source.method + '"];');
 
   // Set headers
