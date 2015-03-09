@@ -53,11 +53,12 @@ Usage: httpsnippet [options] <file>
 
 Options:
 
-  -h, --help                 output usage information
-  -V, --version              output the version number
-  -t, --target <target>      target output
-  -o, --output <directory>   write output to directory
-  -n, --output-name <name>   output file name
+  -h, --help                output usage information
+  -V, --version             output the version number
+  -t, --target <target>     target output
+  -c, --client [client]     target client library
+  -o, --output <directory>  write output to directory
+  -n, --output-name <name>  output file name
 ```
 
 #### Example
@@ -79,16 +80,13 @@ process single file (assumes [HAR Request Object](http://www.softwareishard.com/
   "headers": [
     { "name": "Accept", "value": "text/plain" },
     { "name": "Content-Type", "value": "application/json" },
-    { "name": "X-Pretty-Print", "value": "2" }
+    { "name": "X-Foo-Bar", "value": "Baz" }
   ],
   "cookies":  [
-    { "name": "foo", "value": "bar", "path": "/", "domain": "www.mockbin.com", "expires": "2015-02-11T04:28:14.821Z", "httpOnly": false, "secure": false },
-    { "name": "bar", "value": "baz", "path": "/", "domain": "www.mockbin.com", "expires": "2015-02-11T04:28:14.821Z", "httpOnly": false, "secure": false }
+    { "name": "foo", "value": "bar" },
+    { "name": "bar", "value": "baz" }
   ],
-  "headersSize": 44,
-  "bodySize": 14,
   "postData": {
-    "size": 14,
     "mimeType": "application/json",
     "text": "{\"foo\": \"bar\"}"
   }
@@ -107,7 +105,7 @@ snippets/
 process multiple files:
 
 ```shell
-httpsnippet /*.json --family node --target native --output ./snippets
+httpsnippet /*.json --target node --client native --output ./snippets
 ```
 
 ```shell
@@ -151,11 +149,11 @@ console.log(snippet.convert('php', 'curl'));
 
 ## Documentation
 
-At the heart of this module is the [HAR Request object](http://www.softwareishard.com/blog/har-12-spec/#request) as the http request description format, please review some of the sample JSON HAR Request objects in [test fixtures](/test/fixtures), or read the [HAR Docs](http://www.softwareishard.com/blog/har-12-spec/#request) for more details.
+At the heart of this module is the [HAR Request object](http://www.softwareishard.com/blog/har-12-spec/#request) as the http request description format, please review some of the sample JSON HAR Request objects in [test fixtures](/test/fixtures/requests), or read the [HAR Docs](http://www.softwareishard.com/blog/har-12-spec/#request) for more details.
 
 ### Output Targets
 
-output [targets](/src/targets) are simple modules that expose a constructor *(which handles the transformation)* and a utility `info` method
+output [targets](/src/targets) are simple modules that expose a constructor *(which handles the transformation)* and a meta `info` property.
 
 ```js
 module.exports = function (opts) {
@@ -166,14 +164,12 @@ module.exports = function (opts) {
   // return processed output as string
 };
 
-module.exports.info = function () {
-  // return target info
-  return {
-    key: 'native',  // target key
-    ext: '.js',     // preferred extension
-    title: '',      // target label
-    description: '' // target description
-  };
+module.exports.info = {
+  key: 'curl',
+  title: 'cURL',
+  link: 'http://curl.haxx.se/',
+  description: 'curl is a command line tool and library for transferring data with URL syntax',
+  extname: '.sh'
 };
 ```
 
