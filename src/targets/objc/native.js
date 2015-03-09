@@ -28,7 +28,7 @@ module.exports = function (options) {
   }
 
   // Set request body
-  if (this.source.postData && this.source.postData.params || this.source.postData.text) {
+  if (this.source.postData && (this.source.postData.params || this.source.postData.text)) {
     code.push(null);
 
     if (this.source.postData.mimeType === 'application/x-www-form-urlencoded' && this.source.postData.params) {
