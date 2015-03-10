@@ -31,6 +31,12 @@
         "title": "HTTP",
         "link": "http://nodejs.org/api/http.html#http_http_request_options_callback",
         "description": "Node.js native HTTP interface"
+      },
+      {
+        "key": "request",
+        "title": "request",
+        "link": "https://github.com/request/request",
+        "description": "Simplified HTTP request client"
       }
     ]
   },
