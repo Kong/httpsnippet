@@ -54,9 +54,9 @@ var HTTPSnippet = function (req, lang) {
           } catch (e) {
             debug(e);
             
-            // force back to plain/text
+            // force back to text/plain
             // if headers have proper content-type value, then this should also work
-            this.source.postData.mimeType = 'plain/text'
+            this.source.postData.mimeType = 'text/plain'
           }
         }
         break;
