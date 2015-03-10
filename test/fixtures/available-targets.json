@@ -81,5 +81,19 @@
         "description": "Foundation's NSURLSession request"
       }
     ]
+  },
+  {
+    "key": "go",
+    "title": "Go",
+    "extname": ".go",
+    "default": "native",
+    "clients": [
+       {
+        "key": "native",
+        "title": "NewRequest",
+        "link": "http://golang.org/pkg/net/http/#NewRequest",
+        "description": "Golang HTTP client request"
+      }
+    ]
   }
 ]
