@@ -25,6 +25,7 @@ Relies on the popular [HAR](http://www.softwareishard.com/blog/har-12-spec/#requ
 currently the following output [targets](/src/targets) are supported:
 
 - [cURL](http://curl.haxx.se/)
+- [Go](http://golang.org/pkg/net/http/#NewRequest)
 - [HTTPie](http://httpie.org)
 - Node.js
   - [Native](http://nodejs.org/api/http.html#http_http_request_options_callback)
@@ -181,6 +182,13 @@ module.exports.info = {
 | -------- | ------- | ------------------------------------------------------------------------ |
 | `short`  | `false` | use short form of cURL CLI options                                       |
 | `indent` | `  `    | line break & indent output value, set to `false` to disable line breaks  |
+
+### Go
+
+| Option          | Default | Description                                                              |
+| --------------- | ------- | ------------------------------------------------------------------------ |
+| `errorChecking` | `false` | add error checking for request, response and body                        |
+| `printBody`     | `true`  | include code to print the body as a string                               |
 
 ### HTTPie
 
