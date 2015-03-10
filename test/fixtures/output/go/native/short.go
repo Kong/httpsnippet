@@ -7,7 +7,8 @@ import (
 
 func main() {
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", "http://mockbin.com/har", nil)
+	url := "http://mockbin.com/har"
+	req, _ := http.NewRequest("GET", url, nil)
 	res, _ := client.Do(req)
 	fmt.Printf("%+v", res)
 }

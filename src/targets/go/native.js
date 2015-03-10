@@ -7,7 +7,7 @@ module.exports = function (options) {
     indent: '  '
   }, options);
 
-  // Set helper object for later
+  // Set some shortcuts 
   var req = {
     url: this.source.fullUrl,
     method: this.source.method,
@@ -17,15 +17,9 @@ module.exports = function (options) {
     headers: this.source.headersObj
   };
 
-  // Find out if we have body content or not
   var bodyPresent = this.source.postData && this.source.postData.text;
-  if (bodyPresent) {
-    req.body = 'strings.NewReader(' + JSON.stringify(this.source.postData.text) + ')';
-  } else {
-    req.body = "nil";
-  }
 
-  // Start writing code out
+  // Let's Go!
   var code = [];
 
   // Create boilerplate 
@@ -40,7 +34,18 @@ module.exports = function (options) {
 
   // Create client
   code.push('\tclient := &http.Client{}');
-  code.push('\treq, _ := http.NewRequest("' + req.method + '", "' + req.url + '", ' + req.body + ')');
+  code.push('\turl := "' + req.url + '"')
+
+  // If we have body content or not create the var and reader or nil
+  if (bodyPresent) {
+    code.push('\tbody := ' + JSON.stringify(this.source.postData.text))
+    req.body = 'strings.NewReader(body)'
+  } else {
+    req.body = 'nil'
+  }
+
+  code.push('\treq, _ := http.NewRequest("' + req.method + '", url, ' + req.body + ')');
+
 
   // Add headers
   var headersPresent = this.source.headers && this.source.headers.length;

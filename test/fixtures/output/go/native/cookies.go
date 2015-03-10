@@ -7,7 +7,8 @@ import (
 
 func main() {
 	client := &http.Client{}
-	req, _ := http.NewRequest("POST", "http://mockbin.com/har", nil)
+	url := "http://mockbin.com/har"
+	req, _ := http.NewRequest("POST", url, nil)
 	req.Header.Add("Cookie", "foo=bar; bar=baz")
 	res, _ := client.Do(req)
 	fmt.Printf("%+v", res)
