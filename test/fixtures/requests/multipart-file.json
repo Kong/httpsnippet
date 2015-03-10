@@ -12,7 +12,8 @@
     "params": [
       {
         "name": "foo",
-        "fileName": "fixtures/files/hello.txt",
+        "value": "Hello World",
+        "fileName": "hello.txt",
         "contentType": "text/plain"
       }
     ]

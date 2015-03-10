@@ -1,4 +1,4 @@
 curl --request POST \
   --url "http://mockbin.com/har" \
   --header "Content-Type: multipart/form-data" \
-  --form "foo=hello world"
+  --form "foo=Hello World"
