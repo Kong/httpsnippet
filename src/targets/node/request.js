@@ -63,8 +63,15 @@ module.exports = function(options) {
   else {
     reqOpts.body = this.source.postData.params;
   }
-  var simpleRequest = this.source.bodySize === 0 && this.source.headerSize === 0;
 
+  var simpleRequest = 
+    this.source.cookies.length === 0 && 
+    this.source.headers.length === 0 && (
+      !this.source.postData.params ||
+      this.source.postData.params.length === 0
+    );
+  console.log(simpleRequest, this.source, simpleRequest)
+  
   // construct cookies argument
   var cookies = this.source.cookies.map(function(cookie) {
     return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value);
@@ -79,13 +86,14 @@ module.exports = function(options) {
     code.push('var fs = require(\'fs\');');
   }
 
-  code.push(null);
+  if(!simpleRequest) code.push(null);
 
   var options = !simpleRequest ? util.format('var options = %s;', JSON.stringify(reqOpts, null, opts.indent)) : null;
   fsReplace.forEach(function(fsToReplace) {
     options = options.replace('"' + fsToReplace + '"', fsToReplace);
   })
-  code.push(options);
+
+  if(!simpleRequest) code.push(options);
 
   code.push(null);
   var requestLine = 'request.';
