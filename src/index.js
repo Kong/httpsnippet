@@ -18,7 +18,7 @@ var HTTPSnippet = function (req, lang) {
   this.source.headers = this.source.headers || [];
   this.source.cookies = this.source.cookies || [];
   this.source.postData = this.source.postData || {};
-  this.source.postData.mimeType = this.source.postData.mimeType || 'application/x-www-form-urlencoded';
+  this.source.postData.mimeType = this.source.postData.mimeType || 'application/octet-stream';
 
   this.source.bodySize = 0;
   this.source.headersSize = 0;
@@ -32,6 +32,27 @@ var HTTPSnippet = function (req, lang) {
     // construct query string object
     this.source.queryObj = {};
     this.source.headersObj = {};
+    this.source.postData.jsonObj = {};
+    this.source.postData.paramsObj = {};
+
+    switch (this.source.postData.mimeType) {
+      case 'application/x-www-form-urlencoded':
+        if (!this.source.postData.params) {
+          this.source.postData.text = '';
+        } else {
+          this.source.postData.paramsObj = this.source.postData.params.reduce(reducer, {});
+
+          // always overwrite
+          this.source.postData.text = qs.stringify(this.source.postData.paramsObj);
+        }
+        break;
+
+      case 'application/json':
+        if (this.source.postData.text) {
+          this.source.postData.jsonObj = JSON.parse(this.source.postData.text);
+        }
+        break;
+    }
 
     // construct query objects
     if (this.source.queryString && this.source.queryString.length) {
