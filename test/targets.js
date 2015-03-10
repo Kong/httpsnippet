@@ -22,45 +22,41 @@ var clearInfo = function (key, cb) {
 };
 
 var itShouldHaveTests = function (test, func, key) {
-  it(key + ' should have tests', function (done) {
+  it(key + ' should have tests', function () {
     test.should.have.property(func);
-    done();
   });
 };
 
 var itShouldHaveInfo = function (targets, key) {
-  it(key + ' should have info method', function (done) {
+  it(key + ' should have info method', function () {
     var target = targets[key];
 
     target.should.have.property('info').and.be.an.Object;
-
     target.info.key.should.be.a.String.and.equal(key);
-
     target.info.title.should.be.a.String;
-
-    done();
   });
 };
 
 var itShouldHaveRequestTestOutputFixture = function (request, target, path) {
-  it('should have output test for ' + request, function (done) {
-    Object.keys(output).indexOf(target + '/' + path + request + snippet.extname(target)).should.be.greaterThan(-1);
+  var fixture = target + '/' + path + request + snippet.extname(target);
 
-    done();
+  it('should have output test for ' + request, function () {
+    Object.keys(output).indexOf(fixture).should.be.greaterThan(-1, 'Missing ' + fixture + ' fixture file for target: ' + target + '. Snippet tests will be skipped.');
   });
 };
 
 var itShouldGenerateOutput = function (request, path, target, client) {
   var fixture = path + request + snippet.extname(target);
 
-  it('should generate ' + request, function (done) {
+  it('should generate ' + request + ' snippet', function () {
+    if (Object.keys(output).indexOf(fixture) === -1) {
+      this.skip();
+    }
     var instance = new snippet(fixtures.requests[request]);
     var result = instance.convert(target, client) + '\n';
 
     result.should.be.a.String;
     result.should.equal(output[fixture].toString());
-
-    done();
   });
 };
 
@@ -68,9 +64,8 @@ describe('Available Targets', function () {
   var targets = snippet.availableTargets();
 
   targets.map(function (target) {
-    it('available-targets.json should include ' + target.title, function (done) {
+    it('available-targets.json should include ' + target.title, function () {
       fixtures['available-targets'].should.containEql(target);
-      done();
     });
   });
 });
@@ -87,7 +82,7 @@ async.each(Object.keys(targets), function (target) {
     }
 
     if (!targets[target].index) {
-      describe('requests', function () {
+      describe('snippets', function () {
         async.filter(Object.keys(fixtures.requests), clearInfo, function (requests) {
           async.each(requests, function (request) {
             itShouldHaveRequestTestOutputFixture(request, target, '');
@@ -109,7 +104,7 @@ async.each(Object.keys(targets), function (target) {
             tests[target][client](snippet, fixtures);
           }
 
-          describe('requests', function () {
+          describe('snippets', function () {
             async.filter(Object.keys(fixtures.requests), clearInfo, function (requests) {
               async.each(requests, function (request) {
                 itShouldHaveRequestTestOutputFixture(request, target, client + '/');
