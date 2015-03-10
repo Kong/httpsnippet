@@ -10,8 +10,8 @@ import (
 func main() {
 	client := &http.Client{}
 	url := "http://mockbin.com/har"
-	body := "{\"foo\": \"bar\"}"
-	req, _ := http.NewRequest("POST", url, strings.NewReader(body))
+	payload := "{\"foo\": \"bar\"}"
+	req, _ := http.NewRequest("POST", url, strings.NewReader(payload))
 	req.Header.Add("Content-Type", "application/json")
 	res, _ := client.Do(req)
 	defer res.Body.Close()
