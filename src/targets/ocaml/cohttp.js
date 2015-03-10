@@ -10,6 +10,7 @@ module.exports = function (options) {
   var code = [];
 
   code.push('open Cohttp_lwt_unix');
+  code.push('open Cohttp');
   code.push('open Lwt');
   code.push('');
 
@@ -45,7 +46,7 @@ module.exports = function (options) {
 
   if (bodyPresent) {
     // Just text
-    code.push(util.format('let body = %s in', JSON.stringify(this.source.postData.text)));
+    code.push(util.format('let body = Cohttp_lwt_unix.of_string %s in', JSON.stringify(this.source.postData.text)));
   } else if (this.source.postData && !this.source.postData.text && this.source.postData.params && this.source.postData.params.length) {
     // Post params
     bodyPresent = true;
@@ -54,7 +55,7 @@ module.exports = function (options) {
       return param.name + '=' + param.value;
     }).join('&');
 
-    code.push(util.format('let body = "%s" in', body));
+    code.push(util.format('let body = Cohttp_lwt_unix.of_string "%s" in', body));
   }
 
   // Do the request
