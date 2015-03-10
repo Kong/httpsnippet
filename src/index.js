@@ -49,7 +49,15 @@ var HTTPSnippet = function (req, lang) {
 
       case 'application/json':
         if (this.source.postData.text) {
-          this.source.postData.jsonObj = JSON.parse(this.source.postData.text);
+          try {
+            this.source.postData.jsonObj = JSON.parse(this.source.postData.text);
+          } catch (e) {
+            debug(e);
+            
+            // force back to text/plain
+            // if headers have proper content-type value, then this should also work
+            this.source.postData.mimeType = 'text/plain'
+          }
         }
         break;
     }
