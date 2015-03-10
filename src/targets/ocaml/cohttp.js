@@ -75,7 +75,7 @@ module.exports = function (options) {
 
 module.exports.info = {
   key: 'cohttp',
-  title: 'OCaml',
+  title: 'CoHTTP',
   link: 'https://github.com/mirage/ocaml-cohttp',
   description: 'Cohttp is a very lightweight HTTP server using Lwt or Async for OCaml'
 };
