@@ -6,7 +6,13 @@ var options = {
     "Content-Type": "multipart/form-data"
   },
   "formData": {
-    "foo": "hello world"
+    "foo": {
+      "value": "hello world",
+      "options": {
+        "filename": "hello.txt",
+        "content-type": "text/plain"
+      }
+    }
   }
 };
 

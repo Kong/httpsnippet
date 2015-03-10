@@ -32,28 +32,30 @@ module.exports = function(options) {
     }
     reqOpts.json = true;
   }
-  else if(this.source.headersObj["Content-Type"] === "multipart/form-data"){
-    this.source.postData.params.forEach(function(param){
+  else if (this.source.headersObj["Content-Type"] === "multipart/form-data") {
+    this.source.postData.params.forEach(function(param) {
       reqOpts.formData = reqOpts.formData || {};
       reqOpts.formData[param.name] = {};
-      if (!param.value.length){
-        param.value = 'fs.createReadStream(\''+param.fileName+'\')';
-        fsReplace.push(param.value);
-        reqOpts.formData[param.name].value =param.value;
-        if(param.fileName.indexOf('/')>-1){
-          param.fileName = param.fileName.split('/');
-          param.fileName = param.fileName[param.fileName.length-1];
+      if (param.fileName) {
+        if (!param.value.length) {
+          param.value = 'fs.createReadStream(\'' + param.fileName + '\')';
+          fsReplace.push(param.value);
         }
-        else if(param.fileName.indexOf('\\')>-1){
+        reqOpts.formData[param.name].value = param.value;
+        if (param.fileName.indexOf('/') > -1) {
+          param.fileName = param.fileName.split('/');
+          param.fileName = param.fileName[param.fileName.length - 1];
+        }
+        else if (param.fileName.indexOf('\\') > -1) {
           param.fileName = param.fileName.split('\\');
-          param.fileName = param.fileName[param.fileName.length-1];
+          param.fileName = param.fileName[param.fileName.length - 1];
         }
         reqOpts.formData[param.name].options = {
-          filename:param.fileName,
-          "content-type":param.contentType
+          filename: param.fileName,
+          "content-type": param.contentType
         }
       }
-      else{
+      else {
         reqOpts.formData[param.name] = param.value;
       }
     })
@@ -73,15 +75,15 @@ module.exports = function(options) {
   }
 
   code.push('var request = require(\'request\');');
-  if(fsReplace.length>0){
+  if (fsReplace.length > 0) {
     code.push('var fs = require(\'fs\');');
   }
 
   code.push(null);
 
   var options = !simpleRequest ? util.format('var options = %s;', JSON.stringify(reqOpts, null, opts.indent)) : null;
-  fsReplace.forEach(function(fsToReplace){
-    options = options.replace('"'+fsToReplace+'"',fsToReplace);
+  fsReplace.forEach(function(fsToReplace) {
+    options = options.replace('"' + fsToReplace + '"', fsToReplace);
   })
   code.push(options);
 
