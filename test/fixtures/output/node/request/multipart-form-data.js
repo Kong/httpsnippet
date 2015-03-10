@@ -3,9 +3,11 @@ var request = require('request');
 var options = {
   "url": "http://mockbin.com/har",
   "headers": {
-    "Content-Type": "application/json"
+    "Content-Type": "multipart/form-data"
   },
-  "json": true
+  "formData": {
+    "foo": "bar"
+  }
 };
 
 request.post(options, function(error, response, body){

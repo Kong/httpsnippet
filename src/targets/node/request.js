@@ -3,7 +3,7 @@
 var util = require('util');
 var reducer = require('.,/../../reducer');
 
-module.exports = function (options) {
+module.exports = function(options) {
   var opts = util._extend({
     indent: '  '
   }, options);
@@ -11,15 +11,60 @@ module.exports = function (options) {
   var code = [];
 
   var reqOpts = {
-    method: this.source.method,
-    hostname: this.source.uriObj.hostname,
-    port: this.source.uriObj.port,
-    path: this.source.uriObj.path,
+    url: this.source.fullUrl,
     headers: this.source.headersObj
   };
+  var fsReplace = [];
+  if (this.source.headersObj['Content-Type'] === 'application/x-www-form-urlencoded') {
+    reqOpts.formData = this.source.postData.params.reduce(function(finalObj, thisParam) {
+      finalObj[thisParam.name] = thisParam.value;
+      return finalObj;
+    }, {});
+  }
+  else if (this.source.headersObj['Content-Type'] === 'application/json') {
+    if (this.source.postData.params) {
+      reqOpts.body = JSON.stringify(
+        this.source.postData.params.reduce(function(finalObj, thisParam) {
+          finalObj[thisParam.name] = thisParam.value;
+          return finalObj;
+        }, {})
+      );
+    }
+    reqOpts.json = true;
+  }
+  else if(this.source.headersObj["Content-Type"] === "multipart/form-data"){
+    this.source.postData.params.forEach(function(param){
+      reqOpts.formData = reqOpts.formData || {};
+      reqOpts.formData[param.name] = {};
+      if (!param.value.length){
+        param.value = 'fs.createReadStream(\''+param.fileName+'\')';
+        fsReplace.push(param.value);
+        reqOpts.formData[param.name].value =param.value;
+        if(param.fileName.indexOf('/')>-1){
+          param.fileName = param.fileName.split('/');
+          param.fileName = param.fileName[param.fileName.length-1];
+        }
+        else if(param.fileName.indexOf('\\')>-1){
+          param.fileName = param.fileName.split('\\');
+          param.fileName = param.fileName[param.fileName.length-1];
+        }
+        reqOpts.formData[param.name].options = {
+          filename:param.fileName,
+          "content-type":param.contentType
+        }
+      }
+      else{
+        reqOpts.formData[param.name] = param.value;
+      }
+    })
+  }
+  else {
+    reqOpts.body = this.source.postData.params;
+  }
+  var simpleRequest = this.source.bodySize === 0 && this.source.headerSize === 0;
 
   // construct cookies argument
-  var cookies = this.source.cookies.map(function (cookie) {
+  var cookies = this.source.cookies.map(function(cookie) {
     return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value);
   });
 
@@ -27,56 +72,39 @@ module.exports = function (options) {
     reqOpts.headers.Cookie = cookies.join('; ');
   }
 
-  code.push('var request = require("request");');
-
-  if (!this.source.postData.text && this.source.postData.params) {
-    code.push('var querystring = require("querystring");');
+  code.push('var request = require(\'request\');');
+  if(fsReplace.length>0){
+    code.push('var fs = require(\'fs\');');
   }
 
   code.push(null);
 
-  code.push(util.format('var options = %s;', JSON.stringify(reqOpts, null, opts.indent)));
+  var options = !simpleRequest ? util.format('var options = %s;', JSON.stringify(reqOpts, null, opts.indent)) : null;
+  fsReplace.forEach(function(fsToReplace){
+    options = options.replace('"'+fsToReplace+'"',fsToReplace);
+  })
+  code.push(options);
+
+  code.push(null);
+  var requestLine = 'request.';
+  requestLine += this.source.method === 'DELETE' ? 'del(' : this.source.method.toLowerCase() + '(';
+  requestLine += simpleRequest ? '\'' + this.source.fullUrl + '\'' : 'options';
+  requestLine += ', function(error, response, body){';
+  code.push(requestLine);
+  code.push(opts.indent + 'if(error) throw new Error(error);');
 
   code.push(null);
 
-  code.push('var req = http.request(options, function (res) {');
-
-  code.push(opts.indent + 'var chunks = [];');
-
-  code.push(null);
-
-  code.push(opts.indent + 'res.on("data", function (chunk) {');
-  code.push(opts.indent + opts.indent + 'chunks.push(chunk);');
-  code.push(opts.indent + '});');
-
-  code.push(null);
-
-  code.push(opts.indent + 'res.on("end", function () {');
-  code.push(opts.indent + opts.indent + 'var body = Buffer.concat(chunks);');
-  code.push(opts.indent + '});');
   code.push('});');
 
   code.push(null);
-
-  if (this.source.postData.text) {
-    code.push(util.format('req.write(%s);', JSON.stringify(this.source.postData.text)));
-  }
-
-  if (!this.source.postData.text && this.source.postData.params) {
-    var postData = this.source.postData.params.reduce(reducer, {});
-
-    code.push(util.format('var postData = querystring.stringify(%s);', JSON.stringify(postData)));
-    code.push(util.format('req.write(postData);'));
-  }
-
-  code.push('req.end();');
 
   return code.join('\n');
 };
 
 module.exports.info = {
-  key: 'native',
-  title: 'HTTP',
-  link: 'http://nodejs.org/api/http.html#http_http_request_options_callback',
-  description: 'Node.js native HTTP interface'
+  key: 'request',
+  title: 'request',
+  link: 'https://github.com/request/request',
+  description: 'Simplified HTTP request client'
 };

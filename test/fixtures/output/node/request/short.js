@@ -1,9 +1,12 @@
 var request = require('request');
 
-request.get('http://mockbin.com/har?', function(error, response, body) {
-  if (error){
-    //throw error here
-    return;
-  }
-  // work with response and body here;
+var options = {
+  "url": "http://mockbin.com/har",
+  "headers": {}
+};
+
+request.get(options, function(error, response, body){
+  if(error) throw new Error(error);
+
 });
+
