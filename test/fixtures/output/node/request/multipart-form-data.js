@@ -1,17 +1,19 @@
-var request = require('request');
+var request = require("request");
 
-var options = {
+request({
+  "method": "POST",
   "url": "http://mockbin.com/har",
   "headers": {
     "Content-Type": "multipart/form-data"
   },
   "formData": {
-    "foo": "bar"
+    "foo": {
+      "value": "bar"
+    }
   }
-};
+}, function (error, response, body) {
+  if (error) throw new Error(error);
 
-request.post(options, function(error, response, body){
-  if(error) throw new Error(error);
-
+  console.log(body);
 });
 

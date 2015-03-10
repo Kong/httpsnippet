@@ -34,7 +34,7 @@
       },
       {
         "key": "request",
-        "title": "request",
+        "title": "Request",
         "link": "https://github.com/request/request",
         "description": "Simplified HTTP request client"
       }

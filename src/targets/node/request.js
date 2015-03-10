@@ -1,111 +1,99 @@
 'use strict';
 
 var util = require('util');
-var reducer = require('.,/../../reducer');
+var path = require('path');
 
-module.exports = function(options) {
+module.exports = function (options) {
   var opts = util._extend({
     indent: '  '
   }, options);
 
-  var code = [];
+  var code = ['var request = require("request");', null];
 
   var reqOpts = {
-    url: this.source.fullUrl,
-    headers: this.source.headersObj
+    method: this.source.method,
+    url: this.source.url
   };
-  var fsReplace = [];
-  if (this.source.headersObj['Content-Type'] === 'application/x-www-form-urlencoded') {
-    reqOpts.formData = this.source.postData.params.reduce(function(finalObj, thisParam) {
-      finalObj[thisParam.name] = thisParam.value;
-      return finalObj;
-    }, {});
-  }
-  else if (this.source.headersObj['Content-Type'] === 'application/json') {
-    if (this.source.postData.params) {
-      reqOpts.body = JSON.stringify(
-        this.source.postData.params.reduce(function(finalObj, thisParam) {
-          finalObj[thisParam.name] = thisParam.value;
-          return finalObj;
-        }, {})
-      );
-    }
-    reqOpts.json = true;
-  }
-  else if (this.source.headersObj["Content-Type"] === "multipart/form-data") {
-    this.source.postData.params.forEach(function(param) {
-      reqOpts.formData = reqOpts.formData || {};
-      reqOpts.formData[param.name] = {};
-      if (param.fileName) {
-        if (!param.value.length) {
-          param.value = 'fs.createReadStream(\'' + param.fileName + '\')';
-          fsReplace.push(param.value);
-        }
-        reqOpts.formData[param.name].value = param.value;
-        if (param.fileName.indexOf('/') > -1) {
-          param.fileName = param.fileName.split('/');
-          param.fileName = param.fileName[param.fileName.length - 1];
-        }
-        else if (param.fileName.indexOf('\\') > -1) {
-          param.fileName = param.fileName.split('\\');
-          param.fileName = param.fileName[param.fileName.length - 1];
-        }
-        reqOpts.formData[param.name].options = {
-          filename: param.fileName,
-          "content-type": param.contentType
-        }
-      }
-      else {
-        reqOpts.formData[param.name] = param.value;
-      }
-    })
-  }
-  else {
-    reqOpts.body = this.source.postData.params;
+
+  if (Object.keys(this.source.queryObj).length) {
+    reqOpts.qs = this.source.queryObj;
   }
 
-  var simpleRequest = 
-    this.source.cookies.length === 0 && 
-    this.source.headers.length === 0 && (
-      !this.source.postData.params ||
-      this.source.postData.params.length === 0
-    );
-  
+  if (Object.keys(this.source.headersObj).length) {
+    reqOpts.headers = this.source.headersObj;
+  }
+
+  var includeFS = false;
+
+  switch (this.source.postData.mimeType) {
+    case 'application/x-www-form-urlencoded':
+      reqOpts.form = this.source.postData.paramsObj;
+      break;
+
+    case 'application/json':
+      reqOpts.body = this.source.postData.jsonObj;
+      reqOpts.json = true;
+      break;
+
+    case 'multipart/form-data':
+      reqOpts.formData = {};
+
+      this.source.postData.params.forEach(function (param) {
+        var attachement = {};
+
+        if (param.value) {
+          attachement.value = param.value;
+        } else if (param.fileName) {
+          includeFS = true;
+          attachement.value = 'fs.createReadStream("' + param.fileName + '")';
+        }
+
+        if (param.fileName) {
+          var base = path.parse(param.fileName).base;
+
+          attachement.options = {
+            filename: base.length ? base : 'filename',
+            contentType: param.contentType ? param.contentType : null
+          };
+        }
+
+        reqOpts.formData[param.name] = attachement;
+      });
+      break;
+
+    default:
+      reqOpts.body = this.source.postData.text;
+  }
+
   // construct cookies argument
-  var cookies = this.source.cookies.map(function(cookie) {
-    return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value);
-  });
+  if (this.source.cookies.length) {
+    reqOpts.jar = 'JAR';
 
-  if (cookies.length) {
-    reqOpts.headers.Cookie = cookies.join('; ');
+    code.push(null);
+    code.push('var jar = request.jar();');
+
+    var url = this.source.url;
+
+    this.source.cookies.map(function (cookie) {
+      code.push(util.format('jar.setCookie(request.cookie("%s=%s"), "%s");', encodeURIComponent(cookie.name), encodeURIComponent(cookie.value), url));
+    });
+    code.push(null);
   }
 
-  code.push('var request = require(\'request\');');
-  if (fsReplace.length > 0) {
-    code.push('var fs = require(\'fs\');');
+
+  if (includeFS) {
+    code.push('var fs = require("fs");');
   }
 
-  if(!simpleRequest) code.push(null);
+  var content = JSON.stringify(reqOpts, null, opts.indent)
+    .replace('"JAR"', 'jar')
+    .replace(/"fs\.createReadStream\(\\\"(.+)\\\"\)\"/, 'fs.createReadStream("$1")');
 
-  var options = !simpleRequest ? util.format('var options = %s;', JSON.stringify(reqOpts, null, opts.indent)) : null;
-  fsReplace.forEach(function(fsToReplace) {
-    options = options.replace('"' + fsToReplace + '"', fsToReplace);
-  })
-
-  if(!simpleRequest) code.push(options);
-
+  code.push(util.format('request(%s, %s', content, 'function (error, response, body) {'));
+  code.push(opts.indent + 'if (error) throw new Error(error);');
   code.push(null);
-  var requestLine = 'request.';
-  requestLine += this.source.method === 'DELETE' ? 'del(' : this.source.method.toLowerCase() + '(';
-  requestLine += simpleRequest ? '\'' + this.source.fullUrl + '\'' : 'options';
-  requestLine += ', function(error, response, body){';
-  code.push(requestLine);
-  code.push(opts.indent + 'if(error) throw new Error(error);');
-
-  code.push(null);
-
+  code.push(opts.indent + 'console.log(body);');
   code.push('});');
-
   code.push(null);
 
   return code.join('\n');
@@ -113,7 +101,7 @@ module.exports = function(options) {
 
 module.exports.info = {
   key: 'request',
-  title: 'request',
+  title: 'Request',
   link: 'https://github.com/request/request',
   description: 'Simplified HTTP request client'
 };

@@ -1,15 +1,15 @@
-var request = require('request');
+var request = require("request");
 
-var options = {
+request({
+  "method": "GET",
   "url": "http://mockbin.com/har",
   "headers": {
     "Accept": "application/json",
     "X-Foo": "Bar"
   }
-};
+}, function (error, response, body) {
+  if (error) throw new Error(error);
 
-request.get(options, function(error, response, body){
-  if(error) throw new Error(error);
-
+  console.log(body);
 });
 

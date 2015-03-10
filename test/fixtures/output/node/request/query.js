@@ -1,7 +1,19 @@
-var request = require('request');
+var request = require("request");
 
-request.get('http://mockbin.com/har?key=value&baz=abc&foo=bar&foo=baz', function(error, response, body){
-  if(error) throw new Error(error);
+request({
+  "method": "GET",
+  "url": "http://mockbin.com/har",
+  "qs": {
+    "key": "value",
+    "baz": "abc",
+    "foo": [
+      "bar",
+      "baz"
+    ]
+  }
+}, function (error, response, body) {
+  if (error) throw new Error(error);
 
+  console.log(body);
 });
 

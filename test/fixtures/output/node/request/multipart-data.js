@@ -1,6 +1,5 @@
 var request = require("request");
 
-var fs = require("fs");
 request({
   "method": "POST",
   "url": "http://mockbin.com/har",
@@ -9,7 +8,7 @@ request({
   },
   "formData": {
     "foo": {
-      "value": fs.createReadStream("test/fixtures/files/hello.txt"),
+      "value": "Hello World",
       "options": {
         "filename": "hello.txt",
         "contentType": "text/plain"
