@@ -12,6 +12,5 @@ request.get(options, function(error, response, body) {
     //throw error here
     return;
   }
-  console.log(body);
   // work with response and body here;
 });

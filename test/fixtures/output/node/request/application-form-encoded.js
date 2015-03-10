@@ -1,28 +1,17 @@
-var http = require("http");
+var request = require('request');
 var querystring = require("querystring");
 
 var options = {
-  "method": "POST",
-  "hostname": "mockbin.com",
-  "port": null,
-  "path": "/har?",
-  "headers": {
+  url: 'http://mockbin.com/har?',
+  body: querystring.stringify({"foo": "bar"}),
+  headers: {
     "Content-Type": "application/x-www-form-urlencoded"
   }
-};
-
-var req = http.request(options, function (res) {
-  var chunks = [];
-
-  res.on("data", function (chunk) {
-    chunks.push(chunk);
-  });
-
-  res.on("end", function () {
-    var body = Buffer.concat(chunks);
-  });
+}
+request.post(options, function(error, response, body) {
+  if (error){
+    //throw error here
+    return;
+  }
+  // work with response and body here;
 });
-
-var postData = querystring.stringify({"foo":"bar"});
-req.write(postData);
-req.end();
