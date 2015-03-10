@@ -53,17 +53,15 @@ var itShouldHaveRequestTestOutputFixture = function (request, target, path) {
 var itShouldGenerateOutput = function (request, path, target, client) {
   var fixture = path + request + snippet.extname(target);
 
-  if (request.hasOwnProperty(fixture)) {
-    it('should generate ' + request, function (done) {
-      var instance = new snippet(fixtures.requests[request]);
-      var result = instance.convert(target, client) + '\n';
+  it('should generate ' + request, function (done) {
+    var instance = new snippet(fixtures.requests[request]);
+    var result = instance.convert(target, client) + '\n';
 
-      result.should.be.a.String;
-      result.should.equal(output[fixture].toString());
+    result.should.be.a.String;
+    result.should.equal(output[fixture].toString());
 
-      done();
-    });
-  }
+    done();
+  });
 };
 
 describe('Available Targets', function () {
