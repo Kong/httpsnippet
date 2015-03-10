@@ -1,18 +1,18 @@
 #import <Foundation/Foundation.h>
 
-NSURLSession *session = [NSURLSession sharedSession];
+NSDictionary *headers = @{ @"Accept": @"application/json",
+                           @"Content-Type": @"application/x-www-form-urlencoded",
+                           @"Cookie": @"foo=bar; bar=baz" };
+NSMutableData *postData = [[NSMutableData alloc] initWithData:[@"foo=bar" dataUsingEncoding:NSUTF8StringEncoding]];
 
-NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value"]
+NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://mockbin.com/har?baz=abc&foo=bar&foo=baz"]
                                                        cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                    timeoutInterval:10.0];
 [request setHTTPMethod:@"POST"];
-[request setValue:@"application/json" forHTTPHeaderField:@"accept"];
-[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
-[request setValue:@"foo=bar; bar=baz" forHTTPHeaderField:@"cookie"];
-
-NSMutableData *postData = [[NSMutableData alloc] initWithData:[@"foo=bar" dataUsingEncoding:NSUTF8StringEncoding]];
+[request setAllHTTPHeaderFields:headers];
 [request setHTTPBody:postData];
 
+NSURLSession *session = [NSURLSession sharedSession];
 NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
                                             completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
 

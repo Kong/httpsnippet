@@ -194,7 +194,7 @@ module.exports.availableTargets = function () {
     var clients = Object.keys(targets[key])
 
       .filter(function (prop) {
-        return !~['info', 'index'].indexOf(prop)
+        return !~['info', 'index'].indexOf(prop);
       })
 
       .map(function (client) {
