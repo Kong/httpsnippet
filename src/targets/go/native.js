@@ -25,7 +25,7 @@ module.exports = function (options) {
 
   var bodyPresent = this.source.postData && this.source.postData.text;
 
-  var errorPlaceholder = opts.checkErrors ? "err" : "_"
+  var errorPlaceholder = opts.checkErrors ? 'err' : '_';
   
   var errorCheck = function() {
     if (opts.checkErrors) {
@@ -33,7 +33,7 @@ module.exports = function (options) {
       code.push('\t\tpanic(err)');
       code.push('\t}');
     }
-  }
+  };
 
   // Create boilerplate 
   code.push('package main\n');
@@ -59,6 +59,7 @@ module.exports = function (options) {
   }
 
   code.push('\treq, ' + errorPlaceholder + ' := http.NewRequest("' + req.method + '", url, ' + req.body + ')');
+  errorCheck();
 
   // Add headers
   var headersPresent = this.source.headers && this.source.headers.length;
@@ -82,11 +83,12 @@ module.exports = function (options) {
 
   // Make request 
   code.push('\tres, ' + errorPlaceholder + ' := client.Do(req)');
+  errorCheck();
 
   // Get Body
   if (opts.printBody) code.push('\tdefer res.Body.Close()');
   if (opts.printBody) code.push('\tbody, ' + errorPlaceholder + ' := ioutil.ReadAll(res.Body)');
-  errorCheck()
+  errorCheck();
 
   // Print it
   code.push('\tfmt.Println(res)');
