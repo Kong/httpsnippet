@@ -1,11 +1,14 @@
 'use strict';
 
-var util = require('util');
+// var util = require('util');
 
 module.exports = function (options) {
-  var opts = util._extend({
-    indent: '  '
-  }, options);
+
+  // Might want to add error checking in as option
+  
+  // var opts = util._extend({
+  //   errorChecking: false
+  // }, options);
 
   // Set some shortcuts 
   var req = {
@@ -30,30 +33,29 @@ module.exports = function (options) {
   code.push('\t"net/http"');
   code.push(')\n');
 
-  code.push('func main() {')
+  code.push('func main() {');
 
   // Create client
   code.push('\tclient := &http.Client{}');
-  code.push('\turl := "' + req.url + '"')
+  code.push('\turl := "' + req.url + '"');
 
   // If we have body content or not create the var and reader or nil
   if (bodyPresent) {
-    code.push('\tbody := ' + JSON.stringify(this.source.postData.text))
-    req.body = 'strings.NewReader(body)'
+    code.push('\tbody := ' + JSON.stringify(this.source.postData.text));
+    req.body = 'strings.NewReader(body)';
   } else {
-    req.body = 'nil'
+    req.body = 'nil';
   }
 
   code.push('\treq, _ := http.NewRequest("' + req.method + '", url, ' + req.body + ')');
-
 
   // Add headers
   var headersPresent = this.source.headers && this.source.headers.length;
 
   if (headersPresent) {
     for (var header in this.source.headers) {
-      var key = this.source.headers[header].name
-      var val = this.source.headers[header].value
+      var key = this.source.headers[header].name;
+      var val = this.source.headers[header].value;
       code.push('\treq.Header.Add("' + key + '", "' + val + '")');
     }
   }
@@ -74,7 +76,7 @@ module.exports = function (options) {
   code.push('\tfmt.Printf("%+v", res)');
 
   // End main block
-  code.push('}')
+  code.push('}');
 
   return code.join('\n');
 };
