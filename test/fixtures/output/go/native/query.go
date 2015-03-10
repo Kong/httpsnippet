@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"io/ioutil"
 )
 
 func main() {
@@ -10,5 +11,8 @@ func main() {
 	url := "http://mockbin.com/har?key=value&baz=abc&foo=bar&foo=baz"
 	req, _ := http.NewRequest("GET", url, nil)
 	res, _ := client.Do(req)
-	fmt.Printf("%+v", res)
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+	fmt.Println(res)
+	fmt.Println(string(body))
 }
