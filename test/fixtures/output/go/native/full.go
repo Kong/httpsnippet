@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 	"net/http"
+	"io/ioutil"
 )
 
 func main() {
@@ -15,5 +16,8 @@ func main() {
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Add("Cookie", "foo=bar; bar=baz")
 	res, _ := client.Do(req)
-	fmt.Printf("%+v", res)
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+	fmt.Println(res)
+	fmt.Println(string(body))
 }

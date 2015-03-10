@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"io/ioutil"
 )
 
 func main() {
@@ -11,5 +12,8 @@ func main() {
 	req, _ := http.NewRequest("POST", url, nil)
 	req.Header.Add("Cookie", "foo=bar; bar=baz")
 	res, _ := client.Do(req)
-	fmt.Printf("%+v", res)
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+	fmt.Println(res)
+	fmt.Println(string(body))
 }

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"io/ioutil"
 )
 
 func main() {
@@ -12,5 +13,8 @@ func main() {
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("X-Foo", "Bar")
 	res, _ := client.Do(req)
-	fmt.Printf("%+v", res)
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+	fmt.Println(res)
+	fmt.Println(string(body))
 }

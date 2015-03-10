@@ -1,14 +1,14 @@
 'use strict';
 
-// var util = require('util');
+var util = require('util');
 
 module.exports = function (options) {
 
-  // Might want to add error checking in as option
-  
-  // var opts = util._extend({
-  //   errorChecking: false
-  // }, options);
+  var opts = util._extend({
+    errorChecking: false,
+    timeout: -1,
+    printBody: true
+  }, options);
 
   // Set some shortcuts 
   var req = {
@@ -31,6 +31,7 @@ module.exports = function (options) {
   code.push('\t"fmt"');
   if (bodyPresent) code.push('\t"strings"');
   code.push('\t"net/http"');
+  code.push('\t"io/ioutil"');
   code.push(')\n');
 
   code.push('func main() {');
@@ -72,9 +73,17 @@ module.exports = function (options) {
   // Make request 
   code.push('\tres, _ := client.Do(req)');
 
-  // Print it
-  code.push('\tfmt.Printf("%+v", res)');
+  // Get Body
+  code.push('\tdefer res.Body.Close()');
+  code.push('\tbody, _ := ioutil.ReadAll(res.Body)');
 
+  // Print it
+  code.push('\tfmt.Println(res)');
+
+  if (opts.printBody) {
+    code.push('\tfmt.Println(string(body))');
+  }
+  
   // End main block
   code.push('}');
 
