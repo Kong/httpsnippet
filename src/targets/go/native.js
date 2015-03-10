@@ -4,9 +4,12 @@ var util = require('util');
 
 module.exports = function (options) {
 
+  // Let's Go!
+  var code = [];
+
+  // Define Options
   var opts = util._extend({
-    errorChecking: false,
-    timeout: -1,
+    checkErrors: false,
     printBody: true
   }, options);
 
@@ -22,8 +25,15 @@ module.exports = function (options) {
 
   var bodyPresent = this.source.postData && this.source.postData.text;
 
-  // Let's Go!
-  var code = [];
+  var errorPlaceholder = opts.checkErrors ? "err" : "_"
+  
+  var errorCheck = function() {
+    if (opts.checkErrors) {
+      code.push('\tif err != nil {');
+      code.push('\t\tpanic(err)');
+      code.push('\t}');
+    }
+  }
 
   // Create boilerplate 
   code.push('package main\n');
@@ -31,7 +41,7 @@ module.exports = function (options) {
   code.push('\t"fmt"');
   if (bodyPresent) code.push('\t"strings"');
   code.push('\t"net/http"');
-  code.push('\t"io/ioutil"');
+  if (opts.printBody) code.push('\t"io/ioutil"');
   code.push(')\n');
 
   code.push('func main() {');
@@ -42,13 +52,13 @@ module.exports = function (options) {
 
   // If we have body content or not create the var and reader or nil
   if (bodyPresent) {
-    code.push('\tbody := ' + JSON.stringify(this.source.postData.text));
-    req.body = 'strings.NewReader(body)';
+    code.push('\tpayload := ' + JSON.stringify(this.source.postData.text));
+    req.body = 'strings.NewReader(payload)';
   } else {
     req.body = 'nil';
   }
 
-  code.push('\treq, _ := http.NewRequest("' + req.method + '", url, ' + req.body + ')');
+  code.push('\treq, ' + errorPlaceholder + ' := http.NewRequest("' + req.method + '", url, ' + req.body + ')');
 
   // Add headers
   var headersPresent = this.source.headers && this.source.headers.length;
@@ -71,11 +81,12 @@ module.exports = function (options) {
   }
 
   // Make request 
-  code.push('\tres, _ := client.Do(req)');
+  code.push('\tres, ' + errorPlaceholder + ' := client.Do(req)');
 
   // Get Body
-  code.push('\tdefer res.Body.Close()');
-  code.push('\tbody, _ := ioutil.ReadAll(res.Body)');
+  if (opts.printBody) code.push('\tdefer res.Body.Close()');
+  if (opts.printBody) code.push('\tbody, ' + errorPlaceholder + ' := ioutil.ReadAll(res.Body)');
+  errorCheck()
 
   // Print it
   code.push('\tfmt.Println(res)');
