@@ -1,7 +1,7 @@
 'use strict';
 
 var util = require('util');
-var reducer = require('../../../reducer');
+var reducer = require('../../reducer');
 
 module.exports = function (options) {
   var opts = util._extend({
