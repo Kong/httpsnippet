@@ -36,6 +36,16 @@ module.exports = function (options) {
     code.push('--body-data ' + JSON.stringify(this.source.postData.text));
   }
 
+  if (this.source.postData.mimeType === 'multipart/form-data') {
+    this.source.postData.params.forEach(function (param) {
+      if (param.value) {
+        code.push(util.format('--body-data %s', JSON.stringify(param.value)));
+      } else if (param.fileName) {
+        code.push(util.format('--body-file "%s"', param.fileName));
+      }
+    });
+  }
+
   code.push(opts.short ? '-O' : '--output-document');
 
   code.push(util.format('- "%s"', this.source.fullUrl));

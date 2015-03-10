@@ -3,4 +3,4 @@ curl --request POST \
   --header "Accept: application/json" \
   --header "Content-Type: application/x-www-form-urlencoded" \
   --cookie "foo=bar; bar=baz" \
-  --form "foo=bar"
+  --data "foo=bar"

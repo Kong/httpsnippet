@@ -53,6 +53,7 @@ module.exports = function (options) {
 
   code.push(opts.indent + 'res.on("end", function () {');
   code.push(opts.indent + opts.indent + 'var body = Buffer.concat(chunks);');
+  code.push(opts.indent + opts.indent + 'console.log(body);');
   code.push(opts.indent + '});');
   code.push('});');
 
@@ -62,12 +63,21 @@ module.exports = function (options) {
     code.push(util.format('req.write(%s);', JSON.stringify(this.source.postData.text)));
   }
 
-  if (!this.source.postData.text && this.source.postData.params) {
-    var postData = this.source.postData.params.reduce(reducer, {});
+  // if (!this.source.postData.text && this.source.postData.params) {
+  //   if (this.source.postData.mimeType === 'application/x-www-form-urlencoded') {
+  //     var postData = this.source.postData.params.reduce(reducer, {});
 
-    code.push(util.format('var postData = querystring.stringify(%s);', JSON.stringify(postData)));
-    code.push(util.format('req.write(postData);'));
-  }
+  //     code.push(util.format('var postData = querystring.stringify(%s);', JSON.stringify(postData)));
+  //     code.push(util.format('req.write(postData);'));
+  //   }
+
+  //   if (this.source.postData.mimeType === 'multipart/form-data') {
+  //     var postData = this.source.postData.params.reduce(reducer, {});
+
+  //     code.push(util.format('var postData = querystring.stringify(%s);', JSON.stringify(postData)));
+  //     code.push(util.format('req.write(postData);'));
+  //   }
+  // }
 
   code.push('req.end();');
 

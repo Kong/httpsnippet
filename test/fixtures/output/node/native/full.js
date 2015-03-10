@@ -1,5 +1,4 @@
 var http = require("http");
-var querystring = require("querystring");
 
 var options = {
   "method": "POST",
@@ -22,9 +21,9 @@ var req = http.request(options, function (res) {
 
   res.on("end", function () {
     var body = Buffer.concat(chunks);
+    console.log(body);
   });
 });
 
-var postData = querystring.stringify({"foo":"bar"});
-req.write(postData);
+req.write("foo=bar");
 req.end();
