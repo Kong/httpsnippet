@@ -98,7 +98,7 @@ describe('HTTPSnippet', function () {
     done();
   });
 
-  it('should parse and queryString in the url into querString object', function (done) {
+  it('should parse a queryString in the url into querString object', function (done) {
     var req = new HTTPSnippet(fixtures.requests.query).source;
 
     req.queryString.should.be.a.Obj;

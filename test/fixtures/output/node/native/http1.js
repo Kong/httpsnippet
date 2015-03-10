@@ -1,14 +1,11 @@
 var http = require("http");
-var querystring = require("querystring");
 
 var options = {
-  "method": "POST",
+  "method": "GET",
   "hostname": "mockbin.com",
   "port": null,
-  "path": "/har?",
-  "headers": {
-    "Content-Type": "application/x-www-form-urlencoded"
-  }
+  "path": "/request?",
+  "headers": {}
 };
 
 var req = http.request(options, function (res) {
@@ -23,6 +20,4 @@ var req = http.request(options, function (res) {
   });
 });
 
-var postData = querystring.stringify({"foo":"bar","hello":"world"});
-req.write(postData);
 req.end();

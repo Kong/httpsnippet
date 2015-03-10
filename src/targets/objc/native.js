@@ -1,5 +1,7 @@
 'use strict';
 
+var util = require('util');
+
 module.exports = function (options) {
   var opts = util._extend({
     timeout: '10'
