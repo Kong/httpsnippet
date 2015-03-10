@@ -28,6 +28,9 @@ currently the following output [targets](/src/targets) are supported:
 - [HTTPie](http://httpie.org)
 - Node.js
   - [Native](http://nodejs.org/api/http.html#http_http_request_options_callback)
+  - [Request](https://github.com/request/request)
+- OCaml
+  - [CoHTTP](https://github.com/mirage/ocaml-cohttp)
 - PHP
   - [ext-curl](http://php.net/manual/en/book.curl.php)
 - [Wget](https://www.gnu.org/software/wget/)
