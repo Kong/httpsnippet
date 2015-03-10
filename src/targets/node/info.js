@@ -2,7 +2,7 @@
 
 module.exports = {
   key: 'node',
-  title: 'Node.JS',
+  title: 'Node.js',
   extname: '.js',
   default: 'native'
 };
