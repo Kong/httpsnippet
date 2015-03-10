@@ -11,7 +11,6 @@ describe('HTTPSnippet', function () {
   var targets = HTTPSnippet.availableTargets()
 
   targets.map(function (target) {
-    console.log(target)
     it('availableTargets should include ' + target.title, function (done) {
       fixtures['available-targets'].should.containEql(target)
       done()
