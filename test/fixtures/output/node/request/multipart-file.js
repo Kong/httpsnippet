@@ -7,7 +7,7 @@ var options = {
   },
   "formData": {
     "foo": {
-      "value": "hello world",
+      "value": "Hello World",
       "options": {
         "filename": "hello.txt",
         "content-type": "text/plain"

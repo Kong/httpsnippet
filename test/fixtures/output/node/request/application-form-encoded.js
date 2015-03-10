@@ -6,7 +6,8 @@ var options = {
     "Content-Type": "application/x-www-form-urlencoded"
   },
   "formData": {
-    "foo": "bar"
+    "foo": "bar",
+    "hello": "world"
   }
 };
 
