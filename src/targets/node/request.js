@@ -70,7 +70,6 @@ module.exports = function(options) {
       !this.source.postData.params ||
       this.source.postData.params.length === 0
     );
-  console.log(simpleRequest, this.source, simpleRequest)
   
   // construct cookies argument
   var cookies = this.source.cookies.map(function(cookie) {
