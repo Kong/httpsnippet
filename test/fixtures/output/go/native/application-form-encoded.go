@@ -8,7 +8,9 @@ import (
 
 func main() {
 	client := &http.Client{}
-	req, _ := http.NewRequest("POST", "http://mockbin.com/har", strings.NewReader("foo=bar&hello=world"))
+	url := "http://mockbin.com/har"
+	body := "foo=bar&hello=world"
+	req, _ := http.NewRequest("POST", url, strings.NewReader(body))
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	res, _ := client.Do(req)
 	fmt.Printf("%+v", res)

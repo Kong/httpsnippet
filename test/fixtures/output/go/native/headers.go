@@ -7,7 +7,8 @@ import (
 
 func main() {
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", "http://mockbin.com/har", nil)
+	url := "http://mockbin.com/har"
+	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("X-Foo", "Bar")
 	res, _ := client.Do(req)
