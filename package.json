@@ -26,16 +26,17 @@
   },
   "homepage": "https://github.com/ahmadnassri/httpsnippet",
   "devDependencies": {
-    "glob": "^5.0.1",
+    "codeclimate-test-reporter": "0.0.4",
+    "glob": "^5.0.2",
     "istanbul": "^0.3.7",
-    "mocha": "^2.1.0",
-    "should": "^5.0.1"
+    "mocha": "^2.2.1",
+    "should": "^5.1.0"
   },
   "dependencies": {
     "async": "^0.9.0",
     "chalk": "^1.0.0",
-    "commander": "^2.6.0",
-    "debug": "^2.1.1",
+    "commander": "^2.7.1",
+    "debug": "^2.1.2",
     "event-stream": "^3.3.0",
     "form-data": "^0.2.0",
     "har-validator": "^1.1.2",

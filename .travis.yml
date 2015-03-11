@@ -7,6 +7,5 @@ node_js:
 script: npm test
 
 after_script:
-  - npm install -g codeclimate-test-reporter
-  - npm run coverage
-  - codeclimate < coverage/lcov.info
+  - ./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha
+  - ./node_modules/.bin/codeclimate < coverage/lcov.info
