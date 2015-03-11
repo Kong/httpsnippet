@@ -3,13 +3,15 @@
 var util = require('util');
 
 module.exports = function (source, options) {
+
   // Let's Go!
   var code = [];
 
   // Define Options
   var opts = util._extend({
     checkErrors: false,
-    printBody: true
+    printBody: true,
+    timeout: -1
   }, options);
 
   var errorPlaceholder = opts.checkErrors ? 'err' : '_';
@@ -27,6 +29,10 @@ module.exports = function (source, options) {
   code.push('import (');
   code.push('\t"fmt"');
 
+  if (opts.timeout > 0) {
+    code.push('\t"time"');
+  }
+
   if (source.postData.text) {
     code.push('\t"strings"');
   }
@@ -36,22 +42,30 @@ module.exports = function (source, options) {
   if (opts.printBody) {
     code.push('\t"io/ioutil"');
   }
+
   code.push(')\n');
 
   code.push('func main() {');
 
   // Create client
-  code.push('\tclient := &http.Client{}');
+  if (opts.timeout > 0) {
+    code.push('\tclient := http.Client{');
+    code.push(util.format('\t\tTimeout: time.Duration(%s * time.Second),', opts.timeout));
+    code.push('\t}');
+  } else {
+    code.push('\tclient := &http.Client{}');
+  }
+
   code.push(util.format('\turl := "%s"', source.fullUrl));
 
   // If we have body content or not create the var and reader or nil
   if (source.postData.text) {
-    code.push('\tpayload := ' + JSON.stringify(source.postData.text));
-    code.push(util.format('\treq, ' + errorPlaceholder + ' := http.NewRequest("%s", url, strings.NewReader(payload))', source.method));
+    code.push(util.format('\tpayload := strings.NewReader(%s)', JSON.stringify(source.postData.text)));
+    code.push(util.format('\treq, %s := http.NewRequest("%s", url, payload)', errorPlaceholder, source.method));
   } else {
     code.push(util.format('\treq, %s := http.NewRequest("%s", url, nil)',  errorPlaceholder, source.method));
   }
-
+  
   errorCheck();
 
   // Add headers
@@ -66,13 +80,9 @@ module.exports = function (source, options) {
   // Get Body
   if (opts.printBody) {
     code.push('\tdefer res.Body.Close()');
-  }
-
-  if (opts.printBody) {
     code.push(util.format('\tbody, %s := ioutil.ReadAll(res.Body)', errorPlaceholder));
+    errorCheck();
   }
-
-  errorCheck();
 
   // Print it
   code.push('\tfmt.Println(res)');

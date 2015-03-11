@@ -10,8 +10,8 @@ import (
 func main() {
 	client := &http.Client{}
 	url := "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value"
-	payload := "foo=bar"
-	req, _ := http.NewRequest("POST", url, strings.NewReader(payload))
+	payload := strings.NewReader("foo=bar")
+	req, _ := http.NewRequest("POST", url, payload)
 	req.Header.Add("cookie", "foo=bar; bar=baz")
 	req.Header.Add("accept", "application/json")
 	req.Header.Add("content-type", "application/x-www-form-urlencoded")
