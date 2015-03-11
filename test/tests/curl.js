@@ -1,33 +1,35 @@
-'use strict';
+/* global it */
 
-require('should');
+'use strict'
 
-module.exports = function (snippet, fixtures) {
+require('should')
+
+module.exports = function (HTTPSnippet, fixtures) {
   it('should use short options', function () {
-    var result = new snippet(fixtures.requests.full).convert('curl', {
+    var result = new HTTPSnippet(fixtures.requests.full).convert('curl', {
       short: true,
       indent: false
-    });
+    })
 
-    result.should.be.a.String;
-    // result.should.eql('curl -X POST "http://mockbin.com/request?foo=bar" -H "Content-Type: application/json" -b "bar=baz" -d "{\\"foo\\": \\"bar\\"}"');
-  });
+    result.should.be.a.String
+    result.should.eql('curl -X POST "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value" -H "accept: application/json" -H "content-type: application/x-www-form-urlencoded" -b "foo=bar; bar=baz" -d "foo=bar"')
+  })
 
   it('should use --http1.0 for HTTP/1.0', function () {
-    var result = new snippet(fixtures.curl.http1).convert('curl', {
+    var result = new HTTPSnippet(fixtures.curl.http1).convert('curl', {
       indent: false
-    });
+    })
 
-    result.should.be.a.String;
-    result.should.eql('curl --request GET --url "http://mockbin.com/request" --http1.0');
-  });
+    result.should.be.a.String
+    result.should.eql('curl --request GET --url "http://mockbin.com/request" --http1.0')
+  })
 
   it('should use custom indentation', function () {
-    var result = new snippet(fixtures.requests.full).convert('curl', {
+    var result = new HTTPSnippet(fixtures.requests.full).convert('curl', {
       indent: '@'
-    });
+    })
 
-    result.should.be.a.String;
-    // result.replace(/\\\n/g, '').should.eql('curl --request POST @--url "http://mockbin.com/request?foo=bar" @--header "Content-Type: application/json" @--cookie "bar=baz" @--data "{\\"foo\\": \\"bar\\"}"');
-  });
-};
+    result.should.be.a.String
+    result.replace(/\\\n/g, '').should.eql('curl --request POST @--url "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value" @--header "accept: application/json" @--header "content-type: application/x-www-form-urlencoded" @--cookie "foo=bar; bar=baz" @--data "foo=bar"')
+  })
+}

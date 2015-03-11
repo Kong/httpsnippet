@@ -1,6 +1,3 @@
-'use strict';
+'use strict'
 
-require('should');
-
-module.exports = function (snippet, fixtures) {
-};
+module.exports = function (snippet, fixtures) {}

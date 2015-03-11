@@ -1,35 +1,37 @@
-'use strict';
+/* global it */
 
-require('should');
+'use strict'
 
-module.exports = function (snippet, fixtures) {
+require('should')
+
+module.exports = function (HTTPSnippet, fixtures) {
   it('should use short options', function () {
-    var result = new snippet(fixtures.requests.full).convert('wget', {
+    var result = new HTTPSnippet(fixtures.requests.full).convert('wget', {
       short: true,
       indent: false
-    });
+    })
 
-    result.should.be.a.String;
-    // result.should.eql('wget -q --method POST --header "Cookie: bar=baz" --header "Content-Type: application/json" --body-data "{\\"foo\\": \\"bar\\"}" -O - "http://mockbin.com/request?foo=bar"');
-  });
+    result.should.be.a.String
+    result.should.eql('wget -q --method POST --header "cookie: foo=bar; bar=baz" --header "accept: application/json" --header "content-type: application/x-www-form-urlencoded" --body-data "foo=bar" -O - "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value"')
+  })
 
   it('should ask for verbose output', function () {
-    var result = new snippet(fixtures.requests.short).convert('wget', {
+    var result = new HTTPSnippet(fixtures.requests.short).convert('wget', {
       short: true,
       indent: false,
       verbose: true
-    });
+    })
 
-    result.should.be.a.String;
-    result.should.eql('wget -v --method GET -O - "http://mockbin.com/har"');
-  });
+    result.should.be.a.String
+    result.should.eql('wget -v --method GET -O - "http://mockbin.com/har"')
+  })
 
   it('should use custom indentation', function () {
-    var result = new snippet(fixtures.requests.full).convert('wget', {
+    var result = new HTTPSnippet(fixtures.requests.full).convert('wget', {
       indent: '@'
-    });
+    })
 
-    result.should.be.a.String;
-    // result.replace(/\\\n/g, '').should.eql('wget --quiet @--method POST @--header "Cookie: bar=baz" @--header "Content-Type: application/json" @--body-data "{\\"foo\\": \\"bar\\"}" @--output-document @- "http://mockbin.com/request?foo=bar"');
-  });
-};
+    result.should.be.a.String
+    result.replace(/\\\n/g, '').should.eql('wget --quiet @--method POST @--header "cookie: foo=bar; bar=baz" @--header "accept: application/json" @--header "content-type: application/x-www-form-urlencoded" @--body-data "foo=bar" @--output-document @- "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value"')
+  })
+}

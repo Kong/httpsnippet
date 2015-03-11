@@ -8,7 +8,7 @@
     "node": ">=0.12"
   },
   "scripts": {
-    "test": "mocha --reporter spec",
+    "test": "standard && mocha --reporter spec",
     "coverage": "mocha -r blanket -R mocha-lcov-reporter > test/lcov.info",
     "html-cov": "mocha -r blanket -R html-cov > test/coverage.html",
     "codeclimate": "codeclimate < test/lcov.info"
@@ -17,6 +17,11 @@
     "blanket": {
       "pattern": "src"
     }
+  },
+  "standard": {
+    "ignore": [
+      "**/test/fixtures/**"
+    ]
   },
   "repository": {
     "type": "git",
@@ -43,6 +48,7 @@
     "event-stream": "^3.3.0",
     "form-data": "^0.2.0",
     "har-validator": "^1.1.2",
-    "require-directory": "^2.1.0"
+    "require-directory": "^2.1.0",
+    "standard": "^3.0.0-beta"
   }
 }
