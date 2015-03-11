@@ -62,10 +62,11 @@ module.exports = function (source, options) {
   if (source.postData.text) {
     code.push(util.format('\tpayload := strings.NewReader(%s)', JSON.stringify(source.postData.text)));
     code.push(util.format('\treq, %s := http.NewRequest("%s", url, payload)', errorPlaceholder, source.method));
-    errorCheck();
   } else {
     code.push(util.format('\treq, %s := http.NewRequest("%s", url, nil)',  errorPlaceholder, source.method));
   }
+  
+  errorCheck();
 
   // Add headers
   Object.keys(source.allHeaders).map(function (key) {
