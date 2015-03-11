@@ -27,6 +27,8 @@ currently the following output [targets](/src/targets) are supported:
 - [cURL](http://curl.haxx.se/)
 - [Go](http://golang.org/pkg/net/http/#NewRequest)
 - [HTTPie](http://httpie.org)
+- Java
+  - [Unirest](http://unirest.io/java.html)
 - Node.js
   - [Native](http://nodejs.org/api/http.html#http_http_request_options_callback)
   - [Request](https://github.com/request/request)
