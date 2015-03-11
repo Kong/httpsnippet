@@ -9,14 +9,7 @@
   },
   "scripts": {
     "test": "standard && mocha --reporter spec",
-    "coverage": "mocha -r blanket -R mocha-lcov-reporter > test/lcov.info",
-    "html-cov": "mocha -r blanket -R html-cov > test/coverage.html",
-    "codeclimate": "codeclimate < test/lcov.info"
-  },
-  "config": {
-    "blanket": {
-      "pattern": "src"
-    }
+    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha"
   },
   "standard": {
     "ignore": [
@@ -33,11 +26,9 @@
   },
   "homepage": "https://github.com/ahmadnassri/httpsnippet",
   "devDependencies": {
-    "blanket": "^1.1.6",
-    "codeclimate-test-reporter": "0.0.4",
     "glob": "^5.0.1",
+    "istanbul": "^0.3.7",
     "mocha": "^2.1.0",
-    "mocha-lcov-reporter": "0.0.2",
     "should": "^5.0.1"
   },
   "dependencies": {

@@ -7,5 +7,6 @@ node_js:
 script: npm test
 
 after_script:
+  - npm install -g codeclimate-test-reporter
   - npm run coverage
-  - npm run codeclimate
+  - codeclimate < coverage/lcov.info
