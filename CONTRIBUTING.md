@@ -152,13 +152,15 @@ specific flags *(used for customizing the output)*.
 
 Using the following example of a request object, HTTP Snippet will pre-process data and create some additional properties:
 
+| property                    | description                                                                                                                                       |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `source.fullUrl`            | the full & final url, including all query string values                                                                                           |
 | `source.uriObj`             | the url parsed with `url.parse()`. compatible with `url.format`                                                                                   |
 | `source.queryObj`           | a key => value pair, "normalized" version of `source.queryString`, adds additional query string values from the `source.url`                      |
 | `source.headersObj`         | a key => value pair, "normalized" version of `source.headers`, header names are lowercased                                                        |
 | `source.allHeaders`         | same as `source.headersObj` but with `cookies` header and populated from `source.cookies` array                                                   |
-| `source.postData.paramsObj` | a key => value pair, "normalized" version of `source.postData.params`, only for `source.postData.mimeType` = `application/x-www-form-urlencoded`  | 
 | `source.postData.jsonObj`   | the parsed value of `source.postData.text`, only for `source.postData.mimeType` = `application/json` *(or equivalent mimeTypes)*                  |  
+| `source.postData.paramsObj` | a key => value pair, "normalized" version of `source.postData.params`, only for `source.postData.mimeType` = `application/x-www-form-urlencoded`  | 
 
 ###### Sample Incoming Request Object
 
