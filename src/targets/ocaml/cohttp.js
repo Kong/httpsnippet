@@ -34,7 +34,7 @@ module.exports = function (source, options) {
   // Add body
   if (source.postData.text) {
     // Just text
-    code.push(util.format('let body = %s in', JSON.stringify(source.postData.text)))
+    code.push(util.format('let body = Cohttp_lwt_body.of_string %s in', JSON.stringify(source.postData.text)))
   }
 
   // Do the request

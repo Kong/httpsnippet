@@ -8,7 +8,7 @@ let headers = Header.init ()
   |> fun h -> Header.add h "accept" "application/json"
   |> fun h -> Header.add h "content-type" "application/x-www-form-urlencoded"
 in
-let body = "foo=bar" in
+let body = Cohttp_lwt_body.of_string "foo=bar" in
 
 Client.call ~headers ~body `POST uri
 >>= fun (res, body_stream) ->
