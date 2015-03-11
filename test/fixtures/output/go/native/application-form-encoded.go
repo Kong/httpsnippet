@@ -12,7 +12,7 @@ func main() {
 	url := "http://mockbin.com/har"
 	payload := strings.NewReader("foo=bar&hello=world")
 	req, _ := http.NewRequest("POST", url, payload)
-	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Add("content-type", "application/x-www-form-urlencoded")
 	res, _ := client.Do(req)
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)

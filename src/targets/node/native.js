@@ -1,9 +1,8 @@
 'use strict';
 
 var util = require('util');
-var reducer = require('../../reducer');
 
-module.exports = function (options) {
+module.exports = function (source, options) {
   var opts = util._extend({
     indent: '  '
   }, options);
@@ -11,25 +10,16 @@ module.exports = function (options) {
   var code = [];
 
   var reqOpts = {
-    method: this.source.method,
-    hostname: this.source.uriObj.hostname,
-    port: this.source.uriObj.port,
-    path: this.source.uriObj.path,
-    headers: this.source.headersObj
+    method: source.method,
+    hostname: source.uriObj.hostname,
+    port: source.uriObj.port,
+    path: source.uriObj.path,
+    headers: source.allHeaders
   };
-
-  // construct cookies argument
-  var cookies = this.source.cookies.map(function (cookie) {
-    return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value);
-  });
-
-  if (cookies.length) {
-    reqOpts.headers.Cookie = cookies.join('; ');
-  }
 
   code.push('var http = require("http");');
 
-  if (!this.source.postData.text && this.source.postData.params) {
+  if (!source.postData.text && source.postData.params) {
     code.push('var querystring = require("querystring");');
   }
 
@@ -59,25 +49,9 @@ module.exports = function (options) {
 
   code.push(null);
 
-  if (this.source.postData.text) {
-    code.push(util.format('req.write(%s);', JSON.stringify(this.source.postData.text)));
+  if (source.postData.text) {
+    code.push(util.format('req.write(%s);', JSON.stringify(source.postData.text)));
   }
-
-  // if (!this.source.postData.text && this.source.postData.params) {
-  //   if (this.source.postData.mimeType === 'application/x-www-form-urlencoded') {
-  //     var postData = this.source.postData.params.reduce(reducer, {});
-
-  //     code.push(util.format('var postData = querystring.stringify(%s);', JSON.stringify(postData)));
-  //     code.push(util.format('req.write(postData);'));
-  //   }
-
-  //   if (this.source.postData.mimeType === 'multipart/form-data') {
-  //     var postData = this.source.postData.params.reduce(reducer, {});
-
-  //     code.push(util.format('var postData = querystring.stringify(%s);', JSON.stringify(postData)));
-  //     code.push(util.format('req.write(postData);'));
-  //   }
-  // }
 
   code.push('req.end();');
 

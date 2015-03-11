@@ -4,12 +4,12 @@ request({
   "method": "GET",
   "url": "http://mockbin.com/har",
   "qs": {
-    "key": "value",
-    "baz": "abc",
     "foo": [
       "bar",
       "baz"
-    ]
+    ],
+    "baz": "abc",
+    "key": "value"
   }
 }, function (error, response, body) {
   if (error) throw new Error(error);

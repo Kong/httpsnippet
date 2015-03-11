@@ -1,6 +1,6 @@
 wget --quiet \
   --method GET \
-  --header "Accept: application/json" \
-  --header "X-Foo: Bar" \
+  --header "accept: application/json" \
+  --header "x-foo: Bar" \
   --output-document \
   - "http://mockbin.com/har"

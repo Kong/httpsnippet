@@ -1,6 +1,6 @@
 curl --request POST \
-  --url "http://mockbin.com/har?baz=abc&foo=bar&foo=baz" \
-  --header "Accept: application/json" \
-  --header "Content-Type: application/x-www-form-urlencoded" \
+  --url "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value" \
+  --header "accept: application/json" \
+  --header "content-type: application/x-www-form-urlencoded" \
   --cookie "foo=bar; bar=baz" \
   --data "foo=bar"

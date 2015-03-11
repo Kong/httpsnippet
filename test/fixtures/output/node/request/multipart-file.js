@@ -1,11 +1,11 @@
+var fs = require("fs");
 var request = require("request");
 
-var fs = require("fs");
 request({
   "method": "POST",
   "url": "http://mockbin.com/har",
   "headers": {
-    "Content-Type": "multipart/form-data"
+    "content-type": "multipart/form-data; boundary=---011000010111000001101001"
   },
   "formData": {
     "foo": {

@@ -2,7 +2,7 @@
 
 var util = require('util');
 
-module.exports = function (options) {
+module.exports = function (source, options) {
   var opts = util._extend({
     indent: '  '
   }, options);
@@ -14,56 +14,34 @@ module.exports = function (options) {
   code.push('');
 
   // Create URI
-  code.push(util.format('let uri = Uri.of_string "%s" in', this.source.fullUrl));
+  code.push(util.format('let uri = Uri.of_string "%s" in', source.fullUrl));
 
   // Add headers, including the cookies
-  var headersPresent = this.source.headers && this.source.headers.length;
-  var cookiesPresent = this.source.cookies && this.source.cookies.length;
+  var headers = Object.keys(source.allHeaders);
 
-  if (headersPresent || cookiesPresent) {
+  if (headers.length) {
     code.push('let headers = Header.init ()');
 
-    if (headersPresent) {
-      for (var header in this.source.headers) {
-        code.push(util.format(opts.indent + '|> fun h -> Header.add h "%s" "%s"', this.source.headers[header].name, this.source.headers[header].value));
-      }
-    }
-
-    if (cookiesPresent) {
-      var cookie = this.source.cookies.map(function (cookie) {
-        return cookie.name + '=' + cookie.value;
-      }).join('; ');
-
-      code.push(util.format(opts.indent + '|> fun h -> Header.add h "Cookie" "%s"', cookie));
-    }
+    headers.map(function (key) {
+      code.push(util.format(opts.indent + '|> fun h -> Header.add h "%s" "%s"', key, source.allHeaders[key]));
+    });
 
     code.push('in');
   }
 
   // Add body
-  var bodyPresent = this.source.postData && this.source.postData.text;
-
-  if (bodyPresent) {
+  if (source.postData.text) {
     // Just text
-    code.push(util.format('let body = %s in', JSON.stringify(this.source.postData.text)));
-  } else if (this.source.postData && !this.source.postData.text && this.source.postData.params && this.source.postData.params.length) {
-    // Post params
-    bodyPresent = true;
-
-    var body = this.source.postData.params.map(function (param) {
-      return param.name + '=' + param.value;
-    }).join('&');
-
-    code.push(util.format('let body = "%s" in', body));
+    code.push(util.format('let body = %s in', JSON.stringify(source.postData.text)));
   }
 
   // Do the request
   code.push('');
 
   code.push(util.format('Client.call %s%s(Code.method_of_string "%s") uri',
-    (headersPresent || cookiesPresent) ? '~headers ' : '',
-    bodyPresent ? '~body ' : '',
-    this.source.method
+    headers.length ? '~headers ' : '',
+    source.postData.text ? '~body ' : '',
+    source.method
   ));
 
   // Catch result

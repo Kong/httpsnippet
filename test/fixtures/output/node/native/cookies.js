@@ -6,7 +6,7 @@ var options = {
   "port": null,
   "path": "/har?",
   "headers": {
-    "Cookie": "foo=bar; bar=baz"
+    "cookie": "foo=bar; bar=baz"
   }
 };
 

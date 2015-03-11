@@ -22,7 +22,7 @@
   },
   {
     "key": "node",
-    "title": "Node.JS",
+    "title": "Node.js",
     "extname": ".js",
     "default": "native",
     "clients": [
@@ -37,6 +37,12 @@
         "title": "Request",
         "link": "https://github.com/request/request",
         "description": "Simplified HTTP request client"
+      },
+      {
+        "key": "unirest",
+        "title": "Unirest",
+        "link": "http://unirest.io/",
+        "description": "Lightweight HTTP Request Client Library"
       }
     ]
   },
@@ -48,7 +54,7 @@
     "clients": [
       {
         "key": "cohttp",
-        "title": "OCaml",
+        "title": "CoHTTP",
         "link": "https://github.com/mirage/ocaml-cohttp",
         "description": "Cohttp is a very lightweight HTTP server using Lwt or Async for OCaml"
       }

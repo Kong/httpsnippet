@@ -10,9 +10,9 @@ curl_setopt_array($curl, array(
   CURLOPT_TIMEOUT => 30,
   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
   CURLOPT_CUSTOMREQUEST => "POST",
-  CURLOPT_POSTFIELDS => "{\"foo\": \"bar\"}",
+  CURLOPT_POSTFIELDS => "{\"number\": 1, \"string\": \"f\\\"oo\", \"arr\": [1, 2, 3], \"nested\": {\"a\": \"b\"}, \"arr_mix\": [1, \"a\", {\"arr_mix_nested\": {}}] }",
   CURLOPT_HTTPHEADER => array(
-    "Content-Type: application/json"
+    "content-type: application/json"
   ),
 ));
 
