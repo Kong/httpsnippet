@@ -3,6 +3,7 @@
 var util = require('util');
 
 module.exports = function (source, options) {
+
   // Let's Go!
   var code = [];
 
@@ -28,6 +29,10 @@ module.exports = function (source, options) {
   code.push('import (');
   code.push('\t"fmt"');
 
+  if (opts.timeout > 0) {
+    code.push('\t"time"');
+  }
+
   if (source.postData.text) {
     code.push('\t"strings"');
   }
@@ -45,7 +50,7 @@ module.exports = function (source, options) {
   // Create client
   if (opts.timeout > 0) {
     code.push('\tclient := http.Client{');
-    code.push('\t\tTimeout: time.Duration(' + opts.timeout + ' * time.Second),');
+    code.push(util.format('\t\tTimeout: time.Duration(%s * time.Second),', opts.timeout));
     code.push('\t}');
   } else {
     code.push('\tclient := &http.Client{}');
