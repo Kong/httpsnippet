@@ -1,23 +1,10 @@
-var request = require("request");
+var unirest = require("unirest");
 
-request({
-  "method": "POST",
-  "url": "http://mockbin.com/har",
-  "headers": {
-    "Content-Type": "multipart/form-data"
-  },
-  "formData": {
-    "foo": {
-      "value": "Hello World",
-      "options": {
-        "filename": "hello.txt",
-        "contentType": "text/plain"
-      }
-    }
-  }
-}, function (error, response, body) {
-  if (error) throw new Error(error);
+unirest.post("http://mockbin.com/har")
+  .type("multipart/form-data")
+  .end(function(response){
+    if (response.error) throw new Error(response.error);
 
-  console.log(body);
-});
+    console.log(response.body);
+  });
 

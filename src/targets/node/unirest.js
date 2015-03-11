@@ -51,7 +51,7 @@ module.exports = function (options) {
   code.push(opts.indent + '.end(function(response){')
   code.push(opts.indent + opts.indent + 'if (response.error) throw new Error(response.error);');
   code.push(null);
-  code.push(opts.indent+opts.indent+ 'console.log(reponse.body);');
+  code.push(opts.indent+opts.indent+ 'console.log(response.body);');
   code.push(opts.indent+'});');
   code.push(null);
 
