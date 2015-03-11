@@ -1,6 +1,6 @@
+var fs = require("fs");
 var request = require("request");
 
-var fs = require("fs");
 request({
   "method": "POST",
   "url": "http://mockbin.com/har",

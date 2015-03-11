@@ -1,10 +1,19 @@
 var unirest = require("unirest");
 
-unirest.post("http://mockbin.com/har")
-  .type("application/json")
-  .end(function(response){
-    if (response.error) throw new Error(response.error);
+var req = unirest("POST", "http://mockbin.com/har");
 
-    console.log(response.body);
-  });
+req.headers({
+  "content-type": "application/json"
+});
+
+req.type("json");
+req.send({
+  "foo": "bar"
+});
+
+req.end(function (res) {
+  if (res.error) throw new Error(res.error);
+
+  console.log(res.body);
+});
 

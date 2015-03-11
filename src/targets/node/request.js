@@ -8,6 +8,7 @@ module.exports = function (source, options) {
     indent: '  '
   }, options);
 
+  var includeFS = false;
   var code = ['var request = require("request");', null];
 
   var reqOpts = {
@@ -23,16 +24,16 @@ module.exports = function (source, options) {
     reqOpts.headers = source.headersObj;
   }
 
-  var includeFS = false;
-
   switch (source.postData.mimeType) {
     case 'application/x-www-form-urlencoded':
       reqOpts.form = source.postData.paramsObj;
       break;
 
     case 'application/json':
-      reqOpts.body = source.postData.jsonObj;
-      reqOpts.json = true;
+      if (source.postData.jsonObj) {
+        reqOpts.body = source.postData.jsonObj;
+        reqOpts.json = true;
+      }
       break;
 
     case 'multipart/form-data':
@@ -62,7 +63,9 @@ module.exports = function (source, options) {
       break;
 
     default:
-      reqOpts.body = source.postData.text;
+      if (source.postData.text !== '') {
+        reqOpts.body = source.postData.text;
+      }
   }
 
   // construct cookies argument
@@ -81,21 +84,17 @@ module.exports = function (source, options) {
   }
 
   if (includeFS) {
-    code.push('var fs = require("fs");');
+    code.unshift('var fs = require("fs");');
   }
 
-  var content = JSON.stringify(reqOpts, null, opts.indent)
-    .replace('"JAR"', 'jar')
-    .replace(/"fs\.createReadStream\(\\\"(.+)\\\"\)\"/, 'fs.createReadStream("$1")');
-
-  code.push(util.format('request(%s, %s', content, 'function (error, response, body) {'));
+  code.push(util.format('request(%s, %s', JSON.stringify(reqOpts, null, opts.indent), 'function (error, response, body) {'));
   code.push(opts.indent + 'if (error) throw new Error(error);');
   code.push(null);
   code.push(opts.indent + 'console.log(body);');
   code.push('});');
   code.push(null);
 
-  return code.join('\n');
+  return code.join('\n').replace('"JAR"', 'jar').replace(/"fs\.createReadStream\(\\\"(.+)\\\"\)\"/, 'fs.createReadStream("$1")');
 };
 
 module.exports.info = {

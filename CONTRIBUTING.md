@@ -313,7 +313,7 @@ postData: {
 ###### application/json
 
 - will match when `postData.mimeType` is one of: `application/json`, `text/json`, `text/x-json`, `application/x-json`
-- In case of failure to parse `postData.text` as a JSON object, `postData.mimeType` is set to `text/plain`. this is done so that the implementing target, would still attempt to post the raw body as is.
+- In case of failure to parse `postData.text` as a JSON object, `postData.mimeType` is set to `text/plain`, `postData.jsonObj` remains as `false`. this is done so that the implementing target, would still attempt to post the raw body as is.
 - This also emphasizes not to rely on `postData.mimeType` for the `Content-Type` header!
 
 ```js

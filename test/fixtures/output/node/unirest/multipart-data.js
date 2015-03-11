@@ -1,23 +1,21 @@
-var request = require("request");
+var unirest = require("unirest");
 
-request({
-  "method": "POST",
-  "url": "http://mockbin.com/har",
-  "headers": {
-    "Content-Type": "multipart/form-data"
-  },
-  "formData": {
-    "foo": {
-      "value": "Hello World",
-      "options": {
-        "filename": "hello.txt",
-        "contentType": "text/plain"
-      }
-    }
+var req = unirest("POST", "http://mockbin.com/har");
+
+req.headers({
+  "content-type": "multipart/form-data; boundary=---011000010111000001101001"
+});
+
+req.multipart([
+  {
+    "body": "Hello World",
+    "content-type": "text/plain"
   }
-}, function (error, response, body) {
-  if (error) throw new Error(error);
+]);
 
-  console.log(body);
+req.end(function (res) {
+  if (res.error) throw new Error(res.error);
+
+  console.log(res.body);
 });
 

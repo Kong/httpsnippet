@@ -41,8 +41,8 @@
       {
         "key": "unirest",
         "title": "Unirest",
-        "link": "https://github.com/request/request",
-        "description": "Simplified HTTP request client"
+        "link": "http://unirest.io/",
+        "description": "Lightweight HTTP Request Client Library"
       }
     ]
   },

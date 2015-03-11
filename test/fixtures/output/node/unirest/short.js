@@ -1,9 +1,11 @@
 var unirest = require("unirest");
 
-unirest.get("http://mockbin.com/har")
-  .end(function(response){
-    if (response.error) throw new Error(response.error);
+var req = unirest("GET", "http://mockbin.com/har");
 
-    console.log(response.body);
-  });
+
+req.end(function (res) {
+  if (res.error) throw new Error(res.error);
+
+  console.log(res.body);
+});
 
