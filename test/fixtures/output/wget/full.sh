@@ -1,8 +1,8 @@
 wget --quiet \
   --method POST \
-  --header "Cookie: foo=bar; bar=baz" \
-  --header "Accept: application/json" \
-  --header "Content-Type: application/x-www-form-urlencoded" \
+  --header "accept: application/json" \
+  --header "content-type: application/x-www-form-urlencoded" \
+  --header "cookie: foo=bar; bar=baz" \
   --body-data "foo=bar" \
   --output-document \
-  - "http://mockbin.com/har?baz=abc&foo=bar&foo=baz"
+  - "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value"

@@ -6,8 +6,8 @@ var options = {
   "port": null,
   "path": "/har?",
   "headers": {
-    "Accept": "application/json",
-    "X-Foo": "Bar"
+    "accept": "application/json",
+    "x-foo": "Bar"
   }
 };
 

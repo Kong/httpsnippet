@@ -4,11 +4,11 @@ var options = {
   "method": "POST",
   "hostname": "mockbin.com",
   "port": null,
-  "path": "/har?baz=abc&foo=bar&foo=baz",
+  "path": "/har?foo=bar&foo=baz&baz=abc&key=value",
   "headers": {
-    "Accept": "application/json",
-    "Content-Type": "application/x-www-form-urlencoded",
-    "Cookie": "foo=bar; bar=baz"
+    "accept": "application/json",
+    "content-type": "application/x-www-form-urlencoded",
+    "cookie": "foo=bar; bar=baz"
   }
 };
 

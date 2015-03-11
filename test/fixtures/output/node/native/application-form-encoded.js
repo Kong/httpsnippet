@@ -6,7 +6,7 @@ var options = {
   "port": null,
   "path": "/har?",
   "headers": {
-    "Content-Type": "application/x-www-form-urlencoded"
+    "content-type": "application/x-www-form-urlencoded"
   }
 };
 

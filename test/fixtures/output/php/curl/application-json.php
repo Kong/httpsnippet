@@ -12,7 +12,7 @@ curl_setopt_array($curl, array(
   CURLOPT_CUSTOMREQUEST => "POST",
   CURLOPT_POSTFIELDS => "{\"foo\": \"bar\"}",
   CURLOPT_HTTPHEADER => array(
-    "Content-Type: application/json"
+    "content-type: application/json"
   ),
 ));
 

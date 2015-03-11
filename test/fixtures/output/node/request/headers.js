@@ -4,8 +4,8 @@ request({
   "method": "GET",
   "url": "http://mockbin.com/har",
   "headers": {
-    "Accept": "application/json",
-    "X-Foo": "Bar"
+    "x-foo": "Bar",
+    "accept": "application/json"
   }
 }, function (error, response, body) {
   if (error) throw new Error(error);

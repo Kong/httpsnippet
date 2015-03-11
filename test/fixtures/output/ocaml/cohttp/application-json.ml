@@ -3,7 +3,7 @@ open Lwt
 
 let uri = Uri.of_string "http://mockbin.com/har" in
 let headers = Header.init ()
-  |> fun h -> Header.add h "Content-Type" "application/json"
+  |> fun h -> Header.add h "content-type" "application/json"
 in
 let body = "{\"foo\": \"bar\"}" in
 

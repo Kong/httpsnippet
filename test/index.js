@@ -24,7 +24,7 @@ describe('HTTPSnippet', function () {
       host: 'mockbin.com',
       hostname: 'mockbin.com',
       href: 'http://mockbin.com/har?key=value',
-      path: '/har?key=value&baz=abc&foo=bar&foo=baz',
+      path: '/har?foo=bar&foo=baz&baz=abc&key=value',
       pathname: '/har',
       port: null,
       protocol: 'http:',
@@ -36,7 +36,7 @@ describe('HTTPSnippet', function () {
           'baz'
         ]
       },
-      search: 'key=value&baz=abc&foo=bar&foo=baz',
+      search: 'foo=bar&foo=baz&baz=abc&key=value',
       slashes: true
     });
 
@@ -64,8 +64,8 @@ describe('HTTPSnippet', function () {
 
     req.headersObj.should.be.an.Object;
     req.headersObj.should.eql({
-      'Accept': 'application/json',
-      'X-Foo': 'Bar'
+      'accept': 'application/json',
+      'x-foo': 'Bar'
     });
 
     done();
@@ -84,7 +84,7 @@ describe('HTTPSnippet', function () {
     var req = new HTTPSnippet(fixtures.requests.query).source;
 
     req.fullUrl.should.be.a.String;
-    req.fullUrl.should.eql('http://mockbin.com/har?key=value&baz=abc&foo=bar&foo=baz');
+    req.fullUrl.should.eql('http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value');
 
     done();
   });
@@ -93,20 +93,7 @@ describe('HTTPSnippet', function () {
     var req = new HTTPSnippet(fixtures.requests.query).source;
 
     req.uriObj.path.should.be.a.String;
-    req.uriObj.path.should.eql('/har?key=value&baz=abc&foo=bar&foo=baz');
-
-    done();
-  });
-
-  it('should parse a queryString in the url into querString object', function (done) {
-    var req = new HTTPSnippet(fixtures.requests.query).source;
-
-    req.queryString.should.be.a.Obj;
-    req.queryString.should.eql({
-      key: 'value',
-      foo: ['bar', 'baz'],
-      baz: 'abc'
-    });
+    req.uriObj.path.should.eql('/har?foo=bar&foo=baz&baz=abc&key=value');
 
     done();
   });

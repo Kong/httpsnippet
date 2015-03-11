@@ -1,12 +1,14 @@
 'use strict';
 
 var debug = require('debug')('httpsnippet');
-var reducer = require('./reducer');
+var es = require('event-stream');
+var FormData = require('form-data');
 var qs = require('querystring');
+var reducer = require('./reducer');
 var targets = require('./targets');
 var url = require('url');
-var validate = require('har-validator');
 var util = require('util');
+var validate = require('har-validator');
 
 // constructor
 var HTTPSnippet = function (req, lang) {
@@ -32,10 +34,64 @@ var HTTPSnippet = function (req, lang) {
     // construct query string object
     this.source.queryObj = {};
     this.source.headersObj = {};
-    this.source.postData.jsonObj = {};
-    this.source.postData.paramsObj = {};
+    this.source.allHeaders = {};
+    this.source.postData.jsonObj = false;
+    this.source.postData.paramsObj = false;
+
+    // construct query objects
+    if (this.source.queryString && this.source.queryString.length) {
+      debug('queryString found, constructing queryString pair map');
+
+      this.source.queryObj = this.source.queryString.reduce(reducer, {});
+    }
+
+    // construct headers objects
+    if (this.source.headers && this.source.headers.length) {
+      // loweCase header keys
+      this.source.headersObj = this.source.headers.reduceRight(function (headers, header) {
+        headers[header.name.toLowerCase()] = header.value;
+        return headers;
+      }, {});
+    }
+
+    // create allHeaders object
+    // this.source.allHeaders = util._extend(this.source.allHeaders, this.source.headersObj);
+    this.source.allHeaders = util._extend(this.source.allHeaders, this.source.headersObj);
+
+    // construct Cookie header
+    var cookies = this.source.cookies.map(function (cookie) {
+      return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value);
+    });
+
+    if (cookies.length) {
+      this.source.allHeaders.cookie = cookies.join('; ');
+    }
 
     switch (this.source.postData.mimeType) {
+      case 'multipart/form-data':
+        // reset the text value
+        this.source.postData.text = '';
+
+        var form = new FormData();
+
+        // easter egg
+        form._boundary = '---011000010111000001101001';
+
+        this.source.postData.params.map(function (param) {
+          form.append(param.name, param.value || '', {
+            filename: param.fileName || null,
+            contentType: param.contentType || null
+          });
+        });
+
+        form.pipe(es.map(function (data, cb) {
+          this.source.postData.text += data;
+        }.bind(this)));
+
+        this.source.headersObj['content-type'] = 'multipart/form-data; boundary=' + form.getBoundary();
+        this.source.headersObj['content-length'] = form.getLengthSync();
+        break;
+
       case 'application/x-www-form-urlencoded':
         if (!this.source.postData.params) {
           this.source.postData.text = '';
@@ -47,32 +103,21 @@ var HTTPSnippet = function (req, lang) {
         }
         break;
 
+      case 'text/json':
+      case 'text/x-json':
       case 'application/json':
+      case 'application/x-json':
         if (this.source.postData.text) {
           this.source.postData.jsonObj = JSON.parse(this.source.postData.text);
         }
         break;
     }
 
-    // construct query objects
-    if (this.source.queryString && this.source.queryString.length) {
-      debug('queryString found, constructing queryString pair map');
-
-      this.source.queryObj = this.source.queryString.reduce(reducer, {});
-    }
-
-    // construct headers objects
-    if (this.source.headers && this.source.headers.length) {
-      debug('headers found, constructing header pair map');
-
-      this.source.headersObj = this.source.headers.reduce(reducer, {});
-    }
-
     // deconstruct the uri
     this.source.uriObj = url.parse(this.source.url, true, true);
 
     // merge all possible queryString values
-    this.source.queryObj = this.source.queryString = util._extend(this.source.uriObj.query, this.source.queryObj);
+    this.source.queryObj = util._extend(this.source.queryObj, this.source.uriObj.query);
 
     // reset uriObj values for a clean url
     this.source.uriObj.query = null;
@@ -83,8 +128,8 @@ var HTTPSnippet = function (req, lang) {
     this.source.url = url.format(this.source.uriObj);
 
     // update the uri object
-    this.source.uriObj.query = this.source.queryString;
-    this.source.uriObj.search = qs.stringify(this.source.queryString);
+    this.source.uriObj.query = this.source.queryObj;
+    this.source.uriObj.search = qs.stringify(this.source.queryObj);
     this.source.uriObj.path = this.source.uriObj.pathname + '?' + this.source.uriObj.search;
 
     // construct a full url
@@ -100,7 +145,7 @@ HTTPSnippet.prototype.convert = function (target, client, opts) {
   var func = this._matchTarget(target, client);
 
   if (func) {
-    return func.call(this, opts);
+    return func.call(this, this.source, opts);
   }
 
   return false;

@@ -2,7 +2,7 @@
 
 var util = require('util');
 
-module.exports = function (options) {
+module.exports = function (source, options) {
   var opts = util._extend({
     indent: '  ',
     short: false,
@@ -17,27 +17,18 @@ module.exports = function (options) {
     code.push(util.format('wget %s', opts.short ? '-q' : '--quiet'));
   }
 
-  code.push(util.format('--method %s', this.source.method));
+  code.push(util.format('--method %s', source.method));
 
-  // construct cookies argument
-  var cookies = this.source.cookies.map(function (cookie) {
-    return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value);
+  Object.keys(source.allHeaders).map(function (key) {
+    code.push(util.format('--header "%s: %s"', key, source.allHeaders[key]));
   });
 
-  if (cookies.length) {
-    code.push(util.format('--header "Cookie: %s"', cookies.join('; ')));
+  if (source.postData.text) {
+    code.push('--body-data ' + JSON.stringify(source.postData.text));
   }
 
-  this.source.headers.map(function (header) {
-    code.push(util.format('--header "%s: %s"', header.name, header.value));
-  });
-
-  if (this.source.postData.text) {
-    code.push('--body-data ' + JSON.stringify(this.source.postData.text));
-  }
-
-  if (this.source.postData.mimeType === 'multipart/form-data') {
-    this.source.postData.params.forEach(function (param) {
+  if (source.postData.mimeType === 'multipart/form-data') {
+    source.postData.params.forEach(function (param) {
       if (param.value) {
         code.push(util.format('--body-data %s', JSON.stringify(param.value)));
       } else if (param.fileName) {
@@ -48,7 +39,7 @@ module.exports = function (options) {
 
   code.push(opts.short ? '-O' : '--output-document');
 
-  code.push(util.format('- "%s"', this.source.fullUrl));
+  code.push(util.format('- "%s"', source.fullUrl));
 
   return code.join(opts.indent !== false ? ' \\\n' + opts.indent : ' ');
 };

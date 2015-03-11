@@ -6,7 +6,7 @@ NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWit
                                                        cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                    timeoutInterval:10.0];
 [request setHTTPMethod:@"POST"];
-[request setValue:@"foo=bar; bar=baz" forHTTPHeaderField:@"Cookie"];
+[request setValue:@"foo=bar; bar=baz" forHTTPHeaderField:@"cookie"];
 
 NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
                                             completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {

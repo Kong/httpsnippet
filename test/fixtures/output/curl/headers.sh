@@ -1,4 +1,4 @@
 curl --request GET \
   --url "http://mockbin.com/har" \
-  --header "Accept: application/json" \
-  --header "X-Foo: Bar"
+  --header "accept: application/json" \
+  --header "x-foo: Bar"

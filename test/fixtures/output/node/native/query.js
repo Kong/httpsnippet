@@ -4,7 +4,7 @@ var options = {
   "method": "GET",
   "hostname": "mockbin.com",
   "port": null,
-  "path": "/har?key=value&baz=abc&foo=bar&foo=baz",
+  "path": "/har?foo=bar&foo=baz&baz=abc&key=value",
   "headers": {}
 };
 

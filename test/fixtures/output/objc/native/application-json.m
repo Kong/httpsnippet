@@ -6,7 +6,7 @@ NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWit
                                                        cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                    timeoutInterval:10.0];
 [request setHTTPMethod:@"POST"];
-[request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+[request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
 
 NSData *postData = [[NSData alloc] initWithData:[@"{\"foo\": \"bar\"}" dataUsingEncoding:NSUTF8StringEncoding]];
 [request setHTTPBody:postData];

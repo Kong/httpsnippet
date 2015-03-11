@@ -1,6 +1,6 @@
 {
   "method": "POST",
-  "url": "http://mockbin.com/har",
+  "url": "http://mockbin.com/har?key=value",
   "httpVersion": "HTTP/1.1",
   "queryString": [
     {

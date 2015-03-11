@@ -1,6 +1,6 @@
 wget --quiet \
   --method POST \
-  --header "Content-Type: application/json" \
+  --header "content-type: application/json" \
   --body-data "{\"foo\": \"bar\"}" \
   --output-document \
   - "http://mockbin.com/har"

@@ -6,7 +6,7 @@ var options = {
   "port": null,
   "path": "/har?",
   "headers": {
-    "Content-Type": "application/json"
+    "content-type": "application/json"
   }
 };
 

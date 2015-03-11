@@ -9,15 +9,16 @@ request({
   "method": "POST",
   "url": "http://mockbin.com/har",
   "qs": {
-    "baz": "abc",
     "foo": [
       "bar",
       "baz"
-    ]
+    ],
+    "baz": "abc",
+    "key": "value"
   },
   "headers": {
-    "Accept": "application/json",
-    "Content-Type": "application/x-www-form-urlencoded"
+    "content-type": "application/x-www-form-urlencoded",
+    "accept": "application/json"
   },
   "form": {
     "foo": "bar"

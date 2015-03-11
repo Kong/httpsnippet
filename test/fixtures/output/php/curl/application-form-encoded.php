@@ -12,7 +12,7 @@ curl_setopt_array($curl, array(
   CURLOPT_CUSTOMREQUEST => "POST",
   CURLOPT_POSTFIELDS => "foo=bar&hello=world",
   CURLOPT_HTTPHEADER => array(
-    "Content-Type: application/x-www-form-urlencoded"
+    "content-type: application/x-www-form-urlencoded"
   ),
 ));
 

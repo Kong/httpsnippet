@@ -2,7 +2,7 @@
 
 var util = require('util');
 
-module.exports = function (options) {
+module.exports = function (source, options) {
   var opts = util._extend({
     queryParams: false,
     body: false,
@@ -21,8 +21,8 @@ module.exports = function (options) {
   var code = [];
 
   // start with body pipe
-  if (this.source.postData && this.source.postData.text) {
-    code.push(util.format('echo %s | ', JSON.stringify(this.source.postData.text)));
+  if (source.postData && source.postData.text) {
+    code.push(util.format('echo %s | ', JSON.stringify(source.postData.text)));
   }
 
   var flags = [];
@@ -63,16 +63,14 @@ module.exports = function (options) {
     flags.push(util.format('--timeout=%s', opts.timeout));
   }
 
-  code.push(util.format('http %s%s %s', flags.length ? flags.join(' ') + ' ' : '', this.source.method, opts.queryParams ? this.source.url : this.source.fullUrl));
-
-  var self = this;
+  code.push(util.format('http %s%s %s', flags.length ? flags.join(' ') + ' ' : '', source.method, opts.queryParams ? source.url : source.fullUrl));
 
   // construct query params
   if (opts.queryParams) {
-    var queryStringKeys = Object.keys(this.source.queryString);
+    var queryStringKeys = Object.keys(source.queryObj);
 
     queryStringKeys.map(function (name) {
-      var value = self.source.queryString[name];
+      var value = source.queryObj[name];
 
       if (util.isArray(value)) {
         value.map(function (val) {
@@ -85,22 +83,13 @@ module.exports = function (options) {
   }
 
   // construct headers
-  this.source.headers.map(function (header) {
-    code.push(util.format('%s:%s', header.name, header.value));
+  Object.keys(source.allHeaders).sort().map(function (key) {
+    code.push(util.format('%s:%s', key, source.allHeaders[key]));
   });
-
-  // construct cookies argument
-  var cookies = this.source.cookies.map(function (cookie) {
-    return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value);
-  });
-
-  if (cookies.length) {
-    code.push(util.format('Cookie:%s', cookies.join('; ')));
-  }
 
   // construct post params
-  if (!this.source.postData.text && this.source.postData.params && this.source.postData.params.length) {
-    this.source.postData.params.map(function (param) {
+  if (!source.postData.text && source.postData.params && source.postData.params.length) {
+    source.postData.params.map(function (param) {
       code.push(util.format('%s:%s', param.name, param.value));
     });
   }

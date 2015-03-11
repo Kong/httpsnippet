@@ -3,7 +3,7 @@
 var util = require('util');
 var path = require('path');
 
-module.exports = function (options) {
+module.exports = function (source, options) {
   var opts = util._extend({
     indent: '  '
   }, options);
@@ -11,34 +11,34 @@ module.exports = function (options) {
   var code = ['var request = require("request");', null];
 
   var reqOpts = {
-    method: this.source.method,
-    url: this.source.url
+    method: source.method,
+    url: source.url
   };
 
-  if (Object.keys(this.source.queryObj).length) {
-    reqOpts.qs = this.source.queryObj;
+  if (Object.keys(source.queryObj).length) {
+    reqOpts.qs = source.queryObj;
   }
 
-  if (Object.keys(this.source.headersObj).length) {
-    reqOpts.headers = this.source.headersObj;
+  if (Object.keys(source.headersObj).length) {
+    reqOpts.headers = source.headersObj;
   }
 
   var includeFS = false;
 
-  switch (this.source.postData.mimeType) {
+  switch (source.postData.mimeType) {
     case 'application/x-www-form-urlencoded':
-      reqOpts.form = this.source.postData.paramsObj;
+      reqOpts.form = source.postData.paramsObj;
       break;
 
     case 'application/json':
-      reqOpts.body = this.source.postData.jsonObj;
+      reqOpts.body = source.postData.jsonObj;
       reqOpts.json = true;
       break;
 
     case 'multipart/form-data':
       reqOpts.formData = {};
 
-      this.source.postData.params.forEach(function (param) {
+      source.postData.params.forEach(function (param) {
         var attachement = {};
 
         if (param.value) {
@@ -62,24 +62,23 @@ module.exports = function (options) {
       break;
 
     default:
-      reqOpts.body = this.source.postData.text;
+      reqOpts.body = source.postData.text;
   }
 
   // construct cookies argument
-  if (this.source.cookies.length) {
+  if (source.cookies.length) {
     reqOpts.jar = 'JAR';
 
     code.push(null);
     code.push('var jar = request.jar();');
 
-    var url = this.source.url;
+    var url = source.url;
 
-    this.source.cookies.map(function (cookie) {
+    source.cookies.map(function (cookie) {
       code.push(util.format('jar.setCookie(request.cookie("%s=%s"), "%s");', encodeURIComponent(cookie.name), encodeURIComponent(cookie.value), url));
     });
     code.push(null);
   }
-
 
   if (includeFS) {
     code.push('var fs = require("fs");');

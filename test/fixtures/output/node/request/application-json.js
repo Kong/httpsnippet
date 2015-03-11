@@ -4,7 +4,7 @@ request({
   "method": "POST",
   "url": "http://mockbin.com/har",
   "headers": {
-    "Content-Type": "application/json"
+    "content-type": "application/json"
   },
   "body": {
     "foo": "bar"
