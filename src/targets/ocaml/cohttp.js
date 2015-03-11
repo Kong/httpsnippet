@@ -30,20 +30,9 @@ module.exports = function (source, options) {
   }
 
   // Add body
-  var bodyPresent = source.postData && source.postData.text;
-
-  if (bodyPresent) {
+  if (source.postData.text) {
     // Just text
     code.push(util.format('let body = %s in', JSON.stringify(source.postData.text)));
-  } else if (source.postData && !source.postData.text && source.postData.params && source.postData.params.length) {
-    // Post params
-    bodyPresent = true;
-
-    var body = source.postData.params.map(function (param) {
-      return param.name + '=' + param.value;
-    }).join('&');
-
-    code.push(util.format('let body = "%s" in', body));
   }
 
   // Do the request
@@ -51,7 +40,7 @@ module.exports = function (source, options) {
 
   code.push(util.format('Client.call %s%s(Code.method_of_string "%s") uri',
     headers.length ? '~headers ' : '',
-    bodyPresent ? '~body ' : '',
+    source.postData.text ? '~body ' : '',
     source.method
   ));
 

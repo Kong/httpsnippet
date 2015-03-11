@@ -54,10 +54,6 @@ var HTTPSnippet = function (req, lang) {
       }, {});
     }
 
-    // create allHeaders object
-    // this.source.allHeaders = util._extend(this.source.allHeaders, this.source.headersObj);
-    this.source.allHeaders = util._extend(this.source.allHeaders, this.source.headersObj);
-
     // construct Cookie header
     var cookies = this.source.cookies.map(function (cookie) {
       return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value);
@@ -68,9 +64,13 @@ var HTTPSnippet = function (req, lang) {
     }
 
     switch (this.source.postData.mimeType) {
+      case 'multipart/mixed':
+      case 'multipart/related':
       case 'multipart/form-data':
-        // reset the text value
+      case 'multipart/alternative':
+        // reset values
         this.source.postData.text = '';
+        this.source.postData.mimeType = 'multipart/form-data';
 
         var form = new FormData();
 
@@ -89,7 +89,6 @@ var HTTPSnippet = function (req, lang) {
         }.bind(this)));
 
         this.source.headersObj['content-type'] = 'multipart/form-data; boundary=' + form.getBoundary();
-        this.source.headersObj['content-length'] = form.getLengthSync();
         break;
 
       case 'application/x-www-form-urlencoded':
@@ -107,19 +106,24 @@ var HTTPSnippet = function (req, lang) {
       case 'text/x-json':
       case 'application/json':
       case 'application/x-json':
+        this.source.postData.mimeType = 'application/json';
+
         if (this.source.postData.text) {
           try {
             this.source.postData.jsonObj = JSON.parse(this.source.postData.text);
           } catch (e) {
             debug(e);
-            
+
             // force back to text/plain
             // if headers have proper content-type value, then this should also work
-            this.source.postData.mimeType = 'text/plain'
+            this.source.postData.mimeType = 'text/plain';
           }
         }
         break;
     }
+
+    // create allHeaders object
+    this.source.allHeaders = util._extend(this.source.allHeaders, this.source.headersObj);
 
     // deconstruct the uri
     this.source.uriObj = url.parse(this.source.url, true, true);

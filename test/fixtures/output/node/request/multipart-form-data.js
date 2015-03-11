@@ -4,8 +4,7 @@ request({
   "method": "POST",
   "url": "http://mockbin.com/har",
   "headers": {
-    "content-type": "multipart/form-data; boundary=---011000010111000001101001",
-    "content-length": 82
+    "content-type": "multipart/form-data; boundary=---011000010111000001101001"
   },
   "formData": {
     "foo": {

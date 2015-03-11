@@ -312,7 +312,9 @@ postData: {
 
 ###### application/json
 
-*when postData.mimeType is one of: `application/json`, `text/json`, `text/x-json`, `application/x-json`*
+- will match when `postData.mimeType` is one of: `application/json`, `text/json`, `text/x-json`, `application/x-json`
+- In case of failure to parse `postData.text` as a JSON object, `postData.mimeType` is set to `text/plain`. this is done so that the implementing target, would still attempt to post the raw body as is.
+- This also emphasizes not to rely on `postData.mimeType` for the `Content-Type` header!
 
 ```js
 postData: {
@@ -338,15 +340,12 @@ postData: {
 }
 ```
 
-Notes:
-
-- In case of failure to parse `postData.text` as a JSON object, `postData.mimeType` is set to `text/plain`. this is done so that the implementing target, would still attempt to post the raw body as is.
-- This also emphasizes not to rely on `postData.mimeType` for the `Content-Type` header!
-
 ###### multipart/form-data
 
+- will match when `postData.mimeType` is one of: `multipart/mixed` `multipart/related`, `multipart/form-data`, `multipart/alternative`
+- will force `postData.mimeType` to `multipart/form-data`
 - will create/overwrite the `Content-Type` header if it does not exist, with the appropriate boundary flag.
-- will create/overwrite the `Content-Length` header
+- when no `params[].value` is present, will default to empty content
 
 ```js
 postData: {
@@ -378,10 +377,6 @@ postData: {
 ```
 
 ###### multipart/form-data (File Uploads)
-
-- will create/overwrite the `Content-Type` header if it does not exist, with the appropriate boundary flag.
-- will create/overwrite the `Content-Length` header
-- when no params[].value is present, will default to empty content
 
 ```js
 postData: {

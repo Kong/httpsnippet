@@ -27,16 +27,6 @@ module.exports = function (source, options) {
     code.push('--body-data ' + JSON.stringify(source.postData.text));
   }
 
-  if (source.postData.mimeType === 'multipart/form-data') {
-    source.postData.params.forEach(function (param) {
-      if (param.value) {
-        code.push(util.format('--body-data %s', JSON.stringify(param.value)));
-      } else if (param.fileName) {
-        code.push(util.format('--body-file "%s"', param.fileName));
-      }
-    });
-  }
-
   code.push(opts.short ? '-O' : '--output-document');
 
   code.push(util.format('- "%s"', source.fullUrl));

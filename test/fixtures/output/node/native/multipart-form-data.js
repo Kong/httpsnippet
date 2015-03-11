@@ -4,11 +4,9 @@ var options = {
   "method": "POST",
   "hostname": "mockbin.com",
   "port": null,
-  "path": "/har?foo=bar&foo=baz&baz=abc&key=value",
+  "path": "/har?",
   "headers": {
-    "cookie": "foo=bar; bar=baz",
-    "accept": "application/json",
-    "content-type": "application/x-www-form-urlencoded"
+    "content-type": "multipart/form-data; boundary=---011000010111000001101001"
   }
 };
 
@@ -25,5 +23,5 @@ var req = http.request(options, function (res) {
   });
 });
 
-req.write("foo=bar");
+req.write("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"foo\"\r\n\r\nbar\r\n-----011000010111000001101001--");
 req.end();
