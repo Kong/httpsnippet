@@ -10,7 +10,8 @@ module.exports = function (options) {
   // Define Options
   var opts = util._extend({
     checkErrors: false,
-    printBody: true
+    printBody: true,
+    timeout: -1
   }, options);
 
   // Set some shortcuts 
@@ -39,6 +40,7 @@ module.exports = function (options) {
   code.push('package main\n');
   code.push('import (');
   code.push('\t"fmt"');
+  if (opts.timeout) code.push('\t"time"');
   if (bodyPresent) code.push('\t"strings"');
   code.push('\t"net/http"');
   if (opts.printBody) code.push('\t"io/ioutil"');
@@ -47,13 +49,20 @@ module.exports = function (options) {
   code.push('func main() {');
 
   // Create client
-  code.push('\tclient := &http.Client{}');
+  if (opts.timeout) {
+    code.push('\tclient := http.Client{');
+    code.push('\t\tTimeout: time.Duration(' + opts.timeout + ' * time.Second),');
+    code.push('\t}');
+  } else {
+    code.push('\tclient := &http.Client{}');
+  }
   code.push('\turl := "' + req.url + '"');
 
   // If we have body content or not create the var and reader or nil
   if (bodyPresent) {
-    code.push('\tpayload := ' + JSON.stringify(this.source.postData.text));
-    req.body = 'strings.NewReader(payload)';
+    var reqBody = JSON.stringify(this.source.postData.text);
+    code.push('\tpayload := strings.NewReader(' + reqBody + ')');
+    req.body = 'payload';
   } else {
     req.body = 'nil';
   }

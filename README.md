@@ -192,6 +192,7 @@ module.exports.info = {
 | --------------- | ------- | ------------------------------------------------------------------------ |
 | `errorChecking` | `false` | add error checking for request, response and body                        |
 | `printBody`     | `true`  | include code to print the body as a string                               |
+| `timeout`       | `-1`    | sets a request timeout in seconds (requires go 1.3+)                     |
 
 ### HTTPie
 
