@@ -8,7 +8,23 @@ req.headers({
 
 req.type("json");
 req.send({
-  "foo": "bar"
+  "number": 1,
+  "string": "f\"oo",
+  "arr": [
+    1,
+    2,
+    3
+  ],
+  "nested": {
+    "a": "b"
+  },
+  "arr_mix": [
+    1,
+    "a",
+    {
+      "arr_mix_nested": {}
+    }
+  ]
 });
 
 req.end(function (res) {
