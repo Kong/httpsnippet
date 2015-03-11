@@ -7,6 +7,7 @@ module.exports = function (options) {
     indent: '  '
   }, options);
 
+  var methods = ['get', 'post', 'head', 'delete', 'patch', 'put', 'options'];
   var code = [];
 
   code.push('open Cohttp_lwt_unix');
@@ -46,7 +47,7 @@ module.exports = function (options) {
 
   if (bodyPresent) {
     // Just text
-    code.push(util.format('let body = Cohttp_lwt_unix.of_string %s in', JSON.stringify(this.source.postData.text)));
+    code.push(util.format('let body = Cohttp_lwt_body.of_string %s in', JSON.stringify(this.source.postData.text)));
   } else if (this.source.postData && !this.source.postData.text && this.source.postData.params && this.source.postData.params.length) {
     // Post params
     bodyPresent = true;
@@ -55,16 +56,16 @@ module.exports = function (options) {
       return param.name + '=' + param.value;
     }).join('&');
 
-    code.push(util.format('let body = Cohttp_lwt_unix.of_string "%s" in', body));
+    code.push(util.format('let body = Cohttp_lwt_body.of_string "%s" in', body));
   }
 
   // Do the request
   code.push('');
 
-  code.push(util.format('Client.call %s%s(Code.method_of_string "%s") uri',
+  code.push(util.format('Client.call %s%s%s uri',
     (headersPresent || cookiesPresent) ? '~headers ' : '',
     bodyPresent ? '~body ' : '',
-    this.source.method
+    (methods.indexOf(this.source.method.toLowerCase()) >= 0 ? ('`' + this.source.method.toUpperCase()) : '(Code.method_of_string "' + this.source.method + '")')
   ));
 
   // Catch result
