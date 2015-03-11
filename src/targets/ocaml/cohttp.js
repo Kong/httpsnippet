@@ -7,9 +7,11 @@ module.exports = function (source, options) {
     indent: '  '
   }, options)
 
+  var methods = ['get', 'post', 'head', 'delete', 'patch', 'put', 'options']
   var code = []
 
   code.push('open Cohttp_lwt_unix')
+  code.push('open Cohttp')
   code.push('open Lwt')
   code.push('')
 
@@ -32,16 +34,16 @@ module.exports = function (source, options) {
   // Add body
   if (source.postData.text) {
     // Just text
-    code.push(util.format('let body = %s in', JSON.stringify(source.postData.text)))
+    code.push(util.format('let body = Cohttp_lwt_body.of_string %s in', JSON.stringify(source.postData.text)))
   }
 
   // Do the request
   code.push('')
 
-  code.push(util.format('Client.call %s%s(Code.method_of_string "%s") uri',
+  code.push(util.format('Client.call %s%s%s uri',
     headers.length ? '~headers ' : '',
     source.postData.text ? '~body ' : '',
-    source.method
+    (methods.indexOf(this.source.method.toLowerCase()) >= 0 ? ('`' + this.source.method.toUpperCase()) : '(Code.method_of_string "' + this.source.method + '")')
   ))
 
   // Catch result
