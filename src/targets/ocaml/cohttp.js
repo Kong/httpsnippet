@@ -7,13 +7,13 @@ module.exports = function (source, options) {
     indent: '  '
   }, options)
 
-  var methods = ['get', 'post', 'head', 'delete', 'patch', 'put', 'options'];
-  var code = [];
+  var methods = ['get', 'post', 'head', 'delete', 'patch', 'put', 'options']
+  var code = []
 
-  code.push('open Cohttp_lwt_unix');
-  code.push('open Cohttp');
-  code.push('open Lwt');
-  code.push('');
+  code.push('open Cohttp_lwt_unix')
+  code.push('open Cohttp')
+  code.push('open Lwt')
+  code.push('')
 
   // Create URI
   code.push(util.format('let uri = Uri.of_string "%s" in', source.fullUrl))
@@ -44,7 +44,7 @@ module.exports = function (source, options) {
     headers.length ? '~headers ' : '',
     source.postData.text ? '~body ' : '',
     (methods.indexOf(this.source.method.toLowerCase()) >= 0 ? ('`' + this.source.method.toUpperCase()) : '(Code.method_of_string "' + this.source.method + '")')
-  ));
+  ))
 
   // Catch result
   code.push('>>= fun (res, body_stream) ->')
