@@ -1,3 +1,3 @@
-echo "{\"foo\": \"bar\"}" |  \
+echo "{\"number\": 1, \"string\": \"f\\\"oo\", \"arr\": [1, 2, 3], \"nested\": {\"a\": \"b\"}, \"arr_mix\": [1, \"a\", {\"arr_mix_nested\": {}}] }" |  \
   http POST http://mockbin.com/har \
-  Content-Type:application/json
+  content-type:application/json

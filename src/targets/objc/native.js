@@ -2,7 +2,7 @@
 
 var util = require('util');
 
-module.exports = function (options) {
+module.exports = function (source, options) {
   var opts = util._extend({
     timeout: '10'
   }, options);
@@ -15,38 +15,30 @@ module.exports = function (options) {
   code.push('NSURLSession *session = [NSURLSession sharedSession];');
   code.push(null);
   // Create request object
-  code.push('NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"' + this.source.fullUrl + '"]');
+  code.push('NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"' + source.fullUrl + '"]');
   code.push('                                                       cachePolicy:NSURLRequestUseProtocolCachePolicy');
   code.push('                                                   timeoutInterval:' + parseInt(opts.timeout, 10).toFixed(1) + '];');
-  code.push('[request setHTTPMethod:@"' + this.source.method + '"];');
+  code.push('[request setHTTPMethod:@"' + source.method + '"];');
 
   // Set headers
-  this.source.headers.forEach(function (header) {
-    code.push('[request setValue:@"' + header.value + '" forHTTPHeaderField:@"' + header.name + '"];');
+  Object.keys(source.allHeaders).sort().map(function (key) {
+    code.push('[request setValue:@"' + source.allHeaders[key] + '" forHTTPHeaderField:@"' + key + '"];');
   });
-
-  var cookies = this.source.cookies.map(function (cookie) {
-    return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value);
-  });
-
-  if (cookies.length) {
-    code.push('[request setValue:@"' + cookies.join('; ') + '" forHTTPHeaderField:@"Cookie"];');
-  }
 
   // Set request body
-  if (this.source.postData && (this.source.postData.params || this.source.postData.text)) {
+  if (source.postData && (source.postData.params || source.postData.text)) {
     code.push(null);
 
-    if (this.source.postData.mimeType === 'application/x-www-form-urlencoded' && this.source.postData.params) {
-      var params = this.source.postData.params;
+    if (source.postData.mimeType === 'application/x-www-form-urlencoded' && source.postData.params) {
+      var params = source.postData.params;
       code.push('NSMutableData *postData = [[NSMutableData alloc] initWithData:[@"' + params[0].name + '=' + params[0].value + '" dataUsingEncoding:NSUTF8StringEncoding]];');
       for (var i = 1, len = params.length; i < len; i++) {
         code.push('[postData appendData:[@"&' + params[i].name + '=' + params[i].value + '" dataUsingEncoding:NSUTF8StringEncoding]];');
       }
-    } else if (this.source.postData.mimeType === 'application/json' && this.source.postData.text) {
-      code.push('NSData *postData = [[NSData alloc] initWithData:[@' +  JSON.stringify(this.source.postData.text) + ' dataUsingEncoding:NSUTF8StringEncoding]];');
-    } else if (this.source.postData.text) {
-      code.push('NSData *postData = [[NSData alloc] initWithData:[@"' + this.source.postData.text + '" dataUsingEncoding:NSUTF8StringEncoding]];');
+    } else if (source.postData.mimeType === 'application/json' && source.postData.text) {
+      code.push('NSData *postData = [[NSData alloc] initWithData:[@' +  JSON.stringify(source.postData.text) + ' dataUsingEncoding:NSUTF8StringEncoding]];');
+    } else if (source.postData.text) {
+      code.push('NSData *postData = [[NSData alloc] initWithData:[@"' + source.postData.text + '" dataUsingEncoding:NSUTF8StringEncoding]];');
     }
 
     code.push('[request setHTTPBody:postData];');

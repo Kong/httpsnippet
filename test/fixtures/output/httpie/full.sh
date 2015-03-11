@@ -1,5 +1,5 @@
 echo "foo=bar" |  \
-  http POST http://mockbin.com/har?baz=abc&foo=bar&foo=baz \
-  Accept:application/json \
-  Content-Type:application/x-www-form-urlencoded \
-  Cookie:foo=bar; bar=baz
+  http POST http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value \
+  accept:application/json \
+  content-type:application/x-www-form-urlencoded \
+  cookie:foo=bar; bar=baz

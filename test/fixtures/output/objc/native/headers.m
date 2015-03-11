@@ -6,8 +6,8 @@ NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWit
                                                        cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                    timeoutInterval:10.0];
 [request setHTTPMethod:@"GET"];
-[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-[request setValue:@"Bar" forHTTPHeaderField:@"X-Foo"];
+[request setValue:@"application/json" forHTTPHeaderField:@"accept"];
+[request setValue:@"Bar" forHTTPHeaderField:@"x-foo"];
 
 NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
                                             completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {

@@ -3,7 +3,7 @@
 $curl = curl_init();
 
 curl_setopt_array($curl, array(
-  CURLOPT_URL => "http://mockbin.com/har?baz=abc&foo=bar&foo=baz",
+  CURLOPT_URL => "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value",
   CURLOPT_RETURNTRANSFER => true,
   CURLOPT_ENCODING => "",
   CURLOPT_MAXREDIRS => 10,
@@ -13,8 +13,8 @@ curl_setopt_array($curl, array(
   CURLOPT_POSTFIELDS => "foo=bar",
   CURLOPT_COOKIE => "foo=bar; bar=baz",
   CURLOPT_HTTPHEADER => array(
-    "Accept: application/json",
-    "Content-Type: application/x-www-form-urlencoded"
+    "accept: application/json",
+    "content-type: application/x-www-form-urlencoded"
   ),
 ));
 

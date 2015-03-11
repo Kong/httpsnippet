@@ -30,7 +30,7 @@ module.exports = function (snippet, fixtures) {
     });
 
     result.should.be.a.String;
-    // result.replace(/\\\n/g, '').should.eql('echo "{\\"foo\\": \\"bar\\"}" |  @http POST http://mockbin.com/request?foo=bar @Content-Type:application/json @Cookie:bar=baz');
+    result.replace(/\\\n/g, '').should.eql('echo "foo=bar" |  @http POST http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value @accept:application/json @content-type:application/x-www-form-urlencoded @cookie:foo=bar; bar=baz');
   });
 
   it('should use queryString parameters', function () {
@@ -40,6 +40,6 @@ module.exports = function (snippet, fixtures) {
     });
 
     result.should.be.a.String;
-    result.replace(/\\\n/g, '').should.eql('http GET http://mockbin.com/har key==value baz==abc foo==bar foo==baz');
+    result.replace(/\\\n/g, '').should.eql('http GET http://mockbin.com/har foo==bar foo==baz baz==abc key==value');
   });
 };

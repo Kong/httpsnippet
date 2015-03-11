@@ -6,7 +6,7 @@ NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWit
                                                        cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                    timeoutInterval:10.0];
 [request setHTTPMethod:@"POST"];
-[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
 
 NSMutableData *postData = [[NSMutableData alloc] initWithData:[@"foo=bar" dataUsingEncoding:NSUTF8StringEncoding]];
 [postData appendData:[@"&hello=world" dataUsingEncoding:NSUTF8StringEncoding]];
