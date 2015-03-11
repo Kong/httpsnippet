@@ -9,12 +9,10 @@ import (
 
 func main() {
 	client := &http.Client{}
-	url := "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value"
-	payload := "foo=bar"
+	url := "http://mockbin.com/har"
+	payload := "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"foo\"\r\n\r\nbar\r\n-----011000010111000001101001--"
 	req, _ := http.NewRequest("POST", url, strings.NewReader(payload))
-	req.Header.Add("cookie", "foo=bar; bar=baz")
-	req.Header.Add("accept", "application/json")
-	req.Header.Add("content-type", "application/x-www-form-urlencoded")
+	req.Header.Add("content-type", "multipart/form-data; boundary=---011000010111000001101001")
 	res, _ := client.Do(req)
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)

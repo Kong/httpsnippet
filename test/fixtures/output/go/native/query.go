@@ -8,7 +8,7 @@ import (
 
 func main() {
 	client := &http.Client{}
-	url := "http://mockbin.com/har?key=value&baz=abc&foo=bar&foo=baz"
+	url := "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value"
 	req, _ := http.NewRequest("GET", url, nil)
 	res, _ := client.Do(req)
 	defer res.Body.Close()

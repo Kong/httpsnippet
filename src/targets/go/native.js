@@ -2,8 +2,7 @@
 
 var util = require('util');
 
-module.exports = function (options) {
-
+module.exports = function (source, options) {
   // Let's Go!
   var code = [];
 
@@ -13,21 +12,9 @@ module.exports = function (options) {
     printBody: true
   }, options);
 
-  // Set some shortcuts 
-  var req = {
-    url: this.source.fullUrl,
-    method: this.source.method,
-    hostname: this.source.uriObj.hostname,
-    port: this.source.uriObj.port,
-    path: this.source.uriObj.path,
-    headers: this.source.headersObj
-  };
-
-  var bodyPresent = this.source.postData && this.source.postData.text;
-
   var errorPlaceholder = opts.checkErrors ? 'err' : '_';
-  
-  var errorCheck = function() {
+
+  var errorCheck = function () {
     if (opts.checkErrors) {
       code.push('\tif err != nil {');
       code.push('\t\tpanic(err)');
@@ -35,59 +22,56 @@ module.exports = function (options) {
     }
   };
 
-  // Create boilerplate 
+  // Create boilerplate
   code.push('package main\n');
   code.push('import (');
   code.push('\t"fmt"');
-  if (bodyPresent) code.push('\t"strings"');
+
+  if (source.postData.text) {
+    code.push('\t"strings"');
+  }
+
   code.push('\t"net/http"');
-  if (opts.printBody) code.push('\t"io/ioutil"');
+
+  if (opts.printBody) {
+    code.push('\t"io/ioutil"');
+  }
   code.push(')\n');
 
   code.push('func main() {');
 
   // Create client
   code.push('\tclient := &http.Client{}');
-  code.push('\turl := "' + req.url + '"');
+  code.push(util.format('\turl := "%s"', source.fullUrl));
 
   // If we have body content or not create the var and reader or nil
-  if (bodyPresent) {
-    code.push('\tpayload := ' + JSON.stringify(this.source.postData.text));
-    req.body = 'strings.NewReader(payload)';
+  if (source.postData.text) {
+    code.push('\tpayload := ' + JSON.stringify(source.postData.text));
+    code.push(util.format('\treq, ' + errorPlaceholder + ' := http.NewRequest("%s", url, strings.NewReader(payload))', source.method));
   } else {
-    req.body = 'nil';
+    code.push(util.format('\treq, %s := http.NewRequest("%s", url, nil)',  errorPlaceholder, source.method));
   }
 
-  code.push('\treq, ' + errorPlaceholder + ' := http.NewRequest("' + req.method + '", url, ' + req.body + ')');
   errorCheck();
 
   // Add headers
-  var headersPresent = this.source.headers && this.source.headers.length;
+  Object.keys(source.allHeaders).map(function (key) {
+    code.push(util.format('\treq.Header.Add("%s", "%s")', key, source.allHeaders[key]));
+  });
 
-  if (headersPresent) {
-    for (var header in this.source.headers) {
-      var key = this.source.headers[header].name;
-      var val = this.source.headers[header].value;
-      code.push('\treq.Header.Add("' + key + '", "' + val + '")');
-    }
-  }
-
-  // Add Cookies
-  var cookiesPresent = this.source.cookies && this.source.cookies.length;
-  if (cookiesPresent) {
-    var cookies = this.source.cookies.map(function (cookie) {
-      return cookie.name + '=' + cookie.value;
-    }).join('; ');
-    code.push('\treq.Header.Add("Cookie", "' + cookies + '")');
-  }
-
-  // Make request 
-  code.push('\tres, ' + errorPlaceholder + ' := client.Do(req)');
+  // Make request
+  code.push(util.format('\tres, %s := client.Do(req)', errorPlaceholder));
   errorCheck();
 
   // Get Body
-  if (opts.printBody) code.push('\tdefer res.Body.Close()');
-  if (opts.printBody) code.push('\tbody, ' + errorPlaceholder + ' := ioutil.ReadAll(res.Body)');
+  if (opts.printBody) {
+    code.push('\tdefer res.Body.Close()');
+  }
+
+  if (opts.printBody) {
+    code.push(util.format('\tbody, %s := ioutil.ReadAll(res.Body)', errorPlaceholder));
+  }
+
   errorCheck();
 
   // Print it
@@ -96,7 +80,7 @@ module.exports = function (options) {
   if (opts.printBody) {
     code.push('\tfmt.Println(string(body))');
   }
-  
+
   // End main block
   code.push('}');
 

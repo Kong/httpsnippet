@@ -10,7 +10,7 @@ func main() {
 	client := &http.Client{}
 	url := "http://mockbin.com/har"
 	req, _ := http.NewRequest("POST", url, nil)
-	req.Header.Add("Cookie", "foo=bar; bar=baz")
+	req.Header.Add("cookie", "foo=bar; bar=baz")
 	res, _ := client.Do(req)
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)

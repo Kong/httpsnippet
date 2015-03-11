@@ -10,9 +10,9 @@ import (
 func main() {
 	client := &http.Client{}
 	url := "http://mockbin.com/har"
-	payload := "foo=bar&hello=world"
+	payload := "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"foo\"; filename=\"hello.txt\"\r\nContent-Type: text/plain\r\n\r\nHello World\r\n-----011000010111000001101001--"
 	req, _ := http.NewRequest("POST", url, strings.NewReader(payload))
-	req.Header.Add("content-type", "application/x-www-form-urlencoded")
+	req.Header.Add("content-type", "multipart/form-data; boundary=---011000010111000001101001")
 	res, _ := client.Do(req)
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
