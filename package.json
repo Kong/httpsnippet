@@ -40,6 +40,7 @@
     "chalk": "^1.0.0",
     "commander": "^2.6.0",
     "debug": "^2.1.1",
+    "event-stream": "^3.3.0",
     "form-data": "^0.2.0",
     "har-validator": "^1.1.2",
     "require-directory": "^2.1.0"
