@@ -106,7 +106,7 @@ module.exports = function (source, options) {
   }
 
   code.push('} else {')
-  code.push(opts.indent + 'print_r($response);')
+  code.push(opts.indent + 'echo $response;')
   code.push('}')
 
   if (opts.closingTag) {

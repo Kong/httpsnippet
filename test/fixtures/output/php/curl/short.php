@@ -20,5 +20,5 @@ curl_close($curl);
 if ($err) {
   echo "cURL Error #:" . $err;
 } else {
-  print_r($response);
+  echo $response;
 }
