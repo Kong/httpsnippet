@@ -6,7 +6,7 @@ payload = "-----011000010111000001101001\r\nContent-Disposition: form-data; name
 
 headers = { 'content-type': "multipart/form-data; boundary=---011000010111000001101001" }
 
-conn.request("POST", "/har?", payload, headers)
+conn.request("POST", "/har", payload, headers)
 
 res = conn.getresponse()
 data = res.read()

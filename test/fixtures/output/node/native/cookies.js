@@ -4,7 +4,7 @@ var options = {
   "method": "POST",
   "hostname": "mockbin.com",
   "port": null,
-  "path": "/har?",
+  "path": "/har",
   "headers": {
     "cookie": "foo=bar; bar=baz"
   }

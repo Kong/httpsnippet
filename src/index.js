@@ -142,7 +142,10 @@ var HTTPSnippet = function (req, lang) {
     // update the uri object
     this.source.uriObj.query = this.source.queryObj
     this.source.uriObj.search = qs.stringify(this.source.queryObj)
-    this.source.uriObj.path = this.source.uriObj.pathname + '?' + this.source.uriObj.search
+
+    if (this.source.uriObj.search) {
+      this.source.uriObj.path = this.source.uriObj.pathname + '?' + this.source.uriObj.search
+    }
 
     // construct a full url
     this.source.fullUrl = url.format(this.source.uriObj)

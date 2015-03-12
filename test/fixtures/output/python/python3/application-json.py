@@ -6,7 +6,7 @@ payload = "{\"number\": 1, \"string\": \"f\\\"oo\", \"arr\": [1, 2, 3], \"nested
 
 headers = { 'content-type': "application/json" }
 
-conn.request("POST", "/har?", payload, headers)
+conn.request("POST", "/har", payload, headers)
 
 res = conn.getresponse()
 data = res.read()
