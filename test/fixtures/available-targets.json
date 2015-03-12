@@ -41,7 +41,7 @@
       {
         "key": "unirest",
         "title": "Unirest",
-        "link": "http://unirest.io/",
+        "link": "http://unirest.io/nodejs.html",
         "description": "Lightweight HTTP Request Client Library"
       }
     ]
@@ -118,7 +118,7 @@
   },
   {
     "key": "java",
-    "title": "JAVA",
+    "title": "Java",
     "extname": ".java",
     "default": "unirest",
     "clients": [
@@ -126,7 +126,7 @@
         "key": "unirest",
         "title": "Unirest",
         "link": "http://unirest.io/java.html",
-        "description": "Unirest Java interface"
+        "description": "Lightweight HTTP Request Client Library"
       }
     ]
   }

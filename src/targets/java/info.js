@@ -2,7 +2,7 @@
 
 module.exports = {
   key: 'java',
-  title: 'JAVA',
+  title: 'Java',
   extname: '.java',
   default: 'unirest'
 }
