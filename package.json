@@ -18,13 +18,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:ahmadnassri/httpsnippet"
+    "url": "git@github.com:mashape/httpsnippet"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ahmadnassri/httpsnippet/issues"
+    "url": "https://github.com/mashape/httpsnippet/issues"
   },
-  "homepage": "https://github.com/ahmadnassri/httpsnippet",
+  "homepage": "https://github.com/mashape/httpsnippet",
   "devDependencies": {
     "codeclimate-test-reporter": "0.0.4",
     "glob": "^5.0.2",
