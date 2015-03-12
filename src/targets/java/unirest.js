@@ -41,7 +41,7 @@ module.exports = function (options) {
 
 module.exports.info = {
   key: 'unirest',
-  title: 'JAVA',
+  title: 'Unirest',
   link: 'http://unirest.io/java.html',
-  description: 'Unirest Java interface'
+  description: 'Lightweight HTTP Request Client Library'
 }

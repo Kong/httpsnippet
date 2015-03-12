@@ -98,6 +98,6 @@ module.exports = function (source, options) {
 module.exports.info = {
   key: 'unirest',
   title: 'Unirest',
-  link: 'http://unirest.io/',
+  link: 'http://unirest.io/nodejs.html',
   description: 'Lightweight HTTP Request Client Library'
 }
