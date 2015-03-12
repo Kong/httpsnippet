@@ -8,6 +8,7 @@ module.exports = function (source, options) {
     noTags: false,
     maxRedirects: 10,
     timeout: 30,
+    namedErrors: false,
     closingTag: false
   }, options)
 
@@ -15,11 +16,11 @@ module.exports = function (source, options) {
 
   if (!opts.noTags) {
     code.push('<?php')
-    code.push('')
+    code.push(null)
   }
 
   code.push('$curl = curl_init();')
-  code.push('')
+  code.push(null)
 
   var curlOptions = [{
     escape: true,
@@ -90,12 +91,26 @@ module.exports = function (source, options) {
   code.push(opts.indent + curlopts.join('\n' + opts.indent))
 
   code.push('));')
-  code.push('')
+  code.push(null)
   code.push('$response = curl_exec($curl);')
-  code.push('')
+  code.push('$err = curl_error($curl);')
+  code.push(null)
   code.push('curl_close($curl);')
+  code.push(null)
+  code.push('if ($err) {')
+
+  if (opts.namedErrors) {
+    code.push(opts.indent + 'echo array_flip(get_defined_constants(true)["curl"])[$err];')
+  } else {
+    code.push(opts.indent + 'echo "cURL Error #:" . $err;')
+  }
+
+  code.push('} else {')
+  code.push(opts.indent + 'print_r($response);')
+  code.push('}')
 
   if (opts.closingTag) {
+    code.push(null)
     code.push('?>')
   }
 
