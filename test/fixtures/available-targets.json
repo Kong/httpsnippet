@@ -115,5 +115,19 @@
         "description": "Golang HTTP client request"
       }
     ]
+  },
+  {
+    "key": "java",
+    "title": "JAVA",
+    "extname": ".java",
+    "default": "unirest",
+    "clients": [
+      {
+        "key": "unirest",
+        "title": "JAVA",
+        "link": "http://unirest.io/java.html",
+        "description": "Unirest Java interface"
+      }
+    ]
   }
 ]
