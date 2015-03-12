@@ -12,7 +12,7 @@ module.exports = function (options) {
 
   var methods = [ 'GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS' ]
 
-  code.push('//Import unirest libarary (http://unirest.io/java.html) \n')
+  code.push('//Import unirest library (http://unirest.io/java.html) \n')
 
   if (methods.indexOf(self.source.method.toUpperCase()) === -1) {
     code.push(util.format('HttpResponse<String> response = Unirest.customMethod("%s","%s")', self.source.method.toUpperCase(), self.source.fullUrl))
