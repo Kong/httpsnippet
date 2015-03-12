@@ -44,33 +44,36 @@ module.exports = function (source, options) {
 
   code.push(')\n')
 
-  code.push('func main() {')
+  code.push('func main() {\n')
 
   // Create client
   if (opts.timeout > 0) {
     code.push('\tclient := http.Client{')
     code.push(util.format('\t\tTimeout: time.Duration(%s * time.Second),', opts.timeout))
-    code.push('\t}')
+    code.push('\t}\n')
   } else {
-    code.push('\tclient := &http.Client{}')
+    code.push('\tclient := &http.Client{}\n')
   }
 
-  code.push(util.format('\turl := "%s"', source.fullUrl))
+  code.push(util.format('\turl := "%s"\n', source.fullUrl))
 
   // If we have body content or not create the var and reader or nil
   if (source.postData.text) {
-    code.push(util.format('\tpayload := strings.NewReader(%s)', JSON.stringify(source.postData.text)))
-    code.push(util.format('\treq, %s := http.NewRequest("%s", url, payload)', errorPlaceholder, source.method))
+    code.push(util.format('\tpayload := strings.NewReader(%s)\n', JSON.stringify(source.postData.text)))
+    code.push(util.format('\treq, %s := http.NewRequest("%s", url, payload)\n', errorPlaceholder, source.method))
   } else {
-    code.push(util.format('\treq, %s := http.NewRequest("%s", url, nil)', errorPlaceholder, source.method))
+    code.push(util.format('\treq, %s := http.NewRequest("%s", url, nil)\n', errorPlaceholder, source.method))
   }
 
   errorCheck()
 
   // Add headers
-  Object.keys(source.allHeaders).map(function (key) {
-    code.push(util.format('\treq.Header.Add("%s", "%s")', key, source.allHeaders[key]))
-  })
+  if (Object.keys(source.allHeaders).length) {
+    Object.keys(source.allHeaders).map(function (key) {
+      code.push(util.format('\treq.Header.Add("%s", "%s")', key, source.allHeaders[key]))
+    })
+    code.push(null)
+  }
 
   // Make request
   code.push(util.format('\tres, %s := client.Do(req)', errorPlaceholder))
@@ -78,20 +81,20 @@ module.exports = function (source, options) {
 
   // Get Body
   if (opts.printBody) {
-    code.push('\tdefer res.Body.Close()')
+    code.push('\n\tdefer res.Body.Close()')
     code.push(util.format('\tbody, %s := ioutil.ReadAll(res.Body)', errorPlaceholder))
     errorCheck()
   }
 
   // Print it
-  code.push('\tfmt.Println(res)')
+  code.push('\n\tfmt.Println(res)')
 
   if (opts.printBody) {
     code.push('\tfmt.Println(string(body))')
   }
 
   // End main block
-  code.push('}')
+  code.push('\n}')
 
   return code.join('\n')
 }

@@ -75,6 +75,20 @@
     ]
   },
   {
+    "key": "python",
+    "title": "Python",
+    "extname": ".py",
+    "default": "python3",
+    "clients": [
+      {
+        "key": "python3",
+        "title": "http.client",
+        "link": "https://docs.python.org/3/library/http.client.html",
+        "description": "Python3 HTTP Client"
+      }
+    ]
+  },
+  {
     "key": "objc",
     "title": "Objective-C",
     "extname": ".m",
