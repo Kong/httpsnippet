@@ -10,15 +10,15 @@ module.exports = function (source, options) {
   // Check which protocol to be used for the client connection
   var protocol = source.uriObj.protocol
   if (protocol === 'https:') {
-    code.push(util.format('conn = http.client.HTTPSConnection("%s")', source.uriObj.host))
+    code.push(util.format('conn = http.client.HTTPSConnection("%s")\n', source.uriObj.host))
   } else {
-    code.push(util.format('conn = http.client.HTTPConnection("%s")', source.uriObj.host))
+    code.push(util.format('conn = http.client.HTTPConnection("%s")\n', source.uriObj.host))
   }
 
   // Create payload string if it exists
   var payload = JSON.stringify(source.postData.text)
   if (payload) {
-    code.push(util.format('payload = %s', payload))
+    code.push(util.format('payload = %s\n', payload))
   }
 
   // Create Headers
@@ -27,7 +27,7 @@ module.exports = function (source, options) {
   var headerCount = Object.keys(headers).length
   if (headerCount === 1) {
     for (header in headers) {
-      code.push(util.format('headers = { \'%s\': "%s" }', header, headers[header]))
+      code.push(util.format('headers = { \'%s\': "%s" }\n', header, headers[header]))
     }
   } else if (headerCount > 1) {
     var headerLine
@@ -41,7 +41,7 @@ module.exports = function (source, options) {
       }
       code.push(headerLine)
     }
-    code.push('    }')
+    code.push('    }\n')
   }
 
   // Make Request
@@ -58,9 +58,9 @@ module.exports = function (source, options) {
   }
 
   // Get Response
-  code.push('res = conn.getresponse()')
+  code.push('\nres = conn.getresponse()')
   code.push('data = res.read()')
-  code.push('print(res.status)')
+  code.push('\nprint(res.status)')
   code.push('print(data)')
 
   // console.log(code)
