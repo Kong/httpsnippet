@@ -12,11 +12,13 @@ module.exports = function (options) {
 
   var methods = [ 'GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS' ]
 
-  if (methods.indexOf(self.source.method.toUpperCase()) === -1) {
-    return self.source.method.toUpperCase() + ' method not supported by Unirest liabrary.'
-  }
+  code.push('//Import unirest libarary (http://unirest.io/java.html) \n')
 
-  code.push(util.format('HttpResponse<String> response = Unirest.%s("%s")', self.source.method.toLowerCase(), self.source.fullUrl))
+  if (methods.indexOf(self.source.method.toUpperCase()) === -1) {
+    code.push(util.format('HttpResponse<String> response = Unirest.customMethod("%s","%s")', self.source.method.toUpperCase(), self.source.fullUrl))
+  } else {
+    code.push(util.format('HttpResponse<String> response = Unirest.%s("%s")', self.source.method.toLowerCase(), self.source.fullUrl))
+  }
 
   // Add headers, including the cookies
   var headers = Object.keys(self.source.allHeaders)
@@ -24,24 +26,21 @@ module.exports = function (options) {
   // construct headers
   if (headers.length) {
     headers.map(function (key) {
-      code.push(util.format('.header("%s", "%s")', key, self.source.allHeaders[key]))
+      code.push(opts.indent + util.format('.header("%s", "%s")', key, self.source.allHeaders[key]))
     })
   }
 
-  // construct postdata
-  if (self.source.postData) {
-    if (self.source.postData.text) {
-      code.push(util.format('.body(%s)', JSON.stringify(self.source.postData.text)))
-    }
+  if (self.source.postData.text) {
+    code.push(opts.indent + util.format('.body(%s)', JSON.stringify(self.source.postData.text)))
   }
 
-  code.push('.asString();')
-  return code.join('\n' + opts.indent)
+  code.push(opts.indent + '.asString();')
+  return code.join('\n')
 }
 
 module.exports.info = {
   key: 'unirest',
-  title: 'Unirest',
+  title: 'JAVA',
   link: 'http://unirest.io/java.html',
-  description: 'Lightweight HTTP Request Client Library'
+  description: 'Unirest Java interface'
 }

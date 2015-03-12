@@ -21,6 +21,20 @@
     "extname": ".sh"
   },
   {
+    "key": "java",
+    "title": "JAVA",
+    "extname": ".java",
+    "default": "unirest",
+    "clients": [
+      {
+        "key": "unirest",
+        "title": "JAVA",
+        "link": "http://unirest.io/java.html",
+        "description": "Unirest Java interface"
+      }
+    ]
+  },
+  {
     "key": "node",
     "title": "Node.js",
     "extname": ".js",
