@@ -1,4 +1,4 @@
-HttpResponse<JsonNode> jsonResponse = Unirest.get("http://mockbin.com/har")
-			.header("Accept", "application/json")
-			.header("X-Foo", "Bar")
-			.asJson();
+HttpResponse<String> response = Unirest.get("http://mockbin.com/har")
+  .header("accept", "application/json")
+  .header("x-foo", "Bar")
+  .asString();

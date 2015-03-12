@@ -1,2 +1,2 @@
-HttpResponse<JsonNode> jsonResponse = Unirest.get("http://mockbin.com/har")
-			.asJson();
+HttpResponse<String> response = Unirest.get("http://mockbin.com/har")
+  .asString();

@@ -3,51 +3,45 @@
 var util = require('util');
 
 module.exports = function(options) {
-	var opts = util._extend({
-		indent : '			'
-	}, options);
+  var self = this;
+  var opts = util._extend({
+    indent : '  '
+  }, options);
 
-	var code = [];
+  var code = [];
 
-	code.push(util.format(
-			'HttpResponse<JsonNode> jsonResponse = Unirest.%s("%s")', this.source.method.toLowerCase(),
-			this.source.fullUrl));
-	
-	// construct headers
-	if (this.source.headers && this.source.headers.length) {
-		this.source.headers.map(function(header) {
-			code.push(util.format('.header("%s", "%s")', header.name,
-					header.value));
-		});
-	}
-	
+  var methods = [ "GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS" ];
 
-	//construct cookies argument
-	if (this.source.cookies && this.source.cookies.length) {
-		var cookies = this.source.cookies.map(function(cookie) {
-			return encodeURIComponent(cookie.name) + '='
-					+ encodeURIComponent(cookie.value);
-		});
-		code.push(util.format('.header("Cookie", "%s")', cookies.join('; ')));
-	}
+  if (methods.indexOf(self.source.method.toUpperCase()) == -1) {
+    return self.source.method.toUpperCase() + " method not supported by Unirest liabrary.";
+  }
 
-	//construct postdata
-	if (this.source.postData) {
-		if(this.source.postData.text){
-			code.push(util.format('.body(%s)', JSON
-					.stringify(this.source.postData.text)));
-		}
-	}
+  code.push(util.format('HttpResponse<String> response = Unirest.%s("%s")', self.source.method.toLowerCase(), self.source.fullUrl));
 
-	code.push(".asJson();");
-	return code.join( '\n' + opts.indent);
+  // Add headers, including the cookies
+  var headers = Object.keys(self.source.allHeaders);
+
+  // construct headers
+  if (headers.length) {
+    headers.map(function(key) {
+      code.push(util.format('.header("%s", "%s")', key, self.source.allHeaders[key]));
+    });
+  }
+
+  // construct postdata
+  if (self.source.postData) {
+    if (self.source.postData.text) {
+      code.push(util.format('.body(%s)', JSON.stringify(self.source.postData.text)));
+    }
+  }
+
+  code.push(".asString();");
+  return code.join('\n' + opts.indent);
 };
 
-
-
 module.exports.info = {
-	  key: 'unirest',
-	  title: 'JAVA',
-	  link : 'http://unirest.io/java.html',
-	  description : 'Unirest Java interface'
+  key : 'unirest',
+  title : 'JAVA',
+  link : 'http://unirest.io/java.html',
+  description : 'Unirest Java interface'
 };
