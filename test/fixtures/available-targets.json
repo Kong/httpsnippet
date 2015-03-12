@@ -124,7 +124,7 @@
     "clients": [
       {
         "key": "unirest",
-        "title": "JAVA",
+        "title": "Unirest",
         "link": "http://unirest.io/java.html",
         "description": "Unirest Java interface"
       }
