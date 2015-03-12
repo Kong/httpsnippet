@@ -253,19 +253,19 @@ For more information on SemVer, please visit <http://semver.org/>.
 
 Licensed under [The MIT License](LICENSE).
 
-[license-url]: https://github.com/mashape/httpsnippet/blob/master/LICENSE
+[license-url]: https://github.com/Mashape/httpsnippet/blob/master/LICENSE
 
-[travis-url]: https://travis-ci.org/mashape/httpsnippet
-[travis-image]: https://img.shields.io/travis/mashape/httpsnippet.svg?style=flat-square
+[travis-url]: https://travis-ci.org/Mashape/httpsnippet
+[travis-image]: https://img.shields.io/travis/Mashape/httpsnippet.svg?style=flat-square
 
 [npm-url]: https://www.npmjs.com/package/httpsnippet
 [npm-license]: https://img.shields.io/npm/l/httpsnippet.svg?style=flat-square
 [npm-version]: https://img.shields.io/npm/v/httpsnippet.svg?style=flat-square
 [npm-downloads]: https://img.shields.io/npm/dm/httpsnippet.svg?style=flat-square
 
-[codeclimate-url]: https://codeclimate.com/github/mashape/httpsnippet
-[codeclimate-quality]: https://img.shields.io/codeclimate/github/mashape/httpsnippet.svg?style=flat-square
-[codeclimate-coverage]: https://img.shields.io/codeclimate/coverage/github/mashape/httpsnippet.svg?style=flat-square
+[codeclimate-url]: https://codeclimate.com/github/Mashape/httpsnippet
+[codeclimate-quality]: https://img.shields.io/codeclimate/github/Mashape/httpsnippet.svg?style=flat-square
+[codeclimate-coverage]: https://img.shields.io/codeclimate/coverage/github/Mashape/httpsnippet.svg?style=flat-square
 
-[david-url]: https://david-dm.org/mashape/httpsnippet
-[david-image]: https://img.shields.io/david/mashape/httpsnippet.svg?style=flat-square
+[david-url]: https://david-dm.org/Mashape/httpsnippet
+[david-image]: https://img.shields.io/david/Mashape/httpsnippet.svg?style=flat-square
