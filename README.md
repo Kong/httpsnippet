@@ -34,6 +34,8 @@ currently the following output [targets](/src/targets) are supported:
   - [CoHTTP](https://github.com/mirage/ocaml-cohttp)
 - PHP
   - [ext-curl](http://php.net/manual/en/book.curl.php)
+- Python
+  - [Python 3](https://docs.python.org/3/library/http.client.html)
 - [Wget](https://www.gnu.org/software/wget/)
 
 ## Installation
