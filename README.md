@@ -24,7 +24,7 @@ See it in action on companion service: [APIembed](https://apiembed.com/)
 
 ## Targets
 
-currently the following output [targets](/src/targets) are supported:
+Currently the following output [targets](/src/targets) are supported:
 
 - [cURL](http://curl.haxx.se/)
 - [Go](http://golang.org/pkg/net/http/#NewRequest)
@@ -41,6 +41,8 @@ currently the following output [targets](/src/targets) are supported:
 - Python
   - [Python 3](https://docs.python.org/3/library/http.client.html)
 - [Wget](https://www.gnu.org/software/wget/)
+- Objective-C
+  - [NSURLSession](https://developer.apple.com/library/mac/documentation/Foundation/Reference/NSURLSession_class/index.html)
 
 ## Installation
 
@@ -102,6 +104,7 @@ process single file (assumes [HAR Request Object](http://www.softwareishard.com/
   }
 }
 ```
+
 ```shell
 httpsnippet my-api-endpoint.json --target php --output ./snippets
 ```
@@ -149,7 +152,7 @@ console.log(snippet.convert('curl', {
   indent: '\t';
 }));
 
-// generate nodeJS output
+// generate Node.js output
 console.log(snippet.convert('node'));
 
 // generate PHP output
@@ -222,6 +225,16 @@ module.exports.info = {
 | `short`   | `false` | use short form of cURL CLI options                                       |
 | `indent`  | `  `    | line break & indent output value, set to `false` to disable line breaks  |
 | `verbose` | `false` | by default, `--quiet` is always used, unless `verbose` is set to `true`  |
+
+### Objective-C
+
+##### Native
+
+| Option    | Default | Description                                                              |
+| --------- | ------- | ------------------------------------------------------------------------ |
+| `timeout` | `10`    | NSURLRequest timeout                                                     |
+| `indent`  | `  `    | line break & indent output value, set to `false` to disable line         |
+| `pretty`  | `true`  | indent extracted headers/parameters in `NSDictionary` litterals          |
 
 ## Bugs and feature requests
 

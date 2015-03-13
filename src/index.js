@@ -88,6 +88,7 @@ var HTTPSnippet = function (req, lang) {
           this.source.postData.text += data
         }.bind(this)))
 
+        this.source.postData.boundary = form.getBoundary()
         this.source.headersObj['content-type'] = 'multipart/form-data; boundary=' + form.getBoundary()
         break
 
