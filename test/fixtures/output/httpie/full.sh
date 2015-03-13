@@ -1,5 +1,5 @@
-echo "foo=bar" |  \
-  http POST http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value \
+echo foo=bar |  \
+  http POST 'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value' \
   accept:application/json \
   content-type:application/x-www-form-urlencoded \
-  cookie:foo=bar; bar=baz
+  cookie:'foo=bar; bar=baz'

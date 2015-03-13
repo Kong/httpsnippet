@@ -2,6 +2,18 @@
 
 var util = require('util')
 
+var shellQuote = function (value) {
+  // Unless `value` is a simple shell-safe string, quote it.
+  var shellSafe = /^[a-z0-9-_/.@%^=:]+$/i
+  if (!shellSafe.test(value)) {
+    // Use "strong quoting" using single quotes so that we only need
+    // to deal with nested single quote characters.
+    // <http://wiki.bash-hackers.org/syntax/quoting#strong_quoting>
+    return util.format("'%s'", value.replace(/'/g, "'\\''"))
+  }
+  return value
+}
+
 module.exports = function (source, options) {
   var opts = util._extend({
     queryParams: false,
@@ -22,7 +34,7 @@ module.exports = function (source, options) {
 
   // start with body pipe
   if (source.postData && source.postData.text) {
-    code.push(util.format('echo %s | ', JSON.stringify(source.postData.text)))
+    code.push(util.format('echo %s | ', shellQuote(source.postData.text)))
   }
 
   var flags = []
@@ -63,7 +75,7 @@ module.exports = function (source, options) {
     flags.push(util.format('--timeout=%s', opts.timeout))
   }
 
-  code.push(util.format('http %s%s %s', flags.length ? flags.join(' ') + ' ' : '', source.method, opts.queryParams ? source.url : source.fullUrl))
+  code.push(util.format('http %s%s %s', flags.length ? flags.join(' ') + ' ' : '', source.method, shellQuote(opts.queryParams ? source.url : source.fullUrl)))
 
   // construct query params
   if (opts.queryParams) {
@@ -74,23 +86,23 @@ module.exports = function (source, options) {
 
       if (util.isArray(value)) {
         value.map(function (val) {
-          code.push(util.format('%s==%s', name, val))
+          code.push(util.format('%s==%s', name, shellQuote(val)))
         })
       } else {
-        code.push(util.format('%s==%s', name, value))
+        code.push(util.format('%s==%s', name, shellQuote(value)))
       }
     })
   }
 
   // construct headers
   Object.keys(source.allHeaders).sort().map(function (key) {
-    code.push(util.format('%s:%s', key, source.allHeaders[key]))
+    code.push(util.format('%s:%s', key, shellQuote(source.allHeaders[key])))
   })
 
   // construct post params
   if (!source.postData.text && source.postData.params && source.postData.params.length) {
     source.postData.params.map(function (param) {
-      code.push(util.format('%s:%s', param.name, param.value))
+      code.push(util.format('%s:%s', param.name, shellQuote(param.value)))
     })
   }
 
