@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var util = require('util');
+var util = require('util')
 
 module.exports = {
   /**
@@ -10,7 +10,7 @@ module.exports = {
    * @return {string}
    */
   blankString: function (length) {
-    return Array.apply(null, new Array(length)).map(String.prototype.valueOf, ' ').join('');
+    return Array.apply(null, new Array(length)).map(String.prototype.valueOf, ' ').join('')
   },
 
   /**
@@ -32,9 +32,9 @@ module.exports = {
    *   NSDictionary *params = @{ @"a": @"b", @"c": @"d" };
    */
   nsDictionaryBuilder: function (name, parameters, indent) {
-    var dicOpening = 'NSDictionary *' + name + ' = ';
-    var dicLiteral = this.literalRepresentation(parameters, indent ? dicOpening.length : null);
-    return dicOpening + dicLiteral + ';';
+    var dicOpening = 'NSDictionary *' + name + ' = '
+    var dicLiteral = this.literalRepresentation(parameters, indent ? dicOpening.length : null)
+    return dicOpening + dicLiteral + ';'
   },
 
   /**
@@ -42,9 +42,9 @@ module.exports = {
    * @see nsDictionaryBuilder
    */
   nsArrayBuilder: function (name, parameters, indent) {
-    var dicOpening = 'NSArray *' + name + ' = ';
-    var dicLiteral = this.literalRepresentation(parameters, indent ? dicOpening.length : null);
-    return dicOpening + dicLiteral + ';';
+    var arrOpening = 'NSArray *' + name + ' = '
+    var arrLiteral = this.literalRepresentation(parameters, indent ? arrOpening.length : null)
+    return arrOpening + arrLiteral + ';'
   },
 
   /**
@@ -54,24 +54,24 @@ module.exports = {
    * @return {string}
    */
   literalRepresentation: function (value, indentation) {
-    var join = indentation === undefined ? ', ' : ',\n   ' + this.blankString(indentation);
+    var join = indentation === undefined ? ', ' : ',\n   ' + this.blankString(indentation)
 
     switch (Object.prototype.toString.call(value)) {
       case '[object Number]':
-        return '@' + value;
+        return '@' + value
       case '[object Array]':
         var values_representation = value.map(function (v) {
-          return this.literalRepresentation(v);
-        }.bind(this));
-        return '@[ ' + values_representation.join(join) + ' ]';
+          return this.literalRepresentation(v)
+        }.bind(this))
+        return '@[ ' + values_representation.join(join) + ' ]'
       case '[object Object]':
-        var keyValuePairs = [];
+        var keyValuePairs = []
         for (var k in value) {
-          keyValuePairs.push(util.format('@"%s": %s', k, this.literalRepresentation(value[k])));
+          keyValuePairs.push(util.format('@"%s": %s', k, this.literalRepresentation(value[k])))
         }
-        return '@{ ' + keyValuePairs.join(join) + ' }';
+        return '@{ ' + keyValuePairs.join(join) + ' }'
       default:
-        return '@"' + value.replace(/"/g, '\\"') + '"';
+        return '@"' + value.replace(/"/g, '\\"') + '"'
     }
   }
-};
+}
