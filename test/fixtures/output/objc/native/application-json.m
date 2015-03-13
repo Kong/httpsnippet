@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-NSDictionary *headers = @{ @"Content-Type": @"application/json" };
+NSDictionary *headers = @{ @"content-type": @"application/json" };
 NSDictionary *parameters = @{ @"number": @1,
                               @"string": @"f\"oo",
                               @"arr": @[ @1, @2, @3 ],
@@ -19,7 +19,11 @@ NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWit
 NSURLSession *session = [NSURLSession sharedSession];
 NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
                                             completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-
-}];
-
+                                                if (error) {
+                                                    NSLog(@"%@", error);
+                                                } else {
+                                                    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
+                                                    NSLog(@"%@", httpResponse);
+                                                }
+                                            }];
 [dataTask resume];

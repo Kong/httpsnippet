@@ -38,12 +38,24 @@ module.exports = {
   },
 
   /**
+   * Similar to nsDictionaryBuilder but for NSArray literals.
+   * @see nsDictionaryBuilder
+   */
+  nsArrayBuilder: function (name, parameters, indent) {
+    var dicOpening = 'NSArray *' + name + ' = ';
+    var dicLiteral = this.literalRepresentation(parameters, indent ? dicOpening.length : null);
+    return dicOpening + dicLiteral + ';';
+  },
+
+  /**
    * Create a valid Objective-C string of a literal value according to its type.
    *
    * @param {*} value Any JavaScript literal
    * @return {string}
    */
   literalRepresentation: function (value, indentation) {
+    var join = indentation === undefined ? ', ' : ',\n   ' + this.blankString(indentation);
+
     switch (Object.prototype.toString.call(value)) {
       case '[object Number]':
         return '@' + value;
@@ -51,18 +63,15 @@ module.exports = {
         var values_representation = value.map(function (v) {
           return this.literalRepresentation(v);
         }.bind(this));
-        return '@[ ' + values_representation.join(', ') + ' ]';
+        return '@[ ' + values_representation.join(join) + ' ]';
       case '[object Object]':
         var keyValuePairs = [];
         for (var k in value) {
           keyValuePairs.push(util.format('@"%s": %s', k, this.literalRepresentation(value[k])));
         }
-
-        var join = indentation === undefined ? ', ' : ',\n   ' + this.blankString(indentation);
-
         return '@{ ' + keyValuePairs.join(join) + ' }';
       default:
         return '@"' + value.replace(/"/g, '\\"') + '"';
     }
   }
-}
+};
