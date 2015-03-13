@@ -33,7 +33,7 @@ module.exports = {
    */
   nsDictionaryBuilder: function (name, parameters, indent) {
     var dicOpening = 'NSDictionary *' + name + ' = '
-    var dicLiteral = this.literalRepresentation(parameters, indent ? dicOpening.length : null)
+    var dicLiteral = this.literalRepresentation(parameters, indent ? dicOpening.length : undefined)
     return dicOpening + dicLiteral + ';'
   },
 
@@ -43,7 +43,7 @@ module.exports = {
    */
   nsArrayBuilder: function (name, parameters, indent) {
     var arrOpening = 'NSArray *' + name + ' = '
-    var arrLiteral = this.literalRepresentation(parameters, indent ? arrOpening.length : null)
+    var arrLiteral = this.literalRepresentation(parameters, indent ? arrOpening.length : undefined)
     return arrOpening + arrLiteral + ';'
   },
 

@@ -230,8 +230,9 @@ module.exports.info = {
 
 | Option    | Default | Description                                                              |
 | --------- | ------- | ------------------------------------------------------------------------ |
-| `timeout` | `10.0`  | NSURLRequest timeout                                                     |
-| `indent`  | `true`  | line break & indent NSDictionary literals                                |
+| `timeout` | `10`    | NSURLRequest timeout                                                     |
+| `indent`  | `  `    | line break & indent output value, set to `false` to disable line         |
+| `pretty`  | `true`  | indent extracted headers/parameters in `NSDictionary` litterals          |
 
 ## Bugs and feature requests
 
