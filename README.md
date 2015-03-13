@@ -1,8 +1,10 @@
 # HTTP Snippet [![version][npm-version]][npm-url] [![License][npm-license]][license-url]
 
-HTTP Request snippet generator for *most* languages.
+HTTP Request snippet generator for *many* languages.
 
 Relies on the popular [HAR](http://www.softwareishard.com/blog/har-12-spec/#request) format to import data and describe HTTP calls.
+
+See it in action on companion service: [APIembed](https://apiembed.com/)
 
 [![Build Status][travis-image]][travis-url]
 [![Downloads][npm-downloads]][npm-url]
