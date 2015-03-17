@@ -34,6 +34,7 @@ var HTTPSnippet = function (req, lang) {
     // construct query string object
     this.source.queryObj = {}
     this.source.headersObj = {}
+    this.source.cookiesObj = {}
     this.source.allHeaders = {}
     this.source.postData.jsonObj = false
     this.source.postData.paramsObj = false
@@ -51,6 +52,14 @@ var HTTPSnippet = function (req, lang) {
       this.source.headersObj = this.source.headers.reduceRight(function (headers, header) {
         headers[header.name.toLowerCase()] = header.value
         return headers
+      }, {})
+    }
+
+    // construct headers objects
+    if (this.source.cookies && this.source.cookies.length) {
+      this.source.cookiesObj = this.source.cookies.reduceRight(function (cookies, cookie) {
+        cookies[cookie.name] = cookie.value
+        return cookies
       }, {})
     }
 
