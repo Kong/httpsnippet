@@ -52,11 +52,12 @@ module.exports = function (source, options) {
       source.postData.params.forEach(function (param) {
         var attachement = {}
 
-        if (param.value) {
-          attachement.value = param.value
-        } else if (param.fileName) {
+        if (param.fileName && !param.value) {
           includeFS = true
+
           attachement.value = 'fs.createReadStream("' + param.fileName + '")'
+        } else if (param.value) {
+          attachement.value = param.value
         }
 
         if (param.fileName) {
@@ -73,7 +74,7 @@ module.exports = function (source, options) {
       break
 
     default:
-      if (source.postData.text !== '') {
+      if (source.postData.text) {
         reqOpts.body = source.postData.text
       }
   }
