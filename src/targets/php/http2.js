@@ -28,10 +28,6 @@ module.exports = function (source, options) {
     code.push(null)
   }
 
-  if (!~helpers.methods.indexOf(source.method.toUpperCase())) {
-    code.push(util.format("HttpRequest::methodRegister('%s');", source.method))
-  }
-
   code.push('$client = new http\\Client;')
   code.push('$request = new http\\Client\\Request;')
   code.push(null)
