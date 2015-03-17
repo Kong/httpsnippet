@@ -1,7 +1,7 @@
 'use strict'
 
 var util = require('util')
-var shell = require('../helpers/shell')
+var shell = require('../../helpers/shell')
 
 module.exports = function (source, options) {
   var opts = util._extend({
@@ -40,6 +40,5 @@ module.exports.info = {
   key: 'wget',
   title: 'Wget',
   link: 'https://www.gnu.org/software/wget/',
-  description: 'a free software package for retrieving files using HTTP, HTTPS',
-  extname: '.sh'
+  description: 'a free software package for retrieving files using HTTP, HTTPS'
 }

@@ -1,7 +1,7 @@
 'use strict'
 
 var util = require('util')
-var shell = require('../helpers/shell')
+var shell = require('../../helpers/shell')
 
 module.exports = function (source, options) {
   var opts = util._extend({
@@ -49,6 +49,5 @@ module.exports.info = {
   key: 'curl',
   title: 'cURL',
   link: 'http://curl.haxx.se/',
-  description: 'curl is a command line tool and library for transferring data with URL syntax',
-  extname: '.sh'
+  description: 'curl is a command line tool and library for transferring data with URL syntax'
 }

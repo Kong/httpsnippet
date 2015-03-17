@@ -6,7 +6,7 @@ require('should')
 
 module.exports = function (HTTPSnippet, fixtures) {
   it('should ask for verbose output', function () {
-    var result = new HTTPSnippet(fixtures.requests.short).convert('httpie', {
+    var result = new HTTPSnippet(fixtures.requests.short).convert('shell', 'httpie', {
       indent: false,
       verbose: true
     })
@@ -16,7 +16,7 @@ module.exports = function (HTTPSnippet, fixtures) {
   })
 
   it('should add flags', function () {
-    var result = new HTTPSnippet(fixtures.requests.short).convert('httpie', {
+    var result = new HTTPSnippet(fixtures.requests.short).convert('shell', 'httpie', {
       indent: false,
       cert: 'foo',
       verbose: true
@@ -27,7 +27,7 @@ module.exports = function (HTTPSnippet, fixtures) {
   })
 
   it('should use custom indentation', function () {
-    var result = new HTTPSnippet(fixtures.requests.full).convert('httpie', {
+    var result = new HTTPSnippet(fixtures.requests.full).convert('shell', 'httpie', {
       indent: '@'
     })
 
@@ -36,7 +36,7 @@ module.exports = function (HTTPSnippet, fixtures) {
   })
 
   it('should use queryString parameters', function () {
-    var result = new HTTPSnippet(fixtures.requests.query).convert('httpie', {
+    var result = new HTTPSnippet(fixtures.requests.query).convert('shell', 'httpie', {
       indent: false,
       queryParams: true
     })

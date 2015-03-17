@@ -1,7 +1,7 @@
 'use strict'
 
 var util = require('util')
-var quote = require('../helpers/shell/quote')
+var quote = require('../../helpers/shell/quote')
 
 module.exports = function (source, options) {
   var opts = util._extend({
@@ -102,6 +102,5 @@ module.exports.info = {
   key: 'httpie',
   title: 'HTTPie',
   link: 'http://httpie.org/',
-  description: 'a CLI, cURL-like tool for humans',
-  extname: '.sh'
+  description: 'a CLI, cURL-like tool for humans'
 }
