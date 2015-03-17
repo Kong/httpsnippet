@@ -1,3 +1,13 @@
+/**
+ * @description
+ * HTTP code snippet generator for PHP using curl-ext.
+ *
+ * @author
+ * @AhmadNassri
+ *
+ * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
+ */
+
 'use strict'
 
 var util = require('util')

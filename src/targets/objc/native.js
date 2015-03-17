@@ -1,14 +1,11 @@
 /**
- * This file is part of the httpsnippet project (https://github.com/Mashape/httpsnippet)
- * If you have questions or issues regarding its implementation, please open an issue.
- * If you have questions or issues regarding the generated code snippet, please open an issue mentioning its author/contributors.
- *
  * @description
  * HTTP code snippet generator for Objective-C using NSURLSession.
- * This file tries to generate a flexible snippet than can easily be edited once pasted by the user.
  *
  * @author
  * @thibaultCha
+ *
+ * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
 'use strict'
