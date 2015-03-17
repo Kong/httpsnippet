@@ -26,23 +26,27 @@ See it in action on companion service: [APIembed](https://apiembed.com/)
 
 Currently the following output [targets](/src/targets) are supported:
 
-- [cURL](http://curl.haxx.se/)
-- [Go](http://golang.org/pkg/net/http/#NewRequest)
-- [HTTPie](http://httpie.org)
+- Shell
+  - [cURL](http://curl.haxx.se/)
+  - [HTTPie](http://httpie.org)
+  - [Wget](https://www.gnu.org/software/wget/)
 - Java
   - [Unirest](http://unirest.io/java.html)
 - Node.js
   - [Native](http://nodejs.org/api/http.html#http_http_request_options_callback)
   - [Request](https://github.com/request/request)
+  - [Unirest](http://unirest.io/nodejs.html)
 - OCaml
   - [CoHTTP](https://github.com/mirage/ocaml-cohttp)
 - PHP
   - [ext-curl](http://php.net/manual/en/book.curl.php)
+  - [pecl/http v1](http://php.net/manual/en/book.http.php)
+  - [pecl/http v2](http://devel-m6w6.rhcloud.com/mdref/http)
 - Python
   - [Python 3](https://docs.python.org/3/library/http.client.html)
-- [Wget](https://www.gnu.org/software/wget/)
 - Objective-C
   - [NSURLSession](https://developer.apple.com/library/mac/documentation/Foundation/Reference/NSURLSession_class/index.html)
+- [Go](http://golang.org/pkg/net/http/#NewRequest)
 
 ## Installation
 
