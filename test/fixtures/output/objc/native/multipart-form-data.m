@@ -11,8 +11,7 @@ for (NSDictionary *param in parameters) {
     if (param[@"fileName"]) {
         [body appendFormat:@"Content-Disposition:form-data; name=\"%@\"; filename=\"%@\"\r\n", param[@"name"], param[@"fileName"]];
         [body appendFormat:@"Content-Type: %@\r\n\r\n", param[@"contentType"]];
-        [body appendFormat:@"%@", [[NSString alloc] initWithContentsOfFile:param[@"fileName"]
-                                                                  encoding:NSUTF8StringEncoding error:&error]];
+        [body appendFormat:@"%@", [NSString stringWithContentsOfFile:param[@"fileName"] encoding:NSUTF8StringEncoding error:&error]];
         if (error) {
             NSLog(@"%@", error);
         }
@@ -22,7 +21,7 @@ for (NSDictionary *param in parameters) {
     }
 }
 [body appendFormat:@"\r\n--%@--\r\n", boundary];
-NSData *postData = [[NSData alloc] initWithData:[body dataUsingEncoding:NSUTF8StringEncoding]];
+NSData *postData = [body dataUsingEncoding:NSUTF8StringEncoding];
 
 NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://mockbin.com/har"]
                                                        cachePolicy:NSURLRequestUseProtocolCachePolicy

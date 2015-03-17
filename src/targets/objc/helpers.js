@@ -14,37 +14,28 @@ module.exports = {
   },
 
   /**
-   * Create a string corresponding to a valid NSDictionary declaration and initialization for Objective-C.
+   * Create a string corresponding to a valid declaration and initialization of an Objective-C object litteral.
    *
-   * @param {string} name Desired name of the NSDictionary instance
-   * @param {Object} parameters Key-value object of parameters to translate to an Objective-C NSDictionary litearal
-   * @param {boolean} indent If true, will declare the NSDictionary litteral by indenting each new key/value pair.
-   * @return {string} A valid Objective-C declaration and initialization of an NSDictionary.
+   * @param {string} nsClass Class of the litteral
+   * @param {string} name Desired name of the instance
+   * @param {Object} parameters Key-value object of parameters to translate to an Objective-C object litearal
+   * @param {boolean} indent If true, will declare the litteral by indenting each new key/value pair.
+   * @return {string} A valid Objective-C declaration and initialization of an Objective-C object litteral.
    *
    * @example
-   *   nsDictionaryBuilder('params', {a: 'b', c: 'd'}, true)
+   *   nsDeclarationBuilder('NSDictionary', 'params', {a: 'b', c: 'd'}, true)
    *   // returns:
    *   NSDictionary *params = @{ @"a": @"b",
    *                             @"c": @"d" };
    *
-   *   nsDictionaryBuilder('params', {a: 'b', c: 'd'})
+   *   nsDeclarationBuilder('NSDictionary', 'params', {a: 'b', c: 'd'})
    *   // returns:
    *   NSDictionary *params = @{ @"a": @"b", @"c": @"d" };
    */
-  nsDictionaryBuilder: function (name, parameters, indent) {
-    var dicOpening = 'NSDictionary *' + name + ' = '
-    var dicLiteral = this.literalRepresentation(parameters, indent ? dicOpening.length : undefined)
-    return dicOpening + dicLiteral + ';'
-  },
-
-  /**
-   * Similar to nsDictionaryBuilder but for NSArray literals.
-   * @see nsDictionaryBuilder
-   */
-  nsArrayBuilder: function (name, parameters, indent) {
-    var arrOpening = 'NSArray *' + name + ' = '
-    var arrLiteral = this.literalRepresentation(parameters, indent ? arrOpening.length : undefined)
-    return arrOpening + arrLiteral + ';'
+  nsDeclarationBuilder: function (nsClass, name, parameters, indent) {
+    var opening = nsClass + ' *' + name + ' = '
+    var literal = this.literalRepresentation(parameters, indent ? opening.length : undefined)
+    return opening + literal + ';'
   },
 
   /**
