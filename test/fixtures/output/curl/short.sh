@@ -1,2 +1,2 @@
 curl --request GET \
-  --url "http://mockbin.com/har"
+  --url http://mockbin.com/har

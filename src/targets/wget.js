@@ -1,6 +1,7 @@
 'use strict'
 
 var util = require('util')
+var shell = require('../helpers/shell')
 
 module.exports = function (source, options) {
   var opts = util._extend({
@@ -17,19 +18,20 @@ module.exports = function (source, options) {
     code.push(util.format('wget %s', opts.short ? '-q' : '--quiet'))
   }
 
-  code.push(util.format('--method %s', source.method))
+  code.push(util.format('--method %s', shell.quote(source.method)))
 
   Object.keys(source.allHeaders).map(function (key) {
-    code.push(util.format('--header "%s: %s"', key, source.allHeaders[key]))
+    var header = util.format('%s: %s', key, source.allHeaders[key])
+    code.push(util.format('--header %s', shell.quote(header)))
   })
 
   if (source.postData.text) {
-    code.push('--body-data ' + JSON.stringify(source.postData.text))
+    code.push('--body-data ' + shell.escape(shell.quote(source.postData.text)))
   }
 
   code.push(opts.short ? '-O' : '--output-document')
 
-  code.push(util.format('- "%s"', source.fullUrl))
+  code.push(util.format('- %s', shell.quote(source.fullUrl)))
 
   return code.join(opts.indent !== false ? ' \\\n' + opts.indent : ' ')
 }
