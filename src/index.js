@@ -2,7 +2,7 @@
 
 var debug = require('debug')('httpsnippet')
 var es = require('event-stream')
-var FormData = require('form-data')
+var MultiPartForm = require('form-data')
 var qs = require('querystring')
 var reducer = require('./reducer')
 var targets = require('./targets')
@@ -72,7 +72,7 @@ var HTTPSnippet = function (req, lang) {
         this.source.postData.text = ''
         this.source.postData.mimeType = 'multipart/form-data'
 
-        var form = new FormData()
+        var form = new MultiPartForm()
 
         // easter egg
         form._boundary = '---011000010111000001101001'
