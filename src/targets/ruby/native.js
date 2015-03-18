@@ -27,7 +27,7 @@ module.exports = function (source, options) {
 
   code.push(null)
 
-  code.push('conn = Net::HTTP.new(url.host, url.port)')
+  code.push('http = Net::HTTP.new(url.host, url.port)')
 
   if (source.uriObj.protocol === 'https:') {
     code.push('http.use_ssl = true')
@@ -51,7 +51,7 @@ module.exports = function (source, options) {
 
   code.push(null)
 
-  code.push('response = conn.request(request)')
+  code.push('response = http.request(request)')
   code.push('puts response.read_body')
 
   return code.join('\n')

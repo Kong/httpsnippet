@@ -3,11 +3,11 @@ require 'net/http'
 
 url = URI("http://mockbin.com/har")
 
-conn = Net::HTTP.new(url.host, url.port)
+http = Net::HTTP.new(url.host, url.port)
 
 request = Net::HTTP::Post.new(url)
 request["content-type"] = 'application/json'
 request.body = "{\"number\": 1, \"string\": \"f\\\"oo\", \"arr\": [1, 2, 3], \"nested\": {\"a\": \"b\"}, \"arr_mix\": [1, \"a\", {\"arr_mix_nested\": {}}] }"
 
-response = conn.request(request)
+response = http.request(request)
 puts response.read_body

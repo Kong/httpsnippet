@@ -3,11 +3,11 @@ require 'net/http'
 
 url = URI("http://mockbin.com/har")
 
-conn = Net::HTTP.new(url.host, url.port)
+http = Net::HTTP.new(url.host, url.port)
 
 request = Net::HTTP::Post.new(url)
 request["content-type"] = 'multipart/form-data; boundary=---011000010111000001101001'
 request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"foo\"; filename=\"hello.txt\"\r\nContent-Type: text/plain\r\n\r\nHello World\r\n-----011000010111000001101001--"
 
-response = conn.request(request)
+response = http.request(request)
 puts response.read_body
