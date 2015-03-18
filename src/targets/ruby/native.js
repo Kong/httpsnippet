@@ -13,13 +13,12 @@ module.exports = function (source, options) {
   // and if doesn't exist then we build a custom class for it
   var method = source.method.toUpperCase()
   var methods = ['GET', 'POST', 'HEAD', 'DELETE', 'PATCH', 'PUT', 'OPTIONS', 'COPY', 'LOCK', 'UNLOCK', 'MOVE', 'TRACE']
-  method = method.toLowerCase()
-  method = method.charAt(0).toUpperCase() + method.substring(1)
+  var capMethod = method.charAt(0) + method.substring(1).toLowerCase()
   if (methods.indexOf(this.source.method.toLowerCase()) === 0) {
-    var hasBody = self.source.postData.text ? 'true' : 'false'
-    code.push('class Net::HTTP::Checkout < Net::HTTPRequest')
-    code.push(util.format('  METHOD = \'%s\'', method))
-    code.push(util.format('  REQUEST_HAS_BODY = \'%s\'', hasBody))
+    code.push('class Net::HTTP::%s < Net::HTTPRequest')
+    code.push(util.format('class Net::HTTP::%s < Net::HTTPRequest', capMethod))
+    code.push(util.format('  METHOD = \'%s\'', method.toUpperCase()))
+    code.push(util.format('  REQUEST_HAS_BODY = \'%s\'', self.source.postData.text ? 'true' : 'false'))
     code.push('  RESPONSE_HAS_BODY = true')
     code.push('end')
     code.push(null)
@@ -38,7 +37,7 @@ module.exports = function (source, options) {
 
   code.push(null)
 
-  code.push(util.format('request = Net::HTTP::%s.new(url)', method))
+  code.push(util.format('request = Net::HTTP::%s.new(url)', capMethod))
 
   var headers = Object.keys(self.source.allHeaders)
   if (headers.length) {
