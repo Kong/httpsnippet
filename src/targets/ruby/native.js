@@ -14,7 +14,7 @@ module.exports = function (source, options) {
   var method = source.method.toUpperCase()
   var methods = ['GET', 'POST', 'HEAD', 'DELETE', 'PATCH', 'PUT', 'OPTIONS', 'COPY', 'LOCK', 'UNLOCK', 'MOVE', 'TRACE']
   var capMethod = method.charAt(0) + method.substring(1).toLowerCase()
-  if (methods.indexOf(this.source.method.toLowerCase()) === 0) {
+  if (methods.indexOf(method) < 0) {
     code.push('class Net::HTTP::%s < Net::HTTPRequest')
     code.push(util.format('class Net::HTTP::%s < Net::HTTPRequest', capMethod))
     code.push(util.format('  METHOD = \'%s\'', method.toUpperCase()))
