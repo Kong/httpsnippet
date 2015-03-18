@@ -5,8 +5,8 @@ var util = require('util')
 module.exports = function (source, options) {
   var self = this
   var code = []
-  code.push('require \'uri\'')
-  code.push('require \'net/http\'')
+  code.push("require 'uri'")
+  code.push("require 'net/http'")
   code.push(null)
 
   // To support custom methods we check for the supported methods
@@ -15,10 +15,9 @@ module.exports = function (source, options) {
   var methods = ['GET', 'POST', 'HEAD', 'DELETE', 'PATCH', 'PUT', 'OPTIONS', 'COPY', 'LOCK', 'UNLOCK', 'MOVE', 'TRACE']
   var capMethod = method.charAt(0) + method.substring(1).toLowerCase()
   if (methods.indexOf(method) < 0) {
-    code.push('class Net::HTTP::%s < Net::HTTPRequest')
     code.push(util.format('class Net::HTTP::%s < Net::HTTPRequest', capMethod))
-    code.push(util.format('  METHOD = \'%s\'', method.toUpperCase()))
-    code.push(util.format('  REQUEST_HAS_BODY = \'%s\'', self.source.postData.text ? 'true' : 'false'))
+    code.push(util.format("  METHOD = '%s'", method.toUpperCase()))
+    code.push(util.format("  REQUEST_HAS_BODY = '%s'", self.source.postData.text ? 'true' : 'false'))
     code.push('  RESPONSE_HAS_BODY = true')
     code.push('end')
     code.push(null)
@@ -28,7 +27,7 @@ module.exports = function (source, options) {
 
   code.push(null)
 
-  code.push('conn = Net::HTTP.new(url.host, url.port)')
+  code.push('http = Net::HTTP.new(url.host, url.port)')
 
   if (source.uriObj.protocol === 'https:') {
     code.push('http.use_ssl = true')
@@ -52,7 +51,7 @@ module.exports = function (source, options) {
 
   code.push(null)
 
-  code.push('response = conn.request(request)')
+  code.push('response = http.request(request)')
   code.push('puts response.read_body')
 
   return code.join('\n')
@@ -61,6 +60,6 @@ module.exports = function (source, options) {
 module.exports.info = {
   key: 'native',
   title: 'net::http',
-  link: 'http://ruby-doc.org/stdlib-2.2.1/libdoc/net/http/rdoc/Net/HTTPGenericRequest.html',
-  description: 'Ruby request client'
+  link: 'http://ruby-doc.org/stdlib-2.2.1/libdoc/net/http/rdoc/Net/HTTP.html',
+  description: 'Ruby HTTP client'
 }

@@ -36,8 +36,8 @@ Currently the following output [targets](/src/targets) are supported:
   - [Native](http://nodejs.org/api/http.html#http_http_request_options_callback)
   - [Request](https://github.com/request/request)
   - [Unirest](http://unirest.io/nodejs.html)
-- OCaml
-  - [CoHTTP](https://github.com/mirage/ocaml-cohttp)
+- Ruby
+  - [Native](http://ruby-doc.org/stdlib-2.2.1/libdoc/net/http/rdoc/Net/HTTP.html)
 - PHP
   - [ext-curl](http://php.net/manual/en/book.curl.php)
   - [pecl/http v1](http://php.net/manual/en/book.http.php)
@@ -46,7 +46,10 @@ Currently the following output [targets](/src/targets) are supported:
   - [Python 3](https://docs.python.org/3/library/http.client.html)
 - Objective-C
   - [NSURLSession](https://developer.apple.com/library/mac/documentation/Foundation/Reference/NSURLSession_class/index.html)
-- [Go](http://golang.org/pkg/net/http/#NewRequest)
+- Go
+  - [Native](http://golang.org/pkg/net/http/#NewRequest)
+- OCaml
+  - [CoHTTP](https://github.com/mirage/ocaml-cohttp)
 
 ## Installation
 
