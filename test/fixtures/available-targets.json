@@ -146,5 +146,19 @@
         "description": "Lightweight HTTP Request Client Library"
       }
     ]
+  },
+  {
+    "key": "ruby",
+    "title": "Ruby",
+    "extname": ".rb",
+    "default": "native",
+    "clients": [
+      {
+        "key": "native",
+        "title": "net::http",
+        "link": "http://ruby-doc.org/stdlib-2.2.1/libdoc/net/http/rdoc/Net/HTTPGenericRequest.html",
+        "description": "Ruby request client"
+      }
+    ]
   }
 ]
