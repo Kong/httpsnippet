@@ -156,8 +156,8 @@
       {
         "key": "native",
         "title": "net::http",
-        "link": "http://ruby-doc.org/stdlib-2.2.1/libdoc/net/http/rdoc/Net/HTTPGenericRequest.html",
-        "description": "Ruby request client"
+        "link": "http://ruby-doc.org/stdlib-2.2.1/libdoc/net/http/rdoc/Net/HTTP.html",
+        "description": "Ruby HTTP client"
       }
     ]
   }
