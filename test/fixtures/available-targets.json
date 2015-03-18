@@ -52,6 +52,26 @@
     ]
   },
   {
+    "key": "javascript",
+    "title": "JavaScript",
+    "extname": ".js",
+    "default": "xhr",
+    "clients": [
+      {
+        "key": "jquery",
+        "title": "jQuery",
+        "link": "http://api.jquery.com/jquery.ajax/",
+        "description": "Perform an asynchronous HTTP (Ajax) requests with jQuery"
+      },
+      {
+        "key": "xhr",
+        "title": "XMLHttpRequest",
+        "link": "https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest",
+        "description": "W3C Standard API that provides scripted client functionality"
+      }
+    ]
+  },
+  {
     "key": "ocaml",
     "title": "OCaml",
     "extname": ".ml",

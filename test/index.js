@@ -8,15 +8,6 @@ var HTTPSnippet = require('../src')
 require('should')
 
 describe('HTTPSnippet', function () {
-  var targets = HTTPSnippet.availableTargets()
-
-  targets.map(function (target) {
-    it('availableTargets should include ' + target.title, function (done) {
-      fixtures['available-targets'].should.containEql(target)
-      done()
-    })
-  })
-
   it('should add "uriObj" to source object', function (done) {
     var req = new HTTPSnippet(fixtures.requests.query).source
 

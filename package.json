@@ -36,7 +36,6 @@
   "devDependencies": {
     "codeclimate-test-reporter": "0.0.4",
     "glob": "^5.0.3",
-    "husky": "^0.7.0",
     "istanbul": "^0.3.8",
     "mocha": "^2.2.1",
     "should": "^5.2.0"
