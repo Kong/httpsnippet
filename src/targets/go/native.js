@@ -57,12 +57,14 @@ module.exports = function (source, options) {
   code.push('func main() {\n')
 
   // Create client
+  var client
   if (opts.timeout > 0) {
+    client = 'client'
     code.push('\tclient := http.Client{')
     code.push(util.format('\t\tTimeout: time.Duration(%s * time.Second),', opts.timeout))
     code.push('\t}\n')
   } else {
-    code.push('\tclient := &http.Client{}\n')
+    client = 'http.DefaultClient'
   }
 
   code.push(util.format('\turl := "%s"\n', source.fullUrl))
@@ -86,7 +88,7 @@ module.exports = function (source, options) {
   }
 
   // Make request
-  code.push(util.format('\tres, %s := client.Do(req)', errorPlaceholder))
+  code.push(util.format('\tres, %s := %s.Do(req)', errorPlaceholder, client))
   errorCheck()
 
   // Get Body

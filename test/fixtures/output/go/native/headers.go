@@ -8,8 +8,6 @@ import (
 
 func main() {
 
-	client := &http.Client{}
-
 	url := "http://mockbin.com/har"
 
 	req, _ := http.NewRequest("GET", url, nil)
@@ -17,7 +15,7 @@ func main() {
 	req.Header.Add("accept", "application/json")
 	req.Header.Add("x-foo", "Bar")
 
-	res, _ := client.Do(req)
+	res, _ := http.DefaultClient.Do(req)
 
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)

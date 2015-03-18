@@ -9,8 +9,6 @@ import (
 
 func main() {
 
-	client := &http.Client{}
-
 	url := "http://mockbin.com/har"
 
 	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"foo\"; filename=\"hello.txt\"\r\nContent-Type: text/plain\r\n\r\nHello World\r\n-----011000010111000001101001--")
@@ -19,7 +17,7 @@ func main() {
 
 	req.Header.Add("content-type", "multipart/form-data; boundary=---011000010111000001101001")
 
-	res, _ := client.Do(req)
+	res, _ := http.DefaultClient.Do(req)
 
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)

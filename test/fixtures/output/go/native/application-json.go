@@ -9,8 +9,6 @@ import (
 
 func main() {
 
-	client := &http.Client{}
-
 	url := "http://mockbin.com/har"
 
 	payload := strings.NewReader("{\"number\": 1, \"string\": \"f\\\"oo\", \"arr\": [1, 2, 3], \"nested\": {\"a\": \"b\"}, \"arr_mix\": [1, \"a\", {\"arr_mix_nested\": {}}] }")
@@ -19,7 +17,7 @@ func main() {
 
 	req.Header.Add("content-type", "application/json")
 
-	res, _ := client.Do(req)
+	res, _ := http.DefaultClient.Do(req)
 
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
