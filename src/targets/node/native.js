@@ -11,13 +11,14 @@
 'use strict'
 
 var util = require('util')
+var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   var opts = util._extend({
     indent: '  '
   }, options)
 
-  var code = []
+  var code = new CodeBuilder(opts.indent)
 
   var reqOpts = {
     method: source.method,
@@ -33,31 +34,22 @@ module.exports = function (source, options) {
     code.push('var querystring = require("querystring");')
   }
 
-  code.push(null)
-
-  code.push(util.format('var options = %s;', JSON.stringify(reqOpts, null, opts.indent)))
-
-  code.push(null)
-
-  code.push('var req = http.request(options, function (res) {')
-
-  code.push(opts.indent + 'var chunks = [];')
-
-  code.push(null)
-
-  code.push(opts.indent + 'res.on("data", function (chunk) {')
-  code.push(opts.indent + opts.indent + 'chunks.push(chunk);')
-  code.push(opts.indent + '});')
-
-  code.push(null)
-
-  code.push(opts.indent + 'res.on("end", function () {')
-  code.push(opts.indent + opts.indent + 'var body = Buffer.concat(chunks);')
-  code.push(opts.indent + opts.indent + 'console.log(body.toString());')
-  code.push(opts.indent + '});')
-  code.push('});')
-
-  code.push(null)
+  code.blank()
+      .push(util.format('var options = %s;', JSON.stringify(reqOpts, null, opts.indent)))
+      .blank()
+      .push('var req = http.request(options, function (res) {')
+      .push(1, 'var chunks = [];')
+      .blank()
+      .push(1, 'res.on("data", function (chunk) {')
+      .push(2, 'chunks.push(chunk);')
+      .push(1, '});')
+      .blank()
+      .push(1, 'res.on("end", function () {')
+      .push(2, 'var body = Buffer.concat(chunks);')
+      .push(2, 'console.log(body.toString());')
+      .push(1, '});')
+      .push('});')
+      .blank()
 
   if (source.postData.text) {
     code.push(util.format('req.write(%s);', JSON.stringify(source.postData.text)))
@@ -65,7 +57,7 @@ module.exports = function (source, options) {
 
   code.push('req.end();')
 
-  return code.join('\n')
+  return code.join()
 }
 
 module.exports.info = {

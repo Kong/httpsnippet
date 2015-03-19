@@ -12,6 +12,7 @@
 
 var util = require('util')
 var path = require('path')
+var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   var opts = util._extend({
@@ -19,7 +20,10 @@ module.exports = function (source, options) {
   }, options)
 
   var includeFS = false
-  var code = ['var request = require("request");', null]
+  var code = new CodeBuilder(opts.indent)
+
+  code.push('var request = require("request");')
+      .blank()
 
   var reqOpts = {
     method: source.method,
@@ -83,15 +87,15 @@ module.exports = function (source, options) {
   if (source.cookies.length) {
     reqOpts.jar = 'JAR'
 
-    code.push(null)
-    code.push('var jar = request.jar();')
+    code.blank()
+        .push('var jar = request.jar();')
 
     var url = source.url
 
     source.cookies.map(function (cookie) {
       code.push(util.format('jar.setCookie(request.cookie("%s=%s"), "%s");', encodeURIComponent(cookie.name), encodeURIComponent(cookie.value), url))
     })
-    code.push(null)
+    code.blank()
   }
 
   if (includeFS) {
@@ -99,13 +103,13 @@ module.exports = function (source, options) {
   }
 
   code.push(util.format('request(%s, %s', JSON.stringify(reqOpts, null, opts.indent), 'function (error, response, body) {'))
-  code.push(opts.indent + 'if (error) throw new Error(error);')
-  code.push(null)
-  code.push(opts.indent + 'console.log(body);')
-  code.push('});')
-  code.push(null)
+      .push(1, 'if (error) throw new Error(error);')
+      .blank()
+      .push(1, 'console.log(body);')
+      .push('});')
+      .blank()
 
-  return code.join('\n').replace('"JAR"', 'jar').replace(/"fs\.createReadStream\(\\\"(.+)\\\"\)\"/, 'fs.createReadStream("$1")')
+  return code.join().replace('"JAR"', 'jar').replace(/"fs\.createReadStream\(\\\"(.+)\\\"\)\"/, 'fs.createReadStream("$1")')
 }
 
 module.exports.info = {

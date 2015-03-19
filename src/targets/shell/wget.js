@@ -12,6 +12,7 @@
 
 var util = require('util')
 var shell = require('../../helpers/shell')
+var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   var opts = util._extend({
@@ -20,7 +21,7 @@ module.exports = function (source, options) {
     verbose: false
   }, options)
 
-  var code = []
+  var code = new CodeBuilder(opts.indent, opts.indent !== false ? ' \\\n' + opts.indent : ' ')
 
   if (opts.verbose) {
     code.push(util.format('wget %s', opts.short ? '-v' : '--verbose'))
@@ -40,10 +41,9 @@ module.exports = function (source, options) {
   }
 
   code.push(opts.short ? '-O' : '--output-document')
+      .push(util.format('- %s', shell.quote(source.fullUrl)))
 
-  code.push(util.format('- %s', shell.quote(source.fullUrl)))
-
-  return code.join(opts.indent !== false ? ' \\\n' + opts.indent : ' ')
+  return code.join()
 }
 
 module.exports.info = {

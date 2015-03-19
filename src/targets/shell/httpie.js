@@ -12,6 +12,7 @@
 
 var util = require('util')
 var quote = require('../../helpers/shell/quote')
+var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   var opts = util._extend({
@@ -29,7 +30,7 @@ module.exports = function (source, options) {
     verify: false
   }, options)
 
-  var code = []
+  var code = new CodeBuilder(opts.indent, opts.indent !== false ? ' \\\n' + opts.indent : ' ')
 
   // start with body pipe
   if (source.postData && source.postData.text) {
@@ -105,7 +106,7 @@ module.exports = function (source, options) {
     })
   }
 
-  return code.join(opts.indent !== false ? ' \\\n' + opts.indent : ' ')
+  return code.join()
 }
 
 module.exports.info = {

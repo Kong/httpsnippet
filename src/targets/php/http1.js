@@ -12,6 +12,7 @@
 
 var util = require('util')
 var helpers = require('./helpers')
+var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   var opts = util._extend({
@@ -20,68 +21,68 @@ module.exports = function (source, options) {
     closingTag: false
   }, options)
 
-  var code = []
+  var code = new CodeBuilder(opts.indent)
 
   if (!opts.noTags) {
     code.push('<?php')
-    code.push(null)
+        .blank()
   }
 
   if (!~helpers.methods.indexOf(source.method.toUpperCase())) {
-    code.push(util.format("HttpRequest::methodRegister('%s');", source.method))
+    code.push(util.format('HttpRequest::methodRegister(\'%s\');', source.method))
   }
 
   code.push('$request = new HttpRequest();')
-  code.push(util.format('$request->setUrl(%s);', helpers.convert(source.url)))
+      .push(util.format('$request->setUrl(%s);', helpers.convert(source.url)))
 
   if (~helpers.methods.indexOf(source.method.toUpperCase())) {
     code.push(util.format('$request->setMethod(HTTP_METH_%s);', source.method.toUpperCase()))
   } else {
     code.push(util.format('$request->setMethod(HttpRequest::HTTP_METH_%s);', source.method.toUpperCase()))
   }
-  code.push(null)
+
+  code.blank()
 
   if (Object.keys(source.queryObj).length) {
     code.push(util.format('$request->setQueryData(%s);', helpers.convert(source.queryObj, opts.indent)))
-    code.push(null)
+        .blank()
   }
 
   if (Object.keys(source.headersObj).length) {
     code.push(util.format('$request->setHeaders(%s);', helpers.convert(source.headersObj, opts.indent)))
-    code.push(null)
+        .blank()
   }
 
   if (Object.keys(source.cookiesObj).length) {
     code.push(util.format('$request->setCookies(%s);', helpers.convert(source.cookiesObj, opts.indent)))
-    code.push(null)
+        .blank()
   }
 
   switch (source.postData.mimeType) {
     case 'application/x-www-form-urlencoded':
       code.push(util.format('$request->setContentType(%s);', helpers.convert(source.postData.mimeType)))
-
-      code.push(util.format('$request->setPostFields(%s);', helpers.convert(source.postData.paramsObj, opts.indent)))
-      code.push(null)
+          .push(util.format('$request->setPostFields(%s);', helpers.convert(source.postData.paramsObj, opts.indent)))
+          .blank()
       break
 
     default:
       if (source.postData.text) {
         code.push(util.format('$request->setBody(%s);', helpers.convert(source.postData.text)))
-        code.push(null)
+            .blank()
       }
   }
 
   code.push('try {')
-  code.push(opts.indent + '$response = $request->send();')
-  code.push(null)
-  code.push(opts.indent + 'echo $response->getBody();')
-  code.push('} catch (HttpException $ex) {')
-  code.push(opts.indent + 'echo $ex;')
-  code.push('}')
+      .push(1, '$response = $request->send();')
+      .blank()
+      .push(1, 'echo $response->getBody();')
+      .push('} catch (HttpException $ex) {')
+      .push(1, 'echo $ex;')
+      .push('}')
 
   if (opts.closingTag) {
-    code.push(null)
-    code.push('?>')
+    code.blank()
+        .push('?>')
   }
 
   return code.join('\n')

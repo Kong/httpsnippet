@@ -11,6 +11,7 @@
 'use strict'
 
 var util = require('util')
+var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   var opts = util._extend({
@@ -18,12 +19,12 @@ module.exports = function (source, options) {
     cors: true
   }, options)
 
-  var code = []
+  var code = new CodeBuilder(opts.indent)
 
   switch (source.postData.mimeType) {
     case 'application/json':
       code.push(util.format('var data = JSON.stringify(%s);', JSON.stringify(source.postData.jsonObj, null, opts.indent)))
-      code.push(null)
+          .push(null)
       break
 
     case 'multipart/form-data':
@@ -38,12 +39,12 @@ module.exports = function (source, options) {
         delete source.allHeaders['content-type']
       }
 
-      code.push(null)
+      code.blank()
       break
 
     default:
       code.push(util.format('var data = %s;', JSON.stringify(source.postData.text || null)))
-      code.push(null)
+          .blank()
   }
 
   code.push('var xhr = new XMLHttpRequest();')
@@ -52,23 +53,23 @@ module.exports = function (source, options) {
     code.push('xhr.withCredentials = true;')
   }
 
-  code.push(null)
-
-  code.push('xhr.addEventListener("readystatechange", function () {\n\tif (this.readyState === this.DONE) {\n\t\tconsole.log(this.responseText);\n\t}\n});'.replace(/\t/g, opts.indent))
-
-  code.push(null)
-
-  code.push(util.format('xhr.open(%s, %s);', JSON.stringify(source.method), JSON.stringify(source.fullUrl)))
+  code.blank()
+      .push('xhr.addEventListener("readystatechange", function () {')
+      .push(1, 'if (this.readyState === this.DONE) {')
+      .push(2, 'console.log(this.responseText);')
+      .push(1, '}')
+      .push('});')
+      .blank()
+      .push(util.format('xhr.open(%s, %s);', JSON.stringify(source.method), JSON.stringify(source.fullUrl)))
 
   Object.keys(source.allHeaders).map(function (key) {
     code.push(util.format('xhr.setRequestHeader(%s, %s);', JSON.stringify(key), JSON.stringify(source.allHeaders[key])))
   })
 
-  code.push(null)
+  code.blank()
+      .push('xhr.send(data);')
 
-  code.push('xhr.send(data);')
-
-  return code.join('\n')
+  return code.join()
 }
 
 module.exports.info = {
