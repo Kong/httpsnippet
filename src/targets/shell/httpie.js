@@ -11,7 +11,7 @@
 'use strict'
 
 var util = require('util')
-var quote = require('../../helpers/shell/quote')
+var helpers = require('./helpers')
 var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
@@ -34,7 +34,7 @@ module.exports = function (source, options) {
 
   // start with body pipe
   if (source.postData && source.postData.text) {
-    code.push(util.format('echo %s | ', quote(source.postData.text)))
+    code.push(util.format('echo %s | ', helpers.quote(source.postData.text)))
   }
 
   var flags = []
@@ -75,7 +75,7 @@ module.exports = function (source, options) {
     flags.push(util.format('--timeout=%s', opts.timeout))
   }
 
-  code.push(util.format('http %s%s %s', flags.length ? flags.join(' ') + ' ' : '', source.method, quote(opts.queryParams ? source.url : source.fullUrl)))
+  code.push(util.format('http %s%s %s', flags.length ? flags.join(' ') + ' ' : '', source.method, helpers.quote(opts.queryParams ? source.url : source.fullUrl)))
 
   // construct query params
   if (opts.queryParams) {
@@ -86,23 +86,23 @@ module.exports = function (source, options) {
 
       if (util.isArray(value)) {
         value.map(function (val) {
-          code.push(util.format('%s==%s', name, quote(val)))
+          code.push(util.format('%s==%s', name, helpers.quote(val)))
         })
       } else {
-        code.push(util.format('%s==%s', name, quote(value)))
+        code.push(util.format('%s==%s', name, helpers.quote(value)))
       }
     })
   }
 
   // construct headers
   Object.keys(source.allHeaders).sort().map(function (key) {
-    code.push(util.format('%s:%s', key, quote(source.allHeaders[key])))
+    code.push(util.format('%s:%s', key, helpers.quote(source.allHeaders[key])))
   })
 
   // construct post params
   if (!source.postData.text && source.postData.params && source.postData.params.length) {
     source.postData.params.map(function (param) {
-      code.push(util.format('%s:%s', param.name, quote(param.value)))
+      code.push(util.format('%s:%s', param.name, helpers.quote(param.value)))
     })
   }
 

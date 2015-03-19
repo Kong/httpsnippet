@@ -11,7 +11,7 @@
 'use strict'
 
 var util = require('util')
-var shell = require('../../helpers/shell')
+var helpers = require('./helpers')
 var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
@@ -29,19 +29,19 @@ module.exports = function (source, options) {
     code.push(util.format('wget %s', opts.short ? '-q' : '--quiet'))
   }
 
-  code.push(util.format('--method %s', shell.quote(source.method)))
+  code.push(util.format('--method %s', helpers.quote(source.method)))
 
   Object.keys(source.allHeaders).map(function (key) {
     var header = util.format('%s: %s', key, source.allHeaders[key])
-    code.push(util.format('--header %s', shell.quote(header)))
+    code.push(util.format('--header %s', helpers.quote(header)))
   })
 
   if (source.postData.text) {
-    code.push('--body-data ' + shell.escape(shell.quote(source.postData.text)))
+    code.push('--body-data ' + helpers.escape(helpers.quote(source.postData.text)))
   }
 
   code.push(opts.short ? '-O' : '--output-document')
-      .push(util.format('- %s', shell.quote(source.fullUrl)))
+      .push(util.format('- %s', helpers.quote(source.fullUrl)))
 
   return code.join()
 }
