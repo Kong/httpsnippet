@@ -28,6 +28,8 @@ module.exports = function (source, options) {
     hasBody: false
   }
 
+  var indent = opts.indent
+
   // We just want to make sure people understand that is the only dependency
   code.push('import Foundation')
 
@@ -61,7 +63,34 @@ module.exports = function (source, options) {
         break
 
       case 'multipart/form-data':
-        code.push(swiftHelpers.multipartBody(source, opts))
+        /**
+         * By appending multipart parameters one by one in the resulting snippet,
+         * we make it easier for the user to edit it according to his or her needs after pasting.
+         * The user can just edit the parameters NSDictionary or put this part of a snippet in a multipart builder method.
+        */
+        code.push(swiftHelpers.literalDeclaration('parameters', source.postData.params, opts))
+        code.push(null)
+        code.push(util.format('let boundary = "%s"', source.postData.boundary))
+        code.push(null)
+        code.push('var body = ""')
+        code.push('var error: NSError? = nil')
+        code.push('for param in parameters {')
+        code.push(indent + 'let paramName = param["name"]!')
+        code.push(indent + 'body += "--\\(boundary)\\r\\n"')
+        code.push(indent + 'body += "Content-Disposition:form-data; name=\\"\\(paramName)\\""')
+        code.push(indent + 'if let filename = param["fileName"] {')
+        code.push(indent + indent + 'let contentType = param["content-type"]!')
+        code.push(indent + indent + 'let fileContent = String(contentsOfFile: filename, encoding: NSUTF8StringEncoding, error: &error)')
+        code.push(indent + indent + 'if (error != nil) {')
+        code.push(indent + indent + indent + 'println(error)')
+        code.push(indent + indent + '}')
+        code.push(indent + indent + 'body += "; filename=\\"\\(filename)\\"\\r\\n"')
+        code.push(indent + indent + 'body += "Content-Type: \\(contentType)\\r\\n\\r\\n"')
+        code.push(indent + indent + 'body += fileContent!')
+        code.push(indent + '} else if let paramValue = param["value"] {')
+        code.push(indent + indent + 'body += "\\r\\n\\r\\n\\(paramValue)"')
+        code.push(indent + '}')
+        code.push('}')
         break
 
       default:
