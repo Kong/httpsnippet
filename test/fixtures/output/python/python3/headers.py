@@ -7,7 +7,7 @@ headers = {
     'x-foo': "Bar"
     }
 
-conn.request("GET", "/har", headers = headers)
+conn.request("GET", "/har", headers=headers)
 
 res = conn.getresponse()
 data = res.read()
