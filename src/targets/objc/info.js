@@ -4,5 +4,5 @@ module.exports = {
   key: 'objc',
   title: 'Objective-C',
   extname: '.m',
-  default: 'native'
+  default: 'nsurlsession'
 }

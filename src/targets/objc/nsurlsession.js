@@ -130,7 +130,7 @@ module.exports = function (source, options) {
 }
 
 module.exports.info = {
-  key: 'native',
+  key: 'nsurlsession',
   title: 'NSURLSession',
   link: 'https://developer.apple.com/library/mac/documentation/Foundation/Reference/NSURLSession_class/index.html',
   description: 'Foundation\'s NSURLSession request'
