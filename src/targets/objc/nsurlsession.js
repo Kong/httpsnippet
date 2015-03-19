@@ -64,7 +64,27 @@ module.exports = function (source, options) {
         break
 
       case 'multipart/form-data':
-        code.push(objcHelpers.multipartBody(source, opts))
+          code.push(objcHelpers.nsDeclaration('NSArray', 'parameters', source.postData.params, opts.pretty))
+          code.push(util.format('NSString *boundary = @"%s";', source.postData.boundary))
+          code.push(null)
+          code.push('NSError *error;')
+          code.push('NSMutableString *body = [NSMutableString string];')
+          code.push('for (NSDictionary *param in parameters) {')
+          code.push(indent + '[body appendFormat:@"--%@\\r\\n", boundary];')
+          code.push(indent + 'if (param[@"fileName"]) {')
+          code.push(indent + indent + '[body appendFormat:@"Content-Disposition:form-data; name=\\"%@\\"; filename=\\"%@\\"\\r\\n", param[@"name"], param[@"fileName"]];')
+          code.push(indent + indent + '[body appendFormat:@"Content-Type: %@\\r\\n\\r\\n", param[@"contentType"]];')
+          code.push(indent + indent + '[body appendFormat:@"%@", [NSString stringWithContentsOfFile:param[@"fileName"] encoding:NSUTF8StringEncoding error:&error]];')
+          code.push(indent + indent + 'if (error) {')
+          code.push(indent + indent + indent + 'NSLog(@"%@", error);')
+          code.push(indent + indent + '}')
+          code.push(indent + '} else {')
+          code.push(indent + indent + '[body appendFormat:@"Content-Disposition:form-data; name=\\"%@\\"\\r\\n\\r\\n", param[@"name"]];')
+          code.push(indent + indent + '[body appendFormat:@"%@", param[@"value"]];')
+          code.push(indent + '}')
+          code.push('}')
+          code.push('[body appendFormat:@"\\r\\n--%@--\\r\\n", boundary];')
+          code.push('NSData *postData = [body dataUsingEncoding:NSUTF8StringEncoding];')
         break
 
       default:
