@@ -146,6 +146,20 @@
     ]
   },
   {
+    "key": "swift",
+    "title": "Swift",
+    "extname": ".swift",
+    "default": "nsurlsession",
+    "clients": [
+       {
+        "key": "nsurlsession",
+        "title": "NSURLSession",
+        "link": "https://developer.apple.com/library/mac/documentation/Foundation/Reference/NSURLSession_class/index.html",
+        "description": "Foundation's NSURLSession request"
+      }
+    ]
+  },
+  {
     "key": "go",
     "title": "Go",
     "extname": ".go",
