@@ -6,6 +6,10 @@ node_js:
 
 script: npm test
 
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install python3 php
+
 after_script:
   - ./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha
   - ./node_modules/.bin/codeclimate < coverage/lcov.info

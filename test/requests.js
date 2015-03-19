@@ -28,7 +28,7 @@ async.each(fixtures.cli, function (cli) {
   describe(targets[cli.target].info.title + ' Request Validation', function () {
     async.each(cli.clients, function (client) {
       async.each(requests, function (request) {
-        it('mocked response should match request for ' + request, function (done) {
+        it(client + ' request should match mock for ' + request, function (done) {
           var stdout = ''
           var fixture = cli.target + '/' + client + '/' + request + HTTPSnippet.extname(cli.target)
           var command = util.format(cli.run, base + fixture)
