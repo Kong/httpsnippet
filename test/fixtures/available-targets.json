@@ -122,6 +122,12 @@
         "title": "http.client",
         "link": "https://docs.python.org/3/library/http.client.html",
         "description": "Python3 HTTP Client"
+      },
+      {
+        "key": "requests",
+        "title": "Requests",
+        "link": "http://docs.python-requests.org/en/latest/api/#requests.request",
+        "description": "Requests HTTP library"
       }
     ]
   },
