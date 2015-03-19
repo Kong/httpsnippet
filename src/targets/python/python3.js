@@ -69,7 +69,7 @@ module.exports = function (source, options) {
   } else if (payload && !headerCount) {
     code.push(util.format('conn.request("%s", "%s", payload)', method, path))
   } else if (!payload && headerCount) {
-    code.push(util.format('conn.request("%s", "%s", headers = headers)', method, path))
+    code.push(util.format('conn.request("%s", "%s", headers=headers)', method, path))
   } else {
     code.push(util.format('conn.request("%s", "%s")', method, path))
   }
