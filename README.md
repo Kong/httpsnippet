@@ -53,7 +53,6 @@ Currently the following output [targets](/src/targets) are supported:
   - [Native](http://golang.org/pkg/net/http/#NewRequest)
 - OCaml
   - [CoHTTP](https://github.com/mirage/ocaml-cohttp)
-- [Go](http://golang.org/pkg/net/http/#NewRequest)
 
 ## Installation
 
