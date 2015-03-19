@@ -12,6 +12,7 @@
 
 var util = require('util')
 var shell = require('../../helpers/shell')
+var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   var opts = util._extend({
@@ -19,11 +20,10 @@ module.exports = function (source, options) {
     indent: '  '
   }, options)
 
-  var code = []
+  var code = new CodeBuilder(opts.indent, opts.indent !== false ? ' \\\n' + opts.indent : ' ')
 
   code.push(util.format('curl %s %s', opts.short ? '-X' : '--request', source.method))
-
-  code.push(util.format('%s%s', opts.short ? '' : '--url ', shell.quote(source.fullUrl)))
+      .push(util.format('%s%s', opts.short ? '' : '--url ', shell.quote(source.fullUrl)))
 
   if (source.httpVersion === 'HTTP/1.0') {
     code.push(opts.short ? '-0' : '--http1.0')
@@ -52,7 +52,7 @@ module.exports = function (source, options) {
     })
   }
 
-  return code.join(opts.indent !== false ? ' \\\n' + opts.indent : ' ')
+  return code.join()
 }
 
 module.exports.info = {

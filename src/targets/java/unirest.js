@@ -11,39 +11,40 @@
 'use strict'
 
 var util = require('util')
+var CodeBuilder = require('../../helpers/code-builder')
 
-module.exports = function (options) {
-  var self = this
+module.exports = function (source, options) {
   var opts = util._extend({
     indent: '  '
   }, options)
 
-  var code = []
+  var code = new CodeBuilder(opts.indent)
 
   var methods = [ 'GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS' ]
 
-  if (methods.indexOf(self.source.method.toUpperCase()) === -1) {
-    code.push(util.format('HttpResponse<String> response = Unirest.customMethod("%s","%s")', self.source.method.toUpperCase(), self.source.fullUrl))
+  if (methods.indexOf(source.method.toUpperCase()) === -1) {
+    code.push(util.format('HttpResponse<String> response = Unirest.customMethod("%s","%s")', source.method.toUpperCase(), source.fullUrl))
   } else {
-    code.push(util.format('HttpResponse<String> response = Unirest.%s("%s")', self.source.method.toLowerCase(), self.source.fullUrl))
+    code.push(util.format('HttpResponse<String> response = Unirest.%s("%s")', source.method.toLowerCase(), source.fullUrl))
   }
 
   // Add headers, including the cookies
-  var headers = Object.keys(self.source.allHeaders)
+  var headers = Object.keys(source.allHeaders)
 
   // construct headers
   if (headers.length) {
     headers.map(function (key) {
-      code.push(opts.indent + util.format('.header("%s", "%s")', key, self.source.allHeaders[key]))
+      code.push(1, util.format('.header("%s", "%s")', key, source.allHeaders[key]))
     })
   }
 
-  if (self.source.postData.text) {
-    code.push(opts.indent + util.format('.body(%s)', JSON.stringify(self.source.postData.text)))
+  if (source.postData.text) {
+    code.push(1, util.format('.body(%s)', JSON.stringify(source.postData.text)))
   }
 
-  code.push(opts.indent + '.asString();')
-  return code.join('\n')
+  code.push(1, '.asString();')
+
+  return code.join()
 }
 
 module.exports.info = {

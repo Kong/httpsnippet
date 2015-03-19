@@ -12,6 +12,7 @@
 
 var util = require('util')
 var objcHelpers = require('./helpers')
+var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   var opts = util._extend({
@@ -21,7 +22,7 @@ module.exports = function (source, options) {
   }, options)
 
   var indent = opts.indent
-  var code = []
+  var code = new CodeBuilder(opts.indent)
   // Markers for headers to be created as litteral objects and later be set on the NSURLRequest if exist
   var req = {
     hasHeaders: false,
@@ -125,7 +126,7 @@ module.exports = function (source, options) {
   code.push('                                            }];')
   code.push('[dataTask resume];')
 
-  return code.join('\n')
+  return code.join()
 }
 
 module.exports.info = {
