@@ -35,7 +35,7 @@ module.exports = function (source, options) {
   if (Object.keys(source.allHeaders).length) {
     req.hasHeaders = true
     code.push(null)
-    code.push(objcHelpers.nsDeclarationBuilder('NSDictionary', 'headers', source.allHeaders, opts.pretty))
+    code.push(objcHelpers.nsDeclaration('NSDictionary', 'headers', source.allHeaders, opts.pretty))
   }
 
   if (source.postData.text || source.postData.jsonObj || source.postData.params) {
@@ -57,37 +57,14 @@ module.exports = function (source, options) {
 
       case 'application/json':
         if (source.postData.jsonObj) {
-          code.push(objcHelpers.nsDeclarationBuilder('NSDictionary', 'parameters', source.postData.jsonObj, opts.pretty))
+          code.push(objcHelpers.nsDeclaration('NSDictionary', 'parameters', source.postData.jsonObj, opts.pretty))
           code.push(null)
           code.push('NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];')
         }
         break
 
       case 'multipart/form-data':
-        // By appending multipart parameters one by one in the resulting snippet,
-        // we make it easier for the user to edit it according to his or her needs after pasting.
-        // The user can just edit the parameters NSDictionary or put this part of a snippet in a multipart builder method.
-        code.push(objcHelpers.nsDeclarationBuilder('NSArray', 'parameters', source.postData.params, opts.pretty))
-        code.push(util.format('NSString *boundary = @"%s";', source.postData.boundary))
-        code.push(null)
-        code.push('NSError *error;')
-        code.push('NSMutableString *body = [NSMutableString string];')
-        code.push('for (NSDictionary *param in parameters) {')
-        code.push(indent + '[body appendFormat:@"--%@\\r\\n", boundary];')
-        code.push(indent + 'if (param[@"fileName"]) {')
-        code.push(indent + indent + '[body appendFormat:@"Content-Disposition:form-data; name=\\"%@\\"; filename=\\"%@\\"\\r\\n", param[@"name"], param[@"fileName"]];')
-        code.push(indent + indent + '[body appendFormat:@"Content-Type: %@\\r\\n\\r\\n", param[@"contentType"]];')
-        code.push(indent + indent + '[body appendFormat:@"%@", [NSString stringWithContentsOfFile:param[@"fileName"] encoding:NSUTF8StringEncoding error:&error]];')
-        code.push(indent + indent + 'if (error) {')
-        code.push(indent + indent + indent + 'NSLog(@"%@", error);')
-        code.push(indent + indent + '}')
-        code.push(indent + '} else {')
-        code.push(indent + indent + '[body appendFormat:@"Content-Disposition:form-data; name=\\"%@\\"\\r\\n\\r\\n", param[@"name"]];')
-        code.push(indent + indent + '[body appendFormat:@"%@", param[@"value"]];')
-        code.push(indent + '}')
-        code.push('}')
-        code.push('[body appendFormat:@"\\r\\n--%@--\\r\\n", boundary];')
-        code.push('NSData *postData = [body dataUsingEncoding:NSUTF8StringEncoding];')
+        code.push(objcHelpers.multipartBody(source, opts))
         break
 
       default:
