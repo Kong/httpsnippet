@@ -1,6 +1,6 @@
 /**
  * @description
- * HTTP code snippet generator for Requests
+ * HTTP code snippet generator for Python using Requests
  *
  * @author
  * @montanaflynn
@@ -11,32 +11,29 @@
 'use strict'
 
 var util = require('util')
+var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   // Start snippet
-  var code = []
+  var code = new CodeBuilder('    ')
 
   // Import requests
-  code.push('import requests\n')
+  code.push('import requests')
+      .blank()
 
   // Set URL
-  code.push(util.format('url = "%s"\n', source.url))
+  code.push(util.format('url = "%s"', source.url))
+      .blank()
 
   // Construct query string
   if (source.queryString.length) {
-    var qs = 'querystring = {'
-    for (var i = 0; i < source.queryString.length; i++) {
-      for (var key in source.queryString[i]) {
-        qs += "'" + key + "':" + "'" + source.queryString[i][key] + "',"
-      }
-    }
-    qs = qs.substring(0, qs.length - 1)
-    qs += '}\n'
-    code.push(qs)
+    code.push('querystring = ' + JSON.stringify(source.queryObj))
+        .blank()
   }
 
   // Construct payload
   var payload = JSON.stringify(source.postData.text)
+
   if (payload) {
     code.push(util.format('payload = %s', payload))
   }
@@ -45,39 +42,57 @@ module.exports = function (source, options) {
   var header
   var headers = source.allHeaders
   var headerCount = Object.keys(headers).length
+
   if (headerCount === 1) {
     for (header in headers) {
-      code.push(util.format('headers = {\'%s\': \'%s\'}\n', header, headers[header]))
+      code.push(util.format('headers = {\'%s\': \'%s\'}', header, headers[header]))
+          .blank()
     }
   } else if (headerCount > 1) {
     var headerLine
     var count = 1
+
     code.push('headers = {')
+
     for (header in headers) {
       if (count++ !== headerCount) {
-        headerLine = util.format('    \'%s\': "%s",', header, headers[header])
+        headerLine = util.format('\'%s\': "%s",', header, headers[header])
       } else {
-        headerLine = util.format('    \'%s\': "%s"', header, headers[header])
+        headerLine = util.format('\'%s\': "%s"', header, headers[header])
       }
-      code.push(headerLine)
+
+      code.push(1, headerLine)
     }
-    code.push('    }\n')
+
+    code.push(1, '}')
+        .blank()
   }
 
   // Construct request
   var method = source.method
   var request = util.format('response = requests.request("%s", url', method)
-  if (payload) request += ', data=payload'
-  if (headerCount > 0) request += ', headers=headers'
-  if (qs) request += ', params=querystring'
-  request += ')\n'
+
+  if (payload) {
+    request += ', data=payload'
+  }
+
+  if (headerCount > 0) {
+    request += ', headers=headers'
+  }
+
+  if (qs) {
+    request += ', params=querystring'
+  }
+
+  request += ')'
+
   code.push(request)
+      .blank()
 
-  // Print response
-  code.push('print(response.text)')
+      // Print response
+      .push('print(response.text)')
 
-  console.log(code.join('\n'))
-  return code.join('\n')
+  return code.join()
 }
 
 module.exports.info = {
