@@ -11,13 +11,14 @@
 'use strict'
 
 var util = require('util')
+var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   var opts = util._extend({
     indent: '  '
   }, options)
 
-  var code = []
+  var code = new CodeBuilder(opts.indent)
 
   var reqOpts = {
     method: source.method,
@@ -41,13 +42,13 @@ module.exports = function (source, options) {
 
   code.push('var req = http.request(options, function (res) {')
 
-  code.push(opts.indent + 'var chunks = [];')
+  code.push(1, 'var chunks = [];')
 
   code.push(null)
 
-  code.push(opts.indent + 'res.on("data", function (chunk) {')
-  code.push(opts.indent + opts.indent + 'chunks.push(chunk);')
-  code.push(opts.indent + '});')
+  code.push(1, 'res.on("data", function (chunk) {')
+  code.push(2, 'chunks.push(chunk);')
+  code.push(1, '});')
 
   code.push(null)
 
@@ -65,7 +66,7 @@ module.exports = function (source, options) {
 
   code.push('req.end();')
 
-  return code.join('\n')
+  return code.join()
 }
 
 module.exports.info = {

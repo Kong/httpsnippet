@@ -11,6 +11,7 @@
 'use strict'
 
 var util = require('util')
+var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   var opts = util._extend({
@@ -18,7 +19,7 @@ module.exports = function (source, options) {
   }, options)
 
   var methods = ['get', 'post', 'head', 'delete', 'patch', 'put', 'options']
-  var code = []
+  var code = new CodeBuilder(opts.indent)
 
   code.push('open Cohttp_lwt_unix')
   code.push('open Cohttp')
@@ -60,7 +61,7 @@ module.exports = function (source, options) {
   code.push('>>= fun (res, body_stream) ->')
   code.push(opts.indent + '(* Do stuff with the result *)')
 
-  return code.join('\n')
+  return code.join()
 }
 
 module.exports.info = {

@@ -11,6 +11,7 @@
 'use strict'
 
 var util = require('util')
+var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   var opts = util._extend({
@@ -18,8 +19,10 @@ module.exports = function (source, options) {
   }, options)
 
   var includeFS = false
-  var code = ['var unirest = require("unirest");', null]
+  var code = new CodeBuilder(opts.indent)
 
+  code.push('var unirest = require("unirest");')
+  code.push(null)
   code.push(util.format('var req = unirest("%s", "%s");', source.method, source.url))
   code.push(null)
 

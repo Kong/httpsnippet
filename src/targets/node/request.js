@@ -12,6 +12,7 @@
 
 var util = require('util')
 var path = require('path')
+var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   var opts = util._extend({
@@ -19,7 +20,10 @@ module.exports = function (source, options) {
   }, options)
 
   var includeFS = false
-  var code = ['var request = require("request");', null]
+  var code = new CodeBuilder(opts.indent)
+
+  code.push('var request = require("request");')
+  code.push(null)
 
   var reqOpts = {
     method: source.method,
@@ -105,7 +109,7 @@ module.exports = function (source, options) {
   code.push('});')
   code.push(null)
 
-  return code.join('\n').replace('"JAR"', 'jar').replace(/"fs\.createReadStream\(\\\"(.+)\\\"\)\"/, 'fs.createReadStream("$1")')
+  return code.join().replace('"JAR"', 'jar').replace(/"fs\.createReadStream\(\\\"(.+)\\\"\)\"/, 'fs.createReadStream("$1")')
 }
 
 module.exports.info = {

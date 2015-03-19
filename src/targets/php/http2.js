@@ -12,6 +12,7 @@
 
 var util = require('util')
 var helpers = require('./helpers')
+var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   var opts = util._extend({
@@ -20,7 +21,7 @@ module.exports = function (source, options) {
     closingTag: false
   }, options)
 
-  var code = []
+  var code = new CodeBuilder(opts.indent)
   var hasBody = false
 
   if (!opts.noTags) {
@@ -117,7 +118,7 @@ module.exports = function (source, options) {
     code.push('?>')
   }
 
-  return code.join('\n')
+  return code.join()
 }
 
 module.exports.info = {

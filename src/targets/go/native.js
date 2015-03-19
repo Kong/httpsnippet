@@ -11,10 +11,11 @@
 'use strict'
 
 var util = require('util')
+var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   // Let's Go!
-  var code = []
+  var code = new CodeBuilder()
 
   // Define Options
   var opts = util._extend({
@@ -108,7 +109,7 @@ module.exports = function (source, options) {
   // End main block
   code.push('\n}')
 
-  return code.join('\n')
+  return code.join()
 }
 
 module.exports.info = {

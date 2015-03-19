@@ -11,13 +11,14 @@
 'use strict'
 
 var util = require('util')
+var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   var opts = util._extend({
     indent: '  '
   }, options)
 
-  var code = []
+  var code = new CodeBuilder(opts.indent)
 
   var settings = {
     async: true,
@@ -68,7 +69,7 @@ module.exports = function (source, options) {
 
   code.push('$.ajax(settings).done(function (response) {\n\tconsole.log(response);\n});'.replace(/\t/g, opts.indent))
 
-  return code.join('\n')
+  return code.join()
 }
 
 module.exports.info = {

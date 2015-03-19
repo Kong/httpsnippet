@@ -11,6 +11,7 @@
 'use strict'
 
 var util = require('util')
+var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (options) {
   var self = this
@@ -18,7 +19,7 @@ module.exports = function (options) {
     indent: '  '
   }, options)
 
-  var code = []
+  var code = new CodeBuilder(opts.indent)
 
   var methods = [ 'GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS' ]
 
@@ -34,16 +35,17 @@ module.exports = function (options) {
   // construct headers
   if (headers.length) {
     headers.map(function (key) {
-      code.push(opts.indent + util.format('.header("%s", "%s")', key, self.source.allHeaders[key]))
+      code.push(1, util.format('.header("%s", "%s")', key, self.source.allHeaders[key]))
     })
   }
 
   if (self.source.postData.text) {
-    code.push(opts.indent + util.format('.body(%s)', JSON.stringify(self.source.postData.text)))
+    code.push(1, util.format('.body(%s)', JSON.stringify(self.source.postData.text)))
   }
 
-  code.push(opts.indent + '.asString();')
-  return code.join('\n')
+  code.push(1, '.asString();')
+
+  return code.join()
 }
 
 module.exports.info = {

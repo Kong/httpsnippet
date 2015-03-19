@@ -11,10 +11,11 @@
 'use strict'
 
 var util = require('util')
+var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
+  var code = new CodeBuilder()
   // Start Request
-  var code = []
   code.push('import http.client\n')
 
   // Check which protocol to be used for the client connection
@@ -73,7 +74,7 @@ module.exports = function (source, options) {
   code.push('print(data.decode("utf-8"))')
 
   // console.log(code)
-  return code.join('\n')
+  return code.join()
 }
 
 module.exports.info = {

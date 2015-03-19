@@ -12,6 +12,7 @@
 
 var util = require('util')
 var helpers = require('./helpers')
+var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   var opts = util._extend({
@@ -20,7 +21,7 @@ module.exports = function (source, options) {
     closingTag: false
   }, options)
 
-  var code = []
+  var code = new CodeBuilder(opts.indent)
 
   if (!opts.noTags) {
     code.push('<?php')
@@ -28,7 +29,7 @@ module.exports = function (source, options) {
   }
 
   if (!~helpers.methods.indexOf(source.method.toUpperCase())) {
-    code.push(util.format("HttpRequest::methodRegister('%s');", source.method))
+    code.push(util.format('HttpRequest::methodRegister(\'%s\');', source.method))
   }
 
   code.push('$request = new HttpRequest();')
@@ -59,7 +60,6 @@ module.exports = function (source, options) {
   switch (source.postData.mimeType) {
     case 'application/x-www-form-urlencoded':
       code.push(util.format('$request->setContentType(%s);', helpers.convert(source.postData.mimeType)))
-
       code.push(util.format('$request->setPostFields(%s);', helpers.convert(source.postData.paramsObj, opts.indent)))
       code.push(null)
       break

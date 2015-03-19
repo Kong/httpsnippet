@@ -11,6 +11,7 @@
 'use strict'
 
 var util = require('util')
+var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   var opts = util._extend({
@@ -22,7 +23,7 @@ module.exports = function (source, options) {
     closingTag: false
   }, options)
 
-  var code = []
+  var code = new CodeBuilder(opts.indent)
 
   if (!opts.noTags) {
     code.push('<?php')
@@ -110,13 +111,13 @@ module.exports = function (source, options) {
   code.push('if ($err) {')
 
   if (opts.namedErrors) {
-    code.push(opts.indent + 'echo array_flip(get_defined_constants(true)["curl"])[$err];')
+    code.push(1, 'echo array_flip(get_defined_constants(true)["curl"])[$err];')
   } else {
-    code.push(opts.indent + 'echo "cURL Error #:" . $err;')
+    code.push(1, 'echo "cURL Error #:" . $err;')
   }
 
   code.push('} else {')
-  code.push(opts.indent + 'echo $response;')
+  code.push(1, 'echo $response;')
   code.push('}')
 
   if (opts.closingTag) {
@@ -124,7 +125,7 @@ module.exports = function (source, options) {
     code.push('?>')
   }
 
-  return code.join('\n')
+  return code.join()
 }
 
 module.exports.info = {

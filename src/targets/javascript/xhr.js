@@ -11,6 +11,7 @@
 'use strict'
 
 var util = require('util')
+var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   var opts = util._extend({
@@ -18,7 +19,7 @@ module.exports = function (source, options) {
     cors: true
   }, options)
 
-  var code = []
+  var code = new CodeBuilder(opts.indent)
 
   switch (source.postData.mimeType) {
     case 'application/json':
@@ -68,7 +69,7 @@ module.exports = function (source, options) {
 
   code.push('xhr.send(data);')
 
-  return code.join('\n')
+  return code.join()
 }
 
 module.exports.info = {
