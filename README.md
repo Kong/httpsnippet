@@ -44,6 +44,7 @@ Currently the following output [targets](/src/targets) are supported:
   - [pecl/http v2](http://devel-m6w6.rhcloud.com/mdref/http)
 - Python
   - [Python 3](https://docs.python.org/3/library/http.client.html)
+  - [Requests](http://docs.python-requests.org/en/latest/api/#requests.request)
 - Objective-C
   - [NSURLSession](https://developer.apple.com/library/mac/documentation/Foundation/Reference/NSURLSession_class/index.html)
 - Go

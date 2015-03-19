@@ -87,8 +87,7 @@ module.exports = function (source, options) {
   if (source.cookies.length) {
     reqOpts.jar = 'JAR'
 
-    code.blank()
-        .push('var jar = request.jar();')
+    code.push('var jar = request.jar();')
 
     var url = source.url
 
