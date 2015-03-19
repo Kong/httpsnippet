@@ -26,18 +26,18 @@ module.exports = function (source, options) {
 
   if (!opts.noTags) {
     code.push('<?php')
-    code.push(null)
+        .blank()
   }
 
   code.push('$client = new http\\Client;')
-  code.push('$request = new http\\Client\\Request;')
-  code.push(null)
+      .push('$request = new http\\Client\\Request;')
+      .blank()
 
   switch (source.postData.mimeType) {
     case 'application/x-www-form-urlencoded':
       code.push('$body = new http\\Message\\Body;')
-      code.push(util.format('$body->append(new http\\QueryString(%s));', helpers.convert(source.postData.paramsObj, opts.indent)))
-      code.push(null)
+          .push(util.format('$body->append(new http\\QueryString(%s));', helpers.convert(source.postData.paramsObj, opts.indent)))
+          .blank()
       hasBody = true
       break
 
@@ -59,18 +59,17 @@ module.exports = function (source, options) {
       })
 
       code.push('$body = new http\\Message\\Body;')
-
-      code.push(util.format('$body->addForm(%s, %s);',
-        Object.keys(fields).length ? helpers.convert(fields, opts.indent) : 'NULL',
-        files.length ? helpers.convert(files, opts.indent) : 'NULL'
-      ))
+          .push(util.format('$body->addForm(%s, %s);',
+            Object.keys(fields).length ? helpers.convert(fields, opts.indent) : 'NULL',
+            files.length ? helpers.convert(files, opts.indent) : 'NULL'
+          ))
 
       // remove the contentType header
       if (~source.headersObj['content-type'].indexOf('boundary')) {
         delete source.headersObj['content-type']
       }
 
-      code.push(null)
+      code.blank()
 
       hasBody = true
       break
@@ -78,44 +77,44 @@ module.exports = function (source, options) {
     default:
       if (source.postData.text) {
         code.push('$body = new http\\Message\\Body;')
-        code.push(util.format('$body->append(%s);', helpers.convert(source.postData.text)))
-        code.push(null)
+            .push(util.format('$body->append(%s);', helpers.convert(source.postData.text)))
+            .blank()
         hasBody = true
       }
   }
 
   code.push(util.format('$request->setRequestUrl(%s);', helpers.convert(source.url)))
-  code.push(util.format('$request->setRequestMethod(%s);', helpers.convert(source.method)))
+      .push(util.format('$request->setRequestMethod(%s);', helpers.convert(source.method)))
 
   if (hasBody) {
     code.push(util.format('$request->setBody($body);'))
-    code.push(null)
+        .blank()
   }
 
   if (Object.keys(source.queryObj).length) {
     code.push(util.format('$request->setQuery(new http\\QueryString(%s));', helpers.convert(source.queryObj, opts.indent)))
-    code.push(null)
+        .blank()
   }
 
   if (Object.keys(source.headersObj).length) {
     code.push(util.format('$request->setHeaders(%s);', helpers.convert(source.headersObj, opts.indent)))
-    code.push(null)
+        .blank()
   }
 
   if (Object.keys(source.cookiesObj).length) {
-    code.push(null)
-    code.push(util.format('$client->setCookies(%s);', helpers.convert(source.cookiesObj, opts.indent)))
-    code.push(null)
+    code.blank()
+        .push(util.format('$client->setCookies(%s);', helpers.convert(source.cookiesObj, opts.indent)))
+        .blank()
   }
 
   code.push('$client->enqueue($request)->send();')
-  code.push('$response = $client->getResponse();')
-  code.push(null)
-  code.push('echo $response->getBody();')
+      .push('$response = $client->getResponse();')
+      .blank()
+      .push('echo $response->getBody();')
 
   if (opts.closingTag) {
-    code.push(null)
-    code.push('?>')
+    code.blank()
+        .push('?>')
   }
 
   return code.join()

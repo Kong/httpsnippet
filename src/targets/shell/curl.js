@@ -23,8 +23,7 @@ module.exports = function (source, options) {
   var code = new CodeBuilder(opts.indent, opts.indent !== false ? ' \\\n' + opts.indent : ' ')
 
   code.push(util.format('curl %s %s', opts.short ? '-X' : '--request', source.method))
-
-  code.push(util.format('%s%s', opts.short ? '' : '--url ', shell.quote(source.fullUrl)))
+      .push(util.format('%s%s', opts.short ? '' : '--url ', shell.quote(source.fullUrl)))
 
   if (source.httpVersion === 'HTTP/1.0') {
     code.push(opts.short ? '-0' : '--http1.0')

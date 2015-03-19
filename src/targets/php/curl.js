@@ -27,11 +27,11 @@ module.exports = function (source, options) {
 
   if (!opts.noTags) {
     code.push('<?php')
-    code.push(null)
+        .blank()
   }
 
   code.push('$curl = curl_init();')
-  code.push(null)
+      .blank()
 
   var curlOptions = [{
     escape: true,
@@ -73,7 +73,7 @@ module.exports = function (source, options) {
 
   code.push('curl_setopt_array($curl, array(')
 
-  var curlopts = []
+  var curlopts = new CodeBuilder(opts.indent, '\n' + opts.indent)
 
   curlOptions.map(function (option) {
     if (!~[null, undefined].indexOf(option.value)) {
@@ -96,19 +96,20 @@ module.exports = function (source, options) {
   })
 
   if (headers.length) {
-    curlopts.push(util.format('CURLOPT_HTTPHEADER => array(\n%s%s%s\n%s),', opts.indent, opts.indent, headers.join(',\n' + opts.indent + opts.indent), opts.indent))
+    curlopts.push('CURLOPT_HTTPHEADER => array(')
+            .push(1, headers.join(',\n' + opts.indent + opts.indent))
+            .push('),')
   }
 
-  code.push(opts.indent + curlopts.join('\n' + opts.indent))
-
-  code.push('));')
-  code.push(null)
-  code.push('$response = curl_exec($curl);')
-  code.push('$err = curl_error($curl);')
-  code.push(null)
-  code.push('curl_close($curl);')
-  code.push(null)
-  code.push('if ($err) {')
+  code.push(1, curlopts.join())
+      .push('));')
+      .blank()
+      .push('$response = curl_exec($curl);')
+      .push('$err = curl_error($curl);')
+      .blank()
+      .push('curl_close($curl);')
+      .blank()
+      .push('if ($err) {')
 
   if (opts.namedErrors) {
     code.push(1, 'echo array_flip(get_defined_constants(true)["curl"])[$err];')
@@ -117,12 +118,12 @@ module.exports = function (source, options) {
   }
 
   code.push('} else {')
-  code.push(1, 'echo $response;')
-  code.push('}')
+      .push(1, 'echo $response;')
+      .push('}')
 
   if (opts.closingTag) {
-    code.push(null)
-    code.push('?>')
+    code.blank()
+        .push('?>')
   }
 
   return code.join()

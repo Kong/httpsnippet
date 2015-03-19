@@ -16,7 +16,8 @@ var CodeBuilder = require('../../helpers/code-builder')
 module.exports = function (source, options) {
   var code = new CodeBuilder()
   // Start Request
-  code.push('import http.client\n')
+  code.push('import http.client')
+      .blank()
 
   // Check which protocol to be used for the client connection
   var protocol = source.uriObj.protocol
@@ -52,7 +53,8 @@ module.exports = function (source, options) {
       }
       code.push(headerLine)
     }
-    code.push('    }\n')
+    code.push('    }')
+        .blank()
   }
 
   // Make Request
@@ -69,11 +71,13 @@ module.exports = function (source, options) {
   }
 
   // Get Response
-  code.push('\nres = conn.getresponse()')
-  code.push('data = res.read()')
-  code.push('print(data.decode("utf-8"))')
+  code.blank()
+      .push('res = conn.getresponse()')
+      .push('data = res.read()')
+      .blank()
+      .push('print(res.status)')
+      .push('print(data.decode("utf-8"))')
 
-  // console.log(code)
   return code.join()
 }
 

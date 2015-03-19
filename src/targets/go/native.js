@@ -15,7 +15,7 @@ var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   // Let's Go!
-  var code = new CodeBuilder()
+  var code = new CodeBuilder('\t')
 
   // Define Options
   var opts = util._extend({
@@ -29,53 +29,52 @@ module.exports = function (source, options) {
   var errorCheck = function () {
     if (opts.checkErrors) {
       code.push('\tif err != nil {')
-      code.push('\t\tpanic(err)')
-      code.push('\t}')
+          .push('\t\tpanic(err)')
+          .push('\t}')
     }
   }
 
   // Create boilerplate
   code.push('package main\n')
-  code.push('import (')
-  code.push('\t"fmt"')
+      .push('import (')
+      .push(1, '"fmt"')
 
   if (opts.timeout > 0) {
-    code.push('\t"time"')
+    code.push(1, '"time"')
   }
 
   if (source.postData.text) {
-    code.push('\t"strings"')
+    code.push(1, '"strings"')
   }
 
-  code.push('\t"net/http"')
+  code.push(1, '"net/http"')
 
   if (opts.printBody) {
-    code.push('\t"io/ioutil"')
+    code.push(1, '"io/ioutil"')
   }
 
   code.push(')\n')
-
-  code.push('func main() {\n')
+      .push('func main() {\n')
 
   // Create client
   var client
   if (opts.timeout > 0) {
     client = 'client'
-    code.push('\tclient := http.Client{')
-    code.push(util.format('\t\tTimeout: time.Duration(%s * time.Second),', opts.timeout))
-    code.push('\t}\n')
+    code.push(1, 'client := http.Client{')
+        .push(2, util.format('Timeout: time.Duration(%s * time.Second),', opts.timeout))
+        .push(1, '}\n')
   } else {
     client = 'http.DefaultClient'
   }
 
-  code.push(util.format('\turl := "%s"\n', source.fullUrl))
+  code.push(1, util.format('url := "%s"\n', source.fullUrl))
 
   // If we have body content or not create the var and reader or nil
   if (source.postData.text) {
-    code.push(util.format('\tpayload := strings.NewReader(%s)\n', JSON.stringify(source.postData.text)))
-    code.push(util.format('\treq, %s := http.NewRequest("%s", url, payload)\n', errorPlaceholder, source.method))
+    code.push(1, util.format('payload := strings.NewReader(%s)\n', JSON.stringify(source.postData.text)))
+        .push(1, util.format('req, %s := http.NewRequest("%s", url, payload)\n', errorPlaceholder, source.method))
   } else {
-    code.push(util.format('\treq, %s := http.NewRequest("%s", url, nil)\n', errorPlaceholder, source.method))
+    code.push(1, util.format('req, %s := http.NewRequest("%s", url, nil)\n', errorPlaceholder, source.method))
   }
 
   errorCheck()
@@ -83,31 +82,34 @@ module.exports = function (source, options) {
   // Add headers
   if (Object.keys(source.allHeaders).length) {
     Object.keys(source.allHeaders).map(function (key) {
-      code.push(util.format('\treq.Header.Add("%s", "%s")', key, source.allHeaders[key]))
+      code.push(1, util.format('req.Header.Add("%s", "%s")', key, source.allHeaders[key]))
     })
-    code.push(null)
+    code.blank()
   }
 
   // Make request
-  code.push(util.format('\tres, %s := %s.Do(req)', errorPlaceholder, client))
+  code.push(1, util.format('res, %s := %s.Do(req)', errorPlaceholder, client))
   errorCheck()
 
   // Get Body
   if (opts.printBody) {
-    code.push('\n\tdefer res.Body.Close()')
-    code.push(util.format('\tbody, %s := ioutil.ReadAll(res.Body)', errorPlaceholder))
+    code.blank()
+        .push(1, 'defer res.Body.Close()')
+        .push(1, util.format('body, %s := ioutil.ReadAll(res.Body)', errorPlaceholder))
     errorCheck()
   }
 
   // Print it
-  code.push('\n\tfmt.Println(res)')
+  code.blank()
+      .push(1, 'fmt.Println(res)')
 
   if (opts.printBody) {
-    code.push('\tfmt.Println(string(body))')
+    code.push(1, 'fmt.Println(string(body))')
   }
 
   // End main block
-  code.push('\n}')
+  code.blank()
+      .push('}')
 
   return code.join()
 }

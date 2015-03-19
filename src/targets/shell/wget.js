@@ -41,8 +41,7 @@ module.exports = function (source, options) {
   }
 
   code.push(opts.short ? '-O' : '--output-document')
-
-  code.push(util.format('- %s', shell.quote(source.fullUrl)))
+      .push(util.format('- %s', shell.quote(source.fullUrl)))
 
   return code.join()
 }

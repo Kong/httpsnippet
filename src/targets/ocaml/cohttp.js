@@ -22,12 +22,10 @@ module.exports = function (source, options) {
   var code = new CodeBuilder(opts.indent)
 
   code.push('open Cohttp_lwt_unix')
-  code.push('open Cohttp')
-  code.push('open Lwt')
-  code.push('')
-
-  // Create URI
-  code.push(util.format('let uri = Uri.of_string "%s" in', source.fullUrl))
+      .push('open Cohttp')
+      .push('open Lwt')
+      .blank()
+      .push(util.format('let uri = Uri.of_string "%s" in', source.fullUrl))
 
   // Add headers, including the cookies
   var headers = Object.keys(source.allHeaders)
@@ -36,7 +34,7 @@ module.exports = function (source, options) {
     code.push('let headers = Header.init ()')
 
     headers.map(function (key) {
-      code.push(util.format(opts.indent + '|> fun h -> Header.add h "%s" "%s"', key, source.allHeaders[key]))
+      code.push(1, util.format('|> fun h -> Header.add h "%s" "%s"', key, source.allHeaders[key]))
     })
 
     code.push('in')
@@ -49,7 +47,7 @@ module.exports = function (source, options) {
   }
 
   // Do the request
-  code.push('')
+  code.blank()
 
   code.push(util.format('Client.call %s%s%s uri',
     headers.length ? '~headers ' : '',
@@ -59,7 +57,7 @@ module.exports = function (source, options) {
 
   // Catch result
   code.push('>>= fun (res, body_stream) ->')
-  code.push(opts.indent + '(* Do stuff with the result *)')
+      .push(1, '(* Do stuff with the result *)')
 
   return code.join()
 }

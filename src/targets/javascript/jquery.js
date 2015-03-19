@@ -54,7 +54,7 @@ module.exports = function (source, options) {
       if (~settings.headers['content-type'].indexOf('boundary')) {
         delete settings.headers['content-type']
       }
-      code.push(null)
+      code.blank()
       break
 
     default:
@@ -64,10 +64,10 @@ module.exports = function (source, options) {
   }
 
   code.push('var settings = ' + JSON.stringify(settings, null, opts.indent).replace('"[form]"', 'form'))
-
-  code.push(null)
-
-  code.push('$.ajax(settings).done(function (response) {\n\tconsole.log(response);\n});'.replace(/\t/g, opts.indent))
+      .blank()
+      .push('$.ajax(settings).done(function (response) {')
+      .push(1, 'console.log(response);')
+      .push('});')
 
   return code.join()
 }

@@ -22,9 +22,9 @@ module.exports = function (source, options) {
   var code = new CodeBuilder(opts.indent)
 
   code.push('var unirest = require("unirest");')
-  code.push(null)
-  code.push(util.format('var req = unirest("%s", "%s");', source.method, source.url))
-  code.push(null)
+      .blank()
+      .push(util.format('var req = unirest("%s", "%s");', source.method, source.url))
+      .blank()
 
   if (source.cookies.length) {
     code.push('var CookieJar = unirest.jar();')
@@ -34,17 +34,17 @@ module.exports = function (source, options) {
     })
 
     code.push('req.jar(CookieJar);')
-    code.push(null)
+        .blank()
   }
 
   if (Object.keys(source.queryObj).length) {
     code.push(util.format('req.query(%s);', JSON.stringify(source.queryObj, null, opts.indent)))
-    code.push(null)
+        .blank()
   }
 
   if (Object.keys(source.headersObj).length) {
     code.push(util.format('req.headers(%s);', JSON.stringify(source.headersObj, null, opts.indent)))
-    code.push(null)
+        .blank()
   }
 
   switch (source.postData.mimeType) {
@@ -57,7 +57,7 @@ module.exports = function (source, options) {
     case 'application/json':
       if (source.postData.jsonObj) {
         code.push('req.type("json");')
-        code.push(util.format('req.send(%s);', JSON.stringify(source.postData.jsonObj, null, opts.indent)))
+            .push(util.format('req.send(%s);', JSON.stringify(source.postData.jsonObj, null, opts.indent)))
       }
       break
 
@@ -97,13 +97,13 @@ module.exports = function (source, options) {
     code.unshift('var fs = require("fs");')
   }
 
-  code.push(null)
-  code.push('req.end(function (res) {')
-  code.push(opts.indent + 'if (res.error) throw new Error(res.error);')
-  code.push(null)
-  code.push(opts.indent + 'console.log(res.body);')
-  code.push('});')
-  code.push(null)
+  code.blank()
+      .push('req.end(function (res) {')
+      .push(1, 'if (res.error) throw new Error(res.error);')
+      .blank()
+      .push(1, 'console.log(res.body);')
+      .push('});')
+      .blank()
 
   return code.join('\n').replace(/"fs\.createReadStream\(\\\"(.+)\\\"\)\"/, 'fs.createReadStream("$1")')
 }
