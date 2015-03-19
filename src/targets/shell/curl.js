@@ -11,7 +11,7 @@
 'use strict'
 
 var util = require('util')
-var shell = require('../../helpers/shell')
+var helpers = require('./helpers')
 var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
@@ -23,7 +23,7 @@ module.exports = function (source, options) {
   var code = new CodeBuilder(opts.indent, opts.indent !== false ? ' \\\n' + opts.indent : ' ')
 
   code.push(util.format('curl %s %s', opts.short ? '-X' : '--request', source.method))
-      .push(util.format('%s%s', opts.short ? '' : '--url ', shell.quote(source.fullUrl)))
+      .push(util.format('%s%s', opts.short ? '' : '--url ', helpers.quote(source.fullUrl)))
 
   if (source.httpVersion === 'HTTP/1.0') {
     code.push(opts.short ? '-0' : '--http1.0')
@@ -32,23 +32,23 @@ module.exports = function (source, options) {
   // construct headers
   Object.keys(source.headersObj).sort().map(function (key) {
     var header = util.format('%s: %s', key, source.headersObj[key])
-    code.push(util.format('%s %s', opts.short ? '-H' : '--header', shell.quote(header)))
+    code.push(util.format('%s %s', opts.short ? '-H' : '--header', helpers.quote(header)))
   })
 
   if (source.allHeaders.cookie) {
-    code.push(util.format('%s %s', opts.short ? '-b' : '--cookie', shell.quote(source.allHeaders.cookie)))
+    code.push(util.format('%s %s', opts.short ? '-b' : '--cookie', helpers.quote(source.allHeaders.cookie)))
   }
 
   // request body
   if (source.postData.text) {
-    code.push(util.format('%s %s', opts.short ? '-d' : '--data', shell.escape(shell.quote(source.postData.text))))
+    code.push(util.format('%s %s', opts.short ? '-d' : '--data', helpers.escape(helpers.quote(source.postData.text))))
   }
 
   // construct post params
   if (!source.postData.text && source.postData.params) {
     source.postData.params.map(function (param) {
       var post = util.format('%s=%s', param.name, param.value)
-      code.push(util.format('%s %s', opts.short ? '-F' : '--form', shell.quote(post)))
+      code.push(util.format('%s %s', opts.short ? '-F' : '--form', helpers.quote(post)))
     })
   }
 

@@ -22,15 +22,18 @@ module.exports = function (source, options) {
   // Check which protocol to be used for the client connection
   var protocol = source.uriObj.protocol
   if (protocol === 'https:') {
-    code.push(util.format('conn = http.client.HTTPSConnection("%s")\n', source.uriObj.host))
+    code.push(util.format('conn = http.client.HTTPSConnection("%s")', source.uriObj.host))
+        .blank()
   } else {
-    code.push(util.format('conn = http.client.HTTPConnection("%s")\n', source.uriObj.host))
+    code.push(util.format('conn = http.client.HTTPConnection("%s")', source.uriObj.host))
+        .blank()
   }
 
   // Create payload string if it exists
   var payload = JSON.stringify(source.postData.text)
   if (payload) {
-    code.push(util.format('payload = %s\n', payload))
+    code.push(util.format('payload = %s', payload))
+        .blank()
   }
 
   // Create Headers
@@ -39,7 +42,8 @@ module.exports = function (source, options) {
   var headerCount = Object.keys(headers).length
   if (headerCount === 1) {
     for (header in headers) {
-      code.push(util.format('headers = { \'%s\': "%s" }\n', header, headers[header]))
+      code.push(util.format('headers = { \'%s\': "%s" }', header, headers[header]))
+          .blank()
     }
   } else if (headerCount > 1) {
     var headerLine

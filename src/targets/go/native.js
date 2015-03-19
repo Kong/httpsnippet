@@ -28,14 +28,15 @@ module.exports = function (source, options) {
 
   var errorCheck = function () {
     if (opts.checkErrors) {
-      code.push('\tif err != nil {')
-          .push('\t\tpanic(err)')
-          .push('\t}')
+      code.push(1, 'if err != nil {')
+          .push(2, 'panic(err)')
+          .push(1, '}')
     }
   }
 
   // Create boilerplate
-  code.push('package main\n')
+  code.push('package main')
+      .blank()
       .push('import (')
       .push(1, '"fmt"')
 
@@ -53,8 +54,10 @@ module.exports = function (source, options) {
     code.push(1, '"io/ioutil"')
   }
 
-  code.push(')\n')
-      .push('func main() {\n')
+  code.push(')')
+      .blank()
+      .push('func main() {')
+      .blank()
 
   // Create client
   var client
@@ -62,19 +65,24 @@ module.exports = function (source, options) {
     client = 'client'
     code.push(1, 'client := http.Client{')
         .push(2, util.format('Timeout: time.Duration(%s * time.Second),', opts.timeout))
-        .push(1, '}\n')
+        .push(1, '}')
+        .blank()
   } else {
     client = 'http.DefaultClient'
   }
 
-  code.push(1, util.format('url := "%s"\n', source.fullUrl))
+  code.push(1, util.format('url := "%s"', source.fullUrl))
+      .blank()
 
   // If we have body content or not create the var and reader or nil
   if (source.postData.text) {
-    code.push(1, util.format('payload := strings.NewReader(%s)\n', JSON.stringify(source.postData.text)))
-        .push(1, util.format('req, %s := http.NewRequest("%s", url, payload)\n', errorPlaceholder, source.method))
+    code.push(1, util.format('payload := strings.NewReader(%s)', JSON.stringify(source.postData.text)))
+        .blank()
+        .push(1, util.format('req, %s := http.NewRequest("%s", url, payload)', errorPlaceholder, source.method))
+        .blank()
   } else {
-    code.push(1, util.format('req, %s := http.NewRequest("%s", url, nil)\n', errorPlaceholder, source.method))
+    code.push(1, util.format('req, %s := http.NewRequest("%s", url, nil)', errorPlaceholder, source.method))
+        .blank()
   }
 
   errorCheck()
