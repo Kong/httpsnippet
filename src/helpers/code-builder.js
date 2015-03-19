@@ -17,7 +17,7 @@ var CodeBuilder = function (indentation, join) {
 
 /**
  * Add given indentation level to given string
- * @param {number} [indentationLevel=0] Desired level of indentation for this line
+ * @param {number} [indentationLevel=0] Desired level of indentation for this line
  * @param {string} line Line of code
  * @return {string}
  */
@@ -40,7 +40,7 @@ CodeBuilder.prototype.buildLine = function (indentationLevel, line) {
 
 /**
  * Add a line at the top of current lines with given indentation level
- * @param {number} [indentationLevel=0] Desired level of indentation for this line
+ * @param {number} [indentationLevel=0] Desired level of indentation for this line
  * @param {string} line Line of code
  * @return {this}
  */
@@ -52,7 +52,7 @@ CodeBuilder.prototype.unshift = function (indentationLevel, str) {
 
 /**
  * Add a line at the end of current lines with given indentation level
- * @param {number} [indentationLevel=0] Desired level of indentation for this line
+ * @param {number} [indentationLevel=0] Desired level of indentation for this line
  * @param {string} line Line of code
  * @return {this}
  */
@@ -74,7 +74,7 @@ CodeBuilder.prototype.blank = function () {
 
 /**
  * Concatenate all current lines using the given lineJoin
- * @return {string}
+ * @return {string}
  */
 CodeBuilder.prototype.join = function () {
   return this.code.join(this.lineJoin)

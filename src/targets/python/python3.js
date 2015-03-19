@@ -75,7 +75,6 @@ module.exports = function (source, options) {
       .push('res = conn.getresponse()')
       .push('data = res.read()')
       .blank()
-      .push('print(res.status)')
       .push('print(data.decode("utf-8"))')
 
   return code.join()
