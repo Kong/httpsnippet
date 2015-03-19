@@ -197,22 +197,16 @@ module.exports.info = {
 
 ### Target Options
 
-### cURL
+### Shell
+
+##### cURL
 
 | Option   | Default | Description                                                              |
 | -------- | ------- | ------------------------------------------------------------------------ |
 | `short`  | `false` | use short form of cURL CLI options                                       |
 | `indent` | `  `    | line break & indent output value, set to `false` to disable line breaks  |
 
-### Go
-
-| Option          | Default | Description                                                              |
-| --------------- | ------- | ------------------------------------------------------------------------ |
-| `errorChecking` | `false` | add error checking for request, response and body                        |
-| `printBody`     | `true`  | include code to print the body as a string                               |
-| `timeout`       | `-1`    | sets a request timeout in seconds (requires go 1.3+)                     |
-
-### HTTPie
+##### HTTPie
 
 | Option    | Default | Description                                                                                                                             |
 | --------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------- |
@@ -228,7 +222,7 @@ module.exports.info = {
 | `short`   | `false` | use short form of cURL CLI options                                                                                                      |
 | `indent`  | `  `    | line break & indent output value, set to `false` to disable line breaks                                                                 |
 
-### Wget
+##### Wget
 
 | Option    | Default | Description                                                              |
 | --------- | ------- | ------------------------------------------------------------------------ |
@@ -238,13 +232,31 @@ module.exports.info = {
 
 ### Objective-C
 
-##### Native
+##### NSURLSession
 
 | Option    | Default | Description                                                              |
 | --------- | ------- | ------------------------------------------------------------------------ |
 | `timeout` | `10`    | NSURLRequest timeout                                                     |
-| `indent`  | `  `    | line break & indent output value, set to `false` to disable line         |
-| `pretty`  | `true`  | indent extracted headers/parameters in `NSDictionary` litterals          |
+| `indent`  | `    `  | line break & indent output value                                         |
+| `pretty`  | `true`  | indent extracted headers/parameters in `NSDictionary` literals           |
+
+### Swift
+
+##### NSURLSession
+
+| Option    | Default | Description                                                              |
+| --------- | ------- | ------------------------------------------------------------------------ |
+| `timeout` | `10`    | NSURLRequest timeout                                                     |
+| `indent`  | `  `    | line break & indent output value                                         |
+| `pretty`  | `true`  | indent extracted headers/parameters in `NSDictionary` literals           |
+
+### Go
+
+| Option          | Default | Description                                                              |
+| --------------- | ------- | ------------------------------------------------------------------------ |
+| `errorChecking` | `false` | add error checking for request, response and body                        |
+| `printBody`     | `true`  | include code to print the body as a string                               |
+| `timeout`       | `-1`    | sets a request timeout in seconds (requires go 1.3+)                     |
 
 ## Bugs and feature requests
 
