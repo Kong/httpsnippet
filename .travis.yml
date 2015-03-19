@@ -8,7 +8,7 @@ script: npm test
 
 before_install:
   - sudo apt-get update
-  - sudo apt-get install python3 php
+  - sudo apt-get --yes install python3 php5-curl
 
 after_script:
   - ./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha
