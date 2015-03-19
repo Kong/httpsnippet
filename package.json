@@ -24,7 +24,7 @@
     "url": "https://github.com/Mashape/httpsnippet/issues"
   },
   "scripts": {
-    "test": "standard && mocha --bail --no-timeouts --reporter spec",
+    "test": "standard && mocha --no-timeouts --reporter spec",
     "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha",
     "prepush": "npm test"
   },
