@@ -3,7 +3,7 @@
   "url": "http://mockbin.com/har",
   "headers": [
     {
-      "name": "Content-Type",
+      "name": "content-type",
       "value": "multipart/form-data"
     }
   ],

@@ -14,6 +14,4 @@ conn.request("POST", "/har?foo=bar&foo=baz&baz=abc&key=value", payload, headers)
 
 res = conn.getresponse()
 data = res.read()
-
-print(res.status)
-print(data)
+print(data.decode("utf-8"))

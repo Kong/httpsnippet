@@ -27,7 +27,7 @@ module.exports = function (source, options) {
     headers: source.allHeaders
   }
 
-  code.push('var http = require("http");')
+  code.push(util.format('var http = require("%s");', source.uriObj.protocol.replace(':', '')))
 
   if (!source.postData.text && source.postData.params) {
     code.push('var querystring = require("querystring");')
@@ -53,7 +53,7 @@ module.exports = function (source, options) {
 
   code.push(opts.indent + 'res.on("end", function () {')
   code.push(opts.indent + opts.indent + 'var body = Buffer.concat(chunks);')
-  code.push(opts.indent + opts.indent + 'console.log(body);')
+  code.push(opts.indent + opts.indent + 'console.log(body.toString());')
   code.push(opts.indent + '});')
   code.push('});')
 

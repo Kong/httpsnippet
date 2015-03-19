@@ -19,7 +19,7 @@ var req = http.request(options, function (res) {
 
   res.on("end", function () {
     var body = Buffer.concat(chunks);
-    console.log(body);
+    console.log(body.toString());
   });
 });
 

@@ -18,11 +18,11 @@
   ],
   "headers": [
     {
-      "name": "Accept",
+      "name": "accept",
       "value": "application/json"
     },
     {
-      "name": "Content-Type",
+      "name": "content-type",
       "value": "application/x-www-form-urlencoded"
     }
   ],

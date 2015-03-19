@@ -70,8 +70,7 @@ module.exports = function (source, options) {
   // Get Response
   code.push('\nres = conn.getresponse()')
   code.push('data = res.read()')
-  code.push('\nprint(res.status)')
-  code.push('print(data)')
+  code.push('print(data.decode("utf-8"))')
 
   // console.log(code)
   return code.join('\n')

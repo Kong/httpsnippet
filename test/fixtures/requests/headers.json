@@ -3,11 +3,11 @@
   "url": "http://mockbin.com/har",
   "headers": [
     {
-      "name": "Accept",
+      "name": "accept",
       "value": "application/json"
     },
     {
-      "name": "X-Foo",
+      "name": "x-foo",
       "value": "Bar"
     }
   ]

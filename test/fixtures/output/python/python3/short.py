@@ -6,6 +6,4 @@ conn.request("GET", "/har")
 
 res = conn.getresponse()
 data = res.read()
-
-print(res.status)
-print(data)
+print(data.decode("utf-8"))
