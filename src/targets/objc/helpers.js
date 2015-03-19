@@ -23,16 +23,16 @@ module.exports = {
    * @return {string} A valid Objective-C declaration and initialization of an Objective-C object litteral.
    *
    * @example
-   *   nsDeclarationBuilder('NSDictionary', 'params', {a: 'b', c: 'd'}, true)
+   *   nsDeclaration('NSDictionary', 'params', {a: 'b', c: 'd'}, true)
    *   // returns:
    *   NSDictionary *params = @{ @"a": @"b",
    *                             @"c": @"d" };
    *
-   *   nsDeclarationBuilder('NSDictionary', 'params', {a: 'b', c: 'd'})
+   *   nsDeclaration('NSDictionary', 'params', {a: 'b', c: 'd'})
    *   // returns:
    *   NSDictionary *params = @{ @"a": @"b", @"c": @"d" };
    */
-  nsDeclarationBuilder: function (nsClass, name, parameters, indent) {
+  nsDeclaration: function (nsClass, name, parameters, indent) {
     var opening = nsClass + ' *' + name + ' = '
     var literal = this.literalRepresentation(parameters, indent ? opening.length : undefined)
     return opening + literal + ';'
