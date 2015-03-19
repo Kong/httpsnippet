@@ -47,10 +47,13 @@ Currently the following output [targets](/src/targets) are supported:
   - [Requests](http://docs.python-requests.org/en/latest/api/#requests.request)
 - Objective-C
   - [NSURLSession](https://developer.apple.com/library/mac/documentation/Foundation/Reference/NSURLSession_class/index.html)
+- Swift
+  - [NSURLSession](https://developer.apple.com/library/mac/documentation/Foundation/Reference/NSURLSession_class/index.html)
 - Go
   - [Native](http://golang.org/pkg/net/http/#NewRequest)
 - OCaml
   - [CoHTTP](https://github.com/mirage/ocaml-cohttp)
+- [Go](http://golang.org/pkg/net/http/#NewRequest)
 
 ## Installation
 

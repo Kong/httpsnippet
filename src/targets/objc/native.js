@@ -23,6 +23,7 @@ module.exports = function (source, options) {
 
   var indent = opts.indent
   var code = new CodeBuilder(opts.indent)
+
   // Markers for headers to be created as litteral objects and later be set on the NSURLRequest if exist
   var req = {
     hasHeaders: false,

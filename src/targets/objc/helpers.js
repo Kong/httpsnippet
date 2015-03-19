@@ -14,7 +14,7 @@ module.exports = {
   },
 
   /**
-   * Create a string corresponding to a valid declaration and initialization of an Objective-C object litteral.
+   * Create a string corresponding to a valid declaration and initialization of an Objective-C object literal.
    *
    * @param {string} nsClass Class of the litteral
    * @param {string} name Desired name of the instance
