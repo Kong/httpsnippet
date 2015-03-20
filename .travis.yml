@@ -4,7 +4,7 @@ node_js:
  - iojs
  - 0.12
 
-script: npm test
+script: npm run travis
 
 before_install:
   - sudo apt-get update
