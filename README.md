@@ -76,7 +76,7 @@ snippets/
 *Required*  
 Type: `object`
 
-Name of [conversion target](src/targets)
+Name of [conversion target](https://github.com/Mashape/httpsnippet/wiki/Targets)
 
 ```js
 var httpsnippet = require('httpsnippet');
@@ -94,13 +94,13 @@ var snippet = new HTTPSnippet({
 *Required*  
 Type: `string`
 
-Name of [conversion target](src/targets)
+Name of [conversion target](https://github.com/Mashape/httpsnippet/wiki/Targets)
 
 #### options
 
 Type: `object`
 
-Target options, *see [wiki](https://github.com/Mashape/httpsnippet/wiki) for details*
+Target options, *see [wiki](https://github.com/Mashape/httpsnippet/wiki/Targets) for details*
 
 ```js
 var httpsnippet = require('httpsnippet');
@@ -126,19 +126,19 @@ console.log(snippet.convert('node', {
 *Required*  
 Type: `string`
 
-Name of [conversion target](src/targets)
+Name of [conversion target](https://github.com/Mashape/httpsnippet/wiki/Targets)
 
 #### client
 
 Type: `string`
 
-Name of conversion target [client library](src/targets)
+Name of conversion target [client library](https://github.com/Mashape/httpsnippet/wiki/Targets)
 
 #### options
 
 Type: `object`
 
-Target options, *see [wiki](https://github.com/Mashape/httpsnippet/wiki) for details*
+Target options, *see [wiki](https://github.com/Mashape/httpsnippet/wiki/Targets) for details*
 
 ```js
 var httpsnippet = require('httpsnippet');
