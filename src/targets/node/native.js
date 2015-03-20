@@ -51,13 +51,17 @@ module.exports = function (source, options) {
     case 'application/x-www-form-urlencoded':
       if (source.postData.paramsObj) {
         code.unshift('var qs = require("querystring");')
-        code.push(util.format('req.write(qs.stringify(%s));', util.inspect(source.postData.paramsObj)))
+        code.push(util.format('req.write(qs.stringify(%s));', util.inspect(source.postData.paramsObj, {
+          depth: null
+        })))
       }
       break
 
     case 'application/json':
       if (source.postData.jsonObj) {
-        code.push(util.format('req.write(JSON.stringify(%s));', util.inspect(source.postData.jsonObj)))
+        code.push(util.format('req.write(JSON.stringify(%s));', util.inspect(source.postData.jsonObj, {
+          depth: null
+        })))
       }
       break
 
