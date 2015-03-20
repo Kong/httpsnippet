@@ -12,49 +12,7 @@ See it in action on companion service: [APIembed](https://apiembed.com/)
 [![Coverage Status][codeclimate-coverage]][codeclimate-url]
 [![Dependencies][david-image]][david-url]
 
-## Table of contents
-- [Targets](#Targets) 
-- [Installation](#installation) 
-- [Usage](#usage) 
-- [Documentation](#documentation) 
-- [Bugs and feature requests](#bugs-and-feature-requests)
-- [Contributing](#contributing)
-- [Versioning](#versioning)
-- [License](#license)
-
-## Targets
-
-Currently the following output [targets](/src/targets) are supported:
-
-- Shell
-  - [cURL](http://curl.haxx.se/)
-  - [HTTPie](http://httpie.org)
-  - [Wget](https://www.gnu.org/software/wget/)
-- Java
-  - [Unirest](http://unirest.io/java.html)
-- Node.js
-  - [Native](http://nodejs.org/api/http.html#http_http_request_options_callback)
-  - [Request](https://github.com/request/request)
-  - [Unirest](http://unirest.io/nodejs.html)
-- Ruby
-  - [Native](http://ruby-doc.org/stdlib-2.2.1/libdoc/net/http/rdoc/Net/HTTP.html)
-- PHP
-  - [ext-curl](http://php.net/manual/en/book.curl.php)
-  - [pecl/http v1](http://php.net/manual/en/book.http.php)
-  - [pecl/http v2](http://devel-m6w6.rhcloud.com/mdref/http)
-- Python
-  - [Python 3](https://docs.python.org/3/library/http.client.html)
-  - [Requests](http://docs.python-requests.org/en/latest/api/#requests.request)
-- Objective-C
-  - [NSURLSession](https://developer.apple.com/library/mac/documentation/Foundation/Reference/NSURLSession_class/index.html)
-- Swift
-  - [NSURLSession](https://developer.apple.com/library/mac/documentation/Foundation/Reference/NSURLSession_class/index.html)
-- Go
-  - [Native](http://golang.org/pkg/net/http/#NewRequest)
-- OCaml
-  - [CoHTTP](https://github.com/mirage/ocaml-cohttp)
-
-## Installation
+## Install
 
 install from source or through [npm](https://www.npmjs.com/):
 
@@ -63,12 +21,10 @@ install from source or through [npm](https://www.npmjs.com/):
 npm install --global httpsnippet
 
 # to use as a module
-npm install httpsnippet
+npm install --save httpsnippet
 ```
 
 ## Usage
-
-### CLI
 
 ```
 Usage: httpsnippet [options] <file>
@@ -147,7 +103,7 @@ snippets/
 └── endpoint-3.js
 ```
 
-### Module
+## API
 
 ```js
 var httpsnippet = require('httpsnippet');
@@ -172,91 +128,6 @@ console.log(snippet.convert('php', 'curl'));
 ## Documentation
 
 At the heart of this module is the [HAR Request object](http://www.softwareishard.com/blog/har-12-spec/#request) as the http request description format, please review some of the sample JSON HAR Request objects in [test fixtures](/test/fixtures/requests), or read the [HAR Docs](http://www.softwareishard.com/blog/har-12-spec/#request) for more details.
-
-### Output Targets
-
-output [targets](/src/targets) are simple modules that expose a constructor *(which handles the transformation)* and a meta `info` property.
-
-```js
-module.exports = function (opts) {
-  // optionally process `opts` object for target specific configuration
-  // 
-  // process `this.source` object
-  // 
-  // return processed output as string
-};
-
-module.exports.info = {
-  key: 'curl',
-  title: 'cURL',
-  link: 'http://curl.haxx.se/',
-  description: 'curl is a command line tool and library for transferring data with URL syntax',
-  extname: '.sh'
-};
-```
-
-### Target Options
-
-### Shell
-
-##### cURL
-
-| Option   | Default | Description                                                              |
-| -------- | ------- | ------------------------------------------------------------------------ |
-| `short`  | `false` | use short form of cURL CLI options                                       |
-| `indent` | `  `    | line break & indent output value, set to `false` to disable line breaks  |
-
-##### HTTPie
-
-| Option    | Default | Description                                                                                                                             |
-| --------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `body`    | `false` | only the response body is printed                                                                                                       |
-| `headers` | `false` | only the response headers are printed                                                                                                   |
-| `verbose` | `false` | print the whole HTTP exchange (request and response)                                                                                    |
-| `print`   | `false` | selects parts of the HTTP exchange, e.g. `--print=Hh` *(see [httpie docs](https://github.com/jakubroztocil/httpie#output-options))*     |
-| `cert`    | `false` | use a client side certificate *(see [httpie docs](https://github.com/jakubroztocil/httpie#client-side-ssl-certificate))*                |
-| `verify`  | `false` | server SSL certificate verification *(see [httpie docs](https://github.com/jakubroztocil/httpie#server-ssl-certificate-verification))*  |
-| `pretty`  | `false` | syntax highlighting *(see [httpie docs](https://github.com/jakubroztocil/httpie#colors-and-formatting))*                                |
-| `style`   | `false` | syntax highlighting *(see [httpie docs](https://github.com/jakubroztocil/httpie#colors-and-formatting))*                                |
-| `timeout` | `false` | overwrite the default *30s* timeout                                                                                                     |
-| `short`   | `false` | use short form of cURL CLI options                                                                                                      |
-| `indent`  | `  `    | line break & indent output value, set to `false` to disable line breaks                                                                 |
-
-##### Wget
-
-| Option    | Default | Description                                                              |
-| --------- | ------- | ------------------------------------------------------------------------ |
-| `short`   | `false` | use short form of cURL CLI options                                       |
-| `indent`  | `  `    | line break & indent output value, set to `false` to disable line breaks  |
-| `verbose` | `false` | by default, `--quiet` is always used, unless `verbose` is set to `true`  |
-
-### Objective-C
-
-##### NSURLSession
-
-| Option    | Default | Description                                                              |
-| --------- | ------- | ------------------------------------------------------------------------ |
-| `timeout` | `10`    | NSURLRequest timeout                                                     |
-| `indent`  | `    `  | line break & indent output value                                         |
-| `pretty`  | `true`  | indent extracted headers/parameters in `NSDictionary` literals           |
-
-### Swift
-
-##### NSURLSession
-
-| Option    | Default | Description                                                              |
-| --------- | ------- | ------------------------------------------------------------------------ |
-| `timeout` | `10`    | NSURLRequest timeout                                                     |
-| `indent`  | `  `    | line break & indent output value                                         |
-| `pretty`  | `true`  | indent extracted headers/parameters in `NSDictionary` literals           |
-
-### Go
-
-| Option          | Default | Description                                                              |
-| --------------- | ------- | ------------------------------------------------------------------------ |
-| `errorChecking` | `false` | add error checking for request, response and body                        |
-| `printBody`     | `true`  | include code to print the body as a string                               |
-| `timeout`       | `-1`    | sets a request timeout in seconds (requires go 1.3+)                     |
 
 ## Bugs and feature requests
 
@@ -288,7 +159,7 @@ For more information on SemVer, please visit <http://semver.org/>.
 
 ## License
 
-Licensed under [The MIT License](LICENSE).
+[MIT](LICENSE) &copy; [Mashape](https://www.mashape.com)
 
 [license-url]: https://github.com/Mashape/httpsnippet/blob/master/LICENSE
 
