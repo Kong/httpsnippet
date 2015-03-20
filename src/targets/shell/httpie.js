@@ -11,18 +11,18 @@
 'use strict'
 
 var util = require('util')
-var helpers = require('./helpers')
+var helpers = require('../../helpers/shell')
 var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   var opts = util._extend({
-    queryParams: false,
     body: false,
     cert: false,
     headers: false,
     indent: '  ',
     pretty: false,
     print: false,
+    queryParams: false,
     short: false,
     style: false,
     timeout: false,

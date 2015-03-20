@@ -11,13 +11,13 @@
 'use strict'
 
 var util = require('util')
-var helpers = require('./helpers')
+var helpers = require('../../helpers/shell')
 var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   var opts = util._extend({
-    short: false,
-    indent: '  '
+    indent: '  ',
+    short: false
   }, options)
 
   var code = new CodeBuilder(opts.indent, opts.indent !== false ? ' \\\n' + opts.indent : ' ')
@@ -59,5 +59,5 @@ module.exports.info = {
   key: 'curl',
   title: 'cURL',
   link: 'http://curl.haxx.se/',
-  description: 'curl is a command line tool and library for transferring data with URL syntax'
+  description: 'cURL is a command line tool and library for transferring data with URL syntax'
 }

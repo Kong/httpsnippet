@@ -16,9 +16,9 @@ var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   var opts = util._extend({
-    timeout: '10',
     indent: '  ',
-    pretty: true
+    pretty: true,
+    timeout: '10'
   }, options)
 
   var code = new CodeBuilder(opts.indent)

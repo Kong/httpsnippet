@@ -16,16 +16,17 @@ var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   var opts = util._extend({
+    closingTag: false,
     indent: '  ',
     noTags: false,
-    closingTag: false
+    shortTags: false
   }, options)
 
   var code = new CodeBuilder(opts.indent)
   var hasBody = false
 
   if (!opts.noTags) {
-    code.push('<?php')
+    code.push(opts.shortTags ? '<?' : '<?php')
         .blank()
   }
 
@@ -112,7 +113,7 @@ module.exports = function (source, options) {
       .blank()
       .push('echo $response->getBody();')
 
-  if (opts.closingTag) {
+  if (!opts.noTags && opts.closingTag) {
     code.blank()
         .push('?>')
   }

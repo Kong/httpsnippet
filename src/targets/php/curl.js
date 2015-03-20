@@ -15,18 +15,19 @@ var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   var opts = util._extend({
+    closingTag: false,
     indent: '  ',
-    noTags: false,
     maxRedirects: 10,
-    timeout: 30,
     namedErrors: false,
-    closingTag: false
+    noTags: false,
+    shortTags: false,
+    timeout: 30
   }, options)
 
   var code = new CodeBuilder(opts.indent)
 
   if (!opts.noTags) {
-    code.push('<?php')
+    code.push(opts.shortTags ? '<?' : '<?php')
         .blank()
   }
 
@@ -121,7 +122,7 @@ module.exports = function (source, options) {
       .push(1, 'echo $response;')
       .push('}')
 
-  if (opts.closingTag) {
+  if (!opts.noTags && opts.closingTag) {
     code.blank()
         .push('?>')
   }
@@ -133,5 +134,5 @@ module.exports.info = {
   key: 'curl',
   title: 'cURL',
   link: 'http://php.net/manual/en/book.curl.php',
-  description: 'PHP with libcurl'
+  description: 'PHP with ext-curl'
 }

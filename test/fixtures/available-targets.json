@@ -9,7 +9,7 @@
         "key": "curl",
         "title": "cURL",
         "link": "http://curl.haxx.se/",
-        "description": "curl is a command line tool and library for transferring data with URL syntax"
+        "description": "cURL is a command line tool and library for transferring data with URL syntax"
       },
       {
         "key": "httpie",
@@ -95,7 +95,7 @@
         "key": "curl",
         "title": "cURL",
         "link": "http://php.net/manual/en/book.curl.php",
-        "description": "PHP with libcurl"
+        "description": "PHP with ext-curl"
       },
       {
         "key": "http1",
