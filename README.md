@@ -100,7 +100,7 @@ Name of [conversion target](src/targets)
 
 Type: `object`
 
-Target options, *see [wiki](wiki) for details*
+Target options, *see [wiki](https://github.com/Mashape/httpsnippet/wiki) for details*
 
 ```js
 var httpsnippet = require('httpsnippet');
@@ -138,7 +138,7 @@ Name of conversion target [client library](src/targets)
 
 Type: `object`
 
-Target options, *see [wiki](wiki) for details*
+Target options, *see [wiki](https://github.com/Mashape/httpsnippet/wiki) for details*
 
 ```js
 var httpsnippet = require('httpsnippet');
@@ -159,7 +159,9 @@ console.log(snippet.convert('node', 'unirest'));
 
 ## Documentation
 
-At the heart of this module is the [HAR Request object](http://www.softwareishard.com/blog/har-12-spec/#request) as the http request description format, please review some of the sample JSON HAR Request objects in [test fixtures](/test/fixtures/requests), or read the [HAR Docs](http://www.softwareishard.com/blog/har-12-spec/#request) for more details.
+At the heart of this module is the [HAR Request object](http://www.softwareishard.com/blog/har-12-spec/#request) as the HTTP request description format, please review some of the sample JSON HAR Request objects in [test fixtures](/test/fixtures/requests), or read the [HAR Docs](http://www.softwareishard.com/blog/har-12-spec/#request) for more details.
+
+For detailed information on each target, please review the [wiki](https://github.com/Mashape/httpsnippet/wiki).
 
 ## Bugs and feature requests
 
@@ -168,6 +170,8 @@ Have a bug or a feature request? Please first read the [issue guidelines](CONTRI
 ## Contributing
 
 Please read through our [contributing guidelines](CONTRIBUTING.md). Included are directions for opening issues, coding standards, and notes on development.
+
+For a info on creating new conversion targets, please review this [guideline](https://github.com/Mashape/httpsnippet/wiki/Creating-Targets)
 
 More over, if your pull request contains JavaScript patches or features, you must include relevant unit tests.
 
