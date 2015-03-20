@@ -43,11 +43,12 @@ module.exports = function (source, options) {
   switch (source.postData.mimeType) {
     case 'multipart/form-data':
       source.postData.params.map(function (param) {
+        var post = util.format('%s=%s', param.name, param.value)
+
         if (param.fileName && !param.value) {
-          param.value = '@' + param.fileName
+          post = util.format('%s=@%s', param.name, param.fileName)
         }
 
-        var post = util.format('%s=%s', param.name, param.value)
         code.push(util.format('%s %s', opts.short ? '-F' : '--form', helpers.quote(post)))
       })
       break
