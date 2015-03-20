@@ -212,10 +212,6 @@ HTTPSnippet.prototype._matchTarget = function (target, client) {
     return false
   }
 
-  if (typeof targets[target] === 'function') {
-    return targets[target]
-  }
-
   // shorthand
   if (typeof client === 'string' && typeof targets[target][client] === 'function') {
     return targets[target][client]
