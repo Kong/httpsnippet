@@ -39,60 +39,24 @@ Options:
   -n, --output-name <name>  output file name
 ```
 
-#### Example
+###### Example
 
-process single file (assumes [HAR Request Object](http://www.softwareishard.com/blog/har-12-spec/#request) Format):
-
-###### EXAMPLE: *my-api-endpoint.json*
-
-```json
-{
-  "method": "POST",
-  "url": "http://mockbin.com/request",
-  "httpVersion": "HTTP/1.1",
-  "queryString": [
-    { "name": "foo", "value": "bar" },
-    { "name": "foo", "value": "baz" },
-    { "name": "baz", "value": "abc" }
-  ],
-  "headers": [
-    { "name": "Accept", "value": "text/plain" },
-    { "name": "Content-Type", "value": "application/json" },
-    { "name": "X-Foo-Bar", "value": "Baz" }
-  ],
-  "cookies":  [
-    { "name": "foo", "value": "bar" },
-    { "name": "bar", "value": "baz" }
-  ],
-  "postData": {
-    "mimeType": "application/json",
-    "text": "{\"foo\": \"bar\"}"
-  }
-}
-```
+process single file: [`example.json`](test/fixtures/requests/full.json) from [HAR Request Object](http://www.softwareishard.com/blog/har-12-spec/#request) format:
 
 ```shell
-httpsnippet my-api-endpoint.json --target php --output ./snippets
+httpsnippet example.json --target node --client unirest --output ./snippets
 ```
 
 ```shell
 $ tree snippets
 snippets/
-└── my-api-endpoint.php
+└── example.js
 ```
 
 process multiple files:
 
 ```shell
-httpsnippet /*.json --target node --client native --output ./snippets
-```
-
-```shell
-$ tree sources/
-sources/
-├── endpoint-1.json
-├── endpoint-2.json
-└── endpoint-3.json
+httpsnippet ./*.json --target node --client request --output ./snippets
 ```
 
 ```shell
@@ -105,24 +69,92 @@ snippets/
 
 ## API
 
+### HTTPSnippet(source)
+
+#### source
+
+*Required*  
+Type: `object`
+
+Name of [conversion target](src/targets)
+
 ```js
 var httpsnippet = require('httpsnippet');
 
-var snippet = new httpsnippet({
+var snippet = new HTTPSnippet({
+  method: 'GET',
+  url: 'http://mockbin.com/request'
+});
+```
+
+### convert(target [, options])
+
+#### target
+
+*Required*  
+Type: `string`
+
+Name of [conversion target](src/targets)
+
+#### options
+
+Type: `object`
+
+Target options, *see [wiki](wiki) for details*
+
+```js
+var httpsnippet = require('httpsnippet');
+
+var snippet = new HTTPSnippet({
   method: 'GET',
   url: 'http://mockbin.com/request'
 });
 
-// generate cURL output
-console.log(snippet.convert('curl', {
+// generate Node.js: Native output
+console.log(snippet.convert('node'));
+
+// generate Node.js: Native output, indent with tabs
+console.log(snippet.convert('node', {
+  indent: '\t';
+}));
+```
+
+### convert(target [, client, options])
+
+#### target
+
+*Required*  
+Type: `string`
+
+Name of [conversion target](src/targets)
+
+#### client
+
+Type: `string`
+
+Name of conversion target [client library](src/targets)
+
+#### options
+
+Type: `object`
+
+Target options, *see [wiki](wiki) for details*
+
+```js
+var httpsnippet = require('httpsnippet');
+
+var snippet = new HTTPSnippet({
+  method: 'GET',
+  url: 'http://mockbin.com/request'
+});
+
+// generate Shell: cURL output
+console.log(snippet.convert('shell', 'curl', {
   indent: '\t';
 }));
 
-// generate Node.js output
-console.log(snippet.convert('node'));
-
-// generate PHP output
-console.log(snippet.convert('php', 'curl'));
+// generate Node.js: Unirest output
+console.log(snippet.convert('node', 'unirest'));
 ```
 
 ## Documentation
