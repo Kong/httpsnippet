@@ -1,3 +1,4 @@
+var qs = require("querystring");
 var http = require("http");
 
 var options = {
@@ -23,5 +24,5 @@ var req = http.request(options, function (res) {
   });
 });
 
-req.write("foo=bar&hello=world");
+req.write(qs.stringify({ foo: 'bar', hello: 'world' }));
 req.end();

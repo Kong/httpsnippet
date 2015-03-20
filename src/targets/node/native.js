@@ -30,10 +30,6 @@ module.exports = function (source, options) {
 
   code.push(util.format('var http = require("%s");', source.uriObj.protocol.replace(':', '')))
 
-  if (!source.postData.text && source.postData.params) {
-    code.push('var querystring = require("querystring");')
-  }
-
   code.blank()
       .push(util.format('var options = %s;', JSON.stringify(reqOpts, null, opts.indent)))
       .blank()
@@ -51,8 +47,24 @@ module.exports = function (source, options) {
       .push('});')
       .blank()
 
-  if (source.postData.text) {
-    code.push(util.format('req.write(%s);', JSON.stringify(source.postData.text)))
+  switch (source.postData.mimeType) {
+    case 'application/x-www-form-urlencoded':
+      if (source.postData.paramsObj) {
+        code.unshift('var qs = require("querystring");')
+        code.push(util.format('req.write(qs.stringify(%s));', util.inspect(source.postData.paramsObj)))
+      }
+      break
+
+    case 'application/json':
+      if (source.postData.jsonObj) {
+        code.push(util.format('req.write(JSON.stringify(%s));', util.inspect(source.postData.jsonObj)))
+      }
+      break
+
+    default:
+      if (source.postData.text) {
+        code.push(util.format('req.write(%s);', JSON.stringify(source.postData.text, null, opts.indent)))
+      }
   }
 
   code.push('req.end();')
