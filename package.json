@@ -45,7 +45,7 @@
   "scripts": {
     "test": "standard && mocha --no-timeouts --reporter spec --fgrep 'Request Validation' --invert",
     "travis": "standard && mocha --no-timeouts --reporter spec",
-    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha",
+    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha -- --fgrep 'Request Validation' --invert",
     "prepush": "npm test"
   },
   "standard": {

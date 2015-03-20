@@ -41,7 +41,7 @@ Options:
 
 ###### Example
 
-process single file: [`example.json`](test/fixtures/requests/full.json) from [HAR Request Object](http://www.softwareishard.com/blog/har-12-spec/#request) format:
+process single file: [`example.json`](test/fixtures/requests/full.json) in [HAR Request Object](http://www.softwareishard.com/blog/har-12-spec/#request) format, or full [HAR](http://www.softwareishard.com/blog/har-12-spec/#log) log format:
 
 ```shell
 httpsnippet example.json --target node --client unirest --output ./snippets
@@ -159,7 +159,7 @@ console.log(snippet.convert('node', 'unirest'));
 
 ## Documentation
 
-At the heart of this module is the [HAR Request object](http://www.softwareishard.com/blog/har-12-spec/#request) as the HTTP request description format, please review some of the sample JSON HAR Request objects in [test fixtures](/test/fixtures/requests), or read the [HAR Docs](http://www.softwareishard.com/blog/har-12-spec/#request) for more details.
+At the heart of this module is the [HAR Format](http://www.softwareishard.com/blog/har-12-spec/#request) as the HTTP request description format, please review some of the sample JSON HAR Request objects in [test fixtures](/test/fixtures/requests), or read the [HAR Docs](http://www.softwareishard.com/blog/har-12-spec/#request) for more details.
 
 For detailed information on each target, please review the [wiki](https://github.com/Mashape/httpsnippet/wiki).
 

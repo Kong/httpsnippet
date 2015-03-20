@@ -11,82 +11,106 @@ var util = require('util')
 var validate = require('har-validator')
 
 // constructor
-var HTTPSnippet = function (req, lang) {
-  this.source = util._extend({}, req)
+var HTTPSnippet = function (data, lang) {
+  var entries
+  var self = this
+  var input = util._extend({}, data)
 
-  // add optional properties to make validation successful
-  this.source.httpVersion = this.source.httpVersion || 'HTTP/1.1'
-  this.source.queryString = this.source.queryString || []
-  this.source.headers = this.source.headers || []
-  this.source.cookies = this.source.cookies || []
-  this.source.postData = this.source.postData || {}
-  this.source.postData.mimeType = this.source.postData.mimeType || 'application/octet-stream'
+  // prep the main container
+  self.requests = []
 
-  this.source.bodySize = 0
-  this.source.headersSize = 0
-  this.source.postData.size = 0
+  // is it har?
+  if (input.log && input.log.entries) {
+    entries = input.log.entries
+  } else {
+    entries = [{
+      request: input
+    }]
+  }
 
-  validate.request(this.source, function (err, valid) {
-    if (!valid) {
-      throw err
-    }
+  entries.map(function (entry) {
+    // add optional properties to make validation successful
+    entry.request.httpVersion = entry.request.httpVersion || 'HTTP/1.1'
+    entry.request.queryString = entry.request.queryString || []
+    entry.request.headers = entry.request.headers || []
+    entry.request.cookies = entry.request.cookies || []
+    entry.request.postData = entry.request.postData || {}
+    entry.request.postData.mimeType = entry.request.postData.mimeType || 'application/octet-stream'
 
-    // construct query string object
-    this.source.queryObj = {}
-    this.source.headersObj = {}
-    this.source.cookiesObj = {}
-    this.source.allHeaders = {}
-    this.source.postData.jsonObj = false
-    this.source.postData.paramsObj = false
+    entry.request.bodySize = 0
+    entry.request.headersSize = 0
+    entry.request.postData.size = 0
 
-    // construct query objects
-    if (this.source.queryString && this.source.queryString.length) {
-      debug('queryString found, constructing queryString pair map')
+    validate.request(entry.request, function (err, valid) {
+      if (!valid) {
+        debug(err)
 
-      this.source.queryObj = this.source.queryString.reduce(helpers.reducer, {})
-    }
+        throw err
+      }
 
-    // construct headers objects
-    if (this.source.headers && this.source.headers.length) {
-      // loweCase header keys
-      this.source.headersObj = this.source.headers.reduceRight(function (headers, header) {
-        headers[header.name.toLowerCase()] = header.value
-        return headers
-      }, {})
-    }
-
-    // construct headers objects
-    if (this.source.cookies && this.source.cookies.length) {
-      this.source.cookiesObj = this.source.cookies.reduceRight(function (cookies, cookie) {
-        cookies[cookie.name] = cookie.value
-        return cookies
-      }, {})
-    }
-
-    // construct Cookie header
-    var cookies = this.source.cookies.map(function (cookie) {
-      return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value)
+      self.requests.push(self.prepare(entry.request))
     })
+  })
+}
 
-    if (cookies.length) {
-      this.source.allHeaders.cookie = cookies.join('; ')
-    }
+HTTPSnippet.prototype.prepare = function (request) {
+  // construct utility properties
+  request.queryObj = {}
+  request.headersObj = {}
+  request.cookiesObj = {}
+  request.allHeaders = {}
+  request.postData.jsonObj = false
+  request.postData.paramsObj = false
 
-    switch (this.source.postData.mimeType) {
-      case 'multipart/mixed':
-      case 'multipart/related':
-      case 'multipart/form-data':
-      case 'multipart/alternative':
-        // reset values
-        this.source.postData.text = ''
-        this.source.postData.mimeType = 'multipart/form-data'
+  // construct query objects
+  if (request.queryString && request.queryString.length) {
+    debug('queryString found, constructing queryString pair map')
 
+    request.queryObj = request.queryString.reduce(helpers.reducer, {})
+  }
+
+  // construct headers objects
+  if (request.headers && request.headers.length) {
+    // loweCase header keys
+    request.headersObj = request.headers.reduceRight(function (headers, header) {
+      headers[header.name.toLowerCase()] = header.value
+      return headers
+    }, {})
+  }
+
+  // construct headers objects
+  if (request.cookies && request.cookies.length) {
+    request.cookiesObj = request.cookies.reduceRight(function (cookies, cookie) {
+      cookies[cookie.name] = cookie.value
+      return cookies
+    }, {})
+  }
+
+  // construct Cookie header
+  var cookies = request.cookies.map(function (cookie) {
+    return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value)
+  })
+
+  if (cookies.length) {
+    request.allHeaders.cookie = cookies.join('; ')
+  }
+
+  switch (request.postData.mimeType) {
+    case 'multipart/mixed':
+    case 'multipart/related':
+    case 'multipart/form-data':
+    case 'multipart/alternative':
+      // reset values
+      request.postData.text = ''
+      request.postData.mimeType = 'multipart/form-data'
+
+      if (request.postData.params) {
         var form = new MultiPartForm()
 
         // easter egg
         form._boundary = '---011000010111000001101001'
 
-        this.source.postData.params.map(function (param) {
+        request.postData.params.map(function (param) {
           form.append(param.name, param.value || '', {
             filename: param.fileName || null,
             contentType: param.contentType || null
@@ -94,72 +118,74 @@ var HTTPSnippet = function (req, lang) {
         })
 
         form.pipe(es.map(function (data, cb) {
-          this.source.postData.text += data
-        }.bind(this)))
+          request.postData.text += data
+        }))
 
-        this.source.postData.boundary = form.getBoundary()
-        this.source.headersObj['content-type'] = 'multipart/form-data; boundary=' + form.getBoundary()
-        break
+        request.postData.boundary = form.getBoundary()
+        request.headersObj['content-type'] = 'multipart/form-data; boundary=' + form.getBoundary()
+      }
+      break
 
-      case 'application/x-www-form-urlencoded':
-        if (!this.source.postData.params) {
-          this.source.postData.text = ''
-        } else {
-          this.source.postData.paramsObj = this.source.postData.params.reduce(helpers.reducer, {})
+    case 'application/x-www-form-urlencoded':
+      if (!request.postData.params) {
+        request.postData.text = ''
+      } else {
+        request.postData.paramsObj = request.postData.params.reduce(helpers.reducer, {})
 
-          // always overwrite
-          this.source.postData.text = qs.stringify(this.source.postData.paramsObj)
+        // always overwrite
+        request.postData.text = qs.stringify(request.postData.paramsObj)
+      }
+      break
+
+    case 'text/json':
+    case 'text/x-json':
+    case 'application/json':
+    case 'application/x-json':
+      request.postData.mimeType = 'application/json'
+
+      if (request.postData.text) {
+        try {
+          request.postData.jsonObj = JSON.parse(request.postData.text)
+        } catch (e) {
+          debug(e)
+
+          // force back to text/plain
+          // if headers have proper content-type value, then this should also work
+          request.postData.mimeType = 'text/plain'
         }
-        break
+      }
+      break
+  }
 
-      case 'text/json':
-      case 'text/x-json':
-      case 'application/json':
-      case 'application/x-json':
-        this.source.postData.mimeType = 'application/json'
+  // create allHeaders object
+  request.allHeaders = util._extend(request.allHeaders, request.headersObj)
 
-        if (this.source.postData.text) {
-          try {
-            this.source.postData.jsonObj = JSON.parse(this.source.postData.text)
-          } catch (e) {
-            debug(e)
+  // deconstruct the uri
+  request.uriObj = url.parse(request.url, true, true)
 
-            // force back to text/plain
-            // if headers have proper content-type value, then this should also work
-            this.source.postData.mimeType = 'text/plain'
-          }
-        }
-        break
-    }
+  // merge all possible queryString values
+  request.queryObj = util._extend(request.queryObj, request.uriObj.query)
 
-    // create allHeaders object
-    this.source.allHeaders = util._extend(this.source.allHeaders, this.source.headersObj)
+  // reset uriObj values for a clean url
+  request.uriObj.query = null
+  request.uriObj.search = null
+  request.uriObj.path = request.uriObj.pathname
 
-    // deconstruct the uri
-    this.source.uriObj = url.parse(this.source.url, true, true)
+  // keep the base url clean of queryString
+  request.url = url.format(request.uriObj)
 
-    // merge all possible queryString values
-    this.source.queryObj = util._extend(this.source.queryObj, this.source.uriObj.query)
+  // update the uri object
+  request.uriObj.query = request.queryObj
+  request.uriObj.search = qs.stringify(request.queryObj)
 
-    // reset uriObj values for a clean url
-    this.source.uriObj.query = null
-    this.source.uriObj.search = null
-    this.source.uriObj.path = this.source.uriObj.pathname
+  if (request.uriObj.search) {
+    request.uriObj.path = request.uriObj.pathname + '?' + request.uriObj.search
+  }
 
-    // keep the base url clean of queryString
-    this.source.url = url.format(this.source.uriObj)
+  // construct a full url
+  request.fullUrl = url.format(request.uriObj)
 
-    // update the uri object
-    this.source.uriObj.query = this.source.queryObj
-    this.source.uriObj.search = qs.stringify(this.source.queryObj)
-
-    if (this.source.uriObj.search) {
-      this.source.uriObj.path = this.source.uriObj.pathname + '?' + this.source.uriObj.search
-    }
-
-    // construct a full url
-    this.source.fullUrl = url.format(this.source.uriObj)
-  }.bind(this))
+  return request
 }
 
 HTTPSnippet.prototype.convert = function (target, client, opts) {
@@ -170,7 +196,11 @@ HTTPSnippet.prototype.convert = function (target, client, opts) {
   var func = this._matchTarget(target, client)
 
   if (func) {
-    return func.call(this, this.source, opts)
+    var results = this.requests.map(function (request) {
+      return func.call(null, request, opts)
+    })
+
+    return results.length === 1 ? results[0] : results
   }
 
   return false

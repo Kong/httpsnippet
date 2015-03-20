@@ -52,7 +52,7 @@ module.exports = function (source, options) {
   code.push(util.format('Client.call %s%s%s uri',
     headers.length ? '~headers ' : '',
     source.postData.text ? '~body ' : '',
-    (methods.indexOf(this.source.method.toLowerCase()) >= 0 ? ('`' + this.source.method.toUpperCase()) : '(Code.method_of_string "' + this.source.method + '")')
+    (methods.indexOf(source.method.toLowerCase()) >= 0 ? ('`' + source.method.toUpperCase()) : '(Code.method_of_string "' + source.method + '")')
   ))
 
   // Catch result

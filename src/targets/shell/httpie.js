@@ -32,11 +32,7 @@ module.exports = function (source, options) {
 
   var code = new CodeBuilder(opts.indent, opts.indent !== false ? ' \\\n' + opts.indent : ' ')
 
-  // start with body pipe
-  if (source.postData && source.postData.text) {
-    code.push(util.format('echo %s | ', helpers.quote(source.postData.text)))
-  }
-
+  var raw = false
   var flags = []
 
   if (opts.headers) {
@@ -75,8 +71,6 @@ module.exports = function (source, options) {
     flags.push(util.format('--timeout=%s', opts.timeout))
   }
 
-  code.push(util.format('http %s%s %s', flags.length ? flags.join(' ') + ' ' : '', source.method, helpers.quote(opts.queryParams ? source.url : source.fullUrl)))
-
   // construct query params
   if (opts.queryParams) {
     var queryStringKeys = Object.keys(source.queryObj)
@@ -99,11 +93,23 @@ module.exports = function (source, options) {
     code.push(util.format('%s:%s', key, helpers.quote(source.allHeaders[key])))
   })
 
-  // construct post params
-  if (!source.postData.text && source.postData.params && source.postData.params.length) {
-    source.postData.params.map(function (param) {
-      code.push(util.format('%s:%s', param.name, helpers.quote(param.value)))
-    })
+  if (source.postData.mimeType === 'application/x-www-form-urlencoded') {
+    // construct post params
+    if (source.postData.params && source.postData.params.length) {
+      flags.push(opts.short ? '-f' : '--form')
+
+      source.postData.params.map(function (param) {
+        code.push(util.format('%s=%s', param.name, helpers.quote(param.value)))
+      })
+    }
+  } else {
+    raw = true
+  }
+
+  code.unshift(util.format('http %s%s %s', flags.length ? flags.join(' ') + ' ' : '', source.method, helpers.quote(opts.queryParams ? source.url : source.fullUrl)))
+
+  if (raw && source.postData.text) {
+    code.unshift(util.format('echo %s | ', helpers.quote(source.postData.text)))
   }
 
   return code.join()

@@ -39,17 +39,24 @@ module.exports = function (source, options) {
     code.push(util.format('%s %s', opts.short ? '-b' : '--cookie', helpers.quote(source.allHeaders.cookie)))
   }
 
-  // request body
-  if (source.postData.text) {
-    code.push(util.format('%s %s', opts.short ? '-d' : '--data', helpers.escape(helpers.quote(source.postData.text))))
-  }
-
   // construct post params
-  if (!source.postData.text && source.postData.params) {
-    source.postData.params.map(function (param) {
-      var post = util.format('%s=%s', param.name, param.value)
-      code.push(util.format('%s %s', opts.short ? '-F' : '--form', helpers.quote(post)))
-    })
+  switch (source.postData.mimeType) {
+    case 'multipart/form-data':
+      source.postData.params.map(function (param) {
+        if (param.fileName && !param.value) {
+          param.value = '@' + param.fileName
+        }
+
+        var post = util.format('%s=%s', param.name, param.value)
+        code.push(util.format('%s %s', opts.short ? '-F' : '--form', helpers.quote(post)))
+      })
+      break
+
+    default:
+      // raw request body
+      if (source.postData.text) {
+        code.push(util.format('%s %s', opts.short ? '-d' : '--data', helpers.escape(helpers.quote(source.postData.text))))
+      }
   }
 
   return code.join()
