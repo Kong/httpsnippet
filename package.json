@@ -8,10 +8,25 @@
   "main": "./src/index.js",
   "bin": "./bin/httpsnippet",
   "keywords": [
+    "API",
+    "cURL",
+    "Go",
     "HAR",
     "HTTP",
-    "API",
-    "Snippet"
+    "HTTPie",
+    "Java",
+    "Objective-c",
+    "OCaml",
+    "Php",
+    "Python",
+    "Request",
+    "Requests",
+    "Ruby",
+    "Snippet",
+    "Swift",
+    "Unirest",
+    "XHR",
+    "XMLHttpRequest"
   ],
   "engines": {
     "node": ">=0.12"
