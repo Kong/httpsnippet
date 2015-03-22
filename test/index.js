@@ -22,7 +22,7 @@ describe('HTTPSnippet', function () {
     /*eslint-disable no-wrap-func */
     (function () {
       snippet = new HTTPSnippet({yolo: 'foo'})
-    }).should.throw(Array)
+    }).should.throw(Error)
 
     should.not.exist(snippet)
 
