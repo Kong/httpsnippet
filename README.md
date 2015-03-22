@@ -1,6 +1,6 @@
 # HTTP Snippet [![version][npm-version]][npm-url] [![License][npm-license]][license-url]
 
-HTTP Request snippet generator for *many* languages.
+HTTP Request snippet generator for *[many](https://github.com/Mashape/httpsnippet/wiki/Targets)* languages & tools.
 
 Relies on the popular [HAR](http://www.softwareishard.com/blog/har-12-spec/#request) format to import data and describe HTTP calls.
 
@@ -14,8 +14,6 @@ See it in action on companion service: [APIembed](https://apiembed.com/)
 
 ## Install
 
-install from source or through [npm](https://www.npmjs.com/):
-
 ```shell
 # to use in cli
 npm install --global httpsnippet
@@ -27,16 +25,18 @@ npm install --save httpsnippet
 ## Usage
 
 ```
-Usage: httpsnippet [options] <file>
 
-Options:
+  Usage: httpsnippet [options] <file>
 
-  -h, --help                output usage information
-  -V, --version             output the version number
-  -t, --target <target>     target output
-  -c, --client [client]     target client library
-  -o, --output <directory>  write output to directory
-  -n, --output-name <name>  output file name
+  Options:
+
+    -h, --help                output usage information
+    -V, --version             output the version number
+    -t, --target <target>     target output
+    -c, --client [client]     target client library
+    -o, --output <directory>  write output to directory
+    -n, --output-name <name>  output file name
+
 ```
 
 ###### Example

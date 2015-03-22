@@ -1,125 +1,125 @@
 #!/usr/bin/env node
 
-'use strict';
+'use strict'
 
-var async = require('async');
-var chalk = require('chalk');
-var cmd = require('commander');
-var debug = require('debug')('httpsnippet');
-var fs = require('fs');
-var HTTPSnippet = require('../src');
-var path = require('path');
-var pkg = require('../package.json');
+var async = require('async')
+var chalk = require('chalk')
+var cmd = require('commander')
+var debug = require('debug')('httpsnippet')
+var fs = require('fs')
+var HTTPSnippet = require('../src')
+var path = require('path')
+var pkg = require('../package.json')
 
 cmd
   .version(pkg.version)
-  .usage('[options] <file>')
+  .usage('[options] <files ...>')
   .option('-t, --target <target>', 'target output')
   .option('-c, --client [client]', 'target client library')
   .option('-o, --output <directory>', 'write output to directory')
   .option('-n, --output-name <name>', 'output file name')
-  .parse(process.argv);
+  .parse(process.argv)
 
 if (!cmd.args.length || !cmd.target) {
-  cmd.help();
+  cmd.help()
 }
 
 if (cmd.output) {
-  var dir = path.resolve(cmd.output);
+  var dir = path.resolve(cmd.output)
 
   if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
+    fs.mkdirSync(dir)
   }
 }
 
 async.waterfall([
   function isFile (next) {
     var iterator = function (item, cb) {
-      cb(fs.statSync(item).isFile());
-    };
+      cb(fs.statSync(item).isFile())
+    }
 
     async.filter(cmd.args, iterator, function (results) {
-      next(null, results);
-    });
+      next(null, results)
+    })
   },
 
   function read (files, next) {
     var iterator = function (file, cb) {
-      fs.readFile(file, cb);
-    };
+      fs.readFile(file, cb)
+    }
 
     async.map(files, iterator, function (err, results) {
-      next(err, files, results);
-    });
+      next(err, files, results)
+    })
   },
 
   function parse (files, buffers, next) {
     var iterator = function (buffer, cb) {
       try {
-        cb(null, JSON.parse(buffer));
+        cb(null, JSON.parse(buffer))
       } catch (e) {
-        debug('failed to parse source json');
-        cb('failed to parse source json', null);
+        debug('failed to parse source json')
+        cb('failed to parse source json', null)
       }
-    };
+    }
 
     async.map(buffers, iterator, function (err, results) {
-      next(err, files, results);
-    });
+      next(err, files, results)
+    })
   },
 
   function snippet (files, sources, next) {
     var iterator = function (source, cb) {
-      var snippet;
+      var snippet
 
       try {
-        snippet = new HTTPSnippet(source);
+        snippet = new HTTPSnippet(source)
       } catch (e) {
-        debug(e);
+        debug(e)
 
-        return cb(!e[0] ? 'invalid input' : (e[0].field + ' ' + e[0].message), null);
+        return cb(!e[0] ? 'invalid input' : (e[0].field + ' ' + e[0].message), null)
       }
 
-      cb(null, snippet.convert(cmd.target, cmd.client));
-    };
+      cb(null, snippet.convert(cmd.target, cmd.client))
+    }
 
     async.map(sources, iterator, function (err, results) {
-      next(err, files, results);
-    });
+      next(err, files, results)
+    })
   },
 
   function writeOutput (files, snippets, next) {
     if (cmd.output) {
       var iterator = function (file) {
-        var index = files.indexOf(file);
-        var name = path.basename(file, path.extname(file));
+        var index = files.indexOf(file)
+        var name = path.basename(file, path.extname(file))
 
         var filename = path.format({
           dir: dir,
           base: name + HTTPSnippet.extname(cmd.target)
-        });
+        })
 
-        fs.writeFile(filename, snippets[index] + '\n');
-      };
+        fs.writeFile(filename, snippets[index] + '\n')
+      }
 
-      async.each(files, iterator);
+      async.each(files, iterator)
     }
 
-    next(null, files, snippets);
+    next(null, files, snippets)
   },
 
   function log (files, snippets, next) {
     if (!cmd.output) {
       var iterator = function (file) {
-        var index = files.indexOf(file);
-        console.log('%s:\n%s\n', chalk.cyan.bold.underline(file), snippets[index]);
-      };
+        var index = files.indexOf(file)
+        console.log('%s:\n%s\n', chalk.cyan.bold.underline(file), snippets[index])
+      }
 
-      async.each(files, iterator);
+      async.each(files, iterator)
     }
   }
 ], function (err, result) {
-  if (err) {
-    console.log('%s: %s', chalk.red.bold('ERROR'), err);
-  }
-});
+    if (err) {
+      console.log('%s: %s', chalk.red.bold('ERROR'), err)
+    }
+  })
