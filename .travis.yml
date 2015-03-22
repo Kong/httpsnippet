@@ -11,5 +11,5 @@ before_install:
   - sudo apt-get --yes install python3 php5-curl php5-cli
 
 after_script:
-  - ./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha
-  - ./node_modules/.bin/codeclimate < coverage/lcov.info
+  - npm run coverage
+  - npm run codeclimate
