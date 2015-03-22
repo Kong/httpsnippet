@@ -1,9 +1,8 @@
 var request = require("request");
 
-request({
-  "method": "GET",
-  "url": "https://mockbin.com/har"
-}, function (error, response, body) {
+var options = { method: 'GET', url: 'https://mockbin.com/har' };
+
+request(options, function (error, response, body) {
   if (error) throw new Error(error);
 
   console.log(body);

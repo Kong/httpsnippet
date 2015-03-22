@@ -11,7 +11,6 @@
 'use strict'
 
 var util = require('util')
-var path = require('path')
 var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
@@ -56,6 +55,11 @@ module.exports = function (source, options) {
       source.postData.params.forEach(function (param) {
         var attachement = {}
 
+        if (!param.fileName && !param.fileName && !param.contentType) {
+          reqOpts.formData[param.name] = param.value
+          return
+        }
+
         if (param.fileName && !param.value) {
           includeFS = true
 
@@ -65,10 +69,8 @@ module.exports = function (source, options) {
         }
 
         if (param.fileName) {
-          var base = path.parse(param.fileName).base
-
           attachement.options = {
-            filename: base.length ? base : 'filename',
+            filename: param.fileName,
             contentType: param.contentType ? param.contentType : null
           }
         }
@@ -101,7 +103,12 @@ module.exports = function (source, options) {
     code.unshift('var fs = require("fs");')
   }
 
-  code.push(util.format('request(%s, %s', JSON.stringify(reqOpts, null, opts.indent), 'function (error, response, body) {'))
+  code.push(util.format('var options = %s;', util.inspect(reqOpts, {
+    depth: null
+  })))
+    .blank()
+
+  code.push(util.format('request(options, %s', 'function (error, response, body) {'))
       .push(1, 'if (error) throw new Error(error);')
       .blank()
       .push(1, 'console.log(body);')
