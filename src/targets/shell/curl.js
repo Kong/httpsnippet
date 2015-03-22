@@ -22,7 +22,7 @@ module.exports = function (source, options) {
 
   var code = new CodeBuilder(opts.indent, opts.indent !== false ? ' \\\n' + opts.indent : ' ')
 
-  code.push(util.format('curl %s %s', opts.short ? '-X' : '--request', source.method))
+  code.push('curl %s %s', opts.short ? '-X' : '--request', source.method)
       .push(util.format('%s%s', opts.short ? '' : '--url ', helpers.quote(source.fullUrl)))
 
   if (source.httpVersion === 'HTTP/1.0') {
@@ -32,11 +32,11 @@ module.exports = function (source, options) {
   // construct headers
   Object.keys(source.headersObj).sort().map(function (key) {
     var header = util.format('%s: %s', key, source.headersObj[key])
-    code.push(util.format('%s %s', opts.short ? '-H' : '--header', helpers.quote(header)))
+    code.push('%s %s', opts.short ? '-H' : '--header', helpers.quote(header))
   })
 
   if (source.allHeaders.cookie) {
-    code.push(util.format('%s %s', opts.short ? '-b' : '--cookie', helpers.quote(source.allHeaders.cookie)))
+    code.push('%s %s', opts.short ? '-b' : '--cookie', helpers.quote(source.allHeaders.cookie))
   }
 
   // construct post params
@@ -49,14 +49,14 @@ module.exports = function (source, options) {
           post = util.format('%s=@%s', param.name, param.fileName)
         }
 
-        code.push(util.format('%s %s', opts.short ? '-F' : '--form', helpers.quote(post)))
+        code.push('%s %s', opts.short ? '-F' : '--form', helpers.quote(post))
       })
       break
 
     default:
       // raw request body
       if (source.postData.text) {
-        code.push(util.format('%s %s', opts.short ? '-d' : '--data', helpers.escape(helpers.quote(source.postData.text))))
+        code.push('%s %s', opts.short ? '-d' : '--data', helpers.escape(helpers.quote(source.postData.text)))
       }
   }
 

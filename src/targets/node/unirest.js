@@ -23,14 +23,14 @@ module.exports = function (source, options) {
 
   code.push('var unirest = require("unirest");')
       .blank()
-      .push(util.format('var req = unirest("%s", "%s");', source.method, source.url))
+      .push('var req = unirest("%s", "%s");', source.method, source.url)
       .blank()
 
   if (source.cookies.length) {
     code.push('var CookieJar = unirest.jar();')
 
     source.cookies.forEach(function (cookie) {
-      code.push(util.format('CookieJar.add("%s=%s","%s");', encodeURIComponent(cookie.name), encodeURIComponent(cookie.value), source.url))
+      code.push('CookieJar.add("%s=%s","%s");', encodeURIComponent(cookie.name), encodeURIComponent(cookie.value), source.url)
     })
 
     code.push('req.jar(CookieJar);')
@@ -38,26 +38,26 @@ module.exports = function (source, options) {
   }
 
   if (Object.keys(source.queryObj).length) {
-    code.push(util.format('req.query(%s);', JSON.stringify(source.queryObj, null, opts.indent)))
+    code.push('req.query(%s);', JSON.stringify(source.queryObj, null, opts.indent))
         .blank()
   }
 
   if (Object.keys(source.headersObj).length) {
-    code.push(util.format('req.headers(%s);', JSON.stringify(source.headersObj, null, opts.indent)))
+    code.push('req.headers(%s);', JSON.stringify(source.headersObj, null, opts.indent))
         .blank()
   }
 
   switch (source.postData.mimeType) {
     case 'application/x-www-form-urlencoded':
       if (source.postData.paramsObj) {
-        code.push(util.format('req.form(%s);', JSON.stringify(source.postData.paramsObj, null, opts.indent)))
+        code.push('req.form(%s);', JSON.stringify(source.postData.paramsObj, null, opts.indent))
       }
       break
 
     case 'application/json':
       if (source.postData.jsonObj) {
         code.push('req.type("json");')
-            .push(util.format('req.send(%s);', JSON.stringify(source.postData.jsonObj, null, opts.indent)))
+            .push('req.send(%s);', JSON.stringify(source.postData.jsonObj, null, opts.indent))
       }
       break
 
@@ -84,12 +84,12 @@ module.exports = function (source, options) {
         }
       })
 
-      code.push(util.format('req.multipart(%s);', JSON.stringify(multipart, null, opts.indent)))
+      code.push('req.multipart(%s);', JSON.stringify(multipart, null, opts.indent))
       break
 
     default:
       if (source.postData.text) {
-        code.push(opts.indent + util.format('req.send(%s);', JSON.stringify(source.postData.text, null, opts.indent)))
+        code.push(opts.indent + 'req.send(%s);', JSON.stringify(source.postData.text, null, opts.indent))
       }
   }
 

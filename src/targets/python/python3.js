@@ -10,7 +10,6 @@
 
 'use strict'
 
-var util = require('util')
 var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
@@ -22,17 +21,17 @@ module.exports = function (source, options) {
   // Check which protocol to be used for the client connection
   var protocol = source.uriObj.protocol
   if (protocol === 'https:') {
-    code.push(util.format('conn = http.client.HTTPSConnection("%s")', source.uriObj.host))
+    code.push('conn = http.client.HTTPSConnection("%s")', source.uriObj.host)
         .blank()
   } else {
-    code.push(util.format('conn = http.client.HTTPConnection("%s")', source.uriObj.host))
+    code.push('conn = http.client.HTTPConnection("%s")', source.uriObj.host)
         .blank()
   }
 
   // Create payload string if it exists
   var payload = JSON.stringify(source.postData.text)
   if (payload) {
-    code.push(util.format('payload = %s', payload))
+    code.push('payload = %s', payload)
         .blank()
   }
 
@@ -42,21 +41,22 @@ module.exports = function (source, options) {
   var headerCount = Object.keys(headers).length
   if (headerCount === 1) {
     for (header in headers) {
-      code.push(util.format('headers = { \'%s\': "%s" }', header, headers[header]))
+      code.push('headers = { \'%s\': "%s" }', header, headers[header])
           .blank()
     }
   } else if (headerCount > 1) {
-    var headerLine
     var count = 1
+
     code.push('headers = {')
+
     for (header in headers) {
       if (count++ !== headerCount) {
-        headerLine = util.format('    \'%s\': "%s",', header, headers[header])
+        code.push('    \'%s\': "%s",', header, headers[header])
       } else {
-        headerLine = util.format('    \'%s\': "%s"', header, headers[header])
+        code.push('    \'%s\': "%s"', header, headers[header])
       }
-      code.push(headerLine)
     }
+
     code.push('    }')
         .blank()
   }
@@ -65,13 +65,13 @@ module.exports = function (source, options) {
   var method = source.method
   var path = source.uriObj.path
   if (payload && headerCount) {
-    code.push(util.format('conn.request("%s", "%s", payload, headers)', method, path))
+    code.push('conn.request("%s", "%s", payload, headers)', method, path)
   } else if (payload && !headerCount) {
-    code.push(util.format('conn.request("%s", "%s", payload)', method, path))
+    code.push('conn.request("%s", "%s", payload)', method, path)
   } else if (!payload && headerCount) {
-    code.push(util.format('conn.request("%s", "%s", headers=headers)', method, path))
+    code.push('conn.request("%s", "%s", headers=headers)', method, path)
   } else {
-    code.push(util.format('conn.request("%s", "%s")', method, path))
+    code.push('conn.request("%s", "%s")', method, path)
   }
 
   // Get Response

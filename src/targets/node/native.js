@@ -28,10 +28,10 @@ module.exports = function (source, options) {
     headers: source.allHeaders
   }
 
-  code.push(util.format('var http = require("%s");', source.uriObj.protocol.replace(':', '')))
+  code.push('var http = require("%s");', source.uriObj.protocol.replace(':', ''))
 
   code.blank()
-      .push(util.format('var options = %s;', JSON.stringify(reqOpts, null, opts.indent)))
+      .push('var options = %s;', JSON.stringify(reqOpts, null, opts.indent))
       .blank()
       .push('var req = http.request(options, function (res) {')
       .push(1, 'var chunks = [];')
@@ -51,23 +51,23 @@ module.exports = function (source, options) {
     case 'application/x-www-form-urlencoded':
       if (source.postData.paramsObj) {
         code.unshift('var qs = require("querystring");')
-        code.push(util.format('req.write(qs.stringify(%s));', util.inspect(source.postData.paramsObj, {
+        code.push('req.write(qs.stringify(%s));', util.inspect(source.postData.paramsObj, {
           depth: null
-        })))
+        }))
       }
       break
 
     case 'application/json':
       if (source.postData.jsonObj) {
-        code.push(util.format('req.write(JSON.stringify(%s));', util.inspect(source.postData.jsonObj, {
+        code.push('req.write(JSON.stringify(%s));', util.inspect(source.postData.jsonObj, {
           depth: null
-        })))
+        }))
       }
       break
 
     default:
       if (source.postData.text) {
-        code.push(util.format('req.write(%s);', JSON.stringify(source.postData.text, null, opts.indent)))
+        code.push('req.write(%s);', JSON.stringify(source.postData.text, null, opts.indent))
       }
   }
 

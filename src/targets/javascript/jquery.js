@@ -42,7 +42,7 @@ module.exports = function (source, options) {
       code.push('var form = new FormData();')
 
       source.postData.params.map(function (param) {
-        code.push(util.format('form.append(%s, %s);', JSON.stringify(param.name), JSON.stringify(param.value || param.fileName || '')))
+        code.push('form.append(%s, %s);', JSON.stringify(param.name), JSON.stringify(param.value || param.fileName || ''))
       })
 
       settings.processData = false

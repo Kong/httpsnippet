@@ -37,7 +37,7 @@ module.exports = function (source, options) {
   switch (source.postData.mimeType) {
     case 'application/x-www-form-urlencoded':
       code.push('$body = new http\\Message\\Body;')
-          .push(util.format('$body->append(new http\\QueryString(%s));', helpers.convert(source.postData.paramsObj, opts.indent)))
+          .push('$body->append(new http\\QueryString(%s));', helpers.convert(source.postData.paramsObj, opts.indent))
           .blank()
       hasBody = true
       break
@@ -60,10 +60,10 @@ module.exports = function (source, options) {
       })
 
       code.push('$body = new http\\Message\\Body;')
-          .push(util.format('$body->addForm(%s, %s);',
+          .push('$body->addForm(%s, %s);',
             Object.keys(fields).length ? helpers.convert(fields, opts.indent) : 'NULL',
             files.length ? helpers.convert(files, opts.indent) : 'NULL'
-          ))
+          )
 
       // remove the contentType header
       if (~source.headersObj['content-type'].indexOf('boundary')) {
@@ -78,33 +78,33 @@ module.exports = function (source, options) {
     default:
       if (source.postData.text) {
         code.push('$body = new http\\Message\\Body;')
-            .push(util.format('$body->append(%s);', helpers.convert(source.postData.text)))
+            .push('$body->append(%s);', helpers.convert(source.postData.text))
             .blank()
         hasBody = true
       }
   }
 
-  code.push(util.format('$request->setRequestUrl(%s);', helpers.convert(source.url)))
-      .push(util.format('$request->setRequestMethod(%s);', helpers.convert(source.method)))
+  code.push('$request->setRequestUrl(%s);', helpers.convert(source.url))
+      .push('$request->setRequestMethod(%s);', helpers.convert(source.method))
 
   if (hasBody) {
-    code.push(util.format('$request->setBody($body);'))
+    code.push('$request->setBody($body);')
         .blank()
   }
 
   if (Object.keys(source.queryObj).length) {
-    code.push(util.format('$request->setQuery(new http\\QueryString(%s));', helpers.convert(source.queryObj, opts.indent)))
+    code.push('$request->setQuery(new http\\QueryString(%s));', helpers.convert(source.queryObj, opts.indent))
         .blank()
   }
 
   if (Object.keys(source.headersObj).length) {
-    code.push(util.format('$request->setHeaders(%s);', helpers.convert(source.headersObj, opts.indent)))
+    code.push('$request->setHeaders(%s);', helpers.convert(source.headersObj, opts.indent))
         .blank()
   }
 
   if (Object.keys(source.cookiesObj).length) {
     code.blank()
-        .push(util.format('$client->setCookies(%s);', helpers.convert(source.cookiesObj, opts.indent)))
+        .push('$client->setCookies(%s);', helpers.convert(source.cookiesObj, opts.indent))
         .blank()
   }
 

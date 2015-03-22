@@ -1,6 +1,5 @@
 'use strict'
 
-var util = require('util')
 var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
@@ -16,15 +15,15 @@ module.exports = function (source, options) {
   var methods = ['GET', 'POST', 'HEAD', 'DELETE', 'PATCH', 'PUT', 'OPTIONS', 'COPY', 'LOCK', 'UNLOCK', 'MOVE', 'TRACE']
   var capMethod = method.charAt(0) + method.substring(1).toLowerCase()
   if (methods.indexOf(method) < 0) {
-    code.push(util.format('class Net::HTTP::%s < Net::HTTPRequest', capMethod))
-        .push(util.format('  METHOD = \'%s\'', method.toUpperCase()))
-        .push(util.format('  REQUEST_HAS_BODY = \'%s\'', source.postData.text ? 'true' : 'false'))
+    code.push('class Net::HTTP::%s < Net::HTTPRequest', capMethod)
+        .push('  METHOD = \'%s\'', method.toUpperCase())
+        .push('  REQUEST_HAS_BODY = \'%s\'', source.postData.text ? 'true' : 'false')
         .push('  RESPONSE_HAS_BODY = true')
         .push('end')
         .blank()
   }
 
-  code.push(util.format('url = URI("%s")', source.fullUrl))
+  code.push('url = URI("%s")', source.fullUrl)
       .blank()
       .push('http = Net::HTTP.new(url.host, url.port)')
 
@@ -34,17 +33,17 @@ module.exports = function (source, options) {
   }
 
   code.blank()
-      .push(util.format('request = Net::HTTP::%s.new(url)', capMethod))
+      .push('request = Net::HTTP::%s.new(url)', capMethod)
 
   var headers = Object.keys(source.allHeaders)
   if (headers.length) {
     headers.map(function (key) {
-      code.push(util.format('request["%s"] = \'%s\'', key, source.allHeaders[key]))
+      code.push('request["%s"] = \'%s\'', key, source.allHeaders[key])
     })
   }
 
   if (source.postData.text) {
-    code.push(util.format('request.body = %s', JSON.stringify(source.postData.text)))
+    code.push('request.body = %s', JSON.stringify(source.postData.text))
   }
 
   code.blank()

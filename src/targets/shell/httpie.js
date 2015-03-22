@@ -80,17 +80,17 @@ module.exports = function (source, options) {
 
       if (util.isArray(value)) {
         value.map(function (val) {
-          code.push(util.format('%s==%s', name, helpers.quote(val)))
+          code.push('%s==%s', name, helpers.quote(val))
         })
       } else {
-        code.push(util.format('%s==%s', name, helpers.quote(value)))
+        code.push('%s==%s', name, helpers.quote(value))
       }
     })
   }
 
   // construct headers
   Object.keys(source.allHeaders).sort().map(function (key) {
-    code.push(util.format('%s:%s', key, helpers.quote(source.allHeaders[key])))
+    code.push('%s:%s', key, helpers.quote(source.allHeaders[key]))
   })
 
   if (source.postData.mimeType === 'application/x-www-form-urlencoded') {
@@ -99,17 +99,17 @@ module.exports = function (source, options) {
       flags.push(opts.short ? '-f' : '--form')
 
       source.postData.params.map(function (param) {
-        code.push(util.format('%s=%s', param.name, helpers.quote(param.value)))
+        code.push('%s=%s', param.name, helpers.quote(param.value))
       })
     }
   } else {
     raw = true
   }
 
-  code.unshift(util.format('http %s%s %s', flags.length ? flags.join(' ') + ' ' : '', source.method, helpers.quote(opts.queryParams ? source.url : source.fullUrl)))
+  code.unshift('http %s%s %s', flags.length ? flags.join(' ') + ' ' : '', source.method, helpers.quote(opts.queryParams ? source.url : source.fullUrl))
 
   if (raw && source.postData.text) {
-    code.unshift(util.format('echo %s | ', helpers.quote(source.postData.text)))
+    code.unshift('echo %s | ', helpers.quote(source.postData.text))
   }
 
   return code.join()

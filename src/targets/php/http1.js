@@ -30,45 +30,45 @@ module.exports = function (source, options) {
   }
 
   if (!~helpers.methods.indexOf(source.method.toUpperCase())) {
-    code.push(util.format('HttpRequest::methodRegister(\'%s\');', source.method))
+    code.push('HttpRequest::methodRegister(\'%s\');', source.method)
   }
 
   code.push('$request = new HttpRequest();')
-      .push(util.format('$request->setUrl(%s);', helpers.convert(source.url)))
+      .push('$request->setUrl(%s);', helpers.convert(source.url))
 
   if (~helpers.methods.indexOf(source.method.toUpperCase())) {
-    code.push(util.format('$request->setMethod(HTTP_METH_%s);', source.method.toUpperCase()))
+    code.push('$request->setMethod(HTTP_METH_%s);', source.method.toUpperCase())
   } else {
-    code.push(util.format('$request->setMethod(HttpRequest::HTTP_METH_%s);', source.method.toUpperCase()))
+    code.push('$request->setMethod(HttpRequest::HTTP_METH_%s);', source.method.toUpperCase())
   }
 
   code.blank()
 
   if (Object.keys(source.queryObj).length) {
-    code.push(util.format('$request->setQueryData(%s);', helpers.convert(source.queryObj, opts.indent)))
+    code.push('$request->setQueryData(%s);', helpers.convert(source.queryObj, opts.indent))
         .blank()
   }
 
   if (Object.keys(source.headersObj).length) {
-    code.push(util.format('$request->setHeaders(%s);', helpers.convert(source.headersObj, opts.indent)))
+    code.push('$request->setHeaders(%s);', helpers.convert(source.headersObj, opts.indent))
         .blank()
   }
 
   if (Object.keys(source.cookiesObj).length) {
-    code.push(util.format('$request->setCookies(%s);', helpers.convert(source.cookiesObj, opts.indent)))
+    code.push('$request->setCookies(%s);', helpers.convert(source.cookiesObj, opts.indent))
         .blank()
   }
 
   switch (source.postData.mimeType) {
     case 'application/x-www-form-urlencoded':
-      code.push(util.format('$request->setContentType(%s);', helpers.convert(source.postData.mimeType)))
-          .push(util.format('$request->setPostFields(%s);', helpers.convert(source.postData.paramsObj, opts.indent)))
+      code.push('$request->setContentType(%s);', helpers.convert(source.postData.mimeType))
+          .push('$request->setPostFields(%s);', helpers.convert(source.postData.paramsObj, opts.indent))
           .blank()
       break
 
     default:
       if (source.postData.text) {
-        code.push(util.format('$request->setBody(%s);', helpers.convert(source.postData.text)))
+        code.push('$request->setBody(%s);', helpers.convert(source.postData.text))
             .blank()
       }
   }

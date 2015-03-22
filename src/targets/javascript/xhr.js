@@ -23,7 +23,7 @@ module.exports = function (source, options) {
 
   switch (source.postData.mimeType) {
     case 'application/json':
-      code.push(util.format('var data = JSON.stringify(%s);', JSON.stringify(source.postData.jsonObj, null, opts.indent)))
+      code.push('var data = JSON.stringify(%s);', JSON.stringify(source.postData.jsonObj, null, opts.indent))
           .push(null)
       break
 
@@ -31,7 +31,7 @@ module.exports = function (source, options) {
       code.push('var data = new FormData();')
 
       source.postData.params.map(function (param) {
-        code.push(util.format('data.append(%s, %s);', JSON.stringify(param.name), JSON.stringify(param.value || param.fileName || '')))
+        code.push('data.append(%s, %s);', JSON.stringify(param.name), JSON.stringify(param.value || param.fileName || ''))
       })
 
       // remove the contentType header
@@ -43,7 +43,7 @@ module.exports = function (source, options) {
       break
 
     default:
-      code.push(util.format('var data = %s;', JSON.stringify(source.postData.text || null)))
+      code.push('var data = %s;', JSON.stringify(source.postData.text || null))
           .blank()
   }
 
@@ -60,10 +60,10 @@ module.exports = function (source, options) {
       .push(1, '}')
       .push('});')
       .blank()
-      .push(util.format('xhr.open(%s, %s);', JSON.stringify(source.method), JSON.stringify(source.fullUrl)))
+      .push('xhr.open(%s, %s);', JSON.stringify(source.method), JSON.stringify(source.fullUrl))
 
   Object.keys(source.allHeaders).map(function (key) {
-    code.push(util.format('xhr.setRequestHeader(%s, %s);', JSON.stringify(key), JSON.stringify(source.allHeaders[key])))
+    code.push('xhr.setRequestHeader(%s, %s);', JSON.stringify(key), JSON.stringify(source.allHeaders[key]))
   })
 
   code.blank()

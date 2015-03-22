@@ -22,7 +22,7 @@ module.exports = function (source, options) {
       .blank()
 
   // Set URL
-  code.push(util.format('url = "%s"', source.url))
+  code.push('url = "%s"', source.url)
       .blank()
 
   // Construct query string
@@ -37,7 +37,7 @@ module.exports = function (source, options) {
   var payload = JSON.stringify(source.postData.text)
 
   if (payload) {
-    code.push(util.format('payload = %s', payload))
+    code.push('payload = %s', payload)
   }
 
   // Construct headers
@@ -47,23 +47,20 @@ module.exports = function (source, options) {
 
   if (headerCount === 1) {
     for (header in headers) {
-      code.push(util.format('headers = {\'%s\': \'%s\'}', header, headers[header]))
+      code.push('headers = {\'%s\': \'%s\'}', header, headers[header])
           .blank()
     }
   } else if (headerCount > 1) {
-    var headerLine
     var count = 1
 
     code.push('headers = {')
 
     for (header in headers) {
       if (count++ !== headerCount) {
-        headerLine = util.format('\'%s\': "%s",', header, headers[header])
+        code.push(1, '\'%s\': "%s",', header, headers[header])
       } else {
-        headerLine = util.format('\'%s\': "%s"', header, headers[header])
+        code.push(1, '\'%s\': "%s"', header, headers[header])
       }
-
-      code.push(1, headerLine)
     }
 
     code.push(1, '}')

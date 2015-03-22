@@ -47,9 +47,9 @@ module.exports = function (source, options) {
         // we make it easier for the user to edit it according to his or her needs after pasting.
         // The user can just add/remove lines adding/removing body parameters.
         code.blank()
-            .push(util.format('var postData = NSMutableData(data: "%s=%s".dataUsingEncoding(NSUTF8StringEncoding)!)', source.postData.params[0].name, source.postData.params[0].value))
+            .push('var postData = NSMutableData(data: "%s=%s".dataUsingEncoding(NSUTF8StringEncoding)!)', source.postData.params[0].name, source.postData.params[0].value)
         for (var i = 1, len = source.postData.params.length; i < len; i++) {
-          code.push(util.format('postData.appendData("&%s=%s".dataUsingEncoding(NSUTF8StringEncoding)!)', source.postData.params[i].name, source.postData.params[i].value))
+          code.push('postData.appendData("&%s=%s".dataUsingEncoding(NSUTF8StringEncoding)!)', source.postData.params[i].name, source.postData.params[i].value)
         }
         break
 
@@ -69,7 +69,7 @@ module.exports = function (source, options) {
         */
         code.push(helpers.literalDeclaration('parameters', source.postData.params, opts))
             .blank()
-            .push(util.format('let boundary = "%s"', source.postData.boundary))
+            .push('let boundary = "%s"', source.postData.boundary)
             .blank()
             .push('var body = ""')
             .push('var error: NSError? = nil')
@@ -94,16 +94,16 @@ module.exports = function (source, options) {
 
       default:
         code.blank()
-            .push(util.format('let postData = NSData(data: "%s".dataUsingEncoding(NSUTF8StringEncoding)!)', source.postData.text))
+            .push('let postData = NSData(data: "%s".dataUsingEncoding(NSUTF8StringEncoding)!)', source.postData.text)
     }
   }
 
   code.blank()
       // NSURLRequestUseProtocolCachePolicy is the default policy, let's just always set it to avoid confusion.
-      .push(util.format('var request = NSMutableURLRequest(URL: NSURL(string: "%s")!,', source.fullUrl))
+      .push('var request = NSMutableURLRequest(URL: NSURL(string: "%s")!,', source.fullUrl)
       .push('                                        cachePolicy: .UseProtocolCachePolicy,')
-      .push(util.format('                                    timeoutInterval: %s)', parseInt(opts.timeout, 10).toFixed(1)))
-      .push(util.format('request.HTTPMethod = "%s"', source.method))
+      .push('                                    timeoutInterval: %s)', parseInt(opts.timeout, 10).toFixed(1))
+      .push('request.HTTPMethod = "%s"', source.method)
 
   if (req.hasHeaders) {
     code.push('request.allHTTPHeaderFields = headers')
