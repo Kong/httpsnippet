@@ -64,24 +64,24 @@ module.exports = function (source, options) {
   if (opts.timeout > 0) {
     client = 'client'
     code.push(1, 'client := http.Client{')
-        .push(2, util.format('Timeout: time.Duration(%s * time.Second),', opts.timeout))
+        .push(2, 'Timeout: time.Duration(%s * time.Second),', opts.timeout)
         .push(1, '}')
         .blank()
   } else {
     client = 'http.DefaultClient'
   }
 
-  code.push(1, util.format('url := "%s"', source.fullUrl))
+  code.push(1, 'url := "%s"', source.fullUrl)
       .blank()
 
   // If we have body content or not create the var and reader or nil
   if (source.postData.text) {
-    code.push(1, util.format('payload := strings.NewReader(%s)', JSON.stringify(source.postData.text)))
+    code.push(1, 'payload := strings.NewReader(%s)', JSON.stringify(source.postData.text))
         .blank()
-        .push(1, util.format('req, %s := http.NewRequest("%s", url, payload)', errorPlaceholder, source.method))
+        .push(1, 'req, %s := http.NewRequest("%s", url, payload)', errorPlaceholder, source.method)
         .blank()
   } else {
-    code.push(1, util.format('req, %s := http.NewRequest("%s", url, nil)', errorPlaceholder, source.method))
+    code.push(1, 'req, %s := http.NewRequest("%s", url, nil)', errorPlaceholder, source.method)
         .blank()
   }
 
@@ -90,20 +90,20 @@ module.exports = function (source, options) {
   // Add headers
   if (Object.keys(source.allHeaders).length) {
     Object.keys(source.allHeaders).map(function (key) {
-      code.push(1, util.format('req.Header.Add("%s", "%s")', key, source.allHeaders[key]))
+      code.push(1, 'req.Header.Add("%s", "%s")', key, source.allHeaders[key])
     })
     code.blank()
   }
 
   // Make request
-  code.push(1, util.format('res, %s := %s.Do(req)', errorPlaceholder, client))
+  code.push(1, 'res, %s := %s.Do(req)', errorPlaceholder, client)
   errorCheck()
 
   // Get Body
   if (opts.printBody) {
     code.blank()
         .push(1, 'defer res.Body.Close()')
-        .push(1, util.format('body, %s := ioutil.ReadAll(res.Body)', errorPlaceholder))
+        .push(1, 'body, %s := ioutil.ReadAll(res.Body)', errorPlaceholder)
     errorCheck()
   }
 

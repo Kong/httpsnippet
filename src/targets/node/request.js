@@ -94,7 +94,7 @@ module.exports = function (source, options) {
     var url = source.url
 
     source.cookies.map(function (cookie) {
-      code.push(util.format('jar.setCookie(request.cookie("%s=%s"), "%s");', encodeURIComponent(cookie.name), encodeURIComponent(cookie.value), url))
+      code.push('jar.setCookie(request.cookie("%s=%s"), "%s");', encodeURIComponent(cookie.name), encodeURIComponent(cookie.value), url)
     })
     code.blank()
   }
@@ -103,12 +103,11 @@ module.exports = function (source, options) {
     code.unshift('var fs = require("fs");')
   }
 
-  code.push(util.format('var options = %s;', util.inspect(reqOpts, {
-    depth: null
-  })))
+  code.push('var options = %s;', util.inspect(reqOpts, { depth: null }))
     .blank()
 
   code.push(util.format('request(options, %s', 'function (error, response, body) {'))
+
       .push(1, 'if (error) throw new Error(error);')
       .blank()
       .push(1, 'console.log(body);')

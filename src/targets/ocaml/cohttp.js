@@ -25,7 +25,7 @@ module.exports = function (source, options) {
       .push('open Cohttp')
       .push('open Lwt')
       .blank()
-      .push(util.format('let uri = Uri.of_string "%s" in', source.fullUrl))
+      .push('let uri = Uri.of_string "%s" in', source.fullUrl)
 
   // Add headers, including the cookies
   var headers = Object.keys(source.allHeaders)
@@ -34,7 +34,7 @@ module.exports = function (source, options) {
     code.push('let headers = Header.init ()')
 
     headers.map(function (key) {
-      code.push(1, util.format('|> fun h -> Header.add h "%s" "%s"', key, source.allHeaders[key]))
+      code.push(1, '|> fun h -> Header.add h "%s" "%s"', key, source.allHeaders[key])
     })
 
     code.push('in')
@@ -43,17 +43,17 @@ module.exports = function (source, options) {
   // Add body
   if (source.postData.text) {
     // Just text
-    code.push(util.format('let body = Cohttp_lwt_body.of_string %s in', JSON.stringify(source.postData.text)))
+    code.push('let body = Cohttp_lwt_body.of_string %s in', JSON.stringify(source.postData.text))
   }
 
   // Do the request
   code.blank()
 
-  code.push(util.format('Client.call %s%s%s uri',
+  code.push('Client.call %s%s%s uri',
     headers.length ? '~headers ' : '',
     source.postData.text ? '~body ' : '',
     (methods.indexOf(source.method.toLowerCase()) >= 0 ? ('`' + source.method.toUpperCase()) : '(Code.method_of_string "' + source.method + '")')
-  ))
+  )
 
   // Catch result
   code.push('>>= fun (res, body_stream) ->')

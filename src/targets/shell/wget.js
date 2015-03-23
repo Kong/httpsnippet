@@ -24,16 +24,16 @@ module.exports = function (source, options) {
   var code = new CodeBuilder(opts.indent, opts.indent !== false ? ' \\\n' + opts.indent : ' ')
 
   if (opts.verbose) {
-    code.push(util.format('wget %s', opts.short ? '-v' : '--verbose'))
+    code.push('wget %s', opts.short ? '-v' : '--verbose')
   } else {
-    code.push(util.format('wget %s', opts.short ? '-q' : '--quiet'))
+    code.push('wget %s', opts.short ? '-q' : '--quiet')
   }
 
-  code.push(util.format('--method %s', helpers.quote(source.method)))
+  code.push('--method %s', helpers.quote(source.method))
 
   Object.keys(source.allHeaders).map(function (key) {
     var header = util.format('%s: %s', key, source.allHeaders[key])
-    code.push(util.format('--header %s', helpers.quote(header)))
+    code.push('--header %s', helpers.quote(header))
   })
 
   if (source.postData.text) {
@@ -41,7 +41,7 @@ module.exports = function (source, options) {
   }
 
   code.push(opts.short ? '-O' : '--output-document')
-      .push(util.format('- %s', helpers.quote(source.fullUrl)))
+      .push('- %s', helpers.quote(source.fullUrl))
 
   return code.join()
 }
