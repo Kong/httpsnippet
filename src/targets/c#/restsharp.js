@@ -16,27 +16,27 @@ module.exports = function (source, options) {
   if (methods.indexOf(source.method.toUpperCase()) === -1) {
     return 'Method not supported'
   } else {
-    code.push(util.format('var client = new RestClient("%s");', source.fullUrl))
-    code.push(util.format('var request = new RestRequest(Method.%s);', source.method.toUpperCase()))
+    code.push('var client = new RestClient("%s");', source.fullUrl)
+    code.push('var request = new RestRequest(Method.%s);', source.method.toUpperCase())
 
   }
 
   // construct headers
   if (source.headers.length) {
     source.headers.forEach(function (header) {
-      code.push(util.format('request.AddHeader("%s", "%s");', header.name, header.value))
+      code.push('request.AddHeader("%s", "%s");', header.name, header.value)
     })
   }
 
   // construct cookies
   if (source.cookies.length) {
     source.cookies.forEach(function (cookie) {
-      code.push(util.format('request.AddCookie("%s", "%s");', cookie.name, cookie.value))
+      code.push('request.AddCookie("%s", "%s");', cookie.name, cookie.value)
     })
   }
 
   if (source.postData.text) {
-    code.push(util.format('request.AddParameter("%s", %s, ParameterType.RequestBody);', source.allHeaders['content-type'], JSON.stringify(source.postData.text)))
+    code.push('request.AddParameter("%s", %s, ParameterType.RequestBody);', source.allHeaders['content-type'], JSON.stringify(source.postData.text))
   }
 
   code.push('IRestResponse response = client.Execute(request);')
