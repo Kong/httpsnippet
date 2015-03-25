@@ -1,15 +1,9 @@
 'use strict'
 
-var util = require('util')
-
 var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var opts = util._extend({
-    indent: '  '
-  }, options)
-
-  var code = new CodeBuilder(opts.indent)
+  var code = new CodeBuilder()
 
   var methods = [ 'GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS' ]
 
@@ -18,7 +12,6 @@ module.exports = function (source, options) {
   } else {
     code.push('var client = new RestClient("%s");', source.fullUrl)
     code.push('var request = new RestRequest(Method.%s);', source.method.toUpperCase())
-
   }
 
   // construct headers
