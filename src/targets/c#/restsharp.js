@@ -4,7 +4,6 @@ var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   var code = new CodeBuilder()
-
   var methods = [ 'GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS' ]
 
   if (methods.indexOf(source.method.toUpperCase()) === -1) {
@@ -14,10 +13,13 @@ module.exports = function (source, options) {
     code.push('var request = new RestRequest(Method.%s);', source.method.toUpperCase())
   }
 
+  // Add headers, including the cookies
+  var headers = Object.keys(source.headersObj)
+
   // construct headers
-  if (source.headers.length) {
-    source.headers.forEach(function (header) {
-      code.push('request.AddHeader("%s", "%s");', header.name, header.value)
+  if (headers.length) {
+    headers.map(function (key) {
+      code.push('request.AddHeader("%s", "%s");', key, source.headersObj[key])
     })
   }
 
