@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = {
-  key: 'c#',
+  key: 'csharp',
   title: 'C#',
   extname: '.cs',
   default: 'restsharp'

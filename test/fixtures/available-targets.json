@@ -202,7 +202,7 @@
     ]
   },
     {
-    "key": "c#",
+    "key": "csharp",
     "title": "C#",
     "extname": ".cs",
     "default": "restsharp",
