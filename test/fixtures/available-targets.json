@@ -201,7 +201,7 @@
       }
     ]
   },
-    {
+  {
     "key": "csharp",
     "title": "C#",
     "extname": ".cs",
@@ -212,6 +212,20 @@
         "title": "RestSharp",
         "link": "http://restsharp.org/",
         "description": "Simple REST and HTTP API Client for .NET"
+      }
+    ]
+  },
+  {
+    "key": "c",
+    "title": "C",
+    "extname": ".c",
+    "default": "libcurl",
+    "clients": [
+      {
+        "key": "libcurl",
+        "title": "Libcurl",
+        "link": "http://curl.haxx.se/libcurl/",
+        "description": "Simple REST and HTTP API Client for C"
       }
     ]
   }
