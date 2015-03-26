@@ -6,37 +6,38 @@ module.exports = function (source, options) {
   var code = new CodeBuilder()
 
   code.push('CURL *hnd = curl_easy_init();')
-  code.push('')
-
-  code.push('curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "%s");', source.method.toUpperCase())
-  code.push('curl_easy_setopt(hnd, CURLOPT_URL, "%s");', source.fullUrl)
+      .blank()
+      .push('curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "%s");', source.method.toUpperCase())
+      .push('curl_easy_setopt(hnd, CURLOPT_URL, "%s");', source.fullUrl)
 
   // Add headers, including the cookies
   var headers = Object.keys(source.headersObj)
 
   // construct headers
   if (headers.length) {
-    code.push('')
-    code.push('struct curl_slist *headers = NULL;')
+    code.blank()
+        .push('struct curl_slist *headers = NULL;')
+
     headers.map(function (key) {
       code.push('headers = curl_slist_append(headers, "%s: %s");', key, source.headersObj[key])
     })
+
     code.push('curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);')
   }
 
   // construct cookies
   if (source.allHeaders.cookie) {
-    code.push('')
-    code.push('curl_easy_setopt(hnd, CURLOPT_COOKIE, "%s");', source.allHeaders.cookie)
+    code.blank()
+        .push('curl_easy_setopt(hnd, CURLOPT_COOKIE, "%s");', source.allHeaders.cookie)
   }
 
   if (source.postData.text) {
-    code.push('')
-    code.push('curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, %s);', JSON.stringify(source.postData.text))
+    code.blank()
+        .push('curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, %s);', JSON.stringify(source.postData.text))
   }
 
-  code.push('')
-  code.push('CURLcode ret = curl_easy_perform(hnd);')
+  code.blank()
+      .push('CURLcode ret = curl_easy_perform(hnd);')
 
   return code.join()
 }
