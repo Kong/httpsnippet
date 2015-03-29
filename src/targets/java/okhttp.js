@@ -20,7 +20,9 @@ module.exports = function (source, options) {
 
   var code = new CodeBuilder(opts.indent)
 
-  var methods = [ 'GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS' ]
+  var methods = [ 'GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD']
+
+  var methodsWithBody = [ 'POST', 'PUT', 'DELETE', 'PATCH']
 
   code.push('OkHttpClient client = new OkHttpClient();')
       .blank()
@@ -34,6 +36,8 @@ module.exports = function (source, options) {
     code.push('RequestBody body = RequestBody.create(mediaType, %s);', JSON.stringify(source.postData.text))
   }
 
+  console.log(source)
+
   code.push('Request request = new Request.Builder()')
   code.push(1, '.url("%s")', source.fullUrl)
   if (methods.indexOf(source.method.toUpperCase()) === -1) {
@@ -46,7 +50,12 @@ module.exports = function (source, options) {
     if (source.postData.text) {
       code.push(1, '.%s(body)', source.method.toLowerCase())
     }else {
-      code.push(1, '.%s()', source.method.toLowerCase())
+      console.log(methodsWithBody.indexOf(source.method.toUpperCase()))
+      if (methodsWithBody.indexOf(source.method.toUpperCase()) >= 0) {
+        code.push(1, '.%s(null)', source.method.toLowerCase())
+      }else {
+        code.push(1, '.%s()', source.method.toLowerCase())
+      }
     }
   }
 

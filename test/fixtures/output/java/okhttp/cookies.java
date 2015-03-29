@@ -2,7 +2,7 @@ OkHttpClient client = new OkHttpClient();
 
 Request request = new Request.Builder()
   .url("http://mockbin.com/har")
-  .post()
+  .post(null)
   .addHeader("cookie", "foo=bar; bar=baz")
   .build();
 
