@@ -1,6 +1,6 @@
 /**
  * @description
- * HTTP code snippet generator for Java using Unirest.
+ * HTTP code snippet generator for Java using OkHttp.
  *
  * @author
  * @shashiranjan84
@@ -21,24 +21,31 @@ module.exports = function (source, options) {
   var code = new CodeBuilder(opts.indent)
 
   var methods = [ 'GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS' ]
-  
+
   if (methods.indexOf(source.method.toUpperCase()) === -1) {
-	  return 'Method not supported'
+    return 'Method not supported'
   }
-  
+
+  code.push('OkHttpClient client = new OkHttpClient();')
+      .blank()
+
   if (source.postData.text) {
-	  RequestBody body = RequestBody.create(JSON, json);
-    code.push(1, 'RequestBody body = RequestBody.create("%s", %s);', source.postData.mimeType, JSON.stringify(source.postData.text))
+    if (source.postData.boundary) {
+      code.push('MediaType mediaType = MediaType.parse("%s; boundary=%s");', source.postData.mimeType, source.postData.boundary)
+    }else {
+      code.push('MediaType mediaType = MediaType.parse("%s");', source.postData.mimeType)
+    }
+    code.push('RequestBody body = RequestBody.create(mediaType, %s);', JSON.stringify(source.postData.text))
   }
-  
+
   code.push('Request request = new Request.Builder()')
-  code.push('.url("%s")', source.fullUrl)
-  if(source.postData.text){
-    code.push(1,'.%s(body)', source.method)  
-  }else{
-    code.push(1,'.%s()', source.method) 
+  code.push(1, '.url("%s")', source.fullUrl)
+  if (source.postData.text) {
+    code.push(1, '.%s(body)', source.method.toLowerCase())
+  }else {
+    code.push(1, '.%s()', source.method.toLowerCase())
   }
-  
+
   // Add headers, including the cookies
   var headers = Object.keys(source.allHeaders)
 
@@ -50,8 +57,8 @@ module.exports = function (source, options) {
   }
 
   code.push(1, '.build();')
-  
-  code.push('Response response = client.newCall(request).execute();')
+      .blank()
+      .push('Response response = client.newCall(request).execute();')
 
   return code.join()
 }
