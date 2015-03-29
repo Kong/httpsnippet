@@ -180,6 +180,12 @@
     "default": "unirest",
     "clients": [
       {
+        "key": "okhttp",
+        "title": "OkHttp",
+        "link": "http://square.github.io/okhttp/",
+        "description": "An HTTP Request Client Library"
+      },
+      {
         "key": "unirest",
         "title": "Unirest",
         "link": "http://unirest.io/java.html",
