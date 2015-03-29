@@ -22,10 +22,6 @@ module.exports = function (source, options) {
 
   var methods = [ 'GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS' ]
 
-  if (methods.indexOf(source.method.toUpperCase()) === -1) {
-    return 'Method not supported'
-  }
-
   code.push('OkHttpClient client = new OkHttpClient();')
       .blank()
 
@@ -40,10 +36,18 @@ module.exports = function (source, options) {
 
   code.push('Request request = new Request.Builder()')
   code.push(1, '.url("%s")', source.fullUrl)
-  if (source.postData.text) {
-    code.push(1, '.%s(body)', source.method.toLowerCase())
+  if (methods.indexOf(source.method.toUpperCase()) === -1) {
+    if (source.postData.text) {
+      code.push(1, '.method("%s", body)', source.method.toUpperCase())
+    }else {
+      code.push(1, '.method("%s", null)', source.method.toUpperCase())
+    }
   }else {
-    code.push(1, '.%s()', source.method.toLowerCase())
+    if (source.postData.text) {
+      code.push(1, '.%s(body)', source.method.toLowerCase())
+    }else {
+      code.push(1, '.%s()', source.method.toLowerCase())
+    }
   }
 
   // Add headers, including the cookies
