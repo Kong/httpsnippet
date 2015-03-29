@@ -36,8 +36,6 @@ module.exports = function (source, options) {
     code.push('RequestBody body = RequestBody.create(mediaType, %s);', JSON.stringify(source.postData.text))
   }
 
-  console.log(source)
-
   code.push('Request request = new Request.Builder()')
   code.push(1, '.url("%s")', source.fullUrl)
   if (methods.indexOf(source.method.toUpperCase()) === -1) {
@@ -46,17 +44,14 @@ module.exports = function (source, options) {
     }else {
       code.push(1, '.method("%s", null)', source.method.toUpperCase())
     }
-  }else {
+  }else if (methodsWithBody.indexOf(source.method.toUpperCase()) >= 0) {
     if (source.postData.text) {
       code.push(1, '.%s(body)', source.method.toLowerCase())
     }else {
-      console.log(methodsWithBody.indexOf(source.method.toUpperCase()))
-      if (methodsWithBody.indexOf(source.method.toUpperCase()) >= 0) {
-        code.push(1, '.%s(null)', source.method.toLowerCase())
-      }else {
-        code.push(1, '.%s()', source.method.toLowerCase())
-      }
+      code.push(1, '.%s(null)', source.method.toLowerCase())
     }
+  } else {
+    code.push(1, '.%s()', source.method.toLowerCase())
   }
 
   // Add headers, including the cookies
