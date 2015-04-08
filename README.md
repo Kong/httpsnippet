@@ -216,4 +216,4 @@ For more information on SemVer, please visit <http://semver.org/>.
 [david-image]: https://img.shields.io/david/Mashape/httpsnippet.svg?style=flat-square
 
 [gitter-url]: https://gitter.im/Mashape/httpsnippet
-[gitter-image]: https://img.shields.io/badge/Gitter-Join%20Chat-blue.svg?style=flat
+[gitter-image]: https://img.shields.io/badge/Gitter-Join%20Chat-blue.svg?style=flat-square
