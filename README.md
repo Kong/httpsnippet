@@ -11,6 +11,7 @@ See it in action on companion service: [APIembed](https://apiembed.com/)
 [![Code Climate][codeclimate-quality]][codeclimate-url]
 [![Coverage Status][codeclimate-coverage]][codeclimate-url]
 [![Dependencies][david-image]][david-url]
+[![Gitter][gitter-image]][gitter-url]
 
 ## Install
 
@@ -213,3 +214,6 @@ For more information on SemVer, please visit <http://semver.org/>.
 
 [david-url]: https://david-dm.org/Mashape/httpsnippet
 [david-image]: https://img.shields.io/david/Mashape/httpsnippet.svg?style=flat-square
+
+[gitter-url]: https://gitter.im/Mashape/httpsnippet
+[gitter-image]: https://img.shields.io/badge/Gitter-Join%20Chat-blue.svg?style=flat
