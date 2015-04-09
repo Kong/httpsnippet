@@ -3,10 +3,10 @@ open Cohttp
 open Lwt
 
 let uri = Uri.of_string "http://mockbin.com/har" in
-let headers = Header.init ()
-  |> fun h -> Header.add h "accept" "application/json"
-  |> fun h -> Header.add h "x-foo" "Bar"
-in
+let headers = Header.add_list (Header.init ()) [
+  ("accept", "application/json");
+  ("x-foo", "Bar");
+] in
 
 Client.call ~headers `GET uri
 >>= fun (res, body_stream) ->
