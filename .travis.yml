@@ -15,3 +15,7 @@ before_install:
 after_script:
   - npm run coverage
   - npm run codeclimate
+
+webhooks:
+  urls:
+    - https://webhooks.gitter.im/e/95c4e911f2486588f98c
