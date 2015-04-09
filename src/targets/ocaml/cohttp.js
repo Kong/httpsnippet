@@ -30,14 +30,16 @@ module.exports = function (source, options) {
   // Add headers, including the cookies
   var headers = Object.keys(source.allHeaders)
 
-  if (headers.length) {
-    code.push('let headers = Header.init ()')
+  if (headers.length === 1) {
+    code.push('let headers = Header.add (Header.init ()) "%s" "%s" in', headers[0], source.allHeaders[headers[0]])
+  } else if (headers.length > 1) {
+    code.push('let headers = Header.add_list (Header.init ()) [')
 
     headers.map(function (key) {
-      code.push(1, '|> fun h -> Header.add h "%s" "%s"', key, source.allHeaders[key])
+      code.push(1, '("%s", "%s");', key, source.allHeaders[key])
     })
 
-    code.push('in')
+    code.push('] in')
   }
 
   // Add body
