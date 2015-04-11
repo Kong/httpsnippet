@@ -31,7 +31,7 @@ module.exports = function (source, options) {
 
   code.push('--method %s', helpers.quote(source.method))
 
-  Object.keys(source.allHeaders).map(function (key) {
+  Object.keys(source.allHeaders).forEach(function (key) {
     var header = util.format('%s: %s', key, source.allHeaders[key])
     code.push('--header %s', helpers.quote(header))
   })

@@ -18,7 +18,7 @@ module.exports = function (source, options) {
     code.blank()
         .push('struct curl_slist *headers = NULL;')
 
-    headers.map(function (key) {
+    headers.forEach(function (key) {
       code.push('headers = curl_slist_append(headers, "%s: %s");', key, source.headersObj[key])
     })
 

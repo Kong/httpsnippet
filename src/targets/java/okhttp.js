@@ -59,7 +59,7 @@ module.exports = function (source, options) {
 
   // construct headers
   if (headers.length) {
-    headers.map(function (key) {
+    headers.forEach(function (key) {
       code.push(1, '.addHeader("%s", "%s")', key, source.allHeaders[key])
     })
   }

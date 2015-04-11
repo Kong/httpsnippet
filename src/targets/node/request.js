@@ -93,7 +93,7 @@ module.exports = function (source, options) {
 
     var url = source.url
 
-    source.cookies.map(function (cookie) {
+    source.cookies.forEach(function (cookie) {
       code.push('jar.setCookie(request.cookie("%s=%s"), "%s");', encodeURIComponent(cookie.name), encodeURIComponent(cookie.value), url)
     })
     code.blank()

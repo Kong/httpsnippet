@@ -37,7 +37,7 @@ module.exports = function (source, options) {
 
   var headers = Object.keys(source.allHeaders)
   if (headers.length) {
-    headers.map(function (key) {
+    headers.forEach(function (key) {
       code.push('request["%s"] = \'%s\'', key, source.allHeaders[key])
     })
   }

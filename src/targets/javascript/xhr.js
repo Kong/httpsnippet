@@ -30,7 +30,7 @@ module.exports = function (source, options) {
     case 'multipart/form-data':
       code.push('var data = new FormData();')
 
-      source.postData.params.map(function (param) {
+      source.postData.params.forEach(function (param) {
         code.push('data.append(%s, %s);', JSON.stringify(param.name), JSON.stringify(param.value || param.fileName || ''))
       })
 
@@ -62,7 +62,7 @@ module.exports = function (source, options) {
       .blank()
       .push('xhr.open(%s, %s);', JSON.stringify(source.method), JSON.stringify(source.fullUrl))
 
-  Object.keys(source.allHeaders).map(function (key) {
+  Object.keys(source.allHeaders).forEach(function (key) {
     code.push('xhr.setRequestHeader(%s, %s);', JSON.stringify(key), JSON.stringify(source.allHeaders[key]))
   })
 

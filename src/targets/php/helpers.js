@@ -27,7 +27,7 @@ var convert = function (obj, indent, last_indent) {
     case '[object Array]':
       result = []
 
-      obj.map(function (item) {
+      obj.forEach(function (item) {
         result.push(convert(item, indent + indent, indent))
       })
 

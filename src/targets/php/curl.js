@@ -76,7 +76,7 @@ module.exports = function (source, options) {
 
   var curlopts = new CodeBuilder(opts.indent, '\n' + opts.indent)
 
-  curlOptions.map(function (option) {
+  curlOptions.forEach(function (option) {
     if (!~[null, undefined].indexOf(option.value)) {
       curlopts.push(util.format('%s => %s,', option.name, option.escape ? JSON.stringify(option.value) : option.value))
     }

@@ -75,11 +75,11 @@ module.exports = function (source, options) {
   if (opts.queryParams) {
     var queryStringKeys = Object.keys(source.queryObj)
 
-    queryStringKeys.map(function (name) {
+    queryStringKeys.forEach(function (name) {
       var value = source.queryObj[name]
 
       if (util.isArray(value)) {
-        value.map(function (val) {
+        value.forEach(function (val) {
           code.push('%s==%s', name, helpers.quote(val))
         })
       } else {
@@ -89,7 +89,7 @@ module.exports = function (source, options) {
   }
 
   // construct headers
-  Object.keys(source.allHeaders).sort().map(function (key) {
+  Object.keys(source.allHeaders).sort().forEach(function (key) {
     code.push('%s:%s', key, helpers.quote(source.allHeaders[key]))
   })
 
@@ -98,7 +98,7 @@ module.exports = function (source, options) {
     if (source.postData.params && source.postData.params.length) {
       flags.push(opts.short ? '-f' : '--form')
 
-      source.postData.params.map(function (param) {
+      source.postData.params.forEach(function (param) {
         code.push('%s=%s', param.name, helpers.quote(param.value))
       })
     }

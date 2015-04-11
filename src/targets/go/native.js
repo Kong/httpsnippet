@@ -89,9 +89,10 @@ module.exports = function (source, options) {
 
   // Add headers
   if (Object.keys(source.allHeaders).length) {
-    Object.keys(source.allHeaders).map(function (key) {
+    Object.keys(source.allHeaders).forEach(function (key) {
       code.push(1, 'req.Header.Add("%s", "%s")', key, source.allHeaders[key])
     })
+
     code.blank()
   }
 

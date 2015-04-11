@@ -41,7 +41,7 @@ module.exports = function (source, options) {
     case 'multipart/form-data':
       code.push('var form = new FormData();')
 
-      source.postData.params.map(function (param) {
+      source.postData.params.forEach(function (param) {
         code.push('form.append(%s, %s);', JSON.stringify(param.name), JSON.stringify(param.value || param.fileName || ''))
       })
 

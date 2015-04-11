@@ -35,7 +35,7 @@ module.exports = function (source, options) {
   } else if (headers.length > 1) {
     code.push('let headers = Header.add_list (Header.init ()) [')
 
-    headers.map(function (key) {
+    headers.forEach(function (key) {
       code.push(1, '("%s", "%s");', key, source.allHeaders[key])
     })
 
