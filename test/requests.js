@@ -2,7 +2,6 @@
 
 'use strict'
 
-var async = require('async')
 var fixtures = require('./fixtures')
 var HTTPSnippet = require('../src')
 var targets = require('../src/targets')
@@ -24,10 +23,10 @@ var requests = [ 'application-form-encoded',
 ]
 
 // test all the things!
-async.each(fixtures.cli, function (cli) {
+fixtures.cli.forEach(function (cli) {
   describe(targets[cli.target].info.title + ' Request Validation', function () {
-    async.each(cli.clients, function (client) {
-      async.each(requests, function (request) {
+    cli.clients.forEach(function (client) {
+      requests.forEach(function (request) {
         it(client + ' request should match mock for ' + request, function (done) {
           var stdout = ''
           var fixture = cli.target + '/' + client + '/' + request + HTTPSnippet.extname(cli.target)

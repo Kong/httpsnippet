@@ -2,7 +2,6 @@
 
 'use strict'
 
-var async = require('async')
 var fixtures = require('./fixtures')
 var fs = require('fs')
 var glob = require('glob')
@@ -20,8 +19,8 @@ var output = glob.sync('**/*', {cwd: base, nodir: true}).reduce(function (obj, n
   return obj
 }, {})
 
-var clearInfo = function (key, cb) {
-  cb(!~['info', 'index'].indexOf(key))
+var clearInfo = function (key) {
+  return !~['info', 'index'].indexOf(key)
 }
 
 var itShouldHaveTests = function (test, func, key) {
@@ -74,7 +73,7 @@ describe('Available Targets', function () {
 })
 
 // test all the things!
-async.each(Object.keys(targets), function (target) {
+Object.keys(targets).forEach(function (target) {
   describe(targets[target].info.title, function () {
     itShouldHaveInfo(targets, target)
 
@@ -86,35 +85,29 @@ async.each(Object.keys(targets), function (target) {
 
     if (!targets[target].index) {
       describe('snippets', function () {
-        async.filter(Object.keys(fixtures.requests), clearInfo, function (requests) {
-          async.each(requests, function (request) {
-            itShouldHaveRequestTestOutputFixture(request, target, '')
+        Object.keys(fixtures.requests).filter(clearInfo).forEach(function (request) {
+          itShouldHaveRequestTestOutputFixture(request, target, '')
 
-            itShouldGenerateOutput(request, target + '/', target)
-          })
+          itShouldGenerateOutput(request, target + '/', target)
         })
       })
     }
 
-    async.filter(Object.keys(targets[target]), clearInfo, function (clients) {
-      async.each(clients, function (client) {
-        describe(client, function () {
-          itShouldHaveInfo(targets[target], client)
+    Object.keys(targets[target]).filter(clearInfo).forEach(function (client) {
+      describe(client, function () {
+        itShouldHaveInfo(targets[target], client)
 
-          itShouldHaveTests(tests[target], client, client)
+        itShouldHaveTests(tests[target], client, client)
 
-          if (tests[target] && typeof tests[target][client] === 'function') {
-            tests[target][client](HTTPSnippet, fixtures)
-          }
+        if (tests[target] && typeof tests[target][client] === 'function') {
+          tests[target][client](HTTPSnippet, fixtures)
+        }
 
-          describe('snippets', function () {
-            async.filter(Object.keys(fixtures.requests), clearInfo, function (requests) {
-              async.each(requests, function (request) {
-                itShouldHaveRequestTestOutputFixture(request, target, client + '/')
+        describe('snippets', function () {
+          Object.keys(fixtures.requests).filter(clearInfo).forEach(function (request) {
+            itShouldHaveRequestTestOutputFixture(request, target, client + '/')
 
-                itShouldGenerateOutput(request, target + '/' + client + '/', target, client)
-              })
-            })
+            itShouldGenerateOutput(request, target + '/' + client + '/', target, client)
           })
         })
       })
