@@ -36,7 +36,6 @@ npm install --save httpsnippet
     -t, --target <target>     target output
     -c, --client [client]     target client library
     -o, --output <directory>  write output to directory
-    -n, --output-name <name>  output file name
 
 ```
 

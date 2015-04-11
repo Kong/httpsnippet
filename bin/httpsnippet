@@ -18,7 +18,6 @@ cmd
   .option('-t, --target <target>', 'target output')
   .option('-c, --client [client]', 'target client library')
   .option('-o, --output <directory>', 'write output to directory')
-  .option('-n, --output-name <name>', 'output file name')
   .parse(process.argv)
 
 if (!cmd.args.length || !cmd.target) {
