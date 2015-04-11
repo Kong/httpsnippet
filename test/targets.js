@@ -66,7 +66,7 @@ var itShouldGenerateOutput = function (request, path, target, client) {
 describe('Available Targets', function () {
   var targets = HTTPSnippet.availableTargets()
 
-  targets.map(function (target) {
+  targets.forEach(function (target) {
     it('available-targets.json should include ' + target.title, function () {
       fixtures['available-targets'].should.containEql(target)
     })

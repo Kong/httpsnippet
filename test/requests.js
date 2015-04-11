@@ -48,7 +48,7 @@ async.each(fixtures.cli, function (cli) {
 
             // make an exception for multipart/form-data
             if (fixtures.requests[request].headers) {
-              fixtures.requests[request].headers.map(function (header, index) {
+              fixtures.requests[request].headers.forEach(function (header, index) {
                 if (header.name === 'content-type' && header.value === 'multipart/form-data') {
                   delete fixtures.requests[request].headers[index]
                 }
