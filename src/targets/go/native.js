@@ -19,6 +19,7 @@ module.exports = function (source, options) {
 
   // Define Options
   var opts = util._extend({
+    showBoilerplate: true,
     checkErrors: false,
     printBody: true,
     timeout: -1
@@ -29,60 +30,62 @@ module.exports = function (source, options) {
   var errorCheck = function () {
     if (opts.checkErrors) {
       code.push(1, 'if err != nil {')
-          .push(2, 'panic(err)')
-          .push(1, '}')
+        .push(2, 'panic(err)')
+        .push(1, '}')
     }
   }
 
   // Create boilerplate
-  code.push('package main')
+  if (opts.showBoilerplate) {
+    code.push('package main')
       .blank()
       .push('import (')
       .push(1, '"fmt"')
 
-  if (opts.timeout > 0) {
-    code.push(1, '"time"')
-  }
+    if (opts.timeout > 0) {
+      code.push(1, '"time"')
+    }
 
-  if (source.postData.text) {
-    code.push(1, '"strings"')
-  }
+    if (source.postData.text) {
+      code.push(1, '"strings"')
+    }
 
-  code.push(1, '"net/http"')
+    code.push(1, '"net/http"')
 
-  if (opts.printBody) {
-    code.push(1, '"io/ioutil"')
-  }
+    if (opts.printBody) {
+      code.push(1, '"io/ioutil"')
+    }
 
-  code.push(')')
+    code.push(')')
       .blank()
       .push('func main() {')
       .blank()
+  }
 
   // Create client
   var client
   if (opts.timeout > 0) {
     client = 'client'
     code.push(1, 'client := http.Client{')
-        .push(2, 'Timeout: time.Duration(%s * time.Second),', opts.timeout)
-        .push(1, '}')
-        .blank()
+      .push(2, 'Timeout: time.Duration(%s * time.Second),', opts.timeout)
+      .push(1, '}')
+      .blank()
   } else {
     client = 'http.DefaultClient'
   }
 
   code.push(1, 'url := "%s"', source.fullUrl)
-      .blank()
+    .blank()
 
   // If we have body content or not create the var and reader or nil
   if (source.postData.text) {
     code.push(1, 'payload := strings.NewReader(%s)', JSON.stringify(source.postData.text))
-        .blank()
-        .push(1, 'req, %s := http.NewRequest("%s", url, payload)', errorPlaceholder, source.method)
-        .blank()
+      .blank()
+      .push(1, 'req, %s := http.NewRequest("%s", url, payload)', errorPlaceholder, source.method)
+      .blank()
   } else {
     code.push(1, 'req, %s := http.NewRequest("%s", url, nil)', errorPlaceholder, source.method)
-        .blank()
+      .blank()
   }
 
   errorCheck()
@@ -103,22 +106,24 @@ module.exports = function (source, options) {
   // Get Body
   if (opts.printBody) {
     code.blank()
-        .push(1, 'defer res.Body.Close()')
-        .push(1, 'body, %s := ioutil.ReadAll(res.Body)', errorPlaceholder)
+      .push(1, 'defer res.Body.Close()')
+      .push(1, 'body, %s := ioutil.ReadAll(res.Body)', errorPlaceholder)
     errorCheck()
   }
 
   // Print it
   code.blank()
-      .push(1, 'fmt.Println(res)')
+    .push(1, 'fmt.Println(res)')
 
   if (opts.printBody) {
     code.push(1, 'fmt.Println(string(body))')
   }
 
   // End main block
-  code.blank()
+  if (opts.showBoilerplate) {
+    code.blank()
       .push('}')
+  }
 
   return code.join()
 }
