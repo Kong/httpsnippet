@@ -10,7 +10,7 @@ var fs = Promise.promisifyAll(require('fs'))
 var HTTPSnippet = require('..')
 var path = require('path')
 var pkg = require('../package.json')
-var ValidationError = require('har-validator/src/error')
+var ValidationError = require('har-validator/lib/error')
 
 cmd
   .version(pkg.version)
