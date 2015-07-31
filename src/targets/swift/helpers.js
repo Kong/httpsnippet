@@ -71,8 +71,10 @@ module.exports = {
           keyValuePairs.push(util.format('"%s": %s', k, this.literalRepresentation(value[k], opts, indentLevel)))
         }
         return concatArray(keyValuePairs, opts.pretty && keyValuePairs.length > 1, opts.indent, indentLevel)
+      case '[object Boolean]':
+        return value.toString()
       default:
-        return '"' + value.replace(/"/g, '\\"') + '"'
+        return '"' + value.toString().replace(/"/g, '\\"') + '"'
     }
   }
 }

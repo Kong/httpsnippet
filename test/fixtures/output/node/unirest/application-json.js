@@ -24,7 +24,8 @@ req.send({
     {
       "arr_mix_nested": {}
     }
-  ]
+  ],
+  "boolean": false
 });
 
 req.end(function (res) {

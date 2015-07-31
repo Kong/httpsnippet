@@ -8,7 +8,8 @@ var options = { method: 'POST',
      string: 'f"oo',
      arr: [ 1, 2, 3 ],
      nested: { a: 'b' },
-     arr_mix: [ 1, 'a', { arr_mix_nested: {} } ] },
+     arr_mix: [ 1, 'a', { arr_mix_nested: {} } ],
+     boolean: false },
   json: true };
 
 request(options, function (error, response, body) {
