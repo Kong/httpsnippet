@@ -61,8 +61,10 @@ module.exports = {
           keyValuePairs.push(util.format('@"%s": %s', k, this.literalRepresentation(value[k])))
         }
         return '@{ ' + keyValuePairs.join(join) + ' }'
+      case '[object Boolean]':
+        return value ? '@YES' : '@NO'
       default:
-        return '@"' + value.replace(/"/g, '\\"') + '"'
+        return '@"' + value.toString().replace(/"/g, '\\"') + '"'
     }
   }
 }

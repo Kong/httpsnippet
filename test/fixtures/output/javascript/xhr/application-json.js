@@ -15,7 +15,8 @@ var data = JSON.stringify({
     {
       "arr_mix_nested": {}
     }
-  ]
+  ],
+  "boolean": false
 });
 
 var xhr = new XMLHttpRequest();
