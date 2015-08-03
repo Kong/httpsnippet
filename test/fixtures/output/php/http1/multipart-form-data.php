@@ -12,7 +12,8 @@ $request->setBody('-----011000010111000001101001
 Content-Disposition: form-data; name="foo"
 
 bar
------011000010111000001101001--');
+-----011000010111000001101001--
+');
 
 try {
   $response = $request->send();
