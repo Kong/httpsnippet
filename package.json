@@ -1,5 +1,5 @@
 {
-  "version": "1.16.2",
+  "version": "1.16.3",
   "name": "httpsnippet",
   "description": "HTTP Request snippet generator for *most* languages",
   "author": "Ahmad Nassri <ahmad@mashape.com> (https://www.mashape.com/)",
@@ -58,7 +58,7 @@
       "**/test/fixtures/**"
     ]
   },
-    "echint": {
+  "echint": {
     "ignore": [
       "coverage/**",
       "CONTRIBUTING.md",
