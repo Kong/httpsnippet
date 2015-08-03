@@ -20,17 +20,17 @@ module.exports = function (source, options) {
 
   var code = new CodeBuilder(opts.indent)
 
-  var methods = [ 'GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD']
+  var methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD']
 
-  var methodsWithBody = [ 'POST', 'PUT', 'DELETE', 'PATCH']
+  var methodsWithBody = ['POST', 'PUT', 'DELETE', 'PATCH']
 
   code.push('OkHttpClient client = new OkHttpClient();')
-      .blank()
+    .blank()
 
   if (source.postData.text) {
     if (source.postData.boundary) {
       code.push('MediaType mediaType = MediaType.parse("%s; boundary=%s");', source.postData.mimeType, source.postData.boundary)
-    }else {
+    } else {
       code.push('MediaType mediaType = MediaType.parse("%s");', source.postData.mimeType)
     }
     code.push('RequestBody body = RequestBody.create(mediaType, %s);', JSON.stringify(source.postData.text))
@@ -41,13 +41,13 @@ module.exports = function (source, options) {
   if (methods.indexOf(source.method.toUpperCase()) === -1) {
     if (source.postData.text) {
       code.push(1, '.method("%s", body)', source.method.toUpperCase())
-    }else {
+    } else {
       code.push(1, '.method("%s", null)', source.method.toUpperCase())
     }
   }else if (methodsWithBody.indexOf(source.method.toUpperCase()) >= 0) {
     if (source.postData.text) {
       code.push(1, '.%s(body)', source.method.toLowerCase())
-    }else {
+    } else {
       code.push(1, '.%s(null)', source.method.toLowerCase())
     }
   } else {
@@ -65,8 +65,8 @@ module.exports = function (source, options) {
   }
 
   code.push(1, '.build();')
-      .blank()
-      .push('Response response = client.newCall(request).execute();')
+    .blank()
+    .push('Response response = client.newCall(request).execute();')
 
   return code.join()
 }

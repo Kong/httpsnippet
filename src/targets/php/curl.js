@@ -28,45 +28,45 @@ module.exports = function (source, options) {
 
   if (!opts.noTags) {
     code.push(opts.shortTags ? '<?' : '<?php')
-        .blank()
+      .blank()
   }
 
   code.push('$curl = curl_init();')
-      .blank()
+    .blank()
 
   var curlOptions = [{
     escape: true,
     name: 'CURLOPT_PORT',
     value: source.uriObj.port
-    }, {
+  }, {
     escape: true,
     name: 'CURLOPT_URL',
     value: source.fullUrl
-    }, {
+  }, {
     escape: false,
     name: 'CURLOPT_RETURNTRANSFER',
     value: 'true'
-    }, {
+  }, {
     escape: true,
     name: 'CURLOPT_ENCODING',
     value: ''
-    }, {
+  }, {
     escape: false,
     name: 'CURLOPT_MAXREDIRS',
     value: opts.maxRedirects
-    }, {
+  }, {
     escape: false,
     name: 'CURLOPT_TIMEOUT',
     value: opts.timeout
-    }, {
+  }, {
     escape: false,
     name: 'CURLOPT_HTTP_VERSION',
     value: source.httpVersion === 'HTTP/1.0' ? 'CURL_HTTP_VERSION_1_0' : 'CURL_HTTP_VERSION_1_1'
-    }, {
+  }, {
     escape: true,
     name: 'CURLOPT_CUSTOMREQUEST',
     value: source.method
-    }, {
+  }, {
     escape: true,
     name: 'CURLOPT_POSTFIELDS',
     value: source.postData ? source.postData.text : undefined
@@ -98,19 +98,19 @@ module.exports = function (source, options) {
 
   if (headers.length) {
     curlopts.push('CURLOPT_HTTPHEADER => array(')
-            .push(1, headers.join(',\n' + opts.indent + opts.indent))
-            .push('),')
+      .push(1, headers.join(',\n' + opts.indent + opts.indent))
+      .push('),')
   }
 
   code.push(1, curlopts.join())
-      .push('));')
-      .blank()
-      .push('$response = curl_exec($curl);')
-      .push('$err = curl_error($curl);')
-      .blank()
-      .push('curl_close($curl);')
-      .blank()
-      .push('if ($err) {')
+    .push('));')
+    .blank()
+    .push('$response = curl_exec($curl);')
+    .push('$err = curl_error($curl);')
+    .blank()
+    .push('curl_close($curl);')
+    .blank()
+    .push('if ($err) {')
 
   if (opts.namedErrors) {
     code.push(1, 'echo array_flip(get_defined_constants(true)["curl"])[$err];')
@@ -119,12 +119,12 @@ module.exports = function (source, options) {
   }
 
   code.push('} else {')
-      .push(1, 'echo $response;')
-      .push('}')
+    .push(1, 'echo $response;')
+    .push('}')
 
   if (!opts.noTags && opts.closingTag) {
     code.blank()
-        .push('?>')
+      .push('?>')
   }
 
   return code.join()
