@@ -195,7 +195,7 @@ HTTPSnippet.prototype.convert = function (target, client, opts) {
 
   if (func) {
     var results = this.requests.map(function (request) {
-      return func.call(null, request, opts)
+      return func(request, opts)
     })
 
     return results.length === 1 ? results[0] : results
