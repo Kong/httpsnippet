@@ -34,7 +34,7 @@ var itShouldHaveInfo = function (targets, key) {
     var target = targets[key]
 
     target.should.have.property('info').and.be.an.Object
-    target.info.key.should.be.a.String.and.equal(key)
+    target.info.key.should.equal(key).and.be.a.String
     target.info.title.should.be.a.String
   })
 }
