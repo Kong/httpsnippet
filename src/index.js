@@ -4,7 +4,7 @@ var debug = require('debug')('httpsnippet')
 var es = require('event-stream')
 var MultiPartForm = require('form-data')
 var qs = require('querystring')
-var helpers = require('./helpers')
+var reducer = require('./helpers/reducer')
 var targets = require('./targets')
 var url = require('url')
 var util = require('util')
@@ -64,7 +64,7 @@ HTTPSnippet.prototype.prepare = function (request) {
   if (request.queryString && request.queryString.length) {
     debug('queryString found, constructing queryString pair map')
 
-    request.queryObj = request.queryString.reduce(helpers.reducer, {})
+    request.queryObj = request.queryString.reduce(reducer, {})
   }
 
   // construct headers objects
@@ -128,7 +128,7 @@ HTTPSnippet.prototype.prepare = function (request) {
       if (!request.postData.params) {
         request.postData.text = ''
       } else {
-        request.postData.paramsObj = request.postData.params.reduce(helpers.reducer, {})
+        request.postData.paramsObj = request.postData.params.reduce(reducer, {})
 
         // always overwrite
         request.postData.text = qs.stringify(request.postData.paramsObj)
