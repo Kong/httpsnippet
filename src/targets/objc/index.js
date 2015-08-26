@@ -1,3 +1,12 @@
 'use strict'
 
-module.exports = require('require-directory')(module)
+module.exports = {
+  info: {
+    key: 'objc',
+    title: 'Objective-C',
+    extname: '.m',
+    default: 'nsurlsession'
+  },
+
+  nsurlsession: require('./nsurlsession')
+}

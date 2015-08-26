@@ -1,3 +1,12 @@
 'use strict'
 
-module.exports = require('require-directory')(module)
+module.exports = {
+  info: {
+    key: 'swift',
+    title: 'Swift',
+    extname: '.swift',
+    default: 'nsurlsession'
+  },
+
+  nsurlsession: require('./nsurlsession')
+}

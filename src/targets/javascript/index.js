@@ -1,3 +1,13 @@
 'use strict'
 
-module.exports = require('require-directory')(module)
+module.exports = {
+  info: {
+    key: 'javascript',
+    title: 'JavaScript',
+    extname: '.js',
+    default: 'xhr'
+  },
+
+  jquery: require('./jquery'),
+  xhr: require('./xhr')
+}

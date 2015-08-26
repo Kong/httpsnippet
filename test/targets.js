@@ -6,10 +6,9 @@ var fixtures = require('./fixtures')
 var fs = require('fs')
 var glob = require('glob')
 var HTTPSnippet = require('../src')
+var path = require('path')
+var should = require('should')
 var targets = require('../src/targets')
-var tests = require('./tests')
-
-require('should')
 
 var base = './test/fixtures/output/'
 
@@ -23,19 +22,22 @@ var clearInfo = function (key) {
   return !~['info', 'index'].indexOf(key)
 }
 
-var itShouldHaveTests = function (test, func, key) {
-  it(key + ' should have tests', function () {
-    test.should.have.property(func)
+var itShouldHaveTests = function (target, client) {
+  it(target + ' should have tests', function (done) {
+    fs.readdir(path.join(__dirname, 'targets', target), function (err, files) {
+      should.not.exist(err)
+      files.length.should.be.above(0)
+      files.should.containEql(client + '.js')
+      done()
+    })
   })
 }
 
-var itShouldHaveInfo = function (targets, key) {
-  it(key + ' should have info method', function () {
-    var target = targets[key]
-
-    target.should.have.property('info').and.be.an.Object
-    target.info.key.should.equal(key).and.be.a.String
-    target.info.title.should.be.a.String
+var itShouldHaveInfo = function (name, obj) {
+  it(name + ' should have info method', function () {
+    obj.should.have.property('info').and.be.an.Object
+    obj.info.key.should.equal(name).and.be.a.String
+    obj.info.title.should.be.a.String
   })
 }
 
@@ -75,33 +77,17 @@ describe('Available Targets', function () {
 // test all the things!
 Object.keys(targets).forEach(function (target) {
   describe(targets[target].info.title, function () {
-    itShouldHaveInfo(targets, target)
-
-    itShouldHaveTests(tests, target, target)
-
-    if (typeof tests[target] === 'function') {
-      tests[target](HTTPSnippet, fixtures)
-    }
-
-    if (!targets[target].index) {
-      describe('snippets', function () {
-        Object.keys(fixtures.requests).filter(clearInfo).forEach(function (request) {
-          itShouldHaveRequestTestOutputFixture(request, target, '')
-
-          itShouldGenerateOutput(request, target + '/', target)
-        })
-      })
-    }
+    itShouldHaveInfo(target, targets[target])
 
     Object.keys(targets[target]).filter(clearInfo).forEach(function (client) {
       describe(client, function () {
-        itShouldHaveInfo(targets[target], client)
+        itShouldHaveInfo(client, targets[target][client])
 
-        itShouldHaveTests(tests[target], client, client)
+        itShouldHaveTests(target, client)
 
-        if (tests[target] && typeof tests[target][client] === 'function') {
-          tests[target][client](HTTPSnippet, fixtures)
-        }
+        var test = require(path.join(__dirname, 'targets', target, client))
+
+        test(HTTPSnippet, fixtures)
 
         describe('snippets', function () {
           Object.keys(fixtures.requests).filter(clearInfo).forEach(function (request) {

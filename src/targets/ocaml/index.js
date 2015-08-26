@@ -1,3 +1,12 @@
 'use strict'
 
-module.exports = require('require-directory')(module)
+module.exports = {
+  info: {
+    key: 'ocaml',
+    title: 'OCaml',
+    extname: '.ml',
+    default: 'cohttp'
+  },
+
+  cohttp: require('./cohttp')
+}

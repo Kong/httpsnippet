@@ -1,3 +1,12 @@
 'use strict'
 
-module.exports = require('require-directory')(module)
+module.exports = {
+  info: {
+    key: 'go',
+    title: 'Go',
+    extname: '.go',
+    default: 'native'
+  },
+
+  native: require('./native')
+}

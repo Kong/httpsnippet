@@ -1,3 +1,12 @@
 'use strict'
 
-module.exports = require('require-directory')(module)
+module.exports = {
+  info: {
+    key: 'ruby',
+    title: 'Ruby',
+    extname: '.rb',
+    default: 'native'
+  },
+
+  native: require('./native')
+}

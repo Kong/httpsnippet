@@ -71,6 +71,7 @@
     "glob": "^5.0.14",
     "istanbul": "^0.3.17",
     "mocha": "^2.2.5",
+    "require-directory": "^2.1.1",
     "should": "^7.0.2",
     "standard": "^5.0.0"
   },
@@ -81,7 +82,6 @@
     "debug": "^2.2.0",
     "event-stream": "^3.3.1",
     "form-data": "^1.0.0-rc3",
-    "har-validator": "^1.8.0",
-    "require-directory": "^2.1.1"
+    "har-validator": "^1.8.0"
   }
 }
