@@ -14,7 +14,7 @@ var util = require('util')
 var CodeBuilder = function (indentation, join) {
   this.code = []
   this.indentation = indentation
-  this.lineJoin = join ? join : '\n'
+  this.lineJoin = join || '\n'
 }
 
 /**

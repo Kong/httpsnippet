@@ -44,7 +44,7 @@ module.exports = function (source, options) {
     } else {
       code.push(1, '.method("%s", null)', source.method.toUpperCase())
     }
-  }else if (methodsWithBody.indexOf(source.method.toUpperCase()) >= 0) {
+  } else if (methodsWithBody.indexOf(source.method.toUpperCase()) >= 0) {
     if (source.postData.text) {
       code.push(1, '.%s(body)', source.method.toLowerCase())
     } else {
