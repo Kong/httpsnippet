@@ -66,22 +66,24 @@
     ]
   },
   "devDependencies": {
-    "codeclimate-test-reporter": "0.1.0",
+    "codeclimate-test-reporter": "0.1.1",
     "echint": "^1.5.0",
-    "glob": "^5.0.14",
-    "istanbul": "^0.3.17",
-    "mocha": "^2.2.5",
+    "glob": "^6.0.1",
+    "istanbul": "^0.4.0",
+    "mocha": "^2.3.4",
     "require-directory": "^2.1.1",
-    "should": "^7.0.2",
-    "standard": "^5.0.0"
+    "should": "^7.1.1",
+    "standard": "^5.4.1"
   },
   "dependencies": {
-    "bluebird": "^2.9.34",
-    "chalk": "^1.1.0",
-    "commander": "^2.8.1",
+    "chalk": "^1.1.1",
+    "commander": "^2.9.0",
     "debug": "^2.2.0",
-    "event-stream": "^3.3.1",
+    "event-stream": "^3.3.2",
     "form-data": "^1.0.0-rc3",
-    "har-validator": "^1.8.0"
+    "fs-readfile-promise": "^2.0.1",
+    "fs-writefile-promise": "^1.0.3",
+    "har-validator": "^2.0.2",
+    "pinkie-promise": "^2.0.0"
   }
 }

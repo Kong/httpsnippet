@@ -8,7 +8,7 @@ var reducer = require('./helpers/reducer')
 var targets = require('./targets')
 var url = require('url')
 var util = require('util')
-var validate = require('har-validator')
+var validate = require('har-validator/lib/async')
 
 // constructor
 var HTTPSnippet = function (data) {

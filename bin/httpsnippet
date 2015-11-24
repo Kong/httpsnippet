@@ -2,15 +2,14 @@
 
 'use strict'
 
-var Promise = require('bluebird')
-
 var chalk = require('chalk')
 var cmd = require('commander')
-var fs = Promise.promisifyAll(require('fs'))
+var fs = require('fs')
+var readFile = require('fs-readfile-promise')
+var writeFile = require('fs-writefile-promise')
 var HTTPSnippet = require('..')
 var path = require('path')
 var pkg = require('../package.json')
-var ValidationError = require('har-validator/lib/error')
 
 cmd
   .version(pkg.version)
@@ -35,14 +34,27 @@ if (cmd.output) {
 cmd.args.forEach(function (fileName) {
   var file = path.basename(fileName)
 
-  fs.readFileAsync(fileName)
+  readFile(fileName)
     .then(JSON.parse)
+
+    .catch(function (e) {
+      console.error('%s %s failed to read JSON: %s', chalk.red('✖'), chalk.cyan.bold(file), chalk.red(e.message))
+    })
+
     .then(function (data) {
       return new HTTPSnippet(data)
     })
+
+    .catch(function (e) {
+      e.errors.forEach(function (err) {
+        console.error('%s %s failed validation: (%s: %s) %s', chalk.red('✖'), chalk.cyan.bold(file), chalk.cyan.italic(err.field), chalk.magenta.italic(err.value), chalk.red(err.message))
+      })
+    })
+
     .then(function (snippet) {
       return snippet.convert(cmd.target, cmd.client)
     })
+
     .then(function (output) {
       // print
       if (!cmd.output) {
@@ -57,18 +69,11 @@ cmd.args.forEach(function (fileName) {
         base: name + HTTPSnippet.extname(cmd.target)
       })
 
-      fs.writeFile(filename, output + '\n', function () {
+      return writeFile(filename, output + '\n', function () {
         console.log('%s %s > %s', chalk.green('✓'), chalk.cyan.bold(file), filename)
       })
     })
-    .catch(SyntaxError, function (e) {
-      console.error('%s %s failed to read JSON: %s', chalk.red('✖'), chalk.cyan.bold(file), chalk.red(e.message))
-    })
-    .catch(ValidationError, function (e) {
-      e.errors.forEach(function (err) {
-        console.error('%s %s failed validation: (%s: %s) %s', chalk.red('✖'), chalk.cyan.bold(file), chalk.cyan.italic(err.field), chalk.magenta.italic(err.value), chalk.red(err.message))
-      })
-    })
+
     .catch(function (e) {
       console.error('%s %s fail: %s', chalk.red('✖'), chalk.cyan.bold(file), chalk.red(e.message))
     })
