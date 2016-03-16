@@ -17,7 +17,8 @@ var CodeBuilder = require('../../helpers/code-builder')
 module.exports = function (source, options) {
   var opts = util._extend({
     indent: '  ',
-    short: false
+    short: false,
+    binary: false
   }, options)
 
   var code = new CodeBuilder(opts.indent, opts.indent !== false ? ' \\\n' + opts.indent : ' ')
@@ -56,7 +57,10 @@ module.exports = function (source, options) {
     default:
       // raw request body
       if (source.postData.text) {
-        code.push('%s %s', opts.short ? '-d' : '--data', helpers.escape(helpers.quote(source.postData.text)))
+        code.push(
+          '%s %s', opts.binary ? '--data-binary' : (opts.short ? '-d' : '--data'),
+          helpers.escape(helpers.quote(source.postData.text))
+        )
       }
   }
 
