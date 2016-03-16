@@ -15,6 +15,17 @@ module.exports = function (HTTPSnippet, fixtures) {
     result.should.eql("curl -X POST 'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value' -H 'accept: application/json' -H 'content-type: application/x-www-form-urlencoded' -b 'foo=bar; bar=baz' -d foo=bar")
   })
 
+  it('should use binary option', function () {
+    var result = new HTTPSnippet(fixtures.requests.full).convert('shell', 'curl', {
+      short: true,
+      indent: false,
+      binary: true
+    })
+
+    result.should.be.a.String
+    result.should.eql("curl -X POST 'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value' -H 'accept: application/json' -H 'content-type: application/x-www-form-urlencoded' -b 'foo=bar; bar=baz' --data-binary foo=bar")
+  })
+
   it('should use --http1.0 for HTTP/1.0', function () {
     var result = new HTTPSnippet(fixtures.curl.http1).convert('shell', 'curl', {
       indent: false
