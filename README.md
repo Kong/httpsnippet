@@ -79,7 +79,7 @@ Type: `object`
 Name of [conversion target](https://github.com/Mashape/httpsnippet/wiki/Targets)
 
 ```js
-var httpsnippet = require('httpsnippet');
+var HTTPSnippet = require('httpsnippet');
 
 var snippet = new HTTPSnippet({
   method: 'GET',
@@ -103,7 +103,7 @@ Type: `object`
 Target options, *see [wiki](https://github.com/Mashape/httpsnippet/wiki/Targets) for details*
 
 ```js
-var httpsnippet = require('httpsnippet');
+var HTTPSnippet = require('httpsnippet');
 
 var snippet = new HTTPSnippet({
   method: 'GET',
@@ -115,7 +115,7 @@ console.log(snippet.convert('node'));
 
 // generate Node.js: Native output, indent with tabs
 console.log(snippet.convert('node', {
-  indent: '\t';
+  indent: '\t'
 }));
 ```
 
@@ -141,7 +141,7 @@ Type: `object`
 Target options, *see [wiki](https://github.com/Mashape/httpsnippet/wiki/Targets) for details*
 
 ```js
-var httpsnippet = require('httpsnippet');
+var HTTPSnippet = require('httpsnippet');
 
 var snippet = new HTTPSnippet({
   method: 'GET',
@@ -150,7 +150,7 @@ var snippet = new HTTPSnippet({
 
 // generate Shell: cURL output
 console.log(snippet.convert('shell', 'curl', {
-  indent: '\t';
+  indent: '\t'
 }));
 
 // generate Node.js: Unirest output
