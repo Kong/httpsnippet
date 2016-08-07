@@ -2,6 +2,7 @@
 
 module.exports = {
   c: require('./c'),
+  clojure: require('./clojure'),
   csharp: require('./csharp'),
   go: require('./go'),
   java: require('./java'),
