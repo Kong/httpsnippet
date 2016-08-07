@@ -12,44 +12,48 @@
 
 var CodeBuilder = require('../../helpers/code-builder')
 
-class Keyword {
-  constructor (name) {
-    this.name = `:${name}`
-  }
-
-  toString () {
-    return this.name
-  }
+var Keyword = function (name) {
+  this.name = name
 }
 
-class ClojureFile {
-  constructor (path) {
-    this.path = `(clojure.java.io/file "${path}")`
-  }
-
-  toString () {
-    return this.path
-  }
+Keyword.prototype.toString = function () {
+  return ':' + this.name
 }
 
-var jsType = x => (typeof x !== 'undefined')
-                    ? x.constructor.name.toLowerCase()
-                    : null
+var File = function (path) {
+  this.path = path
+}
 
-var objEmpty = x => (jsType(x) !== 'object')
-                      ? false
-                      : Object.keys(x).length === 0
+File.prototype.toString = function () {
+  return '(clojure.java.io/file "' + this.path + '")'
+}
+
+var jsType = function (x) {
+  return (typeof x !== 'undefined')
+          ? x.constructor.name.toLowerCase()
+          : null
+}
+
+var objEmpty = function (x) {
+  return (jsType(x) === 'object')
+          ? Object.keys(x).length === 0
+          : false
+}
 
 var filterEmpty = function (m) {
   Object.keys(m)
-        .filter(x => objEmpty(m[x]))
-        .forEach(x => delete m[x])
+        .filter(function (x) { return objEmpty(m[x]) })
+        .forEach(function (x) { delete m[x] })
   return m
 }
 
 var padBlock = function (x, s) {
-  var padding = [...Array(x)].map(() => ' ').join('')
-  return s.replace(/\n/g, `\n${padding}`)
+  var padding = Array.apply(null, Array(x))
+                    .map(function (_) {
+                      return ' '
+                    })
+                    .join('')
+  return s.replace(/\n/g, '\n' + padding)
 }
 
 var jsToEdn = function (js) {
@@ -57,26 +61,28 @@ var jsToEdn = function (js) {
     default: // 'number' 'boolean'
       return js.toString()
     case 'string':
-      return `"${js.replace(/\"/g, '\\"')}"`
-    case 'clojurefile':
+      return '"' + js.replace(/\"/g, '\\"') + '"'
+    case 'file':
       return js.toString()
     case 'keyword':
       return js.toString()
     case 'null':
       return 'nil'
     case 'regexp':
-      return `#"${js.source}"`
+      return '#"' + js.source + '"'
     case 'object': // simple vertical format
       var obj = Object.keys(js)
-                      .reduce((acc, key) => {
+                      .reduce(function (acc, key) {
                         var val = padBlock(key.length + 2, jsToEdn(js[key]))
-                        return `${acc}:${key} ${val}\n `
+                        return acc + ':' + key + ' ' + val + '\n '
                       }, '')
                       .trim()
-      return `{${padBlock(1, obj)}}`
+      return '{' + padBlock(1, obj) + '}'
     case 'array': // simple horizontal format
-      var arr = js.reduce((acc, val) => `${acc} ${jsToEdn(val)}`, '').trim()
-      return `[${padBlock(1, arr)}]`
+      var arr = js.reduce(function (acc, val) {
+        return acc + ' ' + jsToEdn(val)
+      }, '').trim()
+      return '[' + padBlock(1, arr) + ']'
   }
 }
 
@@ -106,10 +112,10 @@ module.exports = function (source, options) {
       delete params.headers['content-type']
       break
     case 'multipart/form-data':
-      params.multipart = source.postData.params.map(x => {
+      params.multipart = source.postData.params.map(function (x) {
         if (x.fileName && !x.value) {
           return {name: x.name,
-                  content: new ClojureFile(x.fileName)}
+                  content: new File(x.fileName)}
         } else {
           return {name: x.name,
                   content: x.value}
