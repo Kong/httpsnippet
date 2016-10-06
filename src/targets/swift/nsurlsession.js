@@ -55,7 +55,7 @@ module.exports = function (source, options) {
 
       case 'application/json':
         if (source.postData.jsonObj) {
-          code.push(helpers.literalDeclaration('parameters', source.postData.jsonObj, opts),'as [String : Any]')
+          code.push(helpers.literalDeclaration('parameters', source.postData.jsonObj, opts), 'as [String : Any]')
               .blank()
               .push('let postData = JSONSerialization.data(withJSONObject: parameters, options: [])')
         }
