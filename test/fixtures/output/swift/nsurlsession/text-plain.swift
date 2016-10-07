@@ -2,22 +2,22 @@ import Foundation
 
 let headers = ["content-type": "text/plain"]
 
-let postData = NSData(data: "Hello World".dataUsingEncoding(NSUTF8StringEncoding)!)
+let postData = NSData(data: "Hello World".data(using: String.Encoding.utf8)!)
 
-var request = NSMutableURLRequest(URL: NSURL(string: "http://mockbin.com/har")!,
-                                        cachePolicy: .UseProtocolCachePolicy,
+let request = NSMutableURLRequest(url: NSURL(string: "http://mockbin.com/har")! as URL,
+                                        cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
-request.HTTPMethod = "POST"
+request.httpMethod = "POST"
 request.allHTTPHeaderFields = headers
-request.HTTPBody = postData
+request.httpBody = postData as Data
 
-let session = NSURLSession.sharedSession()
-let dataTask = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
+let session = URLSession.shared
+let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
   if (error != nil) {
-    println(error)
+    print(error)
   } else {
-    let httpResponse = response as? NSHTTPURLResponse
-    println(httpResponse)
+    let httpResponse = response as? HTTPURLResponse
+    print(httpResponse)
   }
 })
 

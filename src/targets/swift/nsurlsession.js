@@ -47,17 +47,17 @@ module.exports = function (source, options) {
         // we make it easier for the user to edit it according to his or her needs after pasting.
         // The user can just add/remove lines adding/removing body parameters.
         code.blank()
-            .push('var postData = NSMutableData(data: "%s=%s".dataUsingEncoding(NSUTF8StringEncoding)!)', source.postData.params[0].name, source.postData.params[0].value)
+            .push('let postData = NSMutableData(data: "%s=%s".data(using: String.Encoding.utf8)!)', source.postData.params[0].name, source.postData.params[0].value)
         for (var i = 1, len = source.postData.params.length; i < len; i++) {
-          code.push('postData.appendData("&%s=%s".dataUsingEncoding(NSUTF8StringEncoding)!)', source.postData.params[i].name, source.postData.params[i].value)
+          code.push('postData.append("&%s=%s".data(using: String.Encoding.utf8)!)', source.postData.params[i].name, source.postData.params[i].value)
         }
         break
 
       case 'application/json':
         if (source.postData.jsonObj) {
-          code.push(helpers.literalDeclaration('parameters', source.postData.jsonObj, opts))
+          code.push(helpers.literalDeclaration('parameters', source.postData.jsonObj, opts), 'as [String : Any]')
               .blank()
-              .push('let postData = NSJSONSerialization.dataWithJSONObject(parameters, options: nil, error: nil)')
+              .push('let postData = JSONSerialization.data(withJSONObject: parameters, options: [])')
         }
         break
 
@@ -79,13 +79,13 @@ module.exports = function (source, options) {
             .push(1, 'body += "Content-Disposition:form-data; name=\\"\\(paramName)\\""')
             .push(1, 'if let filename = param["fileName"] {')
             .push(2, 'let contentType = param["content-type"]!')
-            .push(2, 'let fileContent = String(contentsOfFile: filename, encoding: NSUTF8StringEncoding, error: &error)')
+            .push(2, 'let fileContent = String(contentsOfFile: filename, encoding: String.Encoding.utf8)')
             .push(2, 'if (error != nil) {')
-            .push(3, 'println(error)')
+            .push(3, 'print(error)')
             .push(2, '}')
             .push(2, 'body += "; filename=\\"\\(filename)\\"\\r\\n"')
             .push(2, 'body += "Content-Type: \\(contentType)\\r\\n\\r\\n"')
-            .push(2, 'body += fileContent!')
+            .push(2, 'body += fileContent')
             .push(1, '} else if let paramValue = param["value"] {')
             .push(2, 'body += "\\r\\n\\r\\n\\(paramValue)"')
             .push(1, '}')
@@ -94,35 +94,35 @@ module.exports = function (source, options) {
 
       default:
         code.blank()
-            .push('let postData = NSData(data: "%s".dataUsingEncoding(NSUTF8StringEncoding)!)', source.postData.text)
+            .push('let postData = NSData(data: "%s".data(using: String.Encoding.utf8)!)', source.postData.text)
     }
   }
 
   code.blank()
       // NSURLRequestUseProtocolCachePolicy is the default policy, let's just always set it to avoid confusion.
-      .push('var request = NSMutableURLRequest(URL: NSURL(string: "%s")!,', source.fullUrl)
-      .push('                                        cachePolicy: .UseProtocolCachePolicy,')
+      .push('let request = NSMutableURLRequest(url: NSURL(string: "%s")! as URL,', source.fullUrl)
+      .push('                                        cachePolicy: .useProtocolCachePolicy,')
       .push('                                    timeoutInterval: %s)', parseInt(opts.timeout, 10).toFixed(1))
-      .push('request.HTTPMethod = "%s"', source.method)
+      .push('request.httpMethod = "%s"', source.method)
 
   if (req.hasHeaders) {
     code.push('request.allHTTPHeaderFields = headers')
   }
 
   if (req.hasBody) {
-    code.push('request.HTTPBody = postData')
+    code.push('request.httpBody = postData as Data')
   }
 
   code.blank()
       // Retrieving the shared session will be less verbose than creating a new one.
-      .push('let session = NSURLSession.sharedSession()')
-      .push('let dataTask = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in')
+      .push('let session = URLSession.shared')
+      .push('let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in')
       .push(1, 'if (error != nil) {')
-      .push(2, 'println(error)')
+      .push(2, 'print(error)')
       .push(1, '} else {')
       // Casting the NSURLResponse to NSHTTPURLResponse so the user can see the status     .
-      .push(2, 'let httpResponse = response as? NSHTTPURLResponse')
-      .push(2, 'println(httpResponse)')
+      .push(2, 'let httpResponse = response as? HTTPURLResponse')
+      .push(2, 'print(httpResponse)')
       .push(1, '}')
       .push('})')
       .blank()
