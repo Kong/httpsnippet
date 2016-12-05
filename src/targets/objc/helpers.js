@@ -64,11 +64,10 @@ module.exports = {
       case '[object Boolean]':
         return value ? '@YES' : '@NO'
       default:
-        try {
-          return '@"' + value.toString().replace(/"/g, '\\"') + '"'
-        } catch (e) {
+        if (value === null || value === undefined) {
           return ''
         }
+        return '@"' + value.toString().replace(/"/g, '\\"') + '"'
     }
   }
 }
