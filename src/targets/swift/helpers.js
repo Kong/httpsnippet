@@ -74,7 +74,11 @@ module.exports = {
       case '[object Boolean]':
         return value.toString()
       default:
-        return '"' + value.toString().replace(/"/g, '\\"') + '"'
+        try {
+          return '"' + value.toString().replace(/"/g, '\\"') + '"'
+        } catch (e) {
+          return ''
+        }
     }
   }
 }
