@@ -67,7 +67,7 @@
   },
   "devDependencies": {
     "codeclimate-test-reporter": "0.1.1",
-    "echint": "^1.5.0",
+    "echint": "^3.0.0",
     "glob": "^6.0.1",
     "istanbul": "^0.4.0",
     "mocha": "^2.3.4",
