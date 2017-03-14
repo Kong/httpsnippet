@@ -9,6 +9,7 @@
   "bin": "bin/httpsnippet",
   "keywords": [
     "api",
+    "clojure",
     "csharp",
     "curl",
     "go",
