@@ -54,6 +54,22 @@ module.exports = function (source, options) {
       })
       break
 
+    case 'application/x-www-form-urlencoded':
+      if (source.postData.params) {
+        source.postData.params.map(function (param) {
+          code.push(
+            '%s %s', opts.binary ? '--data-binary' : (opts.short ? '-d' : '--data'),
+            helpers.quote(util.format('%s=%s', param.name, param.value))
+          )
+        })
+      } else {
+        code.push(
+          '%s %s', opts.binary ? '--data-binary' : (opts.short ? '-d' : '--data'),
+          helpers.escape(helpers.quote(source.postData.text))
+        )
+      }
+      break
+
     default:
       // raw request body
       if (source.postData.text) {
