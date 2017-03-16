@@ -83,7 +83,7 @@
     "form-data": "^1.0.0-rc3",
     "fs-readfile-promise": "^2.0.1",
     "fs-writefile-promise": "^1.0.3",
-    "har-validator": "^2.0.2",
+    "har-validator": "^5.0.0",
     "pinkie-promise": "^2.0.0"
   }
 }
