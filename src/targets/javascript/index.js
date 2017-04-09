@@ -8,6 +8,6 @@ module.exports = {
     default: 'xhr'
   },
 
-  jquery: require('./jquery'),
+  jquery: require('./jq'),
   xhr: require('./xhr')
 }
