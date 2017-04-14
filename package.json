@@ -73,7 +73,7 @@
     "mocha": "^2.3.4",
     "require-directory": "^2.1.1",
     "should": "^7.1.1",
-    "standard": "^9.0.0-beta.0"
+    "standard": "^10.0.2"
   },
   "dependencies": {
     "chalk": "^1.1.1",
