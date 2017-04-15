@@ -222,6 +222,20 @@
     ]
   },
   {
+    "key": "clojure",
+    "title": "Clojure",
+    "extname": ".clj",
+    "default": "clj_http",
+    "clients": [
+      {
+        "key": "clj_http",
+        "title": "clj-http",
+        "link": "https://github.com/dakrone/clj-http",
+        "description": "An idiomatic clojure http client wrapping the apache client."
+      }
+    ]
+  },
+  {
     "key": "c",
     "title": "C",
     "extname": ".c",
