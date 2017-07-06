@@ -61,16 +61,21 @@ module.exports = function (source, options) {
     code.push('Content-Length: %d', Buffer.byteLength(source.postData.text, 'ascii'))
   }
 
-  // RFC 7230 Section 3. Message Format
-  // Extra CRLF separating the headers from the body.
-  code.push('')
+  // Add extra line after header section.
+  code.blank()
+
+  // Separate header section and message body section.
+  var headerSection = code.join()
+  var messageBody = ''
 
   // RFC 7230 Section 3.3. Message Body
   if (source.postData.text) {
-    code.push(source.postData.text)
+    messageBody = source.postData.text
   }
 
-  return code.join()
+  // RFC 7230 Section 3. Message Format
+  // Extra CRLF separating the headers from the body.
+  return headerSection + CRLF + messageBody
 }
 
 module.exports.info = {
