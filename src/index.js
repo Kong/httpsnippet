@@ -106,6 +106,7 @@ HTTPSnippet.prototype.prepare = function(request) {
       // reset values
       request.postData.text = "";
       request.postData.mimeType = "multipart/form-data";
+      request.headersObj["content-type"] = "multipart/form-data;";
 
       if (request.postData.params) {
         var form = new MultiPartForm();
@@ -127,8 +128,6 @@ HTTPSnippet.prototype.prepare = function(request) {
             })
           );
         }
-
-        request.headersObj["content-type"] = "multipart/form-data;";
 
         if (form.getBoundary) {
           request.postData.boundary = form.getBoundary();
