@@ -128,9 +128,15 @@ HTTPSnippet.prototype.prepare = function(request) {
           );
         }
 
-        request.postData.boundary = form.getBoundary();
-        request.headersObj["content-type"] =
-          "multipart/form-data; boundary=" + form.getBoundary();
+        request.headersObj["content-type"] = "multipart/form-data;";
+
+        if (form.getBoundary) {
+          request.postData.boundary = form.getBoundary();
+
+          request.headersObj["content-type"] =
+            "multipart/form-data; boundary=" +
+            (request.postData.boundary || "");
+        }
       }
       break;
 
