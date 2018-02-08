@@ -3,7 +3,7 @@
  * HTTP code snippet generator for Perl.
  *
  * @author
- * @AhmadNassri
+ * @jgabriels
  *
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
@@ -36,5 +36,5 @@ module.exports.info = {
   key: 'perl5',
   title: 'Perl5',
   link: 'https://www.perl.org/',
-  description: 'Perl 5 is a highly capable, feature-rich programming language with over 29 years of development.'
+  description: 'Perl 5 is a highly capable, feature-rich programming language with over 29 years of development.  Perl 5 runs on over 100 platforms from portables to mainframes and is suitable for both rapid prototyping and large scale development projects. '
 }

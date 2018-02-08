@@ -10,6 +10,7 @@ module.exports = {
   node: require('./node'),
   objc: require('./objc'),
   ocaml: require('./ocaml'),
+  perl: require('./perl'),
   php: require('./php'),
   python: require('./python'),
   ruby: require('./ruby'),
