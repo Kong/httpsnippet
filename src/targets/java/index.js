@@ -9,5 +9,6 @@ module.exports = {
   },
 
   okhttp: require('./okhttp'),
-  unirest: require('./unirest')
+  unirest: require('./unirest'),
+  jsoup: require('./jsoup')
 }
