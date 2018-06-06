@@ -44,13 +44,20 @@ var HTTPSnippet = function(data) {
     entry.request.headersSize = 0;
     entry.request.postData.size = 0;
 
-    validate.request(entry.request, function(err, valid) {
-      if (!valid) {
-        throw err;
-      }
+    try {
+      validate.request(entry.request, function(err, valid) {
+        if (!valid) {
+          throw err;
+        }
 
+        self.requests.push(self.prepare(entry.request));
+      });
+    } catch (e) {
+      console.warn('Error validating har object.', e);
+
+      // continue anyway
       self.requests.push(self.prepare(entry.request));
-    });
+    }
   });
 };
 
