@@ -2,10 +2,10 @@
 
 'use strict'
 
-var fixtures = require('./fixtures')
-var HTTPSnippet = require('../src')
+const fixtures = require('./fixtures')
+const HTTPSnippet = require('../src')
 
-var should = require('should')
+const should = require('should')
 
 describe('HTTPSnippet', function () {
   it('should return false if no matching target', function (done) {
