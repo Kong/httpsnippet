@@ -2,11 +2,11 @@
 
 'use strict'
 
-var fixtures = require('./fixtures')
-var HTTPSnippet = require('../src')
-var targets = require('../src/targets')
-var shell = require('child_process')
-var util = require('util')
+const fixtures = require('./fixtures')
+const HTTPSnippet = require('../src')
+const targets = require('../src/targets')
+const shell = require('child_process')
+const util = require('util')
 
 require('should')
 
@@ -25,8 +25,8 @@ var requests = [ 'application-form-encoded',
 // test all the things!
 fixtures.cli.forEach(function (cli) {
   describe(targets[cli.target].info.title + ' Request Validation', function () {
-    cli.clients.forEach(function (client) {
-      requests.forEach(function (request) {
+    cli.clients.forEach(client => {
+      requests.forEach(request => {
         it(client + ' request should match mock for ' + request, function (done) {
           var stdout = ''
           var fixture = cli.target + '/' + client + '/' + request + HTTPSnippet.extname(cli.target)
@@ -47,7 +47,7 @@ fixtures.cli.forEach(function (cli) {
 
             // make an exception for multipart/form-data
             if (fixtures.requests[request].headers) {
-              fixtures.requests[request].headers.forEach(function (header, index) {
+              fixtures.requests[request].headers.forEach((header, index) => {
                 if (header.name === 'content-type' && header.value === 'multipart/form-data') {
                   delete fixtures.requests[request].headers[index]
                 }
