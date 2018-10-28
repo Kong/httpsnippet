@@ -2,18 +2,18 @@
 
 'use strict'
 
-var fixtures = require('./fixtures')
-var fs = require('fs')
-var glob = require('glob')
-var HTTPSnippet = require('../src')
-var path = require('path')
-var should = require('should')
-var targets = require('../src/targets')
+const fixtures = require('./fixtures')
+const fs = require('fs')
+const glob = require('glob')
+const HTTPSnippet = require('../src')
+const path = require('path')
+const should = require('should')
+const targets = require('../src/targets')
 
 var base = './test/fixtures/output/'
 
 // read all output files
-var output = glob.sync('**/*', {cwd: base, nodir: true}).reduce(function (obj, name) {
+var output = glob.sync('**/*', {cwd: base, nodir: true}).reduce((obj, name) => {
   obj[name] = fs.readFileSync(base + name)
   return obj
 }, {})
@@ -67,7 +67,7 @@ var itShouldGenerateOutput = function (request, path, target, client) {
 describe('Available Targets', function () {
   var targets = HTTPSnippet.availableTargets()
 
-  targets.forEach(function (target) {
+  targets.forEach(target => {
     it('available-targets.json should include ' + target.title, function () {
       fixtures['available-targets'].should.containEql(target)
     })
@@ -75,11 +75,11 @@ describe('Available Targets', function () {
 })
 
 // test all the things!
-Object.keys(targets).forEach(function (target) {
+Object.keys(targets).forEach(target => {
   describe(targets[target].info.title, function () {
     itShouldHaveInfo(target, targets[target])
 
-    Object.keys(targets[target]).filter(clearInfo).forEach(function (client) {
+    Object.keys(targets[target]).filter(clearInfo).forEach(client => {
       describe(client, function () {
         itShouldHaveInfo(client, targets[target][client])
 
@@ -90,7 +90,7 @@ Object.keys(targets).forEach(function (target) {
         test(HTTPSnippet, fixtures)
 
         describe('snippets', function () {
-          Object.keys(fixtures.requests).filter(clearInfo).forEach(function (request) {
+          Object.keys(fixtures.requests).filter(clearInfo).forEach(request => {
             itShouldHaveRequestTestOutputFixture(request, target, client + '/')
 
             itShouldGenerateOutput(request, target + '/' + client + '/', target, client)
