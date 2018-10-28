@@ -2,7 +2,7 @@
 
 'use strict'
 
-var reducer = require('../src/helpers/reducer')
+const reducer = require('../src/helpers/reducer')
 
 require('should')
 
