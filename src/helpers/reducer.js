@@ -1,13 +1,13 @@
 'use strict'
 
-module.exports = function (obj, pair) {
-  if (obj[pair.name] === undefined) {
+module.exports = (obj, pair) => {
+  if (obj[pair.name]) {
     obj[pair.name] = pair.value
     return obj
   }
 
   // convert to array
-  var arr = [
+  const arr = [
     obj[pair.name],
     pair.value
   ]
