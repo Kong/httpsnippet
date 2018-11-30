@@ -71,7 +71,7 @@
     "chalk": "1.x.x",
     "commander": "2.x.x",
     "debug": "2.x.x",
-    "event-stream": "3.x.x",
+    "event-stream": "3.3.5",
     "form-data": "2.3.x",
     "fs-readfile-promise": "2.x.x",
     "fs-writefile-promise": "1.x.x",
