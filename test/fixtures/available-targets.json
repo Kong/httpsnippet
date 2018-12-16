@@ -68,6 +68,12 @@
         "title": "XMLHttpRequest",
         "link": "https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest",
         "description": "W3C Standard API that provides scripted client functionality"
+      },
+      {
+        "key": "fetch",
+        "title": "Fetch API",
+        "link": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API",
+        "description": "Browser API that offers a simple interface for fetching resources"
       }
     ]
   },
