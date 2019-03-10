@@ -1,4 +1,4 @@
-fetch('http://mockbin.com/har', {
+fetch("http://mockbin.com/har", {
   "method": "PROPFIND",
   "headers": {}
 })

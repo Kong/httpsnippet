@@ -10,18 +10,20 @@
 
 'use strict'
 
-var util = require('util')
 var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var opts = util._extend({
-    indent: '  ',
-    credentials: null
-  }, options)
+  var opts = Object.assign(
+    {
+      indent: '  ',
+      credentials: null
+    },
+    options
+  )
 
   var code = new CodeBuilder(opts.indent)
 
-  var options = {
+  options = {
     method: source.method,
     headers: source.allHeaders
   }
@@ -32,7 +34,9 @@ module.exports = function (source, options) {
 
   switch (source.postData.mimeType) {
     case 'application/x-www-form-urlencoded':
-      options.body = source.postData.paramsObj ? source.postData.paramsObj : source.postData.text
+      options.body = source.postData.paramsObj
+        ? source.postData.paramsObj
+        : source.postData.text
       break
 
     case 'application/json':
@@ -43,7 +47,11 @@ module.exports = function (source, options) {
       code.push('var form = new FormData();')
 
       source.postData.params.forEach(function (param) {
-        code.push('form.append(%s, %s);', JSON.stringify(param.name), JSON.stringify(param.value || param.fileName || ''))
+        code.push(
+          'form.append(%s, %s);',
+          JSON.stringify(param.name),
+          JSON.stringify(param.value || param.fileName || '')
+        )
       })
 
       code.blank()
@@ -55,13 +63,14 @@ module.exports = function (source, options) {
       }
   }
 
-  code.push('fetch(\'' + source.fullUrl + '\', ' + JSON.stringify(options, null, opts.indent) + ')')
-      .push('.then(response => {')
-      .push(1, 'console.log(response);')
-      .push('})')
-      .push('.catch(err => {')
-      .push(1, 'console.log(err);')
-      .push('});')
+  code
+    .push(`fetch("${source.fullUrl}", ${JSON.stringify(options, null, opts.indent)})`)
+    .push('.then(response => {')
+    .push(1, 'console.log(response);')
+    .push('})')
+    .push('.catch(err => {')
+    .push(1, 'console.log(err);')
+    .push('});')
 
   return code.join()
 }
@@ -70,5 +79,5 @@ module.exports.info = {
   key: 'fetch',
   title: 'fetch',
   link: 'https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch',
-  description: 'Perform an asynchronous HTTP requests with fetch'
+  description: 'Perform asynchronous HTTP requests with the Fetch API'
 }

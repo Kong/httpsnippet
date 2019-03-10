@@ -1,4 +1,4 @@
-fetch('http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value', {
+fetch("http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value", {
   "method": "GET",
   "headers": {}
 })

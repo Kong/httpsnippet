@@ -1,4 +1,4 @@
-fetch('http://mockbin.com/har', {
+fetch("http://mockbin.com/har", {
   "method": "POST",
   "headers": {
     "cookie": "foo=bar; bar=baz"
