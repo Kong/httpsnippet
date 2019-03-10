@@ -6,7 +6,12 @@ Relies on the popular [HAR](http://www.softwareishard.com/blog/har-12-spec/#requ
 
 See it in action on companion service: [APIembed](https://apiembed.com/)
 
+[![Build Status][travis-image]][travis-url]
 [![Downloads][npm-downloads]][npm-url]
+[![Code Climate][codeclimate-quality]][codeclimate-url]
+[![Coverage Status][codeclimate-coverage]][codeclimate-url]
+[![Dependencies][david-image]][david-url]
+[![Gitter][gitter-image]][gitter-url]
 
 ## Install
 
