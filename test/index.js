@@ -166,6 +166,24 @@ describe('HTTPSnippet', function () {
     done()
   })
 
+  it('should add "headersObj" to source object case insensitive', function (done) {
+    var fixture = Object.assign({}, fixtures.requests.headers)
+    fixture.headers = fixture.headers.concat({
+      name: 'Kong-Admin-Token',
+      value: 'Hunter1'
+    })
+
+    var req = new HTTPSnippet(fixture).requests[0]
+    req.headersObj.should.be.an.Object()
+    req.headersObj.should.eql({
+      'Kong-Admin-Token': 'Hunter1',
+      'accept': 'application/json',
+      'x-foo': 'Bar',
+    })
+
+    done()
+  })
+
   it('should modify orignal url to strip query string', function (done) {
     var req = new HTTPSnippet(fixtures.requests.query).requests[0]
 
