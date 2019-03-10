@@ -166,9 +166,9 @@ Have a bug or a feature request? Please first read the [issue guidelines](CONTRI
 
 Please read through our [contributing guidelines](CONTRIBUTING.md). Included are directions for opening issues, coding standards, and notes on development.
 
-For a info on creating new conversion targets, please review this [guideline](https://github.com/Mashape/httpsnippet/wiki/Creating-Targets)
+For info on creating new conversion targets, please review this [guideline](https://github.com/Mashape/httpsnippet/wiki/Creating-Targets)
 
-More over, if your pull request contains JavaScript patches or features, you must include relevant unit tests.
+Moreover, if your pull request contains JavaScript patches or features, you must include relevant unit tests.
 
 Editor preferences are available in the [editor config](.editorconfig) for easy use in common text editors. Read more and download plugins at <http://editorconfig.org>.
 
