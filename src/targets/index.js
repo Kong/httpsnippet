@@ -11,6 +11,7 @@ module.exports = {
   objc: require('./objc'),
   ocaml: require('./ocaml'),
   php: require('./php'),
+  powershell: require('./powershell'),
   python: require('./python'),
   ruby: require('./ruby'),
   shell: require('./shell'),
