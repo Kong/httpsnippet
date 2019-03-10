@@ -56,11 +56,13 @@
   },
   "standard": {
     "ignore": [
-      "**/test/fixtures/**"
+      "**/test/fixtures/**",
+      "node_modules/**"
     ]
   },
   "echint": {
     "ignore": [
+      "node_modules/**",
       "coverage/**",
       "CONTRIBUTING.md",
       "test/fixtures/**"

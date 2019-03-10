@@ -14,7 +14,7 @@ var util = require('util')
 var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var opts = util._extend({
+  var opts = Object.assign({
     indent: '  '
   }, options)
 
@@ -114,7 +114,7 @@ module.exports = function (source, options) {
       .push('});')
       .blank()
 
-  return code.join().replace('"JAR"', 'jar').replace(/"fs\.createReadStream\(\\\"(.+)\\\"\)\"/, 'fs.createReadStream("$1")')
+  return code.join().replace('"JAR"', 'jar').replace(/"fs\.createReadStream\(\\"(.+)\\"\)"/, 'fs.createReadStream("$1")')
 }
 
 module.exports.info = {

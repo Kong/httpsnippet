@@ -51,10 +51,10 @@ module.exports = {
       case '[object Number]':
         return '@' + value
       case '[object Array]':
-        var values_representation = value.map(function (v) {
+        var valuesRepresentation = value.map(function (v) {
           return this.literalRepresentation(v)
         }.bind(this))
-        return '@[ ' + values_representation.join(join) + ' ]'
+        return '@[ ' + valuesRepresentation.join(join) + ' ]'
       case '[object Object]':
         var keyValuePairs = []
         for (var k in value) {

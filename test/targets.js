@@ -35,9 +35,9 @@ var itShouldHaveTests = function (target, client) {
 
 var itShouldHaveInfo = function (name, obj) {
   it(name + ' should have info method', function () {
-    obj.should.have.property('info').and.be.an.Object
-    obj.info.key.should.equal(name).and.be.a.String
-    obj.info.title.should.be.a.String
+    obj.should.have.property('info').and.be.an.Object()
+    obj.info.key.should.equal(name).and.be.a.String()
+    obj.info.title.should.be.a.String()
   })
 }
 
@@ -59,7 +59,7 @@ var itShouldGenerateOutput = function (request, path, target, client) {
     var instance = new HTTPSnippet(fixtures.requests[request])
     var result = instance.convert(target, client) + '\n'
 
-    result.should.be.a.String
+    result.should.be.a.String()
     result.should.equal(output[fixture].toString())
   })
 }

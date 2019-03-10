@@ -61,7 +61,7 @@ var jsToEdn = function (js) {
     default: // 'number' 'boolean'
       return js.toString()
     case 'string':
-      return '"' + js.replace(/\"/g, '\\"') + '"'
+      return '"' + js.replace(/"/g, '\\"') + '"'
     case 'file':
       return js.toString()
     case 'keyword':
@@ -94,8 +94,7 @@ module.exports = function (source, options) {
     return code.push('Method not supported').join()
   }
 
-  var params = {headers: source.allHeaders,
-                'query-params': source.queryObj}
+  var params = {headers: source.allHeaders, 'query-params': source.queryObj}
 
   switch (source.postData.mimeType) {
     case 'application/json':
@@ -114,11 +113,9 @@ module.exports = function (source, options) {
     case 'multipart/form-data':
       params.multipart = source.postData.params.map(function (x) {
         if (x.fileName && !x.value) {
-          return {name: x.name,
-                  content: new File(x.fileName)}
+          return {name: x.name, content: new File(x.fileName)}
         } else {
-          return {name: x.name,
-                  content: x.value}
+          return {name: x.name, content: x.value}
         }
       })
       delete params.headers['content-type']
