@@ -104,7 +104,7 @@ module.exports = function (source, options) {
       .push('});')
       .blank()
 
-  return code.join().replace(/"fs\.createReadStream\("(.+)\\"\)"/, 'fs.createReadStream("$1")')
+  return code.join().replace(/"fs\.createReadStream\(\\"(.+)\\"\)"/, 'fs.createReadStream("$1")')
 }
 
 module.exports.info = {
