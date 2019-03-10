@@ -190,7 +190,7 @@ For more information on SemVer, please visit <http://semver.org/>.
 
 ## License
 
-[MIT](LICENSE) &copy; [Mashape](https://www.mashape.com)
+[MIT](LICENSE) &copy; [Kong](https://konghq.com)
 
 [license-url]: https://github.com/Mashape/httpsnippet/blob/master/LICENSE
 
