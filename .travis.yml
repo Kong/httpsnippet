@@ -4,6 +4,7 @@ node_js:
  - iojs
  - 0.10
  - 0.12
+ - 8
 
 before_install:
   - sudo apt-get update -qq
