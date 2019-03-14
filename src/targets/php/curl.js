@@ -11,6 +11,7 @@
 'use strict'
 
 var util = require('util')
+var helpers = require('./helpers')
 var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
@@ -67,9 +68,13 @@ module.exports = function (source, options) {
     name: 'CURLOPT_CUSTOMREQUEST',
     value: source.method
   }, {
-    escape: true,
+    escape: !source.postData.jsonObj,
     name: 'CURLOPT_POSTFIELDS',
-    value: source.postData ? source.postData.text : undefined
+    value: source.postData ? (
+      source.postData.jsonObj ?
+        'json_encode(' + helpers.convert(source.postData.jsonObj, opts.indent) + ')' :
+      source.postData.text
+    ) : undefined
   }]
 
   code.push('curl_setopt_array($curl, array(')

@@ -66,6 +66,12 @@ module.exports = function (source, options) {
           .blank()
       break
 
+    case 'application/json':
+      code.push('$request->setContentType(%s);', helpers.convert(source.postData.mimeType))
+          .push('$request->setBody(json_encode(%s));', helpers.convert(source.postData.paramsObj, opts.indent))
+          .blank()
+      break
+
     default:
       if (source.postData.text) {
         code.push('$request->setBody(%s);', helpers.convert(source.postData.text))

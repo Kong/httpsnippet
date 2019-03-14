@@ -75,6 +75,10 @@ module.exports = function (source, options) {
       hasBody = true
       break
 
+    case 'application/json':
+      code.push('$body = new http\\Message\\Body;')
+          .push('$body->append(json_encode(%s));', helpers.convert(source.postData.jsonObj, opts.indent))
+      break;
     default:
       if (source.postData.text) {
         code.push('$body = new http\\Message\\Body;')
