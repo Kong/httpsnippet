@@ -11,11 +11,12 @@
 'use strict'
 
 var CodeBuilder = require('../../helpers/code-builder')
+var child_process = require('child_process');
 
 module.exports = function (source, options) {
   var code = new CodeBuilder()
   // Start Request
-  code.push('import http.client')
+  code.push('import http.client, json')
       .blank()
 
   // Check which protocol to be used for the client connection
@@ -29,10 +30,21 @@ module.exports = function (source, options) {
   }
 
   // Create payload string if it exists
-  var payload = JSON.stringify(source.postData.text)
-  if (payload) {
-    code.push('payload = %s', payload)
+  if (source.postData.jsonObj) {
+      code.push('payload = json.dumps(%s)',
+        child_process.execSync(
+            'python -c \'import sys,pprint,json; pprint.pprint(json.loads("\\n".join(sys.stdin.readlines())))\'',
+            {
+              input: source.postData.text
+            }
+        )
+      )
+  } else {
+    var payload = JSON.stringify(source.postData.text)
+    if (payload) {
+      code.push('payload = %s', payload)
         .blank()
+    }
   }
 
   // Create Headers
