@@ -1,12 +1,14 @@
 'use strict'
 
 var CodeBuilder = require('../../helpers/code-builder')
+var child_process = require('child_process')
 
 module.exports = function (source, options) {
   var code = new CodeBuilder()
 
   code.push('require \'uri\'')
       .push('require \'net/http\'')
+      .push('require \'json\'')
       .blank()
 
   // To support custom methods we check for the supported methods
@@ -42,7 +44,10 @@ module.exports = function (source, options) {
     })
   }
 
-  if (source.postData.text) {
+  if (source.postData.jsonObj) {
+    code.push('request.body = JSON.generate(%s)',
+      child_process.execSync("ruby -rjson -e 'puts(JSON.parse(ARGF.read).inspect)'", {input: source.postData.text}))
+  } else if (source.postData.text) {
     code.push('request.body = %s', JSON.stringify(source.postData.text))
   }
 
