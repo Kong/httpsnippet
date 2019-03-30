@@ -13,6 +13,7 @@ module.exports = {
   php: require('./php'),
   powershell: require('./powershell'),
   python: require('./python'),
+  r: require('./r'),
   ruby: require('./ruby'),
   shell: require('./shell'),
   swift: require('./swift')
