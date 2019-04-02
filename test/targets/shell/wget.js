@@ -11,7 +11,7 @@ module.exports = function (HTTPSnippet, fixtures) {
       indent: false
     })
 
-    result.should.be.a.String
+    result.should.be.a.String()
     result.should.eql("wget -q --method POST --header 'cookie: foo=bar; bar=baz' --header 'accept: application/json' --header 'content-type: application/x-www-form-urlencoded' --body-data foo=bar -O - 'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value'")
   })
 
@@ -22,7 +22,7 @@ module.exports = function (HTTPSnippet, fixtures) {
       verbose: true
     })
 
-    result.should.be.a.String
+    result.should.be.a.String()
     result.should.eql('wget -v --method GET -O - http://mockbin.com/har')
   })
 
@@ -33,7 +33,7 @@ module.exports = function (HTTPSnippet, fixtures) {
       verbose: true
     })
 
-    result.should.be.a.String
+    result.should.be.a.String()
     result.should.eql('wget --verbose --method GET --output-document - http://mockbin.com/har')
   })
 
@@ -42,7 +42,7 @@ module.exports = function (HTTPSnippet, fixtures) {
       indent: '@'
     })
 
-    result.should.be.a.String
+    result.should.be.a.String()
     result.replace(/\\\n/g, '').should.eql("wget --quiet @--method POST @--header 'cookie: foo=bar; bar=baz' @--header 'accept: application/json' @--header 'content-type: application/x-www-form-urlencoded' @--body-data foo=bar @--output-document @- 'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value'")
   })
 }

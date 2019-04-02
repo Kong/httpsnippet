@@ -62,8 +62,8 @@
   "echint": {
     "ignore": [
       "coverage/**",
-      "CONTRIBUTING.md",
-      "test/fixtures/**"
+			"**/node_modules/**",
+      "**/fixtures/**"
     ]
   },
   "devDependencies": {

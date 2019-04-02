@@ -42,7 +42,7 @@ fixtures.cli.forEach(function (cli) {
             try {
               var har = JSON.parse(stdout)
             } catch (err) {
-              err.should.be.null
+              err.should.be.null()
             }
 
             // make an exception for multipart/form-data
@@ -55,7 +55,7 @@ fixtures.cli.forEach(function (cli) {
             }
 
             har.should.have.property('log')
-            har.log.should.have.property('entries').and.be.Array
+            har.log.should.have.property('entries').and.be.Array()
             har.log.entries[0].should.have.property('request')
             har.log.entries[0].request.should.containDeep(fixtures.requests[request])
 

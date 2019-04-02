@@ -14,7 +14,7 @@ var util = require('util')
 var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var opts = util._extend({
+  var opts = Object.assign({
     indent: '  '
   }, options)
 

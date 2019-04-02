@@ -10,7 +10,6 @@
 
 'use strict'
 
-var util = require('util')
 var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
@@ -18,7 +17,7 @@ module.exports = function (source, options) {
   var code = new CodeBuilder('\t')
 
   // Define Options
-  var opts = util._extend({
+  var opts = Object.assign({
     showBoilerplate: true,
     checkErrors: false,
     printBody: true,
