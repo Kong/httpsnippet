@@ -53,7 +53,7 @@ module.exports = function (source, options) {
       reqOpts.formData = {}
 
       source.postData.params.forEach(function (param) {
-        var attachement = {}
+        var attachment = {}
 
         if (!param.fileName && !param.fileName && !param.contentType) {
           reqOpts.formData[param.name] = param.value
@@ -63,19 +63,19 @@ module.exports = function (source, options) {
         if (param.fileName && !param.value) {
           includeFS = true
 
-          attachement.value = 'fs.createReadStream("' + param.fileName + '")'
+          attachment.value = 'fs.createReadStream("' + param.fileName + '")'
         } else if (param.value) {
-          attachement.value = param.value
+          attachment.value = param.value
         }
 
         if (param.fileName) {
-          attachement.options = {
+          attachment.options = {
             filename: param.fileName,
             contentType: param.contentType ? param.contentType : null
           }
         }
 
-        reqOpts.formData[param.name] = attachement
+        reqOpts.formData[param.name] = attachment
       })
       break
 
