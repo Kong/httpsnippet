@@ -248,5 +248,25 @@
         "description": "Simple REST and HTTP API Client for C"
       }
     ]
+  },
+  {
+    "clients": [
+      {
+        "description": "Powershell Invoke-WebRequest client",
+        "key": "webrequest",
+        "link": "https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Invoke-WebRequest",
+        "title": "Invoke-WebRequest"
+      },
+      {
+        "description": "Powershell Invoke-RestMethod client",
+        "key": "restmethod",
+        "link": "https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Invoke-RestMethod",
+        "title": "Invoke-RestMethod"
+      }
+    ],
+    "default": "webrequest",
+    "extname": ".ps1",
+    "key": "powershell",
+    "title": "Powershell"
   }
 ]
