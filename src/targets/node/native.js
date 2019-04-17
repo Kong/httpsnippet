@@ -22,10 +22,12 @@ module.exports = function (source, options) {
 
   var reqOpts = {
     method: source.method,
+    url: source.uriObj.href,
     hostname: source.uriObj.hostname,
     port: source.uriObj.port,
     path: source.uriObj.path,
-    headers: source.allHeaders
+    headers: source.allHeaders,
+    protocol: source.uriObj.protocol
   }
 
   code.push('var http = require("%s");', source.uriObj.protocol.replace(':', ''))
