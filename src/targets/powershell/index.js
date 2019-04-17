@@ -8,5 +8,6 @@ module.exports = {
     default: 'webrequest'
   },
 
-  webrequest: require('./webrequest')
+  webrequest: require('./webrequest'),
+  restmethod: require('./restmethod')
 }
