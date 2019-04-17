@@ -110,7 +110,7 @@ describe('HTTPSnippet', function () {
   it('should add "uriObj" to source object', function (done) {
     var req = new HTTPSnippet(fixtures.requests.query).requests[0]
 
-    req.uriobj.should.be.an.Object()
+    req.uriObj.should.be.an.Object()
     req.uriObj.should.eql({
       auth: null,
       hash: null,
@@ -139,7 +139,7 @@ describe('HTTPSnippet', function () {
   it('should add "queryObj" to source object', function (done) {
     var req = new HTTPSnippet(fixtures.requests.query).requests[0]
 
-    req.queryobj.should.be.an.Object()
+    req.queryObj.should.be.an.Object()
     req.queryObj.should.eql({
       baz: 'abc',
       key: 'value',
@@ -155,7 +155,7 @@ describe('HTTPSnippet', function () {
   it('should add "headersObj" to source object', function (done) {
     var req = new HTTPSnippet(fixtures.requests.headers).requests[0]
 
-    req.headersobj.should.be.an.Object()
+    req.headersObj.should.be.an.Object()
     req.headersObj.should.eql({
       'accept': 'application/json',
       'x-foo': 'Bar'
