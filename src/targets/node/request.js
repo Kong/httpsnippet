@@ -11,6 +11,7 @@
 'use strict'
 
 var util = require('util')
+var stringifyObject = require('stringify-object')
 var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
@@ -103,7 +104,7 @@ module.exports = function (source, options) {
     code.unshift('var fs = require("fs");')
   }
 
-  code.push('var options = %s;', util.inspect(reqOpts, { depth: null }))
+  code.push('var options = %s;', stringifyObject(reqOpts, { indent: '  ', inlineCharacterLimit: 80 }))
     .blank()
 
   code.push(util.format('request(options, %s', 'function (error, response, body) {'))

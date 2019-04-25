@@ -23,5 +23,5 @@ var req = http.request(options, function (res) {
   });
 });
 
-req.write(JSON.stringify({ foo: null }));
+req.write(JSON.stringify({foo: null}));
 req.end();

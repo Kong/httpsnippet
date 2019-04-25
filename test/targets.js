@@ -56,8 +56,8 @@ var itShouldHaveRequestTestOutputFixture = function (request, target, client) {
 
   it('should have output test for ' + request, function () {
     if (skipMe[target] &&
-        skipMe[target][client] &&
-        skipMe[target][client].indexOf(request) > -1) {
+      skipMe[target][client] &&
+      skipMe[target][client].indexOf(request) > -1) {
       this.skip()
     }
 
@@ -95,25 +95,27 @@ describe('Available Targets', function () {
 })
 
 // test all the things!
-Object.keys(targets).forEach(function (target) {
-  describe(targets[target].info.title, function () {
-    itShouldHaveInfo(target, targets[target])
+describe('Targets', function () {
+  Object.keys(targets).forEach(function (target) {
+    describe(targets[target].info.title, function () {
+      itShouldHaveInfo(target, targets[target])
 
-    Object.keys(targets[target]).filter(clearInfo).forEach(function (client) {
-      describe(client, function () {
-        itShouldHaveInfo(client, targets[target][client])
+      Object.keys(targets[target]).filter(clearInfo).forEach(function (client) {
+        describe(client, function () {
+          itShouldHaveInfo(client, targets[target][client])
 
-        itShouldHaveTests(target, client)
+          itShouldHaveTests(target, client)
 
-        var test = require(path.join(__dirname, 'targets', target, client))
+          var test = require(path.join(__dirname, 'targets', target, client))
 
-        test(HTTPSnippet, fixtures)
+          test(HTTPSnippet, fixtures)
 
-        describe('snippets', function () {
-          Object.keys(fixtures.requests).filter(clearInfo).forEach(function (request) {
-            itShouldHaveRequestTestOutputFixture(request, target, client)
+          describe('snippets', function () {
+            Object.keys(fixtures.requests).filter(clearInfo).forEach(function (request) {
+              itShouldHaveRequestTestOutputFixture(request, target, client)
 
-            itShouldGenerateOutput(request, target + '/' + client + '/', target, client)
+              itShouldGenerateOutput(request, target + '/' + client + '/', target, client)
+            })
           })
         })
       })
