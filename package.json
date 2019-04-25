@@ -56,8 +56,7 @@
   },
   "standard": {
     "ignore": [
-      "**/test/fixtures/**",
-      "**/test/targets/go/native.js"
+      "**/test/fixtures/**"
     ]
   },
   "echint": {

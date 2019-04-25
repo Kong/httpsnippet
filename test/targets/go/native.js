@@ -19,7 +19,45 @@ module.exports = function (HTTPSnippet, fixtures) {
     })
 
     result.should.be.a.String()
-    result.should.eql('package main\n\nimport (\n\t"fmt"\n\t"strings"\n\t"net/http"\n\t"io/ioutil"\n)\n\nfunc main() {\n\n\turl := "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value"\n\n\tpayload := strings.NewReader("foo=bar")\n\n\treq, err := http.NewRequest("POST", url, payload)\n\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\treq.Header.Add("cookie", "foo=bar; bar=baz")\n\treq.Header.Add("accept", "application/json")\n\treq.Header.Add("content-type", "application/x-www-form-urlencoded")\n\n\tres, err := http.DefaultClient.Do(req)\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tdefer res.Body.Close()\n\tbody, err := ioutil.ReadAll(res.Body)\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}')
+    result.should.eql(`package main
+
+import (
+\t"fmt"
+\t"strings"
+\t"net/http"
+\t"io/ioutil"
+)
+
+func main() {
+
+\turl := "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value"
+
+\tpayload := strings.NewReader("foo=bar")
+
+\treq, err := http.NewRequest("POST", url, payload)
+
+\tif err != nil {
+\t\tpanic(err)
+\t}
+\treq.Header.Add("cookie", "foo=bar; bar=baz")
+\treq.Header.Add("accept", "application/json")
+\treq.Header.Add("content-type", "application/x-www-form-urlencoded")
+
+\tres, err := http.DefaultClient.Do(req)
+\tif err != nil {
+\t\tpanic(err)
+\t}
+
+\tdefer res.Body.Close()
+\tbody, err := ioutil.ReadAll(res.Body)
+\tif err != nil {
+\t\tpanic(err)
+\t}
+
+\tfmt.Println(res)
+\tfmt.Println(string(body))
+
+}`)
   })
   it('should support printBody option', function () {
     var result = new HTTPSnippet(fixtures.requests.full).convert('go', 'native', {
@@ -27,7 +65,31 @@ module.exports = function (HTTPSnippet, fixtures) {
     })
 
     result.should.be.a.String()
-    result.should.eql('package main\n\nimport (\n\t"fmt"\n\t"strings"\n\t"net/http"\n)\n\nfunc main() {\n\n\turl := "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value"\n\n\tpayload := strings.NewReader("foo=bar")\n\n\treq, _ := http.NewRequest("POST", url, payload)\n\n\treq.Header.Add("cookie", "foo=bar; bar=baz")\n\treq.Header.Add("accept", "application/json")\n\treq.Header.Add("content-type", "application/x-www-form-urlencoded")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tfmt.Println(res)\n\n}')
+    result.should.eql(`package main
+
+import (
+\t"fmt"
+\t"strings"
+\t"net/http"
+)
+
+func main() {
+
+\turl := "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value"
+
+\tpayload := strings.NewReader("foo=bar")
+
+\treq, _ := http.NewRequest("POST", url, payload)
+
+\treq.Header.Add("cookie", "foo=bar; bar=baz")
+\treq.Header.Add("accept", "application/json")
+\treq.Header.Add("content-type", "application/x-www-form-urlencoded")
+
+\tres, _ := http.DefaultClient.Do(req)
+
+\tfmt.Println(res)
+
+}`)
   })
   it('should support timeout option', function () {
     var result = new HTTPSnippet(fixtures.requests.full).convert('go', 'native', {
@@ -35,6 +97,40 @@ module.exports = function (HTTPSnippet, fixtures) {
     })
 
     result.should.be.a.String()
-    result.should.eql('package main\n\nimport (\n\t"fmt"\n\t"time"\n\t"strings"\n\t"net/http"\n\t"io/ioutil"\n)\n\nfunc main() {\n\n\tclient := http.Client{\n\t\tTimeout: time.Duration(30 * time.Second),\n\t}\n\n\turl := "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value"\n\n\tpayload := strings.NewReader("foo=bar")\n\n\treq, _ := http.NewRequest("POST", url, payload)\n\n\treq.Header.Add(d"cookie", "foo=bar; bar=baz")\n\treq.Header.Add("accept", "application/json")\n\treq.Header.Add("content-type", "application/x-www-form-urlencoded")\n\n\tres, _ := client.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := ioutil.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}')
+    result.should.eql(`package main
+
+import (
+\t"fmt"
+\t"time"
+\t"strings"
+\t"net/http"
+\t"io/ioutil"
+)
+
+func main() {
+
+\tclient := http.Client{
+\t\tTimeout: time.Duration(30 * time.Second),
+\t}
+
+\turl := "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value"
+
+\tpayload := strings.NewReader("foo=bar")
+
+\treq, _ := http.NewRequest("POST", url, payload)
+
+\treq.Header.Add("cookie", "foo=bar; bar=baz")
+\treq.Header.Add("accept", "application/json")
+\treq.Header.Add("content-type", "application/x-www-form-urlencoded")
+
+\tres, _ := client.Do(req)
+
+\tdefer res.Body.Close()
+\tbody, _ := ioutil.ReadAll(res.Body)
+
+\tfmt.Println(res)
+\tfmt.Println(string(body))
+
+}`)
   })
 }
