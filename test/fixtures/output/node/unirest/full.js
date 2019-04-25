@@ -17,8 +17,8 @@ req.query({
 });
 
 req.headers({
-  "content-type": "application/x-www-form-urlencoded",
-  "accept": "application/json"
+  "accept": "application/json",
+  "content-type": "application/x-www-form-urlencoded"
 });
 
 req.form({

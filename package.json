@@ -50,7 +50,7 @@
     "quick": "mocha --no-timeouts --fgrep 'Request Validation' --invert",
     "pretest": "standard && echint",
     "test": "mocha --no-timeouts",
-    "posttest": "npm run coverage",
+    "posttest": "exit 0 && npm run coverage",
     "coverage": "istanbul cover --dir coverage _mocha -- --fgrep 'Request Validation' --invert -R dot",
     "codeclimate": "codeclimate < coverage/lcov.info"
   },
@@ -62,8 +62,8 @@
   "echint": {
     "ignore": [
       "coverage/**",
-      "CONTRIBUTING.md",
-      "test/fixtures/**"
+      "**/node_modules/**",
+      "**/fixtures/**"
     ]
   },
   "devDependencies": {
@@ -85,6 +85,7 @@
     "fs-readfile-promise": "^2.0.1",
     "fs-writefile-promise": "^1.0.3",
     "har-validator": "^5.0.0",
-    "pinkie-promise": "^2.0.0"
+    "pinkie-promise": "^2.0.0",
+    "stringify-object": "^3.3.0"
   }
 }

@@ -15,7 +15,7 @@ describe('Reducer', function () {
 
     var obj = query.reduce(reducer, {})
 
-    obj.should.be.an.Object
+    obj.should.be.an.Object()
     obj.should.eql({key: 'value', foo: 'bar'})
 
     done()
@@ -25,13 +25,14 @@ describe('Reducer', function () {
     var query = [
       {name: 'key', value: 'value'},
       {name: 'foo', value: 'bar1'},
-      {name: 'foo', value: 'bar2'}
+      {name: 'foo', value: 'bar2'},
+      {name: 'foo', value: 'bar3'}
     ]
 
     var obj = query.reduce(reducer, {})
 
-    obj.should.be.an.Object
-    obj.should.eql({key: 'value', foo: ['bar1', 'bar2']})
+    obj.should.be.an.Object()
+    obj.should.eql({key: 'value', foo: ['bar1', 'bar2', 'bar3']})
 
     done()
   })

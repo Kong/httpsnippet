@@ -5,8 +5,8 @@ $request->setUrl('http://mockbin.com/har');
 $request->setMethod(HTTP_METH_GET);
 
 $request->setHeaders(array(
-  'x-foo' => 'Bar',
-  'accept' => 'application/json'
+  'accept' => 'application/json',
+  'x-foo' => 'Bar'
 ));
 
 try {

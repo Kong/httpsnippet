@@ -61,7 +61,7 @@ var jsToEdn = function (js) {
     default: // 'number' 'boolean'
       return js.toString()
     case 'string':
-      return '"' + js.replace(/\"/g, '\\"') + '"'
+      return '"' + js.replace(/"/g, '\\"') + '"'
     case 'file':
       return js.toString()
     case 'keyword':
@@ -95,7 +95,7 @@ module.exports = function (source, options) {
   }
 
   var params = {headers: source.allHeaders,
-                'query-params': source.queryObj}
+    'query-params': source.queryObj}
 
   switch (source.postData.mimeType) {
     case 'application/json':
@@ -115,10 +115,10 @@ module.exports = function (source, options) {
       params.multipart = source.postData.params.map(function (x) {
         if (x.fileName && !x.value) {
           return {name: x.name,
-                  content: new File(x.fileName)}
+            content: new File(x.fileName)}
         } else {
           return {name: x.name,
-                  content: x.value}
+            content: x.value}
         }
       })
       delete params.headers['content-type']

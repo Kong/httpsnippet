@@ -1,10 +1,10 @@
 'use strict'
 
-var convert = function (obj, indent, last_indent) {
+var convert = function (obj, indent, lastIndent) {
   var i, result
 
-  if (!last_indent) {
-    last_indent = ''
+  if (!lastIndent) {
+    lastIndent = ''
   }
 
   switch (Object.prototype.toString.call(obj)) {
@@ -17,7 +17,7 @@ var convert = function (obj, indent, last_indent) {
       break
 
     case '[object String]':
-      result = "'" + obj.replace(/\\/g, '\\\\').replace(/\'/g, "\'") + "'"
+      result = "'" + obj.replace(/\\/g, '\\\\').replace(/'/g, "'") + "'"
       break
 
     case '[object Number]':
@@ -31,7 +31,7 @@ var convert = function (obj, indent, last_indent) {
         result.push(convert(item, indent + indent, indent))
       })
 
-      result = 'array(\n' + indent + result.join(',\n' + indent) + '\n' + last_indent + ')'
+      result = 'array(\n' + indent + result.join(',\n' + indent) + '\n' + lastIndent + ')'
       break
 
     case '[object Object]':
@@ -41,7 +41,7 @@ var convert = function (obj, indent, last_indent) {
           result.push(convert(i, indent) + ' => ' + convert(obj[i], indent + indent, indent))
         }
       }
-      result = 'array(\n' + indent + result.join(',\n' + indent) + '\n' + last_indent + ')'
+      result = 'array(\n' + indent + result.join(',\n' + indent) + '\n' + lastIndent + ')'
       break
 
     default:
