@@ -8,8 +8,8 @@ var options = { method: 'POST',
   url: 'http://mockbin.com/har',
   qs: { foo: [ 'bar', 'baz' ], baz: 'abc', key: 'value' },
   headers: 
-   { 'content-type': 'application/x-www-form-urlencoded',
-     accept: 'application/json' },
+   { accept: 'application/json',
+     'content-type': 'application/x-www-form-urlencoded' },
   form: { foo: 'bar' },
   jar: 'JAR' };
 
