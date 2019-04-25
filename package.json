@@ -62,7 +62,7 @@
   "echint": {
     "ignore": [
       "coverage/**",
-			"**/node_modules/**",
+      "**/node_modules/**",
       "**/fixtures/**"
     ]
   },

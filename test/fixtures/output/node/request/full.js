@@ -7,7 +7,7 @@ jar.setCookie(request.cookie("bar=baz"), "http://mockbin.com/har");
 var options = { method: 'POST',
   url: 'http://mockbin.com/har',
   qs: { foo: [ 'bar', 'baz' ], baz: 'abc', key: 'value' },
-  headers: 
+  headers:
    { accept: 'application/json',
      'content-type': 'application/x-www-form-urlencoded' },
   form: { foo: 'bar' },

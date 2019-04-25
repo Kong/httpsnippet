@@ -3,7 +3,7 @@ var request = require("request");
 var options = { method: 'POST',
   url: 'http://mockbin.com/har',
   headers: { 'content-type': 'application/json' },
-  body: 
+  body:
    { number: 1,
      string: 'f"oo',
      arr: [ 1, 2, 3 ],
