@@ -202,4 +202,3 @@ For more information on SemVer, please visit <http://semver.org/>.
 [npm-license]: https://img.shields.io/npm/l/httpsnippet.svg?style=flat-square
 [npm-version]: https://img.shields.io/npm/v/httpsnippet.svg?style=flat-square
 [npm-downloads]: https://img.shields.io/npm/dm/httpsnippet.svg?style=flat-square
-
