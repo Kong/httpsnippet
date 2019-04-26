@@ -260,6 +260,12 @@
         "key": "webrequest",
         "link": "https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Invoke-WebRequest",
         "title": "Invoke-WebRequest"
+      },
+      {
+        "description": "Powershell Invoke-RestMethod client",
+        "key": "restmethod",
+        "link": "https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Invoke-RestMethod",
+        "title": "Invoke-RestMethod"
       }
     ]
   }
