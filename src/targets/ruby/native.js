@@ -14,7 +14,6 @@ module.exports = function (source, options) {
 
   code.blank()
 
-
   // To support custom methods we check for the supported methods
   // and if doesn't exist then we build a custom class for it
   var method = source.method.toUpperCase()
