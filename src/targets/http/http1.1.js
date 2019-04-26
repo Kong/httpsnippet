@@ -24,7 +24,7 @@ module.exports = function(source, options) {
   var opts = util._extend(
     {
       absoluteURI: false,
-      autoContentLength: false,
+      autoContentLength: true,
       autoHost: true,
     },
     options
