@@ -3,10 +3,10 @@
 module.exports = {
   info: {
     key: 'http',
-    title: 'HTTP/1.1',
+    title: 'HTTP',
     extname: '',
-    default: '1.1',
+    default: '1.1'
   },
 
-  '1.1': require('./http1.1'),
+  '1.1': require('./http1.1')
 }

@@ -20,12 +20,12 @@ var util = require('util')
  * Each section is prepended with the RFC and section number.
  * See more at https://tools.ietf.org/html/rfc7230#section-3.
  */
-module.exports = function(source, options) {
-  var opts = util._extend(
+module.exports = function (source, options) {
+  var opts = Object.assign(
     {
       absoluteURI: false,
       autoContentLength: true,
-      autoHost: true,
+      autoHost: true
     },
     options
   )
@@ -43,9 +43,9 @@ module.exports = function(source, options) {
   code.push('%s %s %s', source.method, requestUrl, source.httpVersion)
 
   // RFC 7231 Section 5. Header Fields
-  Object.keys(source.allHeaders).forEach(function(key) {
+  Object.keys(source.allHeaders).forEach(function (key) {
     // Capitalize header keys, even though it's not required by the spec.
-    var keyCapitalized = key.toLowerCase().replace(/(^|\-)(\w)/g, function(x) {
+    var keyCapitalized = key.toLowerCase().replace(/(^|-)(\w)/g, function (x) {
       return x.toUpperCase()
     })
 
@@ -95,5 +95,5 @@ module.exports.info = {
   key: '1.1',
   title: 'HTTP/1.1',
   link: 'https://tools.ietf.org/html/rfc7230',
-  description: 'HTTP/1.1 request string in accordance with RFC 7230',
+  description: 'HTTP/1.1 request string in accordance with RFC 7230'
 }
