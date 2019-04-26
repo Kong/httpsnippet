@@ -137,7 +137,7 @@
     "extname": ".m",
     "default": "nsurlsession",
     "clients": [
-       {
+      {
         "key": "nsurlsession",
         "title": "NSURLSession",
         "link": "https://developer.apple.com/library/mac/documentation/Foundation/Reference/NSURLSession_class/index.html",
@@ -151,7 +151,7 @@
     "extname": ".swift",
     "default": "nsurlsession",
     "clients": [
-       {
+      {
         "key": "nsurlsession",
         "title": "NSURLSession",
         "link": "https://developer.apple.com/library/mac/documentation/Foundation/Reference/NSURLSession_class/index.html",
@@ -165,7 +165,7 @@
     "extname": ".go",
     "default": "native",
     "clients": [
-       {
+      {
         "key": "native",
         "title": "NewRequest",
         "link": "http://golang.org/pkg/net/http/#NewRequest",
@@ -266,6 +266,20 @@
         "key": "restmethod",
         "link": "https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Invoke-RestMethod",
         "title": "Invoke-RestMethod"
+      }
+    ]
+  },
+  {
+    "default": "1.1",
+    "extname": "",
+    "key": "http",
+    "title": "HTTP",
+    "clients": [
+      {
+        "description": "HTTP/1.1 request string in accordance with RFC 7230",
+        "key": "1.1",
+        "link": "https://tools.ietf.org/html/rfc7230",
+        "title": "HTTP/1.1"
       }
     ]
   }
