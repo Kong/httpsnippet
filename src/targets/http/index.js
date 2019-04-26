@@ -2,7 +2,7 @@
 
 module.exports = {
   info: {
-    key: '1.1',
+    key: 'http',
     title: 'HTTP/1.1',
     extname: '',
     default: '1.1',
