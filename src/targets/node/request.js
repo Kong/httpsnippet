@@ -11,10 +11,11 @@
 'use strict'
 
 var util = require('util')
+var stringifyObject = require('stringify-object')
 var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var opts = util._extend({
+  var opts = Object.assign({
     indent: '  '
   }, options)
 
@@ -53,7 +54,7 @@ module.exports = function (source, options) {
       reqOpts.formData = {}
 
       source.postData.params.forEach(function (param) {
-        var attachement = {}
+        var attachment = {}
 
         if (!param.fileName && !param.fileName && !param.contentType) {
           reqOpts.formData[param.name] = param.value
@@ -63,19 +64,19 @@ module.exports = function (source, options) {
         if (param.fileName && !param.value) {
           includeFS = true
 
-          attachement.value = 'fs.createReadStream("' + param.fileName + '")'
+          attachment.value = 'fs.createReadStream("' + param.fileName + '")'
         } else if (param.value) {
-          attachement.value = param.value
+          attachment.value = param.value
         }
 
         if (param.fileName) {
-          attachement.options = {
+          attachment.options = {
             filename: param.fileName,
             contentType: param.contentType ? param.contentType : null
           }
         }
 
-        reqOpts.formData[param.name] = attachement
+        reqOpts.formData[param.name] = attachment
       })
       break
 
@@ -103,7 +104,7 @@ module.exports = function (source, options) {
     code.unshift('var fs = require("fs");')
   }
 
-  code.push('var options = %s;', util.inspect(reqOpts, { depth: null }))
+  code.push('var options = %s;', stringifyObject(reqOpts, { indent: '  ', inlineCharacterLimit: 80 }))
     .blank()
 
   code.push(util.format('request(options, %s', 'function (error, response, body) {'))
@@ -114,7 +115,7 @@ module.exports = function (source, options) {
       .push('});')
       .blank()
 
-  return code.join().replace('"JAR"', 'jar').replace(/"fs\.createReadStream\(\\\"(.+)\\\"\)\"/, 'fs.createReadStream("$1")')
+  return code.join().replace('"JAR"', 'jar').replace(/"fs\.createReadStream\(\\"(.+)\\"\)"/, 'fs.createReadStream("$1")')
 }
 
 module.exports.info = {

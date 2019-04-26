@@ -250,6 +250,10 @@
     ]
   },
   {
+    "default": "webrequest",
+    "extname": ".ps1",
+    "key": "powershell",
+    "title": "Powershell",
     "clients": [
       {
         "description": "Powershell Invoke-WebRequest client",
@@ -263,10 +267,6 @@
         "link": "https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Invoke-RestMethod",
         "title": "Invoke-RestMethod"
       }
-    ],
-    "default": "webrequest",
-    "extname": ".ps1",
-    "key": "powershell",
-    "title": "Powershell"
+    ]
   }
 ]

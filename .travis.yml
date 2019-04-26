@@ -1,9 +1,9 @@
 language: node_js
 
 node_js:
- - iojs
- - 0.10
- - 0.12
+ - node
+ - lts/*
+ - 8
 
 before_install:
   - sudo apt-get update -qq
@@ -11,11 +11,3 @@ before_install:
 
 after_script:
   - npm run codeclimate
-
-notifications:
-  webhooks:
-    urls:
-      - https://webhooks.gitter.im/e/95c4e911f2486588f98c
-    on_success: always
-    on_failure: always
-    on_start: false

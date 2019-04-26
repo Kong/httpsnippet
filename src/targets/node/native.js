@@ -10,11 +10,11 @@
 
 'use strict'
 
-var util = require('util')
+var stringifyObject = require('stringify-object')
 var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var opts = util._extend({
+  var opts = Object.assign({
     indent: '  '
   }, options)
 
@@ -51,16 +51,18 @@ module.exports = function (source, options) {
     case 'application/x-www-form-urlencoded':
       if (source.postData.paramsObj) {
         code.unshift('var qs = require("querystring");')
-        code.push('req.write(qs.stringify(%s));', util.inspect(source.postData.paramsObj, {
-          depth: null
+        code.push('req.write(qs.stringify(%s));', stringifyObject(source.postData.paramsObj, {
+          indent: '  ',
+          inlineCharacterLimit: 80
         }))
       }
       break
 
     case 'application/json':
       if (source.postData.jsonObj) {
-        code.push('req.write(JSON.stringify(%s));', util.inspect(source.postData.jsonObj, {
-          depth: null
+        code.push('req.write(JSON.stringify(%s));', stringifyObject(source.postData.jsonObj, {
+          indent: '  ',
+          inlineCharacterLimit: 80
         }))
       }
       break

@@ -6,6 +6,7 @@ Relies on the popular [HAR](http://www.softwareishard.com/blog/har-12-spec/#requ
 
 See it in action on companion service: [APIembed](https://apiembed.com/)
 
+[![Build Status][travis-image]][travis-url]
 [![Downloads][npm-downloads]][npm-url]
 
 ## Install
@@ -192,22 +193,12 @@ For more information on SemVer, please visit <http://semver.org/>.
 
 [MIT](LICENSE) &copy; [Kong](https://konghq.com)
 
-[license-url]: https://github.com/Mashape/httpsnippet/blob/master/LICENSE
+[license-url]: https://github.com/Kong/httpsnippet/blob/master/LICENSE
 
-[travis-url]: https://travis-ci.org/Mashape/httpsnippet
-[travis-image]: https://img.shields.io/travis/Mashape/httpsnippet.svg?style=flat-square
+[travis-url]: https://travis-ci.org/Kong/httpsnippet
+[travis-image]: https://img.shields.io/travis/Kong/httpsnippet.svg?style=flat-square
 
 [npm-url]: https://www.npmjs.com/package/httpsnippet
 [npm-license]: https://img.shields.io/npm/l/httpsnippet.svg?style=flat-square
 [npm-version]: https://img.shields.io/npm/v/httpsnippet.svg?style=flat-square
 [npm-downloads]: https://img.shields.io/npm/dm/httpsnippet.svg?style=flat-square
-
-[codeclimate-url]: https://codeclimate.com/github/Mashape/httpsnippet
-[codeclimate-quality]: https://img.shields.io/codeclimate/github/Mashape/httpsnippet.svg?style=flat-square
-[codeclimate-coverage]: https://img.shields.io/codeclimate/coverage/github/Mashape/httpsnippet.svg?style=flat-square
-
-[david-url]: https://david-dm.org/Mashape/httpsnippet
-[david-image]: https://img.shields.io/david/Mashape/httpsnippet.svg?style=flat-square
-
-[gitter-url]: https://gitter.im/Mashape/httpsnippet
-[gitter-image]: https://img.shields.io/badge/Gitter-Join%20Chat-blue.svg?style=flat-square

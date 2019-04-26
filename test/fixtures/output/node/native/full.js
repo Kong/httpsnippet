@@ -26,5 +26,5 @@ var req = http.request(options, function (res) {
   });
 });
 
-req.write(qs.stringify({ foo: 'bar' }));
+req.write(qs.stringify({foo: 'bar'}));
 req.end();
