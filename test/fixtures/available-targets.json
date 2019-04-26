@@ -64,6 +64,12 @@
         "description": "Perform an asynchronous HTTP (Ajax) requests with jQuery"
       },
       {
+        "key": "fetch",
+        "title": "fetch",
+        "link": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch",
+        "description": "Perform asynchronous HTTP requests with the Fetch API"
+      },
+      {
         "key": "xhr",
         "title": "XMLHttpRequest",
         "link": "https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest",
