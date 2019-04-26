@@ -2,7 +2,7 @@
 
 var CodeBuilder = require('../../helpers/code-builder')
 
-module.exports = function(command) {
+module.exports = function (command) {
   return function (source, options) {
     var code = new CodeBuilder()
     var methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS']
