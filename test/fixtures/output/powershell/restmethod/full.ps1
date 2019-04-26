@@ -1,6 +1,6 @@
 $headers=@{}
-$headers.Add("content-type", "application/x-www-form-urlencoded")
 $headers.Add("accept", "application/json")
+$headers.Add("content-type", "application/x-www-form-urlencoded")
 $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
 $cookie = New-Object System.Net.Cookie
 $cookie.Name = 'foo'
