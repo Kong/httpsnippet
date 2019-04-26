@@ -67,13 +67,13 @@
     ]
   },
   "devDependencies": {
-    "codeclimate-test-reporter": "0.1.1",
+    "codeclimate-test-reporter": "^0.5.1",
     "echint": "^3.0.0",
     "glob": "^6.0.1",
     "istanbul": "^0.4.0",
-    "mocha": "^2.3.4",
+    "mocha": "^6.1.4",
     "require-directory": "^2.1.1",
-    "should": "^7.1.1",
+    "should": "^13.2.3",
     "standard": "^10.0.2"
   },
   "dependencies": {

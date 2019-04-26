@@ -111,7 +111,9 @@ describe('HTTPSnippet', function () {
     var req = new HTTPSnippet(fixtures.requests.query).requests[0]
 
     req.uriObj.should.be.an.Object()
-    req.uriObj.should.eql({
+
+    should.config.checkProtoEql = false
+    req.uriObj.should.be.eql({
       auth: null,
       hash: null,
       host: 'mockbin.com',
