@@ -1,0 +1,8 @@
+POST /har?foo=bar&foo=baz&baz=abc&key=value HTTP/1.1
+Cookie: foo=bar; bar=baz
+Accept: application/json
+Content-Type: application/x-www-form-urlencoded
+Host: mockbin.com
+Content-Length: 7
+
+foo=bar

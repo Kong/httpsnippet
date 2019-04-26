@@ -1,0 +1,4 @@
+PROPFIND /har HTTP/1.1
+Host: mockbin.com
+
+
