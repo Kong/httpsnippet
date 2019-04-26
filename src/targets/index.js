@@ -5,6 +5,7 @@ module.exports = {
   clojure: require('./clojure'),
   csharp: require('./csharp'),
   go: require('./go'),
+  http: require('./http'),
   java: require('./java'),
   javascript: require('./javascript'),
   node: require('./node'),
@@ -13,8 +14,7 @@ module.exports = {
   php: require('./php'),
   powershell: require('./powershell'),
   python: require('./python'),
-  raw: require('./raw'),
   ruby: require('./ruby'),
   shell: require('./shell'),
-  swift: require('./swift')
+  swift: require('./swift'),
 }

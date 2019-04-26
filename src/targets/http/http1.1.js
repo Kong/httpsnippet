@@ -20,12 +20,15 @@ var util = require('util')
  * Each section is prepended with the RFC and section number.
  * See more at https://tools.ietf.org/html/rfc7230#section-3.
  */
-module.exports = function (source, options) {
-  var opts = util._extend({
-    absoluteURI: false,
-    autoContentLength: false,
-    autoHost: true
-  }, options)
+module.exports = function(source, options) {
+  var opts = util._extend(
+    {
+      absoluteURI: false,
+      autoContentLength: false,
+      autoHost: true,
+    },
+    options
+  )
 
   // RFC 7230 Section 3. Message Format
   // All lines have no indentation, and should be terminated with CRLF.
@@ -40,13 +43,16 @@ module.exports = function (source, options) {
   code.push('%s %s %s', source.method, requestUrl, source.httpVersion)
 
   // RFC 7231 Section 5. Header Fields
-  Object.keys(source.allHeaders).forEach(function (key) {
+  Object.keys(source.allHeaders).forEach(function(key) {
     // Capitalize header keys, even though it's not required by the spec.
     var keyCapitalized = key.toLowerCase().replace(/(^|\-)(\w)/g, function(x) {
       return x.toUpperCase()
     })
 
-    code.push('%s', util.format('%s: %s', keyCapitalized, source.allHeaders[key]))
+    code.push(
+      '%s',
+      util.format('%s: %s', keyCapitalized, source.allHeaders[key])
+    )
   })
 
   // RFC 7230 Section 5.4. Host
@@ -57,8 +63,15 @@ module.exports = function (source, options) {
 
   // RFC 7230 Section 3.3.3. Message Body Length
   // Automatically set Content-Length header if option is on, postData is present and no header already exists.
-  if (opts.autoContentLength && source.postData.text && Object.keys(source.allHeaders).indexOf('content-length') === -1) {
-    code.push('Content-Length: %d', Buffer.byteLength(source.postData.text, 'ascii'))
+  if (
+    opts.autoContentLength &&
+    source.postData.text &&
+    Object.keys(source.allHeaders).indexOf('content-length') === -1
+  ) {
+    code.push(
+      'Content-Length: %d',
+      Buffer.byteLength(source.postData.text, 'ascii')
+    )
   }
 
   // Add extra line after header section.
@@ -79,8 +92,8 @@ module.exports = function (source, options) {
 }
 
 module.exports.info = {
-  key: 'rfc7230',
-  title: 'Raw HTTP/1.1 (RFC 7230)',
+  key: '1.1',
+  title: 'HTTP/1.1',
   link: 'https://tools.ietf.org/html/rfc7230',
-  description: 'Raw HTTP/1.1 request string in accordance with RFC 7230'
+  description: 'HTTP/1.1 request string in accordance with RFC 7230',
 }
