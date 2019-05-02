@@ -11,6 +11,14 @@ module.exports = function (HTTPSnippet) {
     })
 
     result.should.be.a.String()
-    result.should.eql('import requests\n\nurl = "http://mockbin.com/har"\n\nquerystring = {"param":"value"}\n\nresponse = requests.request("GET", url, params=querystring)\n\nprint(response.text)')
+    result.should.eql(`import requests
+
+url = "http://mockbin.com/har"
+
+querystring = {"param":"value"}
+
+response = requests.request("GET", url, params=querystring)
+
+print(response.text)`)
   })
 }
