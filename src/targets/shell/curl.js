@@ -75,7 +75,7 @@ module.exports = function (source, options) {
       if (source.postData.text) {
         code.push(
           '%s %s', opts.binary ? '--data-binary' : (opts.short ? '-d' : '--data'),
-          helpers.escape(helpers.quote(source.postData.text))
+          helpers.quote(source.postData.text)
         )
       }
   }

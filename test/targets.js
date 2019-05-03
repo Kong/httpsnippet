@@ -44,7 +44,7 @@ var itShouldHaveInfo = function (name, obj) {
 // TODO: investigate issues with these fixtures
 const skipMe = {
   'clojure': {
-    'clj_http': ['jsonObj-null-value']
+    'clj_http': ['jsonObj-null-value', 'jsonObj-multiline']
   },
   '*': {
     '*': ['multipart-data', 'multipart-file', 'multipart-form-data']
