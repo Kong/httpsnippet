@@ -26,7 +26,7 @@ module.exports = function (source, options) {
       .blank()
 
   // Construct query string
-  if (source.queryString.length) {
+  if (Object.keys(source.queryObj).length) {
     var qs = 'querystring = ' + JSON.stringify(source.queryObj)
 
     code.push(qs)

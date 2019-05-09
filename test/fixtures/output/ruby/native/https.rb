@@ -1,5 +1,6 @@
 require 'uri'
 require 'net/http'
+require 'openssl'
 
 url = URI("https://mockbin.com/har")
 

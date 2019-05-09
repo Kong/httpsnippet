@@ -1,5 +1,5 @@
 {
-  "version": "1.18.0",
+  "version": "1.19.1",
   "name": "httpsnippet",
   "description": "HTTP Request snippet generator for *most* languages",
   "author": "Ahmad Nassri <ahmad@mashape.com> (https://www.mashape.com/)",
@@ -68,13 +68,13 @@
     ]
   },
   "devDependencies": {
-    "codeclimate-test-reporter": "0.1.1",
-    "echint": "^3.0.0",
+    "codeclimate-test-reporter": "^0.5.1",
+    "echint": "^4.0.2",
     "glob": "^6.0.1",
     "istanbul": "^0.4.0",
-    "mocha": "^2.3.4",
+    "mocha": "^6.1.4",
     "require-directory": "^2.1.1",
-    "should": "^7.1.1",
+    "should": "^13.2.3",
     "standard": "^10.0.2"
   },
   "dependencies": {
