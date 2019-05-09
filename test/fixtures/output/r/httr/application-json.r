@@ -6,6 +6,6 @@ payload <- "{\"number\":1,\"string\":\"f\\\"oo\",\"arr\":[1,2,3],\"nested\":{\"a
 
 encode <- "json"
 
-response <- VERB("POST", url, body = payload, add_headers(content_type = 'application/json'), encode = encode)
+response <- VERB("POST", url, body = payload, content_type("application/json"), encode = encode)
 
 content(response, "text")

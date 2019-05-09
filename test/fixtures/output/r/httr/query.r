@@ -7,6 +7,6 @@ queryString <- list(
   baz = "abc"
 )
 
-response <- VERB("GET", url, query = queryString)
+response <- VERB("GET", url, query = queryString, content_type("application/octet-stream"))
 
 content(response, "text")

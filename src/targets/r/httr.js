@@ -92,7 +92,9 @@ module.exports = function (source, options) {
 
   if (headerCount === 1) {
     for (head in headers) {
-      header = ', add_headers(' + head.replace('-', '_') + " = '" + headers[head] + "')"
+      if (head != 'content-type') {
+        header = ', add_headers(' + head.replace('-', '_') + " = '" + headers[head] + "')"
+      }
     }
   } else if (headerCount > 1) {
     var countHeader = 1
@@ -100,10 +102,12 @@ module.exports = function (source, options) {
     header = ', add_headers('
 
     for (head in headers) {
-      if (countHeader++ !== headerCount) {
-        header += head.replace('-', '_') + " = '" + headers[head] + "', "
-      } else {
-        header += head.replace('-', '_') + " = '" + headers[head] + "')"
+      if (head != 'content-type') {
+        if (countHeader++ !== headerCount) {
+          header += head.replace('-', '_') + " = '" + headers[head] + "', "
+        } else {
+          header += head.replace('-', '_') + " = '" + headers[head] + "')"
+        }
       }
     }
   }
@@ -116,13 +120,15 @@ module.exports = function (source, options) {
     request += ', body = payload'
   }
 
-  if (headerCount > 0) {
+  if (header != null) {
     request += header
   }
 
   if (source.queryString.length) {
     request += ', query = queryString'
   }
+
+  request += ', content_type("' + source.postData.mimeType + '")'
 
   if (source.postData.text || source.postData.jsonObj || source.postData.params) {
     request += ', encode = encode'

@@ -6,6 +6,6 @@ payload <- "-----011000010111000001101001\r\nContent-Disposition: form-data; nam
 
 encode <- "multipart"
 
-response <- VERB("POST", url, body = payload, add_headers(content_type = 'multipart/form-data; boundary=---011000010111000001101001'), encode = encode)
+response <- VERB("POST", url, body = payload, content_type("multipart/form-data"), encode = encode)
 
 content(response, "text")
