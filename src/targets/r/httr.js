@@ -32,7 +32,7 @@ module.exports = function (source, options) {
   delete source.queryObj['key']
 
   if (source.queryString.length === 1) {
-    code.push('queryString <- list("%s" = "%s")', Object.keys(qs), Object.values(qs))
+    code.push('queryString <- list(%s = "%s")', Object.keys(qs), Object.values(qs).toString())
       .blank()
   } else if (source.queryString.length > 1) {
     var count = 1
@@ -41,9 +41,9 @@ module.exports = function (source, options) {
 
     for (query in qs) {
       if (count++ !== queryCount - 1) {
-        code.push('  "%s" = "%s",', query, qs[query])
+        code.push('  %s = "%s",', query, qs[query].toString())
       } else {
-        code.push('  "%s" = "%s"', query, qs[query])
+        code.push('  %s = "%s"', query, qs[query].toString())
       }
     }
 

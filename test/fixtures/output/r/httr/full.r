@@ -3,8 +3,8 @@ library(httr)
 url <- "http://mockbin.com/har"
 
 queryString <- list(
-  "foo" = "bar,baz",
-  "baz" = "abc"
+  foo = "bar,baz",
+  baz = "abc"
 )
 
 payload <- "foo=bar"
