@@ -250,6 +250,20 @@
     ]
   },
   {
+    "key": "r",
+    "title": "R",
+    "extname": ".r",
+    "default": "httr",
+    "clients": [
+      {
+        "key": "httr",
+        "title": "httr",
+        "link": "https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html",
+        "description": "httr: Tools for Working with URLs and HTTP"
+      }
+    ]
+  },
+  {
     "default": "webrequest",
     "extname": ".ps1",
     "key": "powershell",

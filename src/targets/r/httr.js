@@ -8,6 +8,8 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
+'use strict'
+
 var util = require('util')
 var CodeBuilder = require('../../helpers/code-builder')
 
@@ -141,5 +143,5 @@ module.exports.info = {
   key: 'httr',
   title: 'httr',
   link: 'https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html',
-  description: 'R HTTP library'
+  description: 'httr: Tools for Working with URLs and HTTP'
 }
