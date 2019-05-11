@@ -88,27 +88,20 @@ module.exports = function (source, options) {
   var head
   var headers = source.allHeaders
   var headerCount = Object.keys(headers).length
-  var header
+  var header = ''
+  var cookies
+  var accept
 
-  if (headerCount === 1) {
-    for (head in headers) {
-      if (head != 'content-type') {
-        header = ', add_headers(' + head.replace('-', '_') + " = '" + headers[head] + "')"
-      }
-    }
-  } else if (headerCount > 1) {
-    var countHeader = 1
-
-    header = ', add_headers('
-
-    for (head in headers) {
-      if (head != 'content-type') {
-        if (countHeader++ !== headerCount) {
-          header += head.replace('-', '_') + " = '" + headers[head] + "', "
-        } else {
-          header += head.replace('-', '_') + " = '" + headers[head] + "')"
-        }
-      }
+  for (head in headers) {
+    if (head === 'accept') {
+      accept = ', accept(' + headers[head] + ')'
+      headerCount = headerCount - 1
+    } else if (head === 'cookie') {
+      cookies = ', set_cookies(`' + headers[head].replace(/;/g, '", `').replace(/` /g, '`').replace(/=/g, '` = "') + '")'
+      headerCount = headerCount - 1
+    } else if (head !== 'content-type') {
+      header = header + head.replace('-', '_') + " = '" + headers[head]
+      if (headerCount > 1) { header = header + "', " }
     }
   }
 
@@ -120,8 +113,8 @@ module.exports = function (source, options) {
     request += ', body = payload'
   }
 
-  if (header != null) {
-    request += header
+  if (header !== '') {
+    request += ', add_headers(' + header + "')"
   }
 
   if (source.queryString.length) {
@@ -129,6 +122,14 @@ module.exports = function (source, options) {
   }
 
   request += ', content_type("' + source.postData.mimeType + '")'
+
+  if (typeof accept !== 'undefined') {
+    request += accept
+  }
+
+  if (typeof cookies !== 'undefined') {
+    request += cookies
+  }
 
   if (source.postData.text || source.postData.jsonObj || source.postData.params) {
     request += ', encode = encode'

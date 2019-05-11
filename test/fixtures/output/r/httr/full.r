@@ -11,6 +11,6 @@ payload <- "foo=bar"
 
 encode <- "form"
 
-response <- VERB("POST", url, body = payload, add_headers(cookie = 'foo=bar; bar=baz', accept = 'application/json', , query = queryString, content_type("application/x-www-form-urlencoded"), encode = encode)
+response <- VERB("POST", url, body = payload, query = queryString, content_type("application/x-www-form-urlencoded"), accept(application/json), set_cookies(`foo` = "bar", `bar` = "baz"), encode = encode)
 
 content(response, "text")
