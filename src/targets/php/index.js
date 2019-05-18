@@ -10,5 +10,6 @@ module.exports = {
 
   curl: require('./curl'),
   http1: require('./http1'),
-  http2: require('./http2')
+  http2: require('./http2'),
+  guzzle6: require('./guzzle6')
 }
