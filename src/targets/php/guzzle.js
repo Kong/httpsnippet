@@ -112,7 +112,7 @@ module.exports = function (source, options) {
 }
 
 module.exports.info = {
-  key: 'guzzle6',
+  key: 'guzzle',
   title: 'Guzzle v6',
   link: 'http://docs.guzzlephp.org/en/stable/',
   description: 'PHP with guzzle v6'
