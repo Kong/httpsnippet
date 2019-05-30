@@ -94,7 +94,7 @@ module.exports = function (source, options) {
 
   for (head in headers) {
     if (head === 'accept') {
-      accept = ', accept(' + headers[head] + ')'
+      accept = ', accept("' + headers[head] + '")'
       headerCount = headerCount - 1
     } else if (head === 'cookie') {
       cookies = ', set_cookies(`' + headers[head].replace(/;/g, '", `').replace(/` /g, '`').replace(/=/g, '` = "') + '")'
