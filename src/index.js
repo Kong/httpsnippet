@@ -14,6 +14,7 @@ var HTTPSnippet = function (data) {
   var entries
   var self = this
   var input = Object.assign({}, data)
+  var boundary
 
   // prep the main container
   self.requests = []
@@ -50,7 +51,29 @@ var HTTPSnippet = function (data) {
   })
 }
 
+HTTPSnippet.prototype._generateBoundary = function () {
+  var self = this
+  // This generates a 50 character boundary similar to those used by Firefox.
+  // They are optimized for boyer-moore parsing.
+  var boundary = '--------------------------';
+  for (var i = 0; i < 24; i++) {
+    boundary += Math.floor(Math.random() * 10).toString(16);
+  }
+
+  self._boundary = boundary;
+}
+
+HTTPSnippet.prototype.getBoundary = function () {
+  var self = this
+  if (!self._boundary) {
+    self._generateBoundary();
+  }
+
+  return self._boundary;
+}
+
 HTTPSnippet.prototype.prepare = function (request) {
+  var self = this
   // construct utility properties
   request.queryObj = {}
   request.headersObj = {}
@@ -105,7 +128,7 @@ HTTPSnippet.prototype.prepare = function (request) {
         var form = new MultiPartForm()
 
         // easter egg
-        form._boundary = '---011000010111000001101001'
+        this._boundary = '---011000010111000001101001'
 
         request.postData.params.forEach(function (param) {
           form.append(param.name, param.value || '', {
@@ -114,12 +137,12 @@ HTTPSnippet.prototype.prepare = function (request) {
           })
         })
 
-        form.pipe(es.map(function (data, cb) {
-          request.postData.text += data
-        }))
+        //         form.pipe(es.map(function (data, cb) {
+        //           request.postData.text += data
+        //         }))
 
-        request.postData.boundary = form.getBoundary()
-        request.headersObj['content-type'] = 'multipart/form-data; boundary=' + form.getBoundary()
+        request.postData.boundary = this.getBoundary()
+        request.headersObj['content-type'] = 'multipart/form-data; boundary=' + this.getBoundary()
       }
       break
 
