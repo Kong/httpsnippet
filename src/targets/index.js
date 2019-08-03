@@ -16,5 +16,6 @@ module.exports = {
   python: require('./python'),
   ruby: require('./ruby'),
   shell: require('./shell'),
-  swift: require('./swift')
+  swift: require('./swift'),
+  typescript: require('./typescript')
 }
