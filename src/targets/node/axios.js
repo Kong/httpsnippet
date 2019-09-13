@@ -20,30 +20,32 @@ module.exports = function (source, options) {
   var includeFS = false
   var code = new CodeBuilder(opts.indent)
 
-  code.push('const axios =  = require("axios");')
+  code.push('const axios = require("axios");')
     .blank()
-    .push('var req = unirest("%s", "%s");', source.method, source.url)
+  // .push('var req = unirest("%s", "%s");', source.method, source.url)
+  // .blank()
+
+  let options = {
+    method: `${source.method}`,
+    headers: {
+      'content-type': `${source.postData.mimeType}`,
+      ...(Object.keys(source.headersObj).length && source.headersObj)
+    },
+    url: `${source.url}`,
+  };
+
+  code.push(`axios(${options})`)
     .blank()
 
-  // if (source.cookies.length) {
-  //   code.push('var CookieJar = unirest.jar();')
-
-  //   source.cookies.forEach(function (cookie) {
-  //     code.push('CookieJar.add("%s=%s","%s");', encodeURIComponent(cookie.name), encodeURIComponent(cookie.value), source.url)
-  //   })
-
-  //   code.push('req.jar(CookieJar);')
-  //     .blank()
-  // }
-
+  //TODO implement params
   // if (Object.keys(source.queryObj).length) {
   //   code.push('req.query(%s);', JSON.stringify(source.queryObj, null, opts.indent))
   //     .blank()
   // }
 
   // if (Object.keys(source.headersObj).length) {
-  //   code.push('req.headers(%s);', JSON.stringify(source.headersObj, null, opts.indent))
-  //     .blank()
+  //   code.push('req.headers(%s);', JSON.stringify(source.headersObj))
+
   // }
 
   // switch (source.postData.mimeType) {
