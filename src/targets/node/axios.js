@@ -25,7 +25,7 @@ module.exports = function (source, options) {
   // .push('var req = unirest("%s", "%s");', source.method, source.url)
   // .blank()
 
-  let options = {
+  let requestOptions = {
     method: `${source.method}`,
     headers: {
       'content-type': `${source.postData.mimeType}`,
@@ -34,7 +34,7 @@ module.exports = function (source, options) {
     url: `${source.url}`,
   };
 
-  code.push(`axios(${options})`)
+  code.push(`axios(${requestOptions})`)
     .blank()
 
   //TODO implement params
