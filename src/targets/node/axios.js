@@ -34,7 +34,7 @@ module.exports = function (source, options) {
     url: `${source.url}`,
   };
 
-  code.push(`axios(${requestOptions})`)
+  code.push(`axios(${JSON.stringify(requestOptions)})`)
     .blank()
 
   //TODO implement params
