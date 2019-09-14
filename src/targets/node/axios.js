@@ -45,7 +45,7 @@ const contentBodyFactory = function (contentType, postData, includeFS = false) {
       if (postData.text) {
         return [postData.text, includeFS]
       }
-      return null
+      return [null, includeFS]
   }
 
 }
@@ -72,7 +72,7 @@ module.exports = function (source, options) {
   };
   const { postData } = source
   const { mimeType } = postData
-  const [data, includeFS] = contentBodyFactory(mimeType, postData)
+  const [data, includeFS] = this.contentBodyFactory(mimeType, postData)
   if (data) {
     requestOptions['data'] = data
   }
