@@ -33,51 +33,51 @@ module.exports = function (source, options) {
     url: `${source.url}`
   };
 
-  switch (source.postData.mimeType) {
-    case 'application/x-www-form-urlencoded':
-      if (source.postData.paramsObj) {
-        code.push('req.form(%s);', JSON.stringify(source.postData.paramsObj, null, opts.indent))
-      }
-      break
+  // switch (source.postData.mimeType) {
+  //   case 'application/x-www-form-urlencoded':
+  //     if (source.postData.paramsObj) {
+  //       code.push('req.form(%s);', JSON.stringify(source.postData.paramsObj, null, opts.indent))
+  //     }
+  //     break
 
-    case 'application/json':
-      if (source.postData.jsonObj) {
-        code.push('req.type("json");')
-          .push('req.send(%s);', JSON.stringify(source.postData.jsonObj, null, opts.indent))
-      }
-      break
+  //   case 'application/json':
+  //     if (source.postData.jsonObj) {
+  //       code.push('req.type("json");')
+  //         .push('req.send(%s);', JSON.stringify(source.postData.jsonObj, null, opts.indent))
+  //     }
+  //     break
 
-    case 'multipart/form-data':
-      var multipart = []
+  //   case 'multipart/form-data':
+  //     var multipart = []
 
-      source.postData.params.forEach(function (param) {
-        var part = {}
+  //     source.postData.params.forEach(function (param) {
+  //       var part = {}
 
-        if (param.fileName && !param.value) {
-          includeFS = true
+  //       if (param.fileName && !param.value) {
+  //         includeFS = true
 
-          part.body = 'fs.createReadStream("' + param.fileName + '")'
-        } else if (param.value) {
-          part.body = param.value
-        }
+  //         part.body = 'fs.createReadStream("' + param.fileName + '")'
+  //       } else if (param.value) {
+  //         part.body = param.value
+  //       }
 
-        if (part.body) {
-          if (param.contentType) {
-            part['content-type'] = param.contentType
-          }
+  //       if (part.body) {
+  //         if (param.contentType) {
+  //           part['content-type'] = param.contentType
+  //         }
 
-          multipart.push(part)
-        }
-      })
+  //         multipart.push(part)
+  //       }
+  //     })
 
-      code.push('req.multipart(%s);', JSON.stringify(multipart, null, opts.indent))
-      break
+  //     code.push('req.multipart(%s);', JSON.stringify(multipart, null, opts.indent))
+  //     break
 
-    default:
-      if (source.postData.text) {
-        code.push(opts.indent + 'req.send(%s);', JSON.stringify(source.postData.text, null, opts.indent))
-      }
-  }
+  //   default:
+  //     if (source.postData.text) {
+  //       code.push(opts.indent + 'req.send(%s);', JSON.stringify(source.postData.text, null, opts.indent))
+  //     }
+  // }
 
   // if (includeFS) {
   //   code.unshift('var fs = require("fs");')
