@@ -35,17 +35,15 @@ module.exports = function (source, options) {
     url: `${source.url}`,
   };
 
-  code.push(`axios(
-    ${JSON.stringify(requestOptions)}
-    )`)
+  code.push(`axios(${
+    JSON.stringify(requestOptions)
+    })`)
     .blank()
-    .push(`.then(
-      (response)=>{
+    .push(`.then((response)=>{
         console.log(response)
       })`)
     .blank()
-    .push(`.catch(
-      (error)=>{
+    .push(`.catch((error)=>{
         console.log(error)
       })`)
     .blank()
