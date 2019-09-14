@@ -12,7 +12,7 @@
 
 let CodeBuilder = require('../../helpers/code-builder')
 
-const contentBodyFactory = (contentType, postData, includeFS = false) => {
+const contentBodyFactory = function (contentType, postData, includeFS = false) {
   switch (contentType) {
     case 'application/x-www-form-urlencoded':
       return [postData.paramsObj, includeFS]
