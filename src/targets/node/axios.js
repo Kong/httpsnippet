@@ -12,7 +12,7 @@
 
 let CodeBuilder = require('../../helpers/code-builder')
 
-const contentBodyFactory = function (contentType, postData, includeFS = false) {
+function contentBodyFactory(contentType, postData, includeFS = false) {
   switch (contentType) {
     case 'application/x-www-form-urlencoded':
       return [postData.paramsObj, includeFS]
@@ -72,7 +72,7 @@ module.exports = function (source, options) {
   };
   const { postData } = source
   const { mimeType } = postData
-  const [data, includeFS] = this.contentBodyFactory(mimeType, postData)
+  const [data, includeFS] = contentBodyFactory(mimeType, postData)
   if (data) {
     requestOptions['data'] = data
   }
