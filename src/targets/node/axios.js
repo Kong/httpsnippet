@@ -31,10 +31,23 @@ module.exports = function (source, options) {
       'content-type': `${source.postData.mimeType}`,
       ...(Object.keys(source.headersObj).length && source.headersObj)
     },
+    params: Object.keys(source.queryObj).length && source.queryObj,
     url: `${source.url}`,
   };
 
-  code.push(`axios(${JSON.stringify(requestOptions)})`)
+  code.push(`axios(
+    ${JSON.stringify(requestOptions)}
+    )`)
+    .blank()
+    .push(`.then(
+      (response)=>{
+        console.log(response)
+      })`)
+    .blank()
+    .push(`.catch(
+      (error)=>{
+        console.log(error)
+      })`)
     .blank()
 
   //TODO implement params
