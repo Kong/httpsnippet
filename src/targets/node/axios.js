@@ -37,16 +37,19 @@ module.exports = function (source, options) {
 
   code.push(`axios(${
     JSON.stringify(requestOptions)
+    })
+    .then((response)=>{
+      console.log(response)
+    })
+    .catch((error)=>{
+      console.log(error)
     })`)
-    .blank()
-    .push(`.then((response)=>{
-        console.log(response)
-      })`)
-    .blank()
-    .push(`.catch((error)=>{
-        console.log(error)
-      })`)
-    .blank()
+  // .push(`.then((response)=>{
+  //     console.log(response)
+  //   })`)
+  // .push(`.catch((error)=>{
+  //     console.log(error)
+  //   })`)
 
   //TODO implement params
   // if (Object.keys(source.queryObj).length) {
