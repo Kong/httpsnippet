@@ -68,7 +68,6 @@ module.exports = function (source, options) {
     },
     params: Object.keys(source.queryObj).length ? source.queryObj : undefined,
     url: `${source.url}`
-
   };
   const { postData } = source
   const { mimeType } = postData
@@ -80,7 +79,8 @@ module.exports = function (source, options) {
     code.unshift('const fs = require("fs");')
   }
   code.push(`axios(${
-    JSON.stringify(requestOptions)
+    JSON.stringify(requestOptions).replace(/"{"/, `{
+      `)
     })
     .then((response)=>{
       console.log(response)
