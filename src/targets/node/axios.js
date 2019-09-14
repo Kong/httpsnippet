@@ -85,7 +85,8 @@ module.exports = function (source, options) {
     }`)
     .replace(/",/g, `",
     `)
-    .replace(/,"/g, `,"
+    .replace(/,"/g, `,
+    "
   `)
   code.push(`axios(${
     formatedOptions
