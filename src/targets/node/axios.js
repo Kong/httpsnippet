@@ -78,7 +78,12 @@ module.exports = function (source, options) {
   if (includeFS) {
     code.unshift('const fs = require("fs");')
   }
-  const formatedOptions = JSON.stringify(requestOptions).replace(/{/g, `{
+  const formatedOptions = JSON.stringify(requestOptions)
+    .replace(/{/g, `{
+    `)
+    .replace(/}/g, `
+    }`)
+    .replace(/,/g, `,
     `)
   code.push(`axios(${
     formatedOptions
