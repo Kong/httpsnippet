@@ -1,4 +1,8 @@
-var client = new HttpClient(new HttpClientHandler { UseCookies = false });
+var clientHandler = new HttpClientHandler
+{
+    UseCookies = false,
+};
+var client = new HttpClient(clientHandler);
 var request = new HttpRequestMessage
 {
     Method = HttpMethod.Post,

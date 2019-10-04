@@ -14,7 +14,7 @@ var request = new HttpRequestMessage
                 {
                     Name = "foo",
                     FileName = "test/fixtures/files/hello.txt",
-                },
+                }
             }
         },
     },

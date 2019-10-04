@@ -12,7 +12,7 @@ var request = new HttpRequestMessage
                 ContentDisposition = new ContentDispositionHeaderValue("form-data")
                 {
                     Name = "foo",
-                },
+                }
             }
         },
     },
