@@ -40,7 +40,7 @@ module.exports = function (source, options) {
       break
 
     case 'application/json':
-      options.body = JSON.stringify(source.postData.jsonObj)
+      options.body = JSON.stringify(source.postData.jsonObj, null, opts.indent)
       break
 
     case 'multipart/form-data':
