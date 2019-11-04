@@ -6,5 +6,5 @@ fetch("https://mockbin.com/har", {
   console.log(response);
 })
 .catch(err => {
-  console.log(err);
+  console.error(err);
 });

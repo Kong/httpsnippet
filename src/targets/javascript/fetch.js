@@ -69,7 +69,7 @@ module.exports = function (source, options) {
     .push(1, 'console.log(response);')
     .push('})')
     .push('.catch(err => {')
-    .push(1, 'console.log(err);')
+    .push(1, 'console.error(err);')
     .push('});')
 
   return code.join()
