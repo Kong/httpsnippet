@@ -54,6 +54,12 @@
         "title": "Axios",
         "link": "https://github.com/axios/axios",
         "description": "Promise based HTTP client for the browser and node.js"
+      },
+      {
+        "key": "fetch",
+        "title": "Fetch",
+        "link": "https://github.com/bitinn/node-fetch",
+        "description": "Simplified HTTP node-fetch client"
       }
     ]
   },

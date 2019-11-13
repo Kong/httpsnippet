@@ -11,5 +11,6 @@ module.exports = {
   native: require('./native'),
   request: require('./request'),
   unirest: require('./unirest'),
-  axios: require('./axios')
+  axios: require('./axios'),
+  fetch: require('./fetch')
 }
