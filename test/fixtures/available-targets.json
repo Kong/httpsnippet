@@ -48,6 +48,12 @@
         "title": "Unirest",
         "link": "http://unirest.io/nodejs.html",
         "description": "Lightweight HTTP Request Client Library"
+      },
+      {
+        "key": "fetch",
+        "title": "Fetch",
+        "link": "https://github.com/bitinn/node-fetch",
+        "description": "Simplified HTTP node-fetch client"
       }
     ]
   },
