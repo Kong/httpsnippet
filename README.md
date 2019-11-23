@@ -196,7 +196,7 @@ For more information on SemVer, please visit <http://semver.org/>.
 [license-url]: https://github.com/Kong/httpsnippet/blob/master/LICENSE
 
 [travis-url]: https://travis-ci.org/Kong/httpsnippet
-[travis-image]: https://img.shields.io/travis/Kong/httpsnippet.svg?style=flat-square
+[travis-image]: https://api.travis-ci.org/Kong/httpsnippet.svg?branch=master
 
 [npm-url]: https://www.npmjs.com/package/httpsnippet
 [npm-license]: https://img.shields.io/npm/l/httpsnippet.svg?style=flat-square
