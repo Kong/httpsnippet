@@ -53,8 +53,7 @@
     "test": "mocha --no-timeouts",
     "posttest": "exit 0 && npm run coverage",
     "coverage": "istanbul cover --dir coverage _mocha -- --fgrep 'Request Validation' --invert -R dot",
-    "codeclimate": "codeclimate < coverage/lcov.info",
-    "preinstall": "npx npm-force-resolutions"
+    "codeclimate": "codeclimate < coverage/lcov.info"
   },
   "standard": {
     "ignore": [
@@ -74,7 +73,6 @@
     "glob": "^6.0.1",
     "istanbul": "^0.4.0",
     "mocha": "^6.1.4",
-    "npm-force-resolutions": "0.0.3",
     "require-directory": "^2.1.1",
     "should": "^13.2.3",
     "standard": "^10.0.2"
@@ -84,15 +82,11 @@
     "commander": "^2.9.0",
     "debug": "^2.2.0",
     "event-stream": "3.3.4",
-    "form-data": "^1.0.0-rc3",
+    "form-data": "3.0.0",
     "fs-readfile-promise": "^2.0.1",
     "fs-writefile-promise": "^1.0.3",
     "har-validator": "^5.0.0",
     "pinkie-promise": "^2.0.0",
     "stringify-object": "^3.3.0"
-  },
-  "resolutions": {
-    "eslint": "4.18.2",
-    "lodash": "4.17.12"
   }
 }
