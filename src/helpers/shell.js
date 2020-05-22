@@ -13,7 +13,7 @@ module.exports = {
 
     // Unless `value` is a simple shell-safe string, quote it.
     if (!safe.test(value)) {
-      return util.format('\'%s\'', value.replace(/'/g, "\'\\'\'"))
+      return util.format('\'%s\'', value.replace(/'/g, "'\\''"))
     }
 
     return value

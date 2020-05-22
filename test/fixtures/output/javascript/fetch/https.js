@@ -1,0 +1,10 @@
+fetch("https://mockbin.com/har", {
+  "method": "GET",
+  "headers": {}
+})
+.then(response => {
+  console.log(response);
+})
+.catch(err => {
+  console.error(err);
+});

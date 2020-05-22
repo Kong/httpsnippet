@@ -15,7 +15,7 @@ var helpers = require('../../helpers/shell')
 var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var opts = util._extend({
+  var opts = Object.assign({
     indent: '  ',
     short: false,
     binary: false
@@ -65,7 +65,7 @@ module.exports = function (source, options) {
       } else {
         code.push(
           '%s %s', opts.binary ? '--data-binary' : (opts.short ? '-d' : '--data'),
-          helpers.escape(helpers.quote(source.postData.text))
+          helpers.quote(source.postData.text)
         )
       }
       break
@@ -75,7 +75,7 @@ module.exports = function (source, options) {
       if (source.postData.text) {
         code.push(
           '%s %s', opts.binary ? '--data-binary' : (opts.short ? '-d' : '--data'),
-          helpers.escape(helpers.quote(source.postData.text))
+          helpers.quote(source.postData.text)
         )
       }
   }
