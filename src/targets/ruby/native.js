@@ -34,6 +34,7 @@ module.exports = function (source, options) {
 
   if (source.uriObj.protocol === 'https:') {
     code.push('http.use_ssl = true')
+        .push('http.verify_mode = OpenSSL::SSL::VERIFY_NONE')
   }
 
   code.blank()

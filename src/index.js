@@ -1,7 +1,6 @@
 'use strict'
 
-//var debug = require('debug')('httpsnippet')
-var debug = console.log;
+var debug = require('debug')('httpsnippet')
 var es = require('event-stream')
 var MultiPartForm = require('form-data')
 var qs = require('querystring')

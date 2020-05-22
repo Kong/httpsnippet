@@ -8,7 +8,7 @@ module.exports = {
     default: 'xhr'
   },
 
-  jquery: require('./jq'),
+  jquery: require('./jquery'),
   fetch: require('./fetch'),
   xhr: require('./xhr')
 }
