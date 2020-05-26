@@ -69,7 +69,7 @@ snippets/
 
 #### source
 
-*Required*  
+*Required*
 Type: `object`
 
 Name of [conversion target](https://github.com/Mashape/httpsnippet/wiki/Targets)
@@ -87,7 +87,7 @@ var snippet = new HTTPSnippet({
 
 #### target
 
-*Required*  
+*Required*
 Type: `string`
 
 Name of [conversion target](https://github.com/Mashape/httpsnippet/wiki/Targets)
@@ -119,7 +119,7 @@ console.log(snippet.convert('node', {
 
 #### target
 
-*Required*  
+*Required*
 Type: `string`
 
 Name of [conversion target](https://github.com/Mashape/httpsnippet/wiki/Targets)
@@ -151,6 +151,39 @@ console.log(snippet.convert('shell', 'curl', {
 
 // generate Node.js: Unirest output
 console.log(snippet.convert('node', 'unirest'));
+```
+
+### addTarget(target)
+#### target
+
+*Required*
+Type: `object`
+
+Representation of a [conversion target](https://github.com/Kong/httpsnippet/wiki/Creating-Targets). Can use this to use targets that are not officially supported.
+
+```js
+const customLanguageTarget = require('httpsnippet-for-my-lang');
+HTTPSnippet.addTarget(customLanguageTarget);
+```
+
+### addTargetClient(target, client)
+### target
+
+*Required*
+Type: `string`
+
+Name of [conversion target](https://github.com/Mashape/httpsnippet/wiki/Targets)
+
+### client
+
+*Required*
+Type: `object`
+
+Representation of a [conversion target client](https://github.com/Kong/httpsnippet/wiki/Creating-Targets). Can use this to use target clients that are not officially supported.
+
+```js
+const customClient = require('httpsnippet-for-my-node-http-client');
+HTTPSnippet.addTargetClient('node', customClient);
 ```
 
 ## Documentation
