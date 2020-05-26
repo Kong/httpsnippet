@@ -221,6 +221,28 @@ HTTPSnippet.prototype._matchTarget = function (target, client) {
 // exports
 module.exports = HTTPSnippet
 
+module.exports.addTarget = function (target) {
+  if (!('info' in target)) {
+    throw new Error('The supplied custom target must contain an `info` object.')
+  } else if (!('key' in target.info) || !('title' in target.info) || !('extname' in target.info) || !('default' in target.info)) {
+    throw new Error('The supplied custom target must have an `info` object with a `key`, `title`, `extname`, and `default` property.')
+  } else if (targets.hasOwnProperty(target.info.key)) {
+    throw new Error('The supplied custom target already exists.')
+  } else if (Object.keys(target).length === 1) {
+    throw new Error('A custom target must have a client defined on it.')
+  }
+
+  targets[target.info.key] = target
+}
+
+module.exports.addTargetClient = function (target, client, plugin) {
+  if (!targets.hasOwnProperty(target)) {
+    throw new Error(`Sorry, but no ${target} target exists to add clients to.`)
+  }
+
+  targets[target][client] = plugin
+}
+
 module.exports.availableTargets = function () {
   return Object.keys(targets).map(function (key) {
     var target = Object.assign({}, targets[key].info)
