@@ -235,12 +235,16 @@ module.exports.addTarget = function (target) {
   targets[target.info.key] = target
 }
 
-module.exports.addTargetClient = function (target, client, plugin) {
+module.exports.addTargetClient = function (target, client) {
   if (!targets.hasOwnProperty(target)) {
     throw new Error(`Sorry, but no ${target} target exists to add clients to.`)
+  } else if (!('info' in client)) {
+    throw new Error('The supplied custom target client must contain an `info` object.')
+  } else if (!('key' in client.info) || !('title' in client.info)) {
+    throw new Error('The supplied custom target client must have an `info` object with a `key` and `title` property.')
   }
 
-  targets[target][client] = plugin
+  targets[target][client.info.key] = client
 }
 
 module.exports.availableTargets = function () {

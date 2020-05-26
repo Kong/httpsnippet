@@ -153,20 +153,32 @@ describe('Custom targets', function () {
 
     it("should throw if the client's target does not exist", function () {
       (function () {
-        HTTPSnippet.addTargetClient('node.js', 'axios', customClient)
+        HTTPSnippet.addTargetClient('node.js', customClient)
+      }).should.throw(Error)
+    })
+
+    it('should throw if the client does has no info object', function () {
+      (function () {
+        HTTPSnippet.addTargetClient('node', {})
+      }).should.throw(Error)
+    })
+
+    it('should throw if the target does not have a properly constructed info object', function () {
+      (function () {
+        HTTPSnippet.addTargetClient('node', {info: {key: ''}})
       }).should.throw(Error)
     })
 
     it('should add and convert for a new custom client target', function () {
-      HTTPSnippet.addTargetClient('node', 'axios', customClient)
+      HTTPSnippet.addTargetClient('node', customClient)
 
       const target = HTTPSnippet.availableTargets().find(function (target) { return target.key === 'node' })
-      const client = target.clients.find(function (client) { return client.key === 'axios' })
+      const client = target.clients.find(function (client) { return client.key === customClient.info.key })
       client.should.be.an.Object()
 
       Object.keys(fixtures.requests).filter(clearInfo).forEach(function (request) {
         // Re-using the `request` module fixtures and framework since we copied it to create a custom client target.
-        itShouldGenerateOutput(request, 'node/request/', 'node', 'axios')
+        itShouldGenerateOutput(request, 'node/request/', 'node', customClient.info.key)
       })
     })
   })
