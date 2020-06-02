@@ -230,6 +230,12 @@
         "title": "RestSharp",
         "link": "http://restsharp.org/",
         "description": "Simple REST and HTTP API Client for .NET"
+      },
+      {
+        "key": "httpclient",
+        "title": "HttpClient",
+        "link": "https://docs.microsoft.com/en-us/dotnet/api/system.net.http.httpclient",
+        "description": ".NET Standard HTTP Client"
       }
     ]
   },
