@@ -202,6 +202,12 @@
         "title": "AsyncHttp",
         "link": "https://github.com/AsyncHttpClient/async-http-client",
         "description": "Asynchronous Http and WebSocket Client library for Java"
+      },
+      {
+        "key": "nethttp",
+        "title": "java.net.http",
+        "link": "https://openjdk.java.net/groups/net/httpclient/intro.html",
+        "description": "Java Standardized HTTP Client API"
       }
     ]
   },
