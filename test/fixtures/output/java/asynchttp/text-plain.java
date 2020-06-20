@@ -1,5 +1,5 @@
 AsyncHttpClient client = new DefaultAsyncHttpClient();
-client.preparePost("http://mockbin.com/har")
+client.prepare("POST", "http://mockbin.com/har")
   .setHeader("content-type", "text/plain")
   .setBody("Hello World")
   .execute()

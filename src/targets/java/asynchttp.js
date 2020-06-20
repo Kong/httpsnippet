@@ -21,7 +21,7 @@ module.exports = function (source, options) {
 
   code.push('AsyncHttpClient client = new DefaultAsyncHttpClient();')
 
-  code.push(`client.prepare${source.method[0].toUpperCase()}${source.method.substring(1).toLowerCase()}("${source.fullUrl}")`)
+  code.push(`client.prepare("${source.method.toUpperCase()}", "${source.fullUrl}")`)
 
   // Add headers, including the cookies
   var headers = Object.keys(source.allHeaders)
