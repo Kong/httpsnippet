@@ -1,5 +1,5 @@
 AsyncHttpClient client = new DefaultAsyncHttpClient();
-client.prepareGet("https://mockbin.com/har")
+client.prepare("GET", "https://mockbin.com/har")
   .execute()
   .toCompletableFuture()
   .thenAccept(System.out::println)

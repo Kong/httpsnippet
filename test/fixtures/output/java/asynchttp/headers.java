@@ -1,5 +1,5 @@
 AsyncHttpClient client = new DefaultAsyncHttpClient();
-client.prepareGet("http://mockbin.com/har")
+client.prepare("GET", "http://mockbin.com/har")
   .setHeader("accept", "application/json")
   .setHeader("x-foo", "Bar")
   .execute()
