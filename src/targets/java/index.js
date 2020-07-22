@@ -10,6 +10,6 @@ module.exports = {
 
   okhttp: require('./okhttp'),
   unirest: require('./unirest'),
-  asynchttp: require('./asynchttp')
-
+  asynchttp: require('./asynchttp'),
+  nethttp: require('./nethttp')
 }
