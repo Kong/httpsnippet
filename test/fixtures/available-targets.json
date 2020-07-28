@@ -320,5 +320,19 @@
         "title": "HTTP/1.1"
       }
     ]
+  },
+  {
+    "key": "kotlin",
+    "title": "Kotlin",
+    "extname": ".kt",
+    "default": "okhttp",
+    "clients": [
+      {
+        "key": "okhttp",
+        "title": "OkHttp",
+        "link": "http://square.github.io/okhttp/",
+        "description": "An HTTP Request Client Library"
+      }
+    ]
   }
 ]
