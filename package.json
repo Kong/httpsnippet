@@ -1,5 +1,5 @@
 {
-  "version": "1.19.1",
+  "version": "1.21.0",
   "name": "httpsnippet",
   "description": "HTTP Request snippet generator for *most* languages",
   "author": "Ahmad Nassri <ahmad@mashape.com> (https://www.mashape.com/)",
@@ -72,7 +72,7 @@
     "echint": "^4.0.2",
     "glob": "^6.0.1",
     "istanbul": "^0.4.0",
-    "mocha": "^6.1.4",
+    "mocha": "^6.2.0",
     "require-directory": "^2.1.1",
     "should": "^13.2.3",
     "standard": "^10.0.2"

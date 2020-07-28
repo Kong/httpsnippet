@@ -1,5 +1,5 @@
 AsyncHttpClient client = new DefaultAsyncHttpClient();
-client.preparePost("http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value")
+client.prepare("POST", "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value")
   .setHeader("cookie", "foo=bar; bar=baz")
   .setHeader("accept", "application/json")
   .setHeader("content-type", "application/x-www-form-urlencoded")

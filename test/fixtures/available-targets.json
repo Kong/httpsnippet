@@ -202,6 +202,12 @@
         "title": "AsyncHttp",
         "link": "https://github.com/AsyncHttpClient/async-http-client",
         "description": "Asynchronous Http and WebSocket Client library for Java"
+      },
+      {
+        "key": "nethttp",
+        "title": "java.net.http",
+        "link": "https://openjdk.java.net/groups/net/httpclient/intro.html",
+        "description": "Java Standardized HTTP Client API"
       }
     ]
   },
@@ -230,6 +236,12 @@
         "title": "RestSharp",
         "link": "http://restsharp.org/",
         "description": "Simple REST and HTTP API Client for .NET"
+      },
+      {
+        "key": "httpclient",
+        "title": "HttpClient",
+        "link": "https://docs.microsoft.com/en-us/dotnet/api/system.net.http.httpclient",
+        "description": ".NET Standard HTTP Client"
       }
     ]
   },

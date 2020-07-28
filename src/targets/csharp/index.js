@@ -8,5 +8,6 @@ module.exports = {
     default: 'restsharp'
   },
 
-  restsharp: require('./restsharp')
+  restsharp: require('./restsharp'),
+  httpclient: require('./httpclient')
 }
