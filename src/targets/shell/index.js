@@ -9,6 +9,6 @@ module.exports = {
   },
 
   curl: require('./curl'),
-  httpie: require('./httpie'),
-  wget: require('./wget')
+  // httpie: require('./httpie'),
+  // wget: require('./wget')
 }

@@ -1,5 +1,6 @@
-'use strict'
 /* eslint-env browser */
+
+'use strict'
 
 require('formdata-polyfill')
 
