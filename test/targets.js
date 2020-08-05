@@ -50,7 +50,7 @@ const skipMe = {
     '*': [
       'multipart-data',
       'multipart-file',
-      // 'multipart-form-data'
+      'multipart-form-data'
     ]
   }
 }
@@ -88,15 +88,15 @@ var itShouldGenerateOutput = function (request, path, target, client) {
   })
 }
 
-/* describe('Available Targets', function () {
+describe('Available Targets', function () {
   HTTPSnippet.availableTargets().forEach(function (target) {
     it('available-targets.json should include ' + target.title, function () {
       fixtures['available-targets'].should.containEql(target)
     })
   })
-}) */
+})
 
-/* describe('Custom targets', function () {
+describe('Custom targets', function () {
   describe('Adding a custom target', function () {
     it('should throw if the target does has no info object', function () {
       (function () {
@@ -186,7 +186,7 @@ var itShouldGenerateOutput = function (request, path, target, client) {
       })
     })
   })
-}) */
+})
 
 // test all the things!
 describe('Targets', function () {
