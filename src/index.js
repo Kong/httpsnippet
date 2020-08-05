@@ -125,6 +125,9 @@ HTTPSnippet.prototype.prepare = function (request) {
 
         // easter egg
         const boundary = '---011000010111000001101001'
+        if (!isNativeFormData) {
+          form._boundary = boundary;
+        }
 
         request.postData.params.forEach(function (param) {
           if (isNativeFormData) {
