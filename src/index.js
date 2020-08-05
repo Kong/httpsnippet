@@ -118,9 +118,10 @@ HTTPSnippet.prototype.prepare = function (request) {
         //
         // Since the native FormData object is iterable, we easily detect what version of `form-data` we're working
         // with here to allow `multipart/form-data` requests to be compiled under both browser and Node environments.
-        // This hack sucks yeah, but it's the only way we can use this library in the browser as if we code this against
-        // just the native FormData object, we can't polyfill it back into Node because Blob and File objects, which
-        // something like `formdata-polyfill` requires, don't exist there.
+        //
+        // This hack is pretty awful but it's the only way we can use this library in the browser as if we code this
+        // against just the native FormData object, we can't polyfill that back into Node because Blob and File objects,
+        // which something like `formdata-polyfill` requires, don't exist there.
         const isNativeFormData = (typeof form[Symbol.iterator] === 'function');
 
         // easter egg
