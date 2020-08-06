@@ -61,7 +61,7 @@ module.exports = function (source, options) {
           return
         }
 
-        if (param.fileName && !param.value) {
+        if (param.fileName) {
           includeFS = true
 
           attachment.value = 'fs.createReadStream("' + param.fileName + '")'
