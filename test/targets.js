@@ -47,11 +47,7 @@ const skipMe = {
     'clj_http': ['jsonObj-null-value', 'jsonObj-multiline']
   },
   '*': {
-    '*': [
-      'multipart-data',
-      'multipart-file',
-      'multipart-form-data'
-    ]
+    '*': []
   }
 }
 
@@ -81,10 +77,13 @@ var itShouldGenerateOutput = function (request, path, target, client) {
       this.skip()
     }
     var instance = new HTTPSnippet(fixtures.requests[request])
-    var result = instance.convert(target, client) + '\n'
+
+    // `form-data` sets the line break as `\r\n`, but we can't easily replicate that in our fixtures so let's convert
+    // it to a standard line break instead.
+    var result = instance.convert(target, client).replace(/\r\n/g, '\n').trim()
 
     result.should.be.a.String()
-    result.should.equal(output[fixture].toString())
+    result.should.equal(output[fixture].toString().trim())
   })
 }
 

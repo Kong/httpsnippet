@@ -8,10 +8,7 @@ var options = {
   formData: {
     foo: {
       value: 'fs.createReadStream("test/fixtures/files/hello.txt")',
-        options: {
-          filename: 'test/fixtures/files/hello.txt',
-          contentType: 'text/plain'
-      }
+      options: {filename: 'test/fixtures/files/hello.txt', contentType: 'text/plain'}
     }
   }
 };

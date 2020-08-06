@@ -122,12 +122,12 @@ HTTPSnippet.prototype.prepare = function (request) {
         // This hack is pretty awful but it's the only way we can use this library in the browser as if we code this
         // against just the native FormData object, we can't polyfill that back into Node because Blob and File objects,
         // which something like `formdata-polyfill` requires, don't exist there.
-        const isNativeFormData = (typeof form[Symbol.iterator] === 'function');
+        const isNativeFormData = (typeof form[Symbol.iterator] === 'function')
 
         // easter egg
         const boundary = '---011000010111000001101001'
         if (!isNativeFormData) {
-          form._boundary = boundary;
+          form._boundary = boundary
         }
 
         request.postData.params.forEach(function (param) {
