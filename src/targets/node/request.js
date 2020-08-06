@@ -22,7 +22,7 @@ module.exports = function (source, options) {
   var includeFS = false
   var code = new CodeBuilder(opts.indent)
 
-  code.push('var request = require("request");')
+  code.push("var request = require('request');")
       .blank()
 
   var reqOpts = {
@@ -95,13 +95,13 @@ module.exports = function (source, options) {
     var url = source.url
 
     source.cookies.forEach(function (cookie) {
-      code.push('jar.setCookie(request.cookie("%s=%s"), "%s");', encodeURIComponent(cookie.name), encodeURIComponent(cookie.value), url)
+      code.push("jar.setCookie(request.cookie('%s=%s'), '%s');", encodeURIComponent(cookie.name), encodeURIComponent(cookie.value), url)
     })
     code.blank()
   }
 
   if (includeFS) {
-    code.unshift('var fs = require("fs");')
+    code.unshift("var fs = require('fs');")
   }
 
   code.push('var options = %s;', stringifyObject(reqOpts, { indent: '  ', inlineCharacterLimit: 80 }))
@@ -115,7 +115,7 @@ module.exports = function (source, options) {
       .push('});')
       .blank()
 
-  return code.join().replace('"JAR"', 'jar').replace(/'fs\.createReadStream\(\"(.+)\"\)'/g, 'fs.createReadStream("$1")')
+  return code.join().replace('"JAR"', 'jar').replace(/'fs\.createReadStream\("(.+)"\)'/g, "fs.createReadStream('$1')")
 }
 
 module.exports.info = {
