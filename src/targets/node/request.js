@@ -115,7 +115,7 @@ module.exports = function (source, options) {
       .push('});')
       .blank()
 
-  return code.join().replace('"JAR"', 'jar').replace(/"fs\.createReadStream\(\\"(.+)\\"\)"/, 'fs.createReadStream("$1")')
+  return code.join().replace('"JAR"', 'jar').replace(/'fs\.createReadStream\(\"(.+)\"\)'/g, 'fs.createReadStream("$1")')
 }
 
 module.exports.info = {
