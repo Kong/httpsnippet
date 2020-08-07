@@ -1,4 +1,4 @@
-var settings = {
+const settings = {
   "async": true,
   "crossDomain": true,
   "url": "http://mockbin.com/har",
@@ -8,7 +8,7 @@ var settings = {
   },
   "processData": false,
   "data": "{\n  \"foo\": \"bar\"\n}"
-}
+};
 
 $.ajax(settings).done(function (response) {
   console.log(response);
