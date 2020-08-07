@@ -26,7 +26,6 @@
 
 const carriage = '\r\n'
 const dashes = '-'.repeat(2)
-const carriageLength = Buffer.byteLength(carriage)
 
 const NAME = Symbol.toStringTag
 
@@ -99,30 +98,6 @@ module.exports.formDataIterator = function * (form, boundary) {
   }
 
   yield getFooter(boundary)
-}
-
-/**
- * @param {FormData} form
- * @param {string} boundary
- */
-module.exports.getFormDataLength = function (form, boundary) {
-  let length = 0
-
-  for (const [name, value] of form) {
-    length += Buffer.byteLength(getHeader(boundary, name, value))
-
-    if (isBlob(value)) {
-      length += value.size
-    } else {
-      length += Buffer.byteLength(String(value))
-    }
-
-    length += carriageLength
-  }
-
-  length += Buffer.byteLength(getFooter(boundary))
-
-  return length
 }
 
 module.exports.isBlob = isBlob
