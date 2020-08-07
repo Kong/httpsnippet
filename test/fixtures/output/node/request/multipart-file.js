@@ -1,7 +1,7 @@
-var fs = require('fs');
-var request = require('request');
+const fs = require('fs');
+const request = require('request');
 
-var options = {
+const options = {
   method: 'POST',
   url: 'http://mockbin.com/har',
   headers: {'content-type': 'multipart/form-data; boundary=---011000010111000001101001'},

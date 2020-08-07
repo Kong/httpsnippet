@@ -38,7 +38,7 @@ module.exports = function (source, options) {
       break
 
     case 'multipart/form-data':
-      code.push('var form = new FormData();')
+      code.push('const form = new FormData();')
 
       source.postData.params.forEach(function (param) {
         code.push('form.append(%s, %s);', JSON.stringify(param.name), JSON.stringify(param.value || param.fileName || ''))
@@ -62,7 +62,7 @@ module.exports = function (source, options) {
       }
   }
 
-  code.push('var settings = ' + JSON.stringify(settings, null, opts.indent).replace('"[form]"', 'form'))
+  code.push('const settings = ' + JSON.stringify(settings, null, opts.indent).replace('"[form]"', 'form') + ';')
       .blank()
       .push('$.ajax(settings).done(function (response) {')
       .push(1, 'console.log(response);')

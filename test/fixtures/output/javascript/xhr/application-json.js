@@ -1,4 +1,4 @@
-var data = JSON.stringify({
+const data = JSON.stringify({
   "number": 1,
   "string": "f\"oo",
   "arr": [
@@ -19,7 +19,7 @@ var data = JSON.stringify({
   "boolean": false
 });
 
-var xhr = new XMLHttpRequest();
+const xhr = new XMLHttpRequest();
 xhr.withCredentials = true;
 
 xhr.addEventListener("readystatechange", function () {

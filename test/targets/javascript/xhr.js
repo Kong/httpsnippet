@@ -11,6 +11,6 @@ module.exports = function (HTTPSnippet, fixtures) {
     })
 
     result.should.be.a.String()
-    result.replace(/\n/g, '').should.eql('var data = null;var xhr = new XMLHttpRequest();xhr.addEventListener("readystatechange", function () {  if (this.readyState === this.DONE) {    console.log(this.responseText);  }});xhr.open("GET", "http://mockbin.com/har");xhr.send(data);')
+    result.replace(/\n/g, '').should.eql('const data = null;const xhr = new XMLHttpRequest();xhr.addEventListener("readystatechange", function () {  if (this.readyState === this.DONE) {    console.log(this.responseText);  }});xhr.open("GET", "http://mockbin.com/har");xhr.send(data);')
   })
 }
