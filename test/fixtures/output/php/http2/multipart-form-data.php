@@ -4,9 +4,9 @@ $client = new http\Client;
 $request = new http\Client\Request;
 
 $body = new http\Message\Body;
-$body->addForm(array(
+$body->addForm([
   'foo' => 'bar'
-), NULL);
+], null);
 
 $request->setRequestUrl('http://mockbin.com/har');
 $request->setRequestMethod('POST');
