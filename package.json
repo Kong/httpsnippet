@@ -37,7 +37,7 @@
     "xmlhttprequest"
   ],
   "engines": {
-    "node": ">=4"
+    "node": ">=10"
   },
   "files": [
     "bin",
