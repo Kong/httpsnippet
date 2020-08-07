@@ -1,4 +1,5 @@
-var request = require("request");
+var fs = require('fs');
+var request = require('request');
 
 var options = {
   method: 'POST',
@@ -6,11 +7,8 @@ var options = {
   headers: {'content-type': 'multipart/form-data; boundary=---011000010111000001101001'},
   formData: {
     foo: {
-      value: 'Hello World',
-      options: {
-        filename: 'hello.txt',
-        contentType: 'text/plain'
-      }
+      value: fs.createReadStream('hello.txt'),
+      options: {filename: 'hello.txt', contentType: 'text/plain'}
     }
   }
 };
