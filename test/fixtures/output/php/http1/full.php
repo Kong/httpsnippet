@@ -4,29 +4,29 @@ $request = new HttpRequest();
 $request->setUrl('http://mockbin.com/har');
 $request->setMethod(HTTP_METH_POST);
 
-$request->setQueryData(array(
-  'foo' => array(
+$request->setQueryData([
+  'foo' => [
     'bar',
     'baz'
-  ),
+  ],
   'baz' => 'abc',
   'key' => 'value'
-));
+]);
 
-$request->setHeaders(array(
+$request->setHeaders([
   'accept' => 'application/json',
   'content-type' => 'application/x-www-form-urlencoded'
-));
+]);
 
-$request->setCookies(array(
+$request->setCookies([
   'bar' => 'baz',
   'foo' => 'bar'
-));
+]);
 
 $request->setContentType('application/x-www-form-urlencoded');
-$request->setPostFields(array(
+$request->setPostFields([
   'foo' => 'bar'
-));
+]);
 
 try {
   $response = $request->send();

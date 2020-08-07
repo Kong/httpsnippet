@@ -4,9 +4,9 @@ $request = new HttpRequest();
 $request->setUrl('http://mockbin.com/har');
 $request->setMethod(HTTP_METH_POST);
 
-$request->setHeaders(array(
+$request->setHeaders([
   'content-type' => 'multipart/form-data; boundary=---011000010111000001101001'
-));
+]);
 
 $request->setBody('-----011000010111000001101001
 Content-Disposition: form-data; name="foo"; filename="hello.txt"

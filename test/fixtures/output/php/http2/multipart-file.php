@@ -4,14 +4,14 @@ $client = new http\Client;
 $request = new http\Client\Request;
 
 $body = new http\Message\Body;
-$body->addForm(NULL, array(
-  array(
+$body->addForm(null, [
+  [
     'name' => 'foo',
     'type' => 'text/plain',
     'file' => 'test/fixtures/files/hello.txt',
     'data' => null
-  )
-));
+  ]
+]);
 
 $request->setRequestUrl('http://mockbin.com/har');
 $request->setRequestMethod('POST');

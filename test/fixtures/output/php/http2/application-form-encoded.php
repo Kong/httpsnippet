@@ -4,18 +4,18 @@ $client = new http\Client;
 $request = new http\Client\Request;
 
 $body = new http\Message\Body;
-$body->append(new http\QueryString(array(
+$body->append(new http\QueryString([
   'foo' => 'bar',
   'hello' => 'world'
-)));
+]));
 
 $request->setRequestUrl('http://mockbin.com/har');
 $request->setRequestMethod('POST');
 $request->setBody($body);
 
-$request->setHeaders(array(
+$request->setHeaders([
   'content-type' => 'application/x-www-form-urlencoded'
-));
+]);
 
 $client->enqueue($request)->send();
 $response = $client->getResponse();
