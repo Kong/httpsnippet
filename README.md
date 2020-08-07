@@ -11,58 +11,10 @@ See it in action on companion service: [APIembed](https://apiembed.com/)
 ## Installation
 
 ```shell
-# to use in cli
-npm install --global @readme/httpsnippet
-
-# to use as a module
 npm install --save @readme/httpsnippet
 ```
 
 ## Usage
-
-```
-
-  Usage: httpsnippet [options] <file>
-
-  Options:
-
-    -h, --help                output usage information
-    -V, --version             output the version number
-    -t, --target <target>     target output
-    -c, --client [client]     target client library
-    -o, --output <directory>  write output to directory
-
-```
-
-### Example
-
-process single file: [`example.json`](test/fixtures/requests/full.json) in [HAR Request Object](http://www.softwareishard.com/blog/har-12-spec/#request) format, or full [HAR](http://www.softwareishard.com/blog/har-12-spec/#log) log format:
-
-```shell
-httpsnippet example.json --target node --client unirest --output ./snippets
-```
-
-```shell
-$ tree snippets
-snippets/
-└── example.js
-```
-
-process multiple files:
-
-```shell
-httpsnippet ./*.json --target node --client request --output ./snippets
-```
-
-```shell
-$ tree snippets/
-snippets/
-├── endpoint-1.js
-├── endpoint-2.js
-└── endpoint-3.js
-```
-
-## API
 
 ### HTTPSnippet(source)
 
@@ -74,9 +26,9 @@ Type: `object`
 Name of [conversion target](https://github.com/kong/httpsnippet/wiki/Targets)
 
 ```js
-var HTTPSnippet = require('httpsnippet');
+const HTTPSnippet = require('httpsnippet');
 
-var snippet = new HTTPSnippet({
+const snippet = new HTTPSnippet({
   method: 'GET',
   url: 'http://mockbin.com/request'
 });
@@ -98,9 +50,9 @@ Type: `object`
 Target options, *see [wiki](https://github.com/kong/httpsnippet/wiki/Targets) for details*
 
 ```js
-var HTTPSnippet = require('httpsnippet');
+const HTTPSnippet = require('httpsnippet');
 
-var snippet = new HTTPSnippet({
+const snippet = new HTTPSnippet({
   method: 'GET',
   url: 'http://mockbin.com/request'
 });
@@ -136,9 +88,9 @@ Type: `object`
 Target options, *see [wiki](https://github.com/kong/httpsnippet/wiki/Targets) for details*
 
 ```js
-var HTTPSnippet = require('httpsnippet');
+const HTTPSnippet = require('httpsnippet');
 
-var snippet = new HTTPSnippet({
+const snippet = new HTTPSnippet({
   method: 'GET',
   url: 'http://mockbin.com/request'
 });
@@ -191,35 +143,12 @@ At the heart of this module is the [HAR Format](http://www.softwareishard.com/bl
 
 For detailed information on each target, please review the [wiki](https://github.com/kong/httpsnippet/wiki).
 
-## Bugs and feature requests
+## Differences from `kong/httpsnippet`
 
-Have a bug or a feature request? Please first read the [issue guidelines](CONTRIBUTING.md#using-the-issue-tracker) and search for existing and closed issues. If your problem or idea is not addressed yet, [please open a new issue](/issues).
+The main difference between this library and the upstream [httpsnippet](https://github.com/Kong/httpsnippet) library are:
 
-## Contributing
-
-Please read through our [contributing guidelines](CONTRIBUTING.md). Included are directions for opening issues, coding standards, and notes on development.
-
-For info on creating new conversion targets, please review this [guideline](https://github.com/kong/httpsnippet/wiki/Creating-Targets)
-
-Moreover, if your pull request contains JavaScript patches or features, you must include relevant unit tests.
-
-Editor preferences are available in the [editor config](.editorconfig) for easy use in common text editors. Read more and download plugins at <http://editorconfig.org>.
-
-## Versioning
-
-For transparency into our release cycle and in striving to maintain backward compatibility, this project is maintained under the Semantic Versioning guidelines. Sometimes we screw up, but we'll adhere to these rules whenever possible.
-
-Releases will be numbered with the following format:
-
-`<major>.<minor>.<patch>`
-
-And constructed with the following guidelines:
-
-- Breaking backward compatibility **bumps the major** while resetting minor and patch
-- New additions without breaking backward compatibility **bumps the minor** while resetting the patch
-- Bug fixes and misc changes **bumps only the patch**
-
-For more information on SemVer, please visit <http://semver.org/>.
+* This targets Node 10+
+* Does not ship with a CLI component
 
 ## License
 

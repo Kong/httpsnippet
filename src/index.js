@@ -2,7 +2,6 @@
 
 'use strict'
 
-var debug = require('debug')('httpsnippet')
 var es = require('event-stream')
 var MultiPartForm = require('form-data')
 var qs = require('querystring')
@@ -65,8 +64,6 @@ HTTPSnippet.prototype.prepare = function (request) {
 
   // construct query objects
   if (request.queryString && request.queryString.length) {
-    debug('queryString found, constructing queryString pair map')
-
     request.queryObj = request.queryString.reduce(reducer, {})
   }
 
@@ -181,8 +178,6 @@ HTTPSnippet.prototype.prepare = function (request) {
         try {
           request.postData.jsonObj = JSON.parse(request.postData.text)
         } catch (e) {
-          debug(e)
-
           // force back to text/plain
           // if headers have proper content-type value, then this should also work
           request.postData.mimeType = 'text/plain'

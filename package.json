@@ -5,7 +5,6 @@
   "homepage": "https://github.com/readmeio/httpsnippet",
   "license": "MIT",
   "main": "src/index.js",
-  "bin": "bin/httpsnippet",
   "keywords": [
     "api",
     "clojure",
@@ -47,12 +46,11 @@
     "url": "https://github.com/readmeio/httpsnippet.git"
   },
   "scripts": {
-    "codeclimate": "codeclimate < coverage/lcov.info",
     "coverage": "istanbul cover --dir coverage _mocha -- --fgrep 'Request Validation' --invert -R dot",
-    "quick": "mocha --no-timeouts --fgrep 'Request Validation' --invert",
+    "posttest": "npm run coverage",
     "pretest": "standard && echint",
-    "test": "mocha --no-timeouts",
-    "posttest": "npm run coverage"
+    "quick": "mocha --no-timeouts --fgrep 'Request Validation' --invert",
+    "test": "mocha --no-timeouts"
   },
   "standard": {
     "ignore": [
@@ -67,7 +65,6 @@
     ]
   },
   "devDependencies": {
-    "codeclimate-test-reporter": "^0.5.1",
     "echint": "^4.0.2",
     "glob": "^7.1.6",
     "istanbul": "^0.4.0",
@@ -77,15 +74,9 @@
     "standard": "^10.0.2"
   },
   "dependencies": {
-    "chalk": "^4.1.0",
-    "commander": "^6.0.0",
-    "debug": "^4.1.1",
     "event-stream": "4.0.1",
     "form-data": "3.0.0",
-    "fs-readfile-promise": "^3.0.1",
-    "fs-writefile-promise": "^3.0.2",
     "har-validator": "^5.0.0",
-    "pinkie-promise": "^2.0.0",
     "stringify-object": "^3.3.0"
   }
 }
