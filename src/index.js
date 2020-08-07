@@ -108,9 +108,9 @@ HTTPSnippet.prototype.prepare = function (request) {
       if (request.postData.params) {
         var form = new MultiPartForm()
 
-        // The `form-data` module returns one of two things: a native FormData object, or its own polyfill. Since this
-        // polyfill support the full API of the native FormData object, when this library is running in a browser
-        // environment it'll fail on two things:
+        // The `form-data` module returns one of two things: a native FormData object, or its own polyfill. Since the
+        // polyfill does not support the full API of the native FormData object, when this library is running in a
+        // browser environment it'll fail on two things:
         //
         //  - The API for `form.append()` has three arguments and the third should only be present when the second is a
         //    Blob or USVString.
