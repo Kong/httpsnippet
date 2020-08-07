@@ -156,6 +156,6 @@ The main difference between this library and the upstream [httpsnippet](https://
 
 [license-url]: https://github.com/Kong/httpsnippet/blob/master/LICENSE
 
-[npm-url]: https://www.npmjs.com/package/@readmeio/httpsnipet
-[npm-license]: https://img.shields.io/npm/l/@readmeio/httpsnippet.svg?style=flat-square
-[npm-version]: https://img.shields.io/npm/v/@readmeio/httpsnippet.svg?style=flat-square
+[npm-url]: https://www.npmjs.com/package/@readme/httpsnippet
+[npm-license]: https://img.shields.io/npm/l/@readme/httpsnippet.svg?style=flat-square
+[npm-version]: https://img.shields.io/npm/v/@readme/httpsnippet.svg?style=flat-square
