@@ -70,7 +70,7 @@
   "devDependencies": {
     "codeclimate-test-reporter": "^0.5.1",
     "echint": "^4.0.2",
-    "glob": "^6.0.1",
+    "glob": "^7.1.6",
     "istanbul": "^0.4.0",
     "mocha": "^8.1.1",
     "require-directory": "^2.1.1",
