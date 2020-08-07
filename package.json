@@ -80,7 +80,7 @@
   "dependencies": {
     "chalk": "^4.1.0",
     "commander": "^6.0.0",
-    "debug": "^2.2.0",
+    "debug": "^4.1.1",
     "event-stream": "4.0.1",
     "form-data": "3.0.0",
     "fs-readfile-promise": "^3.0.1",
