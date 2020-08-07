@@ -78,7 +78,7 @@
     "standard": "^10.0.2"
   },
   "dependencies": {
-    "chalk": "^1.1.1",
+    "chalk": "^4.1.0",
     "commander": "^6.0.0",
     "debug": "^2.2.0",
     "event-stream": "4.0.1",
