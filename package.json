@@ -1,9 +1,8 @@
 {
   "version": "1.21.0",
-  "name": "httpsnippet",
+  "name": "@readme/httpsnippet",
   "description": "HTTP Request snippet generator for *most* languages",
-  "author": "Ahmad Nassri <ahmad@mashape.com> (https://www.mashape.com/)",
-  "homepage": "https://github.com/Mashape/httpsnippet",
+  "homepage": "https://github.com/readmeio/httpsnippet",
   "license": "MIT",
   "main": "src/index.js",
   "bin": "bin/httpsnippet",
@@ -43,17 +42,17 @@
     "bin",
     "src"
   ],
-  "repository": "Mashape/httpsnippet",
-  "bugs": {
-    "url": "https://github.com/Mashape/httpsnippet/issues"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/readmeio/httpsnippet.git"
   },
   "scripts": {
+    "codeclimate": "codeclimate < coverage/lcov.info",
+    "coverage": "istanbul cover --dir coverage _mocha -- --fgrep 'Request Validation' --invert -R dot",
     "quick": "mocha --no-timeouts --fgrep 'Request Validation' --invert",
     "pretest": "standard && echint",
     "test": "mocha --no-timeouts",
-    "posttest": "exit 0 && npm run coverage",
-    "coverage": "istanbul cover --dir coverage _mocha -- --fgrep 'Request Validation' --invert -R dot",
-    "codeclimate": "codeclimate < coverage/lcov.info"
+    "posttest": "npm run coverage"
   },
   "standard": {
     "ignore": [

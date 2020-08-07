@@ -1,22 +1,21 @@
 # HTTP Snippet [![version][npm-version]][npm-url] [![License][npm-license]][license-url]
 
-> HTTP Request snippet generator for *many* languages & tools including: `cURL`, `HTTPie`, `Javascript`, `Node`, `C`, `Java`, `PHP`, `Objective-C`, `Swift`, `Python`, `Ruby`, `C#`, `Go`, `OCaml` and [more](https://github.com/Mashape/httpsnippet/wiki/Targets)!
+> HTTP Request snippet generator for *many* languages & tools including: `cURL`, `HTTPie`, `Javascript`, `Node`, `C`, `Java`, `PHP`, `Objective-C`, `Swift`, `Python`, `Ruby`, `C#`, `Go`, `OCaml` and [more](https://github.com/kong/httpsnippet/wiki/Targets)!
 
 Relies on the popular [HAR](http://www.softwareishard.com/blog/har-12-spec/#request) format to import data and describe HTTP calls.
 
 See it in action on companion service: [APIembed](https://apiembed.com/)
 
-[![Build Status][travis-image]][travis-url]
-[![Downloads][npm-downloads]][npm-url]
+[![Build](https://github.com/readmeio/httpsnippet/workflows/CI/badge.svg)](https://github.com/readmeio/httpsnippet)
 
-## Install
+## Installation
 
 ```shell
 # to use in cli
-npm install --global httpsnippet
+npm install --global @readme/httpsnippet
 
 # to use as a module
-npm install --save httpsnippet
+npm install --save @readme/httpsnippet
 ```
 
 ## Usage
@@ -35,7 +34,7 @@ npm install --save httpsnippet
 
 ```
 
-###### Example
+### Example
 
 process single file: [`example.json`](test/fixtures/requests/full.json) in [HAR Request Object](http://www.softwareishard.com/blog/har-12-spec/#request) format, or full [HAR](http://www.softwareishard.com/blog/har-12-spec/#log) log format:
 
@@ -72,7 +71,7 @@ snippets/
 *Required*
 Type: `object`
 
-Name of [conversion target](https://github.com/Mashape/httpsnippet/wiki/Targets)
+Name of [conversion target](https://github.com/kong/httpsnippet/wiki/Targets)
 
 ```js
 var HTTPSnippet = require('httpsnippet');
@@ -90,13 +89,13 @@ var snippet = new HTTPSnippet({
 *Required*
 Type: `string`
 
-Name of [conversion target](https://github.com/Mashape/httpsnippet/wiki/Targets)
+Name of [conversion target](https://github.com/kong/httpsnippet/wiki/Targets)
 
 #### options
 
 Type: `object`
 
-Target options, *see [wiki](https://github.com/Mashape/httpsnippet/wiki/Targets) for details*
+Target options, *see [wiki](https://github.com/kong/httpsnippet/wiki/Targets) for details*
 
 ```js
 var HTTPSnippet = require('httpsnippet');
@@ -122,19 +121,19 @@ console.log(snippet.convert('node', {
 *Required*
 Type: `string`
 
-Name of [conversion target](https://github.com/Mashape/httpsnippet/wiki/Targets)
+Name of [conversion target](https://github.com/kong/httpsnippet/wiki/Targets)
 
 #### client
 
 Type: `string`
 
-Name of conversion target [client library](https://github.com/Mashape/httpsnippet/wiki/Targets)
+Name of conversion target [client library](https://github.com/kong/httpsnippet/wiki/Targets)
 
 #### options
 
 Type: `object`
 
-Target options, *see [wiki](https://github.com/Mashape/httpsnippet/wiki/Targets) for details*
+Target options, *see [wiki](https://github.com/kong/httpsnippet/wiki/Targets) for details*
 
 ```js
 var HTTPSnippet = require('httpsnippet');
@@ -172,7 +171,7 @@ HTTPSnippet.addTarget(customLanguageTarget);
 *Required*
 Type: `string`
 
-Name of [conversion target](https://github.com/Mashape/httpsnippet/wiki/Targets)
+Name of [conversion target](https://github.com/kong/httpsnippet/wiki/Targets)
 
 ### client
 
@@ -190,7 +189,7 @@ HTTPSnippet.addTargetClient('node', customClient);
 
 At the heart of this module is the [HAR Format](http://www.softwareishard.com/blog/har-12-spec/#request) as the HTTP request description format, please review some of the sample JSON HAR Request objects in [test fixtures](/test/fixtures/requests), or read the [HAR Docs](http://www.softwareishard.com/blog/har-12-spec/#request) for more details.
 
-For detailed information on each target, please review the [wiki](https://github.com/Mashape/httpsnippet/wiki).
+For detailed information on each target, please review the [wiki](https://github.com/kong/httpsnippet/wiki).
 
 ## Bugs and feature requests
 
@@ -200,7 +199,7 @@ Have a bug or a feature request? Please first read the [issue guidelines](CONTRI
 
 Please read through our [contributing guidelines](CONTRIBUTING.md). Included are directions for opening issues, coding standards, and notes on development.
 
-For info on creating new conversion targets, please review this [guideline](https://github.com/Mashape/httpsnippet/wiki/Creating-Targets)
+For info on creating new conversion targets, please review this [guideline](https://github.com/kong/httpsnippet/wiki/Creating-Targets)
 
 Moreover, if your pull request contains JavaScript patches or features, you must include relevant unit tests.
 
@@ -228,10 +227,6 @@ For more information on SemVer, please visit <http://semver.org/>.
 
 [license-url]: https://github.com/Kong/httpsnippet/blob/master/LICENSE
 
-[travis-url]: https://travis-ci.org/Kong/httpsnippet
-[travis-image]: https://api.travis-ci.org/Kong/httpsnippet.svg?branch=master
-
-[npm-url]: https://www.npmjs.com/package/httpsnippet
-[npm-license]: https://img.shields.io/npm/l/httpsnippet.svg?style=flat-square
-[npm-version]: https://img.shields.io/npm/v/httpsnippet.svg?style=flat-square
-[npm-downloads]: https://img.shields.io/npm/dm/httpsnippet.svg?style=flat-square
+[npm-url]: https://www.npmjs.com/package/@readmeio/httpsnipet
+[npm-license]: https://img.shields.io/npm/l/@readmeio/httpsnippet.svg?style=flat-square
+[npm-version]: https://img.shields.io/npm/v/@readmeio/httpsnippet.svg?style=flat-square

@@ -11,7 +11,7 @@ patches and features.
 ## Using the issue tracker
 
 The [issue tracker](/issues) is the preferred channel for [bug reports](#bug-reports),
-[features requests](#feature-requests) and [submitting pull requests](#pull-requests), 
+[features requests](#feature-requests) and [submitting pull requests](#pull-requests),
 but please respect the following restrictions:
 
 * Please **do not** use the issue tracker for personal support requests (use
@@ -93,7 +93,7 @@ project:
     # Navigate to the newly cloned directory
     cd <repo-name>
     # Assign the original repo to a remote called "upstream"
-    git remote add upstream https://github.com/Mashape/httpsnippet.git
+    git remote add upstream https://github.com/readmeio/httpsnippet.git
     ```
 
 2. If you cloned a while ago, get the latest changes from upstream:
@@ -136,4 +136,4 @@ license your work under the same license as that used by the project.
 
 ## Creating New Conversion Targets
 
-For a info on creating new conversion targets, please review this [guideline](https://github.com/Mashape/httpsnippet/wiki/Creating-Targets)
+For a info on creating new conversion targets, please review this [guideline](https://github.com/kong/httpsnippet/wiki/Creating-Targets)
