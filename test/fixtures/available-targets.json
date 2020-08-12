@@ -48,6 +48,12 @@
         "title": "Unirest",
         "link": "http://unirest.io/nodejs.html",
         "description": "Lightweight HTTP Request Client Library"
+      },
+      {
+        "key": "axios",
+        "title": "Axios",
+        "link": "https://github.com/axios/axios",
+        "description": "Promise based HTTP client for the browser and node.js"
       }
     ]
   },
@@ -74,6 +80,12 @@
         "title": "XMLHttpRequest",
         "link": "https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest",
         "description": "W3C Standard API that provides scripted client functionality"
+      },
+      {
+        "key": "axios",
+        "title": "Axios",
+        "link": "https://github.com/axios/axios",
+        "description": "Promise based HTTP client for the browser and node.js"
       }
     ]
   },
