@@ -4,10 +4,10 @@ $request = new HttpRequest();
 $request->setUrl('http://mockbin.com/har');
 $request->setMethod(HTTP_METH_POST);
 
-$request->setCookies(array(
+$request->setCookies([
   'bar' => 'baz',
   'foo' => 'bar'
-));
+]);
 
 try {
   $response = $request->send();

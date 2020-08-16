@@ -10,9 +10,9 @@ $request->setRequestUrl('http://mockbin.com/har');
 $request->setRequestMethod('POST');
 $request->setBody($body);
 
-$request->setHeaders(array(
+$request->setHeaders([
   'content-type' => 'text/plain'
-));
+]);
 
 $client->enqueue($request)->send();
 $response = $client->getResponse();
