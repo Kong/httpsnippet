@@ -10,5 +10,6 @@ module.exports = {
 
   jquery: require('./jquery'),
   fetch: require('./fetch'),
-  xhr: require('./xhr')
+  xhr: require('./xhr'),
+  axios: require('./axios')
 }

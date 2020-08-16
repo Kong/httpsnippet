@@ -143,12 +143,18 @@ describe('Custom targets', function () {
       customClient = {
         ...targets.node.request,
         info: {
-          key: 'axios',
+          key: 'axios-test',
           title: 'Axios',
           link: 'https://www.npmjs.com/package/axios',
           description: 'Promise based HTTP client for the browser and node.js'
         }
       }
+    })
+
+    it('should throw if client already exists', function () {
+      (function () {
+        HTTPSnippet.addTargetClient('node', {...customClient, info: {...customClient.info, key: 'axios'}})
+      }).should.throw(Error)
     })
 
     it("should throw if the client's target does not exist", function () {
