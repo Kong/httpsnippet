@@ -60,8 +60,8 @@ module.exports = function (source, options) {
 
       code.push('$body = new http\\Message\\Body;')
           .push('$body->addForm(%s, %s);',
-            Object.keys(fields).length ? helpers.convert(fields, opts.indent) : 'NULL',
-            files.length ? helpers.convert(files, opts.indent) : 'NULL'
+            Object.keys(fields).length ? helpers.convert(fields, opts.indent) : 'null',
+            files.length ? helpers.convert(files, opts.indent) : 'null'
           )
 
       // remove the contentType header
