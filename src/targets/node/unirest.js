@@ -20,20 +20,20 @@ module.exports = function (source, options) {
   var includeFS = false
   var code = new CodeBuilder(opts.indent)
 
-  code.push('var unirest = require("unirest");')
+  code.push('const unirest = require("unirest");')
       .blank()
-      .push('var req = unirest("%s", "%s");', source.method, source.url)
+      .push('const req = unirest("%s", "%s");', source.method, source.url)
       .blank()
 
   if (source.cookies.length) {
-    code.push('var CookieJar = unirest.jar();')
+    code.push('const CookieJar = unirest.jar();')
 
     source.cookies.forEach(function (cookie) {
       code.push('CookieJar.add("%s=%s","%s");', encodeURIComponent(cookie.name), encodeURIComponent(cookie.value), source.url)
     })
 
     code.push('req.jar(CookieJar);')
-        .blank()
+      .blank()
   }
 
   if (Object.keys(source.queryObj).length) {
@@ -50,6 +50,7 @@ module.exports = function (source, options) {
     case 'application/x-www-form-urlencoded':
       if (source.postData.paramsObj) {
         code.push('req.form(%s);', JSON.stringify(source.postData.paramsObj, null, opts.indent))
+          .blank()
       }
       break
 
@@ -57,6 +58,7 @@ module.exports = function (source, options) {
       if (source.postData.jsonObj) {
         code.push('req.type("json");')
             .push('req.send(%s);', JSON.stringify(source.postData.jsonObj, null, opts.indent))
+            .blank()
       }
       break
 
@@ -84,20 +86,21 @@ module.exports = function (source, options) {
       })
 
       code.push('req.multipart(%s);', JSON.stringify(multipart, null, opts.indent))
+        .blank()
       break
 
     default:
       if (source.postData.text) {
-        code.push(opts.indent + 'req.send(%s);', JSON.stringify(source.postData.text, null, opts.indent))
+        code.push('req.send(%s);', JSON.stringify(source.postData.text, null, opts.indent))
+          .blank()
       }
   }
 
   if (includeFS) {
-    code.unshift('var fs = require("fs");')
+    code.unshift('const fs = require("fs");')
   }
 
-  code.blank()
-      .push('req.end(function (res) {')
+  code.push('req.end(function (res) {')
       .push(1, 'if (res.error) throw new Error(res.error);')
       .blank()
       .push(1, 'console.log(res.body);')

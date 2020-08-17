@@ -1,6 +1,6 @@
-var unirest = require("unirest");
+const unirest = require("unirest");
 
-var req = unirest("GET", "http://mockbin.com/har");
+const req = unirest("GET", "http://mockbin.com/har");
 
 req.query({
   "foo": [
@@ -10,7 +10,6 @@ req.query({
   "baz": "abc",
   "key": "value"
 });
-
 
 req.end(function (res) {
   if (res.error) throw new Error(res.error);

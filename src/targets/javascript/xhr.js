@@ -22,12 +22,12 @@ module.exports = function (source, options) {
 
   switch (source.postData.mimeType) {
     case 'application/json':
-      code.push('var data = JSON.stringify(%s);', JSON.stringify(source.postData.jsonObj, null, opts.indent))
+      code.push('const data = JSON.stringify(%s);', JSON.stringify(source.postData.jsonObj, null, opts.indent))
           .push(null)
       break
 
     case 'multipart/form-data':
-      code.push('var data = new FormData();')
+      code.push('const data = new FormData();')
 
       source.postData.params.forEach(function (param) {
         code.push('data.append(%s, %s);', JSON.stringify(param.name), JSON.stringify(param.value || param.fileName || ''))
@@ -42,11 +42,11 @@ module.exports = function (source, options) {
       break
 
     default:
-      code.push('var data = %s;', JSON.stringify(source.postData.text || null))
+      code.push('const data = %s;', JSON.stringify(source.postData.text || null))
           .blank()
   }
 
-  code.push('var xhr = new XMLHttpRequest();')
+  code.push('const xhr = new XMLHttpRequest();')
 
   if (opts.cors) {
     code.push('xhr.withCredentials = true;')

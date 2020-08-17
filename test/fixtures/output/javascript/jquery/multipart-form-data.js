@@ -1,7 +1,7 @@
-var form = new FormData();
+const form = new FormData();
 form.append("foo", "bar");
 
-var settings = {
+const settings = {
   "async": true,
   "crossDomain": true,
   "url": "http://mockbin.com/har",
@@ -11,7 +11,7 @@ var settings = {
   "contentType": false,
   "mimeType": "multipart/form-data",
   "data": form
-}
+};
 
 $.ajax(settings).done(function (response) {
   console.log(response);

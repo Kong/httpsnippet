@@ -1,6 +1,6 @@
-var unirest = require("unirest");
+const unirest = require("unirest");
 
-var req = unirest("POST", "http://mockbin.com/har");
+const req = unirest("POST", "http://mockbin.com/har");
 
 req.headers({
   "content-type": "application/x-www-form-urlencoded"
