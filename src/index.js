@@ -279,6 +279,8 @@ module.exports.addTargetClient = function (target, client) {
     throw new Error('The supplied custom target client must contain an `info` object.')
   } else if (!('key' in client.info) || !('title' in client.info)) {
     throw new Error('The supplied custom target client must have an `info` object with a `key` and `title` property.')
+  } else if (targets[target].hasOwnProperty(client.info.key)) {
+    throw new Error('The supplied custom target client already exists, please use a different key')
   }
 
   targets[target][client.info.key] = client

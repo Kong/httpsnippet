@@ -1,6 +1,6 @@
-var data = "foo=bar";
+const data = "foo=bar";
 
-var xhr = new XMLHttpRequest();
+const xhr = new XMLHttpRequest();
 xhr.withCredentials = true;
 
 xhr.addEventListener("readystatechange", function () {

@@ -1,6 +1,6 @@
-var request = require('request');
+const request = require('request');
 
-var options = {
+const options = {
   method: 'POST',
   url: 'http://mockbin.com/har',
   headers: {'content-type': 'text/plain'},

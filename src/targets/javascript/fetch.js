@@ -44,7 +44,7 @@ module.exports = function (source, options) {
       break
 
     case 'multipart/form-data':
-      code.push('var form = new FormData();')
+      code.push('const form = new FormData();')
 
       source.postData.params.forEach(function (param) {
         code.push(

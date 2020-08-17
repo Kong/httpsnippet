@@ -22,7 +22,7 @@ module.exports = function (source, options) {
   var includeFS = false
   var code = new CodeBuilder(opts.indent)
 
-  code.push("var request = require('request');")
+  code.push("const request = require('request');")
       .blank()
 
   var reqOpts = {
@@ -90,7 +90,7 @@ module.exports = function (source, options) {
   if (source.cookies.length) {
     reqOpts.jar = 'JAR'
 
-    code.push('var jar = request.jar();')
+    code.push('const jar = request.jar();')
 
     var url = source.url
 
@@ -101,10 +101,10 @@ module.exports = function (source, options) {
   }
 
   if (includeFS) {
-    code.unshift("var fs = require('fs');")
+    code.unshift("const fs = require('fs');")
   }
 
-  code.push('var options = %s;', stringifyObject(reqOpts, { indent: '  ', inlineCharacterLimit: 80 }))
+  code.push('const options = %s;', stringifyObject(reqOpts, { indent: '  ', inlineCharacterLimit: 80 }))
     .blank()
 
   code.push(util.format('request(options, %s', 'function (error, response, body) {'))

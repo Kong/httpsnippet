@@ -1,6 +1,6 @@
-var request = require('request');
+const request = require('request');
 
-var options = {
+const options = {
   method: 'GET',
   url: 'http://mockbin.com/har',
   qs: {foo: ['bar', 'baz'], baz: 'abc', key: 'value'}

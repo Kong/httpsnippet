@@ -31,7 +31,7 @@ var convert = function (obj, indent, lastIndent) {
         result.push(convert(item, indent + indent, indent))
       })
 
-      result = 'array(\n' + indent + result.join(',\n' + indent) + '\n' + lastIndent + ')'
+      result = '[\n' + indent + result.join(',\n' + indent) + '\n' + lastIndent + ']'
       break
 
     case '[object Object]':
@@ -41,7 +41,7 @@ var convert = function (obj, indent, lastIndent) {
           result.push(convert(i, indent) + ' => ' + convert(obj[i], indent + indent, indent))
         }
       }
-      result = 'array(\n' + indent + result.join(',\n' + indent) + '\n' + lastIndent + ')'
+      result = '[\n' + indent + result.join(',\n' + indent) + '\n' + lastIndent + ']'
       break
 
     default:
