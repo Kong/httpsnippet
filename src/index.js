@@ -4,6 +4,7 @@
 
 var es = require('event-stream')
 var MultiPartForm = require('form-data')
+var FormDataPolyfill = require('form-data/lib/form_data')
 var qs = require('querystring')
 var reducer = require('./helpers/reducer')
 var targets = require('./targets')
@@ -119,7 +120,7 @@ HTTPSnippet.prototype.prepare = function (request) {
         // This hack is pretty awful but it's the only way we can use this library in the browser as if we code this
         // against just the native FormData object, we can't polyfill that back into Node because Blob and File objects,
         // which something like `formdata-polyfill` requires, don't exist there.
-        const isNativeFormData = (typeof form[Symbol.iterator] === 'function')
+        const isNativeFormData = !(form instanceof FormDataPolyfill)
 
         // easter egg
         const boundary = '---011000010111000001101001'
@@ -128,15 +129,19 @@ HTTPSnippet.prototype.prepare = function (request) {
         }
 
         request.postData.params.forEach(function (param) {
+          const name = param.name
+          const value = param.value || ''
+          const filename = param.fileName || null
+
           if (isNativeFormData) {
-            if (isBlob(param.value)) {
-              form.append(param.name, param.value || '', param.fileName || null)
+            if (isBlob(value)) {
+              form.append(name, value, filename)
             } else {
-              form.append(param.name, param.value || '')
+              form.append(name, value)
             }
           } else {
-            form.append(param.name, param.value || '', {
-              filename: param.fileName || null,
+            form.append(name, value, {
+              filename: filename,
               contentType: param.contentType || null
             })
           }
@@ -274,6 +279,8 @@ module.exports.addTargetClient = function (target, client) {
     throw new Error('The supplied custom target client must contain an `info` object.')
   } else if (!('key' in client.info) || !('title' in client.info)) {
     throw new Error('The supplied custom target client must have an `info` object with a `key` and `title` property.')
+  } else if (targets[target].hasOwnProperty(client.info.key)) {
+    throw new Error('The supplied custom target client already exists, please use a different key')
   }
 
   targets[target][client.info.key] = client
