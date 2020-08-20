@@ -4,4 +4,6 @@ $response = Invoke-WebRequest -Uri 'http://mockbin.com/har' -Method POST -Header
 Content-Disposition: form-data; name="foo"; filename="hello.txt"
 Content-Type: text/plain
 
-Hello World'
+Hello World
+-----011000010111000001101001--
+'

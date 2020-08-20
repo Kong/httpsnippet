@@ -1,13 +1,18 @@
+/* eslint-env browser */
+
 'use strict'
 
 var debug = require('debug')('httpsnippet')
 var es = require('event-stream')
 var MultiPartForm = require('form-data')
+var FormDataPolyfill = require('form-data/lib/form_data')
 var qs = require('querystring')
 var reducer = require('./helpers/reducer')
 var targets = require('./targets')
 var url = require('url')
 var validate = require('har-validator/lib/async')
+
+const { formDataIterator, isBlob } = require('./helpers/form-data.js')
 
 // constructor
 var HTTPSnippet = function (data) {
@@ -104,22 +109,59 @@ HTTPSnippet.prototype.prepare = function (request) {
       if (request.postData.params) {
         var form = new MultiPartForm()
 
+        // The `form-data` module returns one of two things: a native FormData object, or its own polyfill. Since the
+        // polyfill does not support the full API of the native FormData object, when this library is running in a
+        // browser environment it'll fail on two things:
+        //
+        //  - The API for `form.append()` has three arguments and the third should only be present when the second is a
+        //    Blob or USVString.
+        //  - `FormData.pipe()` isn't a function.
+        //
+        // Since the native FormData object is iterable, we easily detect what version of `form-data` we're working
+        // with here to allow `multipart/form-data` requests to be compiled under both browser and Node environments.
+        //
+        // This hack is pretty awful but it's the only way we can use this library in the browser as if we code this
+        // against just the native FormData object, we can't polyfill that back into Node because Blob and File objects,
+        // which something like `formdata-polyfill` requires, don't exist there.
+        const isNativeFormData = !(form instanceof FormDataPolyfill)
+
         // easter egg
-        form._boundary = '---011000010111000001101001'
+        const boundary = '---011000010111000001101001'
+        if (!isNativeFormData) {
+          form._boundary = boundary
+        }
 
         request.postData.params.forEach(function (param) {
-          form.append(param.name, param.value || '', {
-            filename: param.fileName || null,
-            contentType: param.contentType || null
-          })
+          const name = param.name
+          const value = param.value || ''
+          const filename = param.fileName || null
+
+          if (isNativeFormData) {
+            if (isBlob(value)) {
+              form.append(name, value, filename)
+            } else {
+              form.append(name, value)
+            }
+          } else {
+            form.append(name, value, {
+              filename: filename,
+              contentType: param.contentType || null
+            })
+          }
         })
 
-        form.pipe(es.map(function (data, cb) {
-          request.postData.text += data
-        }))
+        if (isNativeFormData) {
+          for (var data of formDataIterator(form, boundary)) {
+            request.postData.text += data
+          }
+        } else {
+          form.pipe(es.map(function (data, cb) {
+            request.postData.text += data
+          }))
+        }
 
-        request.postData.boundary = form.getBoundary()
-        request.headersObj['content-type'] = 'multipart/form-data; boundary=' + form.getBoundary()
+        request.postData.boundary = boundary
+        request.headersObj['content-type'] = 'multipart/form-data; boundary=' + boundary
       }
       break
 
