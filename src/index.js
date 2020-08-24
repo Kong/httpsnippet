@@ -4,7 +4,6 @@
 
 var es = require('event-stream')
 var MultiPartForm = require('form-data')
-var FormDataPolyfill = require('form-data/lib/form_data')
 var qs = require('querystring')
 var reducer = require('./helpers/reducer')
 var targets = require('./targets')
@@ -120,7 +119,7 @@ HTTPSnippet.prototype.prepare = function (request) {
         // This hack is pretty awful but it's the only way we can use this library in the browser as if we code this
         // against just the native FormData object, we can't polyfill that back into Node because Blob and File objects,
         // which something like `formdata-polyfill` requires, don't exist there.
-        const isNativeFormData = !(form instanceof FormDataPolyfill)
+        const isNativeFormData = (typeof form[Symbol.iterator] === 'function')
 
         // easter egg
         const boundary = '---011000010111000001101001'
