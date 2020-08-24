@@ -2,9 +2,9 @@ import requests
 
 url = "http://mockbin.com/har"
 
-payload = "{\n  \"foo\": \"bar\"\n}"
-headers = {'content-type': 'application/json'}
+payload = {"foo": "bar"}
+headers = {"content-type": "application/json"}
 
-response = requests.request("POST", url, data=payload, headers=headers)
+response = requests.request("POST", url, json=payload, headers=headers)
 
 print(response.text)
