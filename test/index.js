@@ -166,8 +166,9 @@ describe('HTTPSnippet', function () {
     done()
   })
 
-  it('should add "headersObj" to source object case insensitive', function (done) {
+  it('should add "headersObj" to source object case insensitive when HTTP/1.0', function (done) {
     var fixture = Object.assign({}, fixtures.requests.headers)
+    fixture.httpVersion = 'HTTP/1.1'
     fixture.headers = fixture.headers.concat({
       name: 'Kong-Admin-Token',
       value: 'Hunter1'
@@ -178,7 +179,26 @@ describe('HTTPSnippet', function () {
     req.headersObj.should.eql({
       'Kong-Admin-Token': 'Hunter1',
       'accept': 'application/json',
-      'x-foo': 'Bar',
+      'x-foo': 'Bar'
+    })
+
+    done()
+  })
+
+  it('should add "headersObj" to source object in lowercase when HTTP/2.x', function (done) {
+    var fixture = Object.assign({}, fixtures.requests.headers)
+    fixture.httpVersion = 'HTTP/2'
+    fixture.headers = fixture.headers.concat({
+      name: 'Kong-Admin-Token',
+      value: 'Hunter1'
+    })
+
+    var req = new HTTPSnippet(fixture).requests[0]
+    req.headersObj.should.be.an.Object()
+    req.headersObj.should.eql({
+      'kong-admin-token': 'Hunter1',
+      'accept': 'application/json',
+      'x-foo': 'Bar'
     })
 
     done()
