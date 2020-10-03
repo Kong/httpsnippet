@@ -3,7 +3,7 @@ language: node_js
 node_js:
  - node
  - lts/*
- - 8
+ - 10
 
 before_install:
   - sudo apt-get update -qq
