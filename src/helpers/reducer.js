@@ -13,7 +13,7 @@ module.exports = function (obj, pair) {
   }
 
   // convert to array
-  var arr = [
+  const arr = [
     obj[pair.name],
     pair.value
   ]

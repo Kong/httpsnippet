@@ -2,22 +2,22 @@
 
 'use strict'
 
-var debug = require('debug')('httpsnippet')
-var es = require('event-stream')
-var MultiPartForm = require('form-data')
-var qs = require('querystring')
-var reducer = require('./helpers/reducer')
-var targets = require('./targets')
-var url = require('url')
-var validate = require('har-validator/lib/async')
+const debug = require('debug')('httpsnippet')
+const es = require('event-stream')
+const MultiPartForm = require('form-data')
+const qs = require('querystring')
+const reducer = require('./helpers/reducer')
+const targets = require('./targets')
+const url = require('url')
+const validate = require('har-validator/lib/async')
 
 const { formDataIterator, isBlob } = require('./helpers/form-data.js')
 
 // constructor
-var HTTPSnippet = function (data) {
-  var entries
-  var self = this
-  var input = Object.assign({}, data)
+const HTTPSnippet = function (data) {
+  let entries
+  const self = this
+  const input = Object.assign({}, data)
 
   // prep the main container
   self.requests = []
@@ -72,9 +72,9 @@ HTTPSnippet.prototype.prepare = function (request) {
 
   // construct headers objects
   if (request.headers && request.headers.length) {
-    var http2VersionRegex = /^HTTP\/2/
+    const http2VersionRegex = /^HTTP\/2/
     request.headersObj = request.headers.reduce(function (headers, header) {
-      var headerName = header.name
+      let headerName = header.name
       if (request.httpVersion.match(http2VersionRegex)) {
         headerName = headerName.toLowerCase()
       }
@@ -93,7 +93,7 @@ HTTPSnippet.prototype.prepare = function (request) {
   }
 
   // construct Cookie header
-  var cookies = request.cookies.map(function (cookie) {
+  const cookies = request.cookies.map(function (cookie) {
     return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value)
   })
 
@@ -111,7 +111,7 @@ HTTPSnippet.prototype.prepare = function (request) {
       request.postData.mimeType = 'multipart/form-data'
 
       if (request.postData.params) {
-        var form = new MultiPartForm()
+        const form = new MultiPartForm()
 
         // The `form-data` module returns one of two things: a native FormData object, or its own polyfill. Since the
         // polyfill does not support the full API of the native FormData object, when this library is running in a
@@ -236,10 +236,10 @@ HTTPSnippet.prototype.convert = function (target, client, opts) {
     opts = client
   }
 
-  var func = this._matchTarget(target, client)
+  const func = this._matchTarget(target, client)
 
   if (func) {
-    var results = this.requests.map(function (request) {
+    const results = this.requests.map(function (request) {
       return func(request, opts)
     })
 
@@ -297,8 +297,8 @@ module.exports.addTargetClient = function (target, client) {
 
 module.exports.availableTargets = function () {
   return Object.keys(targets).map(function (key) {
-    var target = Object.assign({}, targets[key].info)
-    var clients = Object.keys(targets[key])
+    const target = Object.assign({}, targets[key].info)
+    const clients = Object.keys(targets[key])
 
       .filter(function (prop) {
         return !~['info', 'index'].indexOf(prop)
