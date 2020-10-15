@@ -37,7 +37,15 @@ module.exports = function (source, options) {
 
   switch (source.postData.mimeType) {
     case 'application/x-www-form-urlencoded':
-      reqOpts.body = source.postData.paramsObj
+      code.unshift('const { URLSearchParams } = require(\'url\');')
+      code.push('const encodedParams = new URLSearchParams();')
+      code.blank()
+
+      source.postData.params.forEach(function (param) {
+        code.push('encodedParams.set(\'' + param.name + '\', \'' + param.value + '\');')
+      })
+
+      reqOpts.body = 'encodedParams.toString()'
       break
 
     case 'application/json':
@@ -49,15 +57,16 @@ module.exports = function (source, options) {
     case 'multipart/form-data':
       code.unshift('const FormData = require(\'form-data\');')
       code.push('const formData = new FormData();')
+      code.blank()
+
       source.postData.params.forEach(function (param) {
         if (!param.fileName && !param.fileName && !param.contentType) {
-          code.push('formData.append(\'' + param.name + '\',\'' + param.value + '\');')
+          code.push('formData.append(\'' + param.name + '\', \'' + param.value + '\');')
           return
         }
 
         if (param.fileName) {
           includeFS = true
-          code.blank()
           code.push('formData.append(\'' + param.name + '\', fs.createReadStream(\'' + param.fileName + '\'));')
         }
       })
@@ -100,7 +109,9 @@ module.exports = function (source, options) {
       .push(1, '.then(json => console.log(json))')
       .push(1, '.catch(err => console.error(\'error:\' + err));')
 
-  return code.join().replace(/"fs\.createReadStream\(\\"(.+)\\"\)"/, 'fs.createReadStream("$1")')
+  return code.join()
+    .replace(/'encodedParams.toString\(\)'/, 'encodedParams.toString()')
+    .replace(/"fs\.createReadStream\(\\"(.+)\\"\)"/, 'fs.createReadStream("$1")')
 }
 
 module.exports.info = {

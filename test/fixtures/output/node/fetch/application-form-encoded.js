@@ -1,11 +1,16 @@
+const { URLSearchParams } = require('url');
 const fetch = require('node-fetch');
+const encodedParams = new URLSearchParams();
+
+encodedParams.set('foo', 'bar');
+encodedParams.set('hello', 'world');
 
 let url = 'http://mockbin.com/har';
 
 let options = {
   method: 'POST',
   headers: {'content-type': 'application/x-www-form-urlencoded'},
-  body: {foo: 'bar', hello: 'world'}
+  body: encodedParams.toString()
 };
 
 fetch(url, options)
