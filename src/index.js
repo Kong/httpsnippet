@@ -69,9 +69,14 @@ HTTPSnippet.prototype.prepare = function (request) {
 
   // construct headers objects
   if (request.headers && request.headers.length) {
-    // loweCase header keys
+    var http2VersionRegex = /^HTTP\/2/
     request.headersObj = request.headers.reduce(function (headers, header) {
-      headers[header.name.toLowerCase()] = header.value
+      var headerName = header.name
+      if (request.httpVersion.match(http2VersionRegex)) {
+        headerName = headerName.toLowerCase()
+      }
+
+      headers[headerName] = header.value
       return headers
     }, {})
   }

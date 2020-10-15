@@ -48,6 +48,18 @@
         "title": "Unirest",
         "link": "http://unirest.io/nodejs.html",
         "description": "Lightweight HTTP Request Client Library"
+      },
+      {
+        "key": "axios",
+        "title": "Axios",
+        "link": "https://github.com/axios/axios",
+        "description": "Promise based HTTP client for the browser and node.js"
+      },
+      {
+        "key": "fetch",
+        "title": "Fetch",
+        "link": "https://github.com/bitinn/node-fetch",
+        "description": "Simplified HTTP node-fetch client"
       }
     ]
   },
@@ -74,6 +86,12 @@
         "title": "XMLHttpRequest",
         "link": "https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest",
         "description": "W3C Standard API that provides scripted client functionality"
+      },
+      {
+        "key": "axios",
+        "title": "Axios",
+        "link": "https://github.com/axios/axios",
+        "description": "Promise based HTTP client for the browser and node.js"
       }
     ]
   },
@@ -318,6 +336,20 @@
         "key": "1.1",
         "link": "https://tools.ietf.org/html/rfc7230",
         "title": "HTTP/1.1"
+      }
+    ]
+  },
+  {
+    "key": "kotlin",
+    "title": "Kotlin",
+    "extname": ".kt",
+    "default": "okhttp",
+    "clients": [
+      {
+        "key": "okhttp",
+        "title": "OkHttp",
+        "link": "http://square.github.io/okhttp/",
+        "description": "An HTTP Request Client Library"
       }
     ]
   }

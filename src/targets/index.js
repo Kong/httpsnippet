@@ -8,6 +8,7 @@ module.exports = {
   http: require('./http'),
   java: require('./java'),
   javascript: require('./javascript'),
+  kotlin: require('./kotlin'),
   node: require('./node'),
   objc: require('./objc'),
   ocaml: require('./ocaml'),
