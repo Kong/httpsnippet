@@ -11,6 +11,7 @@
 'use strict'
 
 var CodeBuilder = require('../../helpers/code-builder')
+var helpers = require('../../helpers/headers')
 
 module.exports = function (source, options) {
   var opts = Object.assign({
@@ -50,9 +51,12 @@ module.exports = function (source, options) {
       settings.data = '[form]'
 
       // remove the contentType header
-      if (~settings.headers['content-type'].indexOf('boundary')) {
-        delete settings.headers['content-type']
+      if (helpers.hasHeader(settings.headers, 'content-type')) {
+        if (helpers.getHeader(settings.headers, 'content-type').indexOf('boundary')) {
+          delete settings.headers[helpers.getHeaderName(settings.headers, 'content-type')]
+        }
       }
+
       code.blank()
       break
 

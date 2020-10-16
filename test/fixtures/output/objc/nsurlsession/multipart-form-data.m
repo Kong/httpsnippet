@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-NSDictionary *headers = @{ @"content-type": @"multipart/form-data; boundary=---011000010111000001101001" };
+NSDictionary *headers = @{ @"Content-Type": @"multipart/form-data; boundary=---011000010111000001101001" };
 NSArray *parameters = @[ @{ @"name": @"foo", @"value": @"bar" } ];
 NSString *boundary = @"---011000010111000001101001";
 

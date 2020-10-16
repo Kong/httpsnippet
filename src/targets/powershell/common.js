@@ -1,6 +1,7 @@
 'use strict'
 
 var CodeBuilder = require('../../helpers/code-builder')
+var helpers = require('../../helpers/headers')
 
 module.exports = function (command) {
   return function (source, options) {
@@ -44,7 +45,7 @@ module.exports = function (command) {
     }
 
     if (source.postData.text) {
-      commandOptions.push("-ContentType '" + source.allHeaders['content-type'] + "'")
+      commandOptions.push("-ContentType '" + helpers.getHeader(source.allHeaders, 'content-type') + "'")
       commandOptions.push("-Body '" + source.postData.text + "'")
     }
 
