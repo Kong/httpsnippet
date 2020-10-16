@@ -165,7 +165,20 @@ HTTPSnippet.prototype.prepare = function (request) {
         }
 
         request.postData.boundary = boundary
-        request.headersObj['content-type'] = 'multipart/form-data; boundary=' + boundary
+
+        // Since headers are case-sensitive we need to see if there's an existing `Content-Type` header that we can
+        // override.
+        let foundContentType = false
+        Object.keys(request.headersObj).forEach(header => {
+          if (header.toLowerCase() === 'content-type') {
+            foundContentType = true
+            request.headersObj[header] = 'multipart/form-data; boundary=' + boundary
+          }
+        })
+
+        if (!foundContentType) {
+          request.headersObj['content-type'] = 'multipart/form-data; boundary=' + boundary
+        }
       }
       break
 

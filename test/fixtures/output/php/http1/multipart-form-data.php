@@ -5,7 +5,7 @@ $request->setUrl('http://mockbin.com/har');
 $request->setMethod(HTTP_METH_POST);
 
 $request->setHeaders([
-  'content-type' => 'multipart/form-data; boundary=---011000010111000001101001'
+  'Content-Type' => 'multipart/form-data; boundary=---011000010111000001101001'
 ]);
 
 $request->setBody('-----011000010111000001101001
