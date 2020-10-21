@@ -1,5 +1,5 @@
 {
-  "version": "2.2.2",
+  "version": "2.2.3",
   "name": "@readme/httpsnippet",
   "description": "HTTP Request snippet generator for *most* languages",
   "homepage": "https://github.com/readmeio/httpsnippet",
