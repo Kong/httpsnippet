@@ -10,7 +10,7 @@ let url = 'http://mockbin.com/har';
 let options = {
   method: 'POST',
   headers: {'content-type': 'application/x-www-form-urlencoded'},
-  body: encodedParams.toString()
+  body: encodedParams
 };
 
 fetch(url, options)

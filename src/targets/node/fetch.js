@@ -45,7 +45,7 @@ module.exports = function (source, options) {
         code.push('encodedParams.set(\'' + param.name + '\', \'' + param.value + '\');')
       })
 
-      reqOpts.body = 'encodedParams.toString()'
+      reqOpts.body = 'encodedParams'
       break
 
     case 'application/json':
@@ -110,7 +110,7 @@ module.exports = function (source, options) {
       .push(1, '.catch(err => console.error(\'error:\' + err));')
 
   return code.join()
-    .replace(/'encodedParams.toString\(\)'/, 'encodedParams.toString()')
+    .replace(/'encodedParams'/, 'encodedParams')
     .replace(/"fs\.createReadStream\(\\"(.+)\\"\)"/, 'fs.createReadStream("$1")')
 }
 

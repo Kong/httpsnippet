@@ -14,7 +14,7 @@ let options = {
     'content-type': 'application/x-www-form-urlencoded',
     cookie: 'foo=bar; bar=baz; '
   },
-  body: encodedParams.toString()
+  body: encodedParams
 };
 
 fetch(url, options)
