@@ -80,7 +80,7 @@ module.exports = function (source, options) {
             .push(2, 'let contentType = param["content-type"]!')
             .push(2, 'let fileContent = String(contentsOfFile: filename, encoding: String.Encoding.utf8)')
             .push(2, 'if (error != nil) {')
-            .push(3, 'print(error)')
+            .push(3, 'print(error as Any)')
             .push(2, '}')
             .push(2, 'body += "; filename=\\"\\(filename)\\"\\r\\n"')
             .push(2, 'body += "Content-Type: \\(contentType)\\r\\n\\r\\n"')
@@ -121,7 +121,7 @@ module.exports = function (source, options) {
       .push(1, '} else {')
       // Casting the NSURLResponse to NSHTTPURLResponse so the user can see the status     .
       .push(2, 'let httpResponse = response as? HTTPURLResponse')
-      .push(2, 'print(httpResponse)')
+      .push(2, 'print(httpResponse as Any)')
       .push(1, '}')
       .push('})')
       .blank()
