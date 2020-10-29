@@ -36,7 +36,7 @@ module.exports = function (source, options) {
         .push(helpers.nsDeclaration('NSDictionary', 'headers', source.allHeaders, opts.pretty))
   }
 
-  if (source.postData.text || source.postData.jsonObj || source.postData.params) {
+  if (source.postData.text || source.postData.jsonObj || source.postData.params.length) {
     req.hasBody = true
 
     switch (source.postData.mimeType) {

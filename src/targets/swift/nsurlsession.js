@@ -37,7 +37,7 @@ module.exports = function (source, options) {
         .push(helpers.literalDeclaration('headers', source.allHeaders, opts))
   }
 
-  if (source.postData.text || source.postData.jsonObj || source.postData.params) {
+  if (source.postData.text || source.postData.jsonObj || source.postData.params.length) {
     req.hasBody = true
 
     switch (source.postData.mimeType) {
