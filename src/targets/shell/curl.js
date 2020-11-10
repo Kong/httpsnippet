@@ -18,13 +18,22 @@ module.exports = function (source, options) {
   var opts = Object.assign({
     indent: '  ',
     short: false,
-    binary: false
+    binary: false,
+    globOff: false
   }, options)
 
   var code = new CodeBuilder(opts.indent, opts.indent !== false ? ' \\\n' + opts.indent : ' ')
 
-  code.push('curl %s %s', opts.short ? '-X' : '--request', source.method)
-      .push(util.format('%s%s', opts.short ? '' : '--url ', helpers.quote(source.fullUrl)))
+  const globOption = opts.short ? '-g' : '--globoff'
+  const requestOption = opts.short ? '-X' : '--request'
+  var formattedUrl = helpers.quote(source.fullUrl)
+
+  code.push('curl %s %s', requestOption, source.method)
+  if (opts.globOff) {
+    formattedUrl = unescape(formattedUrl)
+    code.push(globOption)
+  }
+  code.push(util.format('%s%s', opts.short ? '' : '--url ', formattedUrl))
 
   if (source.httpVersion === 'HTTP/1.0') {
     code.push(opts.short ? '-0' : '--http1.0')
