@@ -102,7 +102,7 @@ module.exports = function (source, options) {
     // we keep the object as a literal and use this transform function
     // to wrap the literal in a JSON.stringify call
     transform: (object, property, originalResult) => {
-      if (property === 'body' && options.useObjectBody) {
+      if (property === 'body' && options.useObjectBody && source.postData.mimeType === 'application/json') {
         return 'JSON.stringify(' + originalResult + ')'
       }
 
