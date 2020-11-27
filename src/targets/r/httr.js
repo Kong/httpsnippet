@@ -93,13 +93,13 @@ module.exports = function (source, options) {
   var accept
 
   for (head in headers) {
-    if (head === 'accept') {
+    if (head.toLowerCase() === 'accept') {
       accept = ', accept("' + headers[head] + '")'
       headerCount = headerCount - 1
-    } else if (head === 'cookie') {
+    } else if (head.toLowerCase() === 'cookie') {
       cookies = ', set_cookies(`' + headers[head].replace(/;/g, '", `').replace(/` /g, '`').replace(/=/g, '` = "') + '")'
       headerCount = headerCount - 1
-    } else if (head !== 'content-type') {
+    } else if (head.toLowerCase() !== 'content-type') {
       header = header + head.replace('-', '_') + " = '" + headers[head]
       if (headerCount > 1) { header = header + "', " }
     }

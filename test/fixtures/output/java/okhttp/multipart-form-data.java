@@ -5,7 +5,7 @@ RequestBody body = RequestBody.create(mediaType, "-----011000010111000001101001\
 Request request = new Request.Builder()
   .url("http://mockbin.com/har")
   .post(body)
-  .addHeader("content-type", "multipart/form-data; boundary=---011000010111000001101001")
+  .addHeader("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
   .build();
 
 Response response = client.newCall(request).execute();

@@ -11,6 +11,7 @@
 'use strict'
 
 var CodeBuilder = require('../../helpers/code-builder')
+var helpers = require('../../helpers/headers')
 
 module.exports = function (source, options) {
   var opts = Object.assign({
@@ -34,8 +35,10 @@ module.exports = function (source, options) {
       })
 
       // remove the contentType header
-      if (source.allHeaders['content-type'].indexOf('boundary')) {
-        delete source.allHeaders['content-type']
+      if (helpers.hasHeader(source.allHeaders, 'content-type')) {
+        if (helpers.getHeader(source.allHeaders, 'content-type').indexOf('boundary')) {
+          delete source.allHeaders[helpers.getHeaderName(source.allHeaders, 'content-type')]
+        }
       }
 
       code.blank()
