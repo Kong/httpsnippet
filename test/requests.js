@@ -53,7 +53,7 @@ fixtures.cli.forEach(function (cli) {
             // make an exception for multipart/form-data
             if (fixture.headers) {
               fixture.headers.forEach(function (header, index) {
-                if (header.name === 'content-type' && header.value === 'multipart/form-data') {
+                if (header.name.toLowerCase() === 'content-type' && header.value === 'multipart/form-data') {
                   delete fixture.headers[index]
                 }
               })

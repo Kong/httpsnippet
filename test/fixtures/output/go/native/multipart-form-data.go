@@ -15,7 +15,7 @@ func main() {
 
 	req, _ := http.NewRequest("POST", url, payload)
 
-	req.Header.Add("content-type", "multipart/form-data; boundary=---011000010111000001101001")
+	req.Header.Add("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
 
 	res, _ := http.DefaultClient.Do(req)
 
