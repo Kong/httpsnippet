@@ -1,9 +1,10 @@
 'use strict'
 
 var CodeBuilder = require('../../helpers/code-builder')
+var helpers = require('../../helpers/headers')
 
 function getDecompressionMethods (source) {
-  var acceptEncoding = source.allHeaders['accept-encoding']
+  var acceptEncoding = helpers.getHeader(source.allHeaders, 'accept-encoding')
   if (!acceptEncoding) {
     return [] // no decompression
   }
@@ -67,7 +68,7 @@ module.exports = function (source, options) {
   code.push(1, 'RequestUri = new Uri("%s"),', source.fullUrl)
 
   var headers = Object.keys(source.allHeaders).filter(function (header) {
-    switch (header) {
+    switch (header.toLowerCase()) {
       case 'content-type':
       case 'content-length':
       case 'accept-encoding':

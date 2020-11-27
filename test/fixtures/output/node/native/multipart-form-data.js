@@ -6,7 +6,7 @@ const options = {
   "port": null,
   "path": "/har",
   "headers": {
-    "content-type": "multipart/form-data; boundary=---011000010111000001101001"
+    "Content-Type": "multipart/form-data; boundary=---011000010111000001101001"
   }
 };
 

@@ -5,7 +5,7 @@ val body = RequestBody.create(mediaType, "-----011000010111000001101001\r\nConte
 val request = Request.Builder()
   .url("http://mockbin.com/har")
   .post(body)
-  .addHeader("content-type", "multipart/form-data; boundary=---011000010111000001101001")
+  .addHeader("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
   .build()
 
 val response = client.newCall(request).execute()
