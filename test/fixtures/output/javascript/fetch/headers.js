@@ -1,13 +1,5 @@
-fetch("http://mockbin.com/har", {
-  "method": "GET",
-  "headers": {
-    "accept": "application/json",
-    "x-foo": "Bar"
-  }
-})
-.then(response => {
-  console.log(response);
-})
-.catch(err => {
-  console.error(err);
-});
+const options = {method: 'GET', headers: {accept: 'application/json', 'x-foo': 'Bar'}};
+
+fetch('http://mockbin.com/har', options)
+  .then(response => console.log(response))
+  .catch(err => console.error(err));
