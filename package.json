@@ -38,7 +38,7 @@
     "xmlhttprequest"
   ],
   "engines": {
-    "node": ">=4"
+    "node": ">=10"
   },
   "files": [
     "bin",
@@ -57,6 +57,7 @@
     "codeclimate": "codeclimate < coverage/lcov.info"
   },
   "standard": {
+    "env": "mocha",
     "ignore": [
       "**/test/fixtures/**"
     ]
@@ -73,10 +74,10 @@
     "echint": "^4.0.2",
     "glob": "^6.0.1",
     "istanbul": "^0.4.0",
-    "mocha": "^6.2.0",
+    "mocha": "^8.2.1",
     "require-directory": "^2.1.1",
     "should": "^13.2.3",
-    "standard": "^10.0.2"
+    "standard": "^16.0.3"
   },
   "dependencies": {
     "chalk": "^1.1.1",
