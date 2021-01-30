@@ -83,6 +83,14 @@ var snippet = new HTTPSnippet({
 });
 ```
 
+#### options
+
+Type: `object`
+
+Available options:
+
+* `escapeQueryStrings` (`boolean`): In the event of you supplying a `source` that alreay contains escaped query strings, this allows you to disable automatic of query strings and prevents them from being double-escaped.
+
 ### convert(target [, options])
 
 #### target
