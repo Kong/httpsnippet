@@ -10,10 +10,10 @@
 
 'use strict'
 
-var CodeBuilder = require('../../helpers/code-builder')
-var helpers = require('../../helpers/headers')
+const CodeBuilder = require('../../helpers/code-builder')
+const helpers = require('../../helpers/headers')
 
-var Keyword = function (name) {
+const Keyword = function (name) {
   this.name = name
 }
 
@@ -21,7 +21,7 @@ Keyword.prototype.toString = function () {
   return ':' + this.name
 }
 
-var File = function (path) {
+const File = function (path) {
   this.path = path
 }
 
@@ -29,38 +29,36 @@ File.prototype.toString = function () {
   return '(clojure.java.io/file "' + this.path + '")'
 }
 
-var jsType = function (x) {
+const jsType = function (x) {
   return (typeof x !== 'undefined')
-          ? x.constructor.name.toLowerCase()
-          : null
+    ? x.constructor.name.toLowerCase()
+    : null
 }
 
-var objEmpty = function (x) {
+const objEmpty = function (x) {
   return (jsType(x) === 'object')
-          ? Object.keys(x).length === 0
-          : false
+    ? Object.keys(x).length === 0
+    : false
 }
 
-var filterEmpty = function (m) {
+const filterEmpty = function (m) {
   Object.keys(m)
-        .filter(function (x) { return objEmpty(m[x]) })
-        .forEach(function (x) { delete m[x] })
+    .filter(function (x) { return objEmpty(m[x]) })
+    .forEach(function (x) { delete m[x] })
   return m
 }
 
-var padBlock = function (x, s) {
-  var padding = Array.apply(null, Array(x))
-                    .map(function (_) {
-                      return ' '
-                    })
-                    .join('')
+const padBlock = function (x, s) {
+  const padding = Array.apply(null, Array(x))
+    .map(function (_) {
+      return ' '
+    })
+    .join('')
   return s.replace(/\n/g, '\n' + padding)
 }
 
-var jsToEdn = function (js) {
+const jsToEdn = function (js) {
   switch (jsType(js)) {
-    default: // 'number' 'boolean'
-      return js.toString()
     case 'string':
       return '"' + js.replace(/"/g, '\\"') + '"'
     case 'file':
@@ -71,32 +69,38 @@ var jsToEdn = function (js) {
       return 'nil'
     case 'regexp':
       return '#"' + js.source + '"'
-    case 'object': // simple vertical format
-      var obj = Object.keys(js)
-                      .reduce(function (acc, key) {
-                        var val = padBlock(key.length + 2, jsToEdn(js[key]))
-                        return acc + ':' + key + ' ' + val + '\n '
-                      }, '')
-                      .trim()
+    case 'object': { // simple vertical format
+      const obj = Object.keys(js)
+        .reduce(function (acc, key) {
+          const val = padBlock(key.length + 2, jsToEdn(js[key]))
+          return acc + ':' + key + ' ' + val + '\n '
+        }, '')
+        .trim()
       return '{' + padBlock(1, obj) + '}'
-    case 'array': // simple horizontal format
-      var arr = js.reduce(function (acc, val) {
+    }
+    case 'array': { // simple horizontal format
+      const arr = js.reduce(function (acc, val) {
         return acc + ' ' + jsToEdn(val)
       }, '').trim()
       return '[' + padBlock(1, arr) + ']'
+    }
+    default: // 'number' 'boolean'
+      return js.toString()
   }
 }
 
 module.exports = function (source, options) {
-  var code = new CodeBuilder(options)
-  var methods = ['get', 'post', 'put', 'delete', 'patch', 'head', 'options']
+  const code = new CodeBuilder(options)
+  const methods = ['get', 'post', 'put', 'delete', 'patch', 'head', 'options']
 
   if (methods.indexOf(source.method.toLowerCase()) === -1) {
     return code.push('Method not supported').join()
   }
 
-  var params = {headers: source.allHeaders,
-    'query-params': source.queryObj}
+  const params = {
+    headers: source.allHeaders,
+    'query-params': source.queryObj
+  }
 
   switch (source.postData.mimeType) {
     case 'application/json':
@@ -115,11 +119,15 @@ module.exports = function (source, options) {
     case 'multipart/form-data':
       params.multipart = source.postData.params.map(function (x) {
         if (x.fileName && !x.value) {
-          return {name: x.name,
-            content: new File(x.fileName)}
+          return {
+            name: x.name,
+            content: new File(x.fileName)
+          }
         } else {
-          return {name: x.name,
-            content: x.value}
+          return {
+            name: x.name,
+            content: x.value
+          }
         }
       })
       delete params.headers[helpers.getHeaderName(params.headers, 'content-type')]

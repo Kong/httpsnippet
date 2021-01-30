@@ -9,21 +9,21 @@
  */
 'use strict'
 
-var util = require('util')
-var stringifyObject = require('stringify-object')
-var CodeBuilder = require('../../helpers/code-builder')
+const util = require('util')
+const stringifyObject = require('stringify-object')
+const CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var opts = Object.assign({
+  const opts = Object.assign({
     indent: '  '
   }, options)
 
-  var code = new CodeBuilder(opts.indent)
+  const code = new CodeBuilder(opts.indent)
 
   code.push('import axios from "axios";')
-      .blank()
+    .blank()
 
-  var reqOpts = {
+  const reqOpts = {
     method: source.method,
     url: source.url
   }
@@ -73,10 +73,10 @@ module.exports = function (source, options) {
     .blank()
 
   code.push(util.format('axios.request(options).then(%s', 'function (response) {'))
-      .push(1, 'console.log(response.data);')
-      .push('}).catch(%s', 'function (error) {')
-      .push(1, 'console.error(error);')
-      .push('});')
+    .push(1, 'console.log(response.data);')
+    .push('}).catch(%s', 'function (error) {')
+    .push(1, 'console.error(error);')
+    .push('});')
 
   return code.join()
 }

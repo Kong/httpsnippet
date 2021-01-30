@@ -10,10 +10,10 @@
 
 'use strict'
 
-var CodeBuilder = require('../../helpers/code-builder')
+const CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var opts = Object.assign(
+  const opts = Object.assign(
     {
       indent: '  ',
       credentials: null
@@ -21,7 +21,7 @@ module.exports = function (source, options) {
     options
   )
 
-  var code = new CodeBuilder(opts.indent)
+  const code = new CodeBuilder(opts.indent)
 
   options = {
     method: source.method,

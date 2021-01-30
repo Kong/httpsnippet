@@ -10,46 +10,45 @@
 
 'use strict'
 
-var CodeBuilder = require('../../helpers/code-builder')
+const CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var code = new CodeBuilder()
+  const code = new CodeBuilder()
   // Start Request
   code.push('import http.client')
-      .blank()
+    .blank()
 
   // Check which protocol to be used for the client connection
-  var protocol = source.uriObj.protocol
+  const protocol = source.uriObj.protocol
   if (protocol === 'https:') {
     code.push('conn = http.client.HTTPSConnection("%s")', source.uriObj.host)
-        .blank()
+      .blank()
   } else {
     code.push('conn = http.client.HTTPConnection("%s")', source.uriObj.host)
-        .blank()
+      .blank()
   }
 
   // Create payload string if it exists
-  var payload = JSON.stringify(source.postData.text)
+  const payload = JSON.stringify(source.postData.text)
   if (payload) {
     code.push('payload = %s', payload)
-        .blank()
+      .blank()
   }
 
   // Create Headers
-  var header
-  var headers = source.allHeaders
-  var headerCount = Object.keys(headers).length
+  const headers = source.allHeaders
+  const headerCount = Object.keys(headers).length
   if (headerCount === 1) {
-    for (header in headers) {
+    for (const header in headers) {
       code.push('headers = { \'%s\': "%s" }', header, headers[header])
-          .blank()
+        .blank()
     }
   } else if (headerCount > 1) {
-    var count = 1
+    let count = 1
 
     code.push('headers = {')
 
-    for (header in headers) {
+    for (const header in headers) {
       if (count++ !== headerCount) {
         code.push('    \'%s\': "%s",', header, headers[header])
       } else {
@@ -58,12 +57,12 @@ module.exports = function (source, options) {
     }
 
     code.push('    }')
-        .blank()
+      .blank()
   }
 
   // Make Request
-  var method = source.method
-  var path = source.uriObj.path
+  const method = source.method
+  const path = source.uriObj.path
   if (payload && headerCount) {
     code.push('conn.request("%s", "%s", payload, headers)', method, path)
   } else if (payload && !headerCount) {
@@ -76,10 +75,10 @@ module.exports = function (source, options) {
 
   // Get Response
   code.blank()
-      .push('res = conn.getresponse()')
-      .push('data = res.read()')
-      .blank()
-      .push('print(data.decode("utf-8"))')
+    .push('res = conn.getresponse()')
+    .push('data = res.read()')
+    .blank()
+    .push('print(data.decode("utf-8"))')
 
   return code.join()
 }

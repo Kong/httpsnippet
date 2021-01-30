@@ -1,23 +1,23 @@
 'use strict'
 
-var CodeBuilder = require('../../helpers/code-builder')
-var helpers = require('../../helpers/headers')
+const CodeBuilder = require('../../helpers/code-builder')
+const helpers = require('../../helpers/headers')
 
 function getDecompressionMethods (source) {
-  var acceptEncoding = helpers.getHeader(source.allHeaders, 'accept-encoding')
+  const acceptEncoding = helpers.getHeader(source.allHeaders, 'accept-encoding')
   if (!acceptEncoding) {
     return [] // no decompression
   }
 
-  var supportedMethods = {
+  const supportedMethods = {
     gzip: 'DecompressionMethods.GZip',
     deflate: 'DecompressionMethods.Deflate'
   }
-  var methods = []
+  const methods = []
   acceptEncoding.split(',').forEach(function (encoding) {
-    var match = /\s*([^;\s]+)/.exec(encoding)
+    const match = /\s*([^;\s]+)/.exec(encoding)
     if (match) {
-      var method = supportedMethods[match[1]]
+      const method = supportedMethods[match[1]]
       if (method) {
         methods.push(method)
       }
@@ -28,12 +28,15 @@ function getDecompressionMethods (source) {
 }
 
 module.exports = function (source, options) {
-  var indentation = '    '
-  var code = new CodeBuilder(indentation)
+  const opts = Object.assign({
+    indent: '    '
+  }, options)
 
-  var clienthandler = ''
-  var cookies = !!source.allHeaders.cookie
-  var decompressionMethods = getDecompressionMethods(source)
+  const code = new CodeBuilder(opts.indent)
+
+  let clienthandler = ''
+  const cookies = !!source.allHeaders.cookie
+  const decompressionMethods = getDecompressionMethods(source)
   if (cookies || decompressionMethods.length) {
     clienthandler = 'clientHandler'
     code.push('var clientHandler = new HttpClientHandler')
@@ -54,8 +57,8 @@ module.exports = function (source, options) {
   code.push('var request = new HttpRequestMessage')
   code.push('{')
 
-  var methods = [ 'GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS', 'TRACE' ]
-  var method = source.method.toUpperCase()
+  const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS', 'TRACE']
+  let method = source.method.toUpperCase()
   if (method && (methods.indexOf(method) !== -1)) {
     // buildin method
     method = `HttpMethod.${method[0]}${method.substring(1).toLowerCase()}`
@@ -67,7 +70,7 @@ module.exports = function (source, options) {
 
   code.push(1, 'RequestUri = new Uri("%s"),', source.fullUrl)
 
-  var headers = Object.keys(source.allHeaders).filter(function (header) {
+  const headers = Object.keys(source.allHeaders).filter(function (header) {
     switch (header.toLowerCase()) {
       case 'content-type':
       case 'content-length':
