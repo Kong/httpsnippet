@@ -1,12 +1,10 @@
-/* global it */
-
 'use strict'
 
 require('should')
 
 module.exports = function (HTTPSnippet, fixtures) {
   it('should use short options', function () {
-    var result = new HTTPSnippet(fixtures.requests.full).convert('shell', 'curl', {
+    const result = new HTTPSnippet(fixtures.requests.full).convert('shell', 'curl', {
       short: true,
       indent: false
     })
@@ -16,7 +14,7 @@ module.exports = function (HTTPSnippet, fixtures) {
   })
 
   it('should use binary option', function () {
-    var result = new HTTPSnippet(fixtures.requests.full).convert('shell', 'curl', {
+    const result = new HTTPSnippet(fixtures.requests.full).convert('shell', 'curl', {
       short: true,
       indent: false,
       binary: true
@@ -27,7 +25,7 @@ module.exports = function (HTTPSnippet, fixtures) {
   })
 
   it('should use --http1.0 for HTTP/1.0', function () {
-    var result = new HTTPSnippet(fixtures.curl.http1).convert('shell', 'curl', {
+    const result = new HTTPSnippet(fixtures.curl.http1).convert('shell', 'curl', {
       indent: false
     })
 
@@ -36,7 +34,7 @@ module.exports = function (HTTPSnippet, fixtures) {
   })
 
   it('should use custom indentation', function () {
-    var result = new HTTPSnippet(fixtures.requests.full).convert('shell', 'curl', {
+    const result = new HTTPSnippet(fixtures.requests.full).convert('shell', 'curl', {
       indent: '@'
     })
 

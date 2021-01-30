@@ -1,28 +1,28 @@
-/* global it */
-
 'use strict'
 
 require('should')
 
 module.exports = function (HTTPSnippet, fixtures) {
   it('should support an indent option', function () {
-    var result = new HTTPSnippet(fixtures.requests.short).convert('objc', {
+    const result = new HTTPSnippet(fixtures.requests.short).convert('objc', {
       indent: '  '
     })
 
     result.should.be.a.String()
     result.replace(/\n/g, '').should.eql('#import <Foundation/Foundation.h>NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://mockbin.com/har"]                                                       cachePolicy:NSURLRequestUseProtocolCachePolicy                                                   timeoutInterval:10.0];[request setHTTPMethod:@"GET"];NSURLSession *session = [NSURLSession sharedSession];NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {                                              if (error) {                                                NSLog(@"%@", error);                                              } else {                                                NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;                                                NSLog(@"%@", httpResponse);                                              }                                            }];[dataTask resume];')
   })
+
   it('should support a timeout option', function () {
-    var result = new HTTPSnippet(fixtures.requests.short).convert('objc', {
+    const result = new HTTPSnippet(fixtures.requests.short).convert('objc', {
       timeout: 5
     })
 
     result.should.be.a.String()
     result.replace(/\n/g, '').should.eql('#import <Foundation/Foundation.h>NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://mockbin.com/har"]                                                       cachePolicy:NSURLRequestUseProtocolCachePolicy                                                   timeoutInterval:5.0];[request setHTTPMethod:@"GET"];NSURLSession *session = [NSURLSession sharedSession];NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {                                                if (error) {                                                    NSLog(@"%@", error);                                                } else {                                                    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;                                                    NSLog(@"%@", httpResponse);                                                }                                            }];[dataTask resume];')
   })
+
   it('should support pretty option', function () {
-    var result = new HTTPSnippet(fixtures.requests.full).convert('objc', {
+    const result = new HTTPSnippet(fixtures.requests.full).convert('objc', {
       pretty: false
     })
 
@@ -31,7 +31,7 @@ module.exports = function (HTTPSnippet, fixtures) {
   })
 
   it('should support json object with null value', function () {
-    var result = new HTTPSnippet(fixtures.requests['jsonObj-null-value']).convert('objc', {
+    const result = new HTTPSnippet(fixtures.requests['jsonObj-null-value']).convert('objc', {
       pretty: false
     })
 

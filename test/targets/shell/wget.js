@@ -1,12 +1,10 @@
-/* global it */
-
 'use strict'
 
 require('should')
 
 module.exports = function (HTTPSnippet, fixtures) {
   it('should use short options', function () {
-    var result = new HTTPSnippet(fixtures.requests.full).convert('shell', 'wget', {
+    const result = new HTTPSnippet(fixtures.requests.full).convert('shell', 'wget', {
       short: true,
       indent: false
     })
@@ -16,7 +14,7 @@ module.exports = function (HTTPSnippet, fixtures) {
   })
 
   it('should ask for -v output', function () {
-    var result = new HTTPSnippet(fixtures.requests.short).convert('shell', 'wget', {
+    const result = new HTTPSnippet(fixtures.requests.short).convert('shell', 'wget', {
       short: true,
       indent: false,
       verbose: true
@@ -27,7 +25,7 @@ module.exports = function (HTTPSnippet, fixtures) {
   })
 
   it('should ask for --verbose output', function () {
-    var result = new HTTPSnippet(fixtures.requests.short).convert('shell', 'wget', {
+    const result = new HTTPSnippet(fixtures.requests.short).convert('shell', 'wget', {
       short: false,
       indent: false,
       verbose: true
@@ -38,7 +36,7 @@ module.exports = function (HTTPSnippet, fixtures) {
   })
 
   it('should use custom indentation', function () {
-    var result = new HTTPSnippet(fixtures.requests.full).convert('shell', 'wget', {
+    const result = new HTTPSnippet(fixtures.requests.full).convert('shell', 'wget', {
       indent: '@'
     })
 
