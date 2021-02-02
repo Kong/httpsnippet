@@ -1,13 +1,9 @@
-fetch("http://mockbin.com/har", {
-  "method": "POST",
-  "headers": {
-    "content-type": "application/json"
-  },
-  "body": "{\"foo\":null}"
-})
-.then(response => {
-  console.log(response);
-})
-.catch(err => {
-  console.error(err);
-});
+const options = {
+  method: 'POST',
+  headers: {'content-type': 'application/json'},
+  body: '{"foo":null}'
+};
+
+fetch('http://mockbin.com/har', options)
+  .then(response => console.log(response))
+  .catch(err => console.error(err));

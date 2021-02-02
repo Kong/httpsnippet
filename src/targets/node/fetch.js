@@ -84,6 +84,7 @@ module.exports = function (source, options) {
     source.cookies.forEach(function (cookie) {
       cookies = cookies + encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value) + '; '
     })
+
     if (reqOpts.headers) {
       reqOpts.headers.cookie = cookies
     } else {
@@ -91,18 +92,19 @@ module.exports = function (source, options) {
       reqOpts.headers.cookie = cookies
     }
   }
+
   code.blank()
-  code.push('let url = \'' + url + '\';')
+  code.push('const url = \'' + url + '\';')
     .blank()
-  code.push('let options = %s;', stringifyObject(reqOpts, {
-    indent: '  ',
+  code.push('const options = %s;', stringifyObject(reqOpts, {
+    indent: opts.indent,
     inlineCharacterLimit: 80,
-    // The Fetch API body only accepts string parameters, but stringified JSON
-    // can be difficult to read, so if you pass the useObjectBody param
-    // we keep the object as a literal and use this transform function
-    // to wrap the literal in a JSON.stringify call
+
+    // The Fetch API body only accepts string parameters, but stringified JSON can be difficult to
+    // read, so if you pass the `useObjectBody` option we keep the object as a literal and use
+    // this transform function to wrap the literal in a `JSON.stringify` call.
     transform: (object, property, originalResult) => {
-      if (property === 'body' && options.useObjectBody && source.postData.mimeType === 'application/json') {
+      if (property === 'body' && opts.useObjectBody && source.postData.mimeType === 'application/json') {
         return 'JSON.stringify(' + originalResult + ')'
       }
 
@@ -113,10 +115,12 @@ module.exports = function (source, options) {
   if (includeFS) {
     code.unshift('const fs = require(\'fs\');')
   }
+
   if (source.postData.mimeType === 'multipart/form-data') {
     code.push('options.body = formData;')
       .blank()
   }
+
   code.push('fetch(url, options)')
       .push(1, '.then(res => res.json())')
       .push(1, '.then(json => console.log(json))')

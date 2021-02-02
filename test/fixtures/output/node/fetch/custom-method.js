@@ -1,8 +1,8 @@
 const fetch = require('node-fetch');
 
-let url = 'http://mockbin.com/har';
+const url = 'http://mockbin.com/har';
 
-let options = {method: 'PROPFIND'};
+const options = {method: 'PROPFIND'};
 
 fetch(url, options)
   .then(res => res.json())

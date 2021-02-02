@@ -1,8 +1,8 @@
 const fetch = require('node-fetch');
 
-let url = 'http://mockbin.com/har';
+const url = 'http://mockbin.com/har';
 
-let options = {method: 'POST', headers: {cookie: 'foo=bar; bar=baz; '}};
+const options = {method: 'POST', headers: {cookie: 'foo=bar; bar=baz; '}};
 
 fetch(url, options)
   .then(res => res.json())

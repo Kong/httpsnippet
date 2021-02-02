@@ -4,9 +4,9 @@ const encodedParams = new URLSearchParams();
 
 encodedParams.set('foo', 'bar');
 
-let url = 'http://mockbin.com/har';
+const url = 'http://mockbin.com/har';
 
-let options = {
+const options = {
   method: 'POST',
   qs: {foo: ['bar', 'baz'], baz: 'abc', key: 'value'},
   headers: {

@@ -13,9 +13,9 @@ module.exports = function (HTTPSnippet, fixtures) {
     result.should.be.a.String()
     result.should.eql(`const fetch = require('node-fetch');
 
-let url = 'http://mockbin.com/har';
+const url = 'http://mockbin.com/har';
 
-let options = {
+const options = {
   method: 'POST',
   headers: {'content-type': 'application/json'},
   body: JSON.stringify({
@@ -43,9 +43,9 @@ fetch(url, options)
     // This is identical to /test/fixtures/output/node/fetch/application-json.js, but /test/fixtures/index.js explicitly excludes output, leaving me to copy and paste for the moment.
     result.should.eql(`const fetch = require('node-fetch');
 
-let url = 'http://mockbin.com/har';
+const url = 'http://mockbin.com/har';
 
-let options = {
+const options = {
   method: 'POST',
   headers: {'content-type': 'application/json'},
   body: '{"number":1,"string":"f\\"oo","arr":[1,2,3],"nested":{"a":"b"},"arr_mix":[1,"a",{"arr_mix_nested":{}}],"boolean":false}'
@@ -71,9 +71,9 @@ const encodedParams = new URLSearchParams();
 encodedParams.set('foo', 'bar');
 encodedParams.set('hello', 'world');
 
-let url = 'http://mockbin.com/har';
+const url = 'http://mockbin.com/har';
 
-let options = {
+const options = {
   method: 'POST',
   headers: {'content-type': 'application/x-www-form-urlencoded'},
   body: encodedParams
