@@ -4,7 +4,7 @@
 
 var es = require('event-stream')
 var MultiPartForm = require('form-data')
-var qs = require('querystring')
+var qs = require('qs')
 var reducer = require('./helpers/reducer')
 var targets = require('./targets')
 var url = require('url')
@@ -232,12 +232,13 @@ HTTPSnippet.prototype.prepare = function (request, options) {
   // update the uri object
   request.uriObj.query = request.queryObj
   if (options.escapeQueryStrings) {
-    request.uriObj.search = qs.stringify(request.queryObj)
+    request.uriObj.search = qs.stringify(request.queryObj, {
+      indices: false
+    })
   } else {
-    // If we don't want to escape query strings (in the case of the HAR already having them escaped), pass in a dumb
-    // callback to disable querystring from doing so.
-    request.uriObj.search = qs.stringify(request.queryObj, null, null, {
-      encodeURIComponent: (str) => str
+    request.uriObj.search = qs.stringify(request.queryObj, {
+      encode: false,
+      indices: false
     })
   }
 
