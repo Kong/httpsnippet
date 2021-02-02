@@ -1,8 +1,8 @@
 const fetch = require('node-fetch');
 
-let url = 'http://mockbin.com/har';
+const url = 'http://mockbin.com/har';
 
-let options = {
+const options = {
   method: 'GET',
   qs: {
     startTime: '2019-06-13T19%3A08%3A25.455Z',
