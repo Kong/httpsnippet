@@ -13,10 +13,14 @@ var validate = require('har-validator/lib/async')
 const { formDataIterator, isBlob } = require('./helpers/form-data.js')
 
 // constructor
-var HTTPSnippet = function (data) {
+var HTTPSnippet = function (data, opts = {}) {
   var entries
   var self = this
   var input = Object.assign({}, data)
+
+  var options = Object.assign({
+    escapeQueryStrings: true
+  }, opts)
 
   // prep the main container
   self.requests = []
@@ -48,12 +52,12 @@ var HTTPSnippet = function (data) {
         throw err
       }
 
-      self.requests.push(self.prepare(entry.request))
+      self.requests.push(self.prepare(entry.request, options))
     })
   })
 }
 
-HTTPSnippet.prototype.prepare = function (request) {
+HTTPSnippet.prototype.prepare = function (request, options) {
   // construct utility properties
   request.queryObj = {}
   request.headersObj = {}
@@ -227,7 +231,15 @@ HTTPSnippet.prototype.prepare = function (request) {
 
   // update the uri object
   request.uriObj.query = request.queryObj
-  request.uriObj.search = qs.stringify(request.queryObj)
+  if (options.escapeQueryStrings) {
+    request.uriObj.search = qs.stringify(request.queryObj)
+  } else {
+    // If we don't want to escape query strings (in the case of the HAR already having them escaped), pass in a dumb
+    // callback to disable querystring from doing so.
+    request.uriObj.search = qs.stringify(request.queryObj, null, null, {
+      encodeURIComponent: (str) => str
+    })
+  }
 
   if (request.uriObj.search) {
     request.uriObj.path = request.uriObj.pathname + '?' + request.uriObj.search

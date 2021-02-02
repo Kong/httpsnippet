@@ -1,0 +1,15 @@
+{
+  "method": "GET",
+  "url": "http://mockbin.com/har",
+  "httpVersion": "HTTP/1.1",
+  "queryString": [
+    {
+      "name": "startTime",
+      "value": "2019-06-13T19%3A08%3A25.455Z"
+    },
+    {
+      "name": "endTime",
+      "value": "2015-09-15T14%3A00%3A12-04%3A00"
+    }
+  ]
+}

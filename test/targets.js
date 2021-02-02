@@ -76,7 +76,14 @@ var itShouldGenerateOutput = function (request, path, target, client) {
         skipMe['*']['*'].indexOf(request) > -1)) {
       this.skip()
     }
-    var instance = new HTTPSnippet(fixtures.requests[request])
+
+    var options = {}
+    if (request === 'query-encoded') {
+      // Query strings in this HAR are already escaped.
+      options.escapeQueryStrings = false
+    }
+
+    var instance = new HTTPSnippet(fixtures.requests[request], options)
 
     // `form-data` sets the line break as `\r\n`, but we can't easily replicate that in our fixtures so let's convert
     // it to a standard line break instead.

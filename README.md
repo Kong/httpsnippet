@@ -16,7 +16,7 @@ npm install --save @readme/httpsnippet
 
 ## Usage
 
-### HTTPSnippet(source)
+### HTTPSnippet(source [, options])
 
 #### source
 
@@ -33,6 +33,14 @@ const snippet = new HTTPSnippet({
   url: 'http://mockbin.com/request'
 });
 ```
+
+#### options
+
+Type: `object`
+
+Available options:
+
+* `escapeQueryStrings` (`boolean`): In the event of you supplying a `source` that alreay contains escaped query strings, this allows you to disable automatic of query strings and prevents them from being double-escaped.
 
 ### convert(target [, options])
 
