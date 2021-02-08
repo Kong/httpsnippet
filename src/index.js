@@ -15,7 +15,7 @@ var validate = require('har-validator/lib/async')
 const { formDataIterator, isBlob } = require('./helpers/form-data.js')
 
 // constructor
-var HTTPSnippet = function (data) {
+var HTTPSnippet = function (data, encodeUri = true) {
   var entries
   var self = this
   var input = Object.assign({}, data)
@@ -50,12 +50,12 @@ var HTTPSnippet = function (data) {
         throw err
       }
 
-      self.requests.push(self.prepare(entry.request))
+      self.requests.push(self.prepare(entry.request, encodeUri))
     })
   })
 }
 
-HTTPSnippet.prototype.prepare = function (request) {
+HTTPSnippet.prototype.prepare = function (request, encodeUri = true) {
   // construct utility properties
   request.queryObj = {}
   request.headersObj = {}
@@ -220,21 +220,31 @@ HTTPSnippet.prototype.prepare = function (request) {
   // reset uriObj values for a clean url
   request.uriObj.query = null
   request.uriObj.search = null
-  request.uriObj.path = decodeURI(request.uriObj.pathname)
+  request.uriObj.path = request.uriObj.pathname
+  if (!encodeUri) {
+    request.uriObj.path = decodeURI(request.uriObj.pathname)
+  }
+  
 
   // keep the base url clean of queryString
-  request.url = decodeURI(url.format(request.uriObj))
+  request.url = url.format(request.uriObj)
+  if (!encodeUri) {
+    request.url = decodeURI(url.format(request.uriObj))
+  }
 
   // update the uri object
   request.uriObj.query = request.queryObj
   request.uriObj.search = qs.stringify(request.queryObj)
 
   if (request.uriObj.search) {
-    request.uriObj.path = decodeURI(request.uriObj.pathname) + '?' + request.uriObj.search
+    request.uriObj.path = request.uriObj.pathname + '?' + request.uriObj.search
   }
 
   // construct a full url
-  request.fullUrl = decodeURI(url.format(request.uriObj))
+  request.fullUrl = url.format(request.uriObj)
+  if (!encodeUri) {
+    request.fullUrl = decodeURI(url.format(request.uriObj))
+  }
 
   return request
 }
