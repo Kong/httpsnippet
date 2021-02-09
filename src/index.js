@@ -224,7 +224,6 @@ HTTPSnippet.prototype.prepare = function (request, encodeUri = true) {
   if (!encodeUri) {
     request.uriObj.path = decodeURI(request.uriObj.pathname)
   }
-  
 
   // keep the base url clean of queryString
   request.url = url.format(request.uriObj)
