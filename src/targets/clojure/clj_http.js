@@ -11,6 +11,7 @@
 'use strict'
 
 var CodeBuilder = require('../../helpers/code-builder')
+var helpers = require('../../helpers/headers')
 
 var Keyword = function (name) {
   this.name = name
@@ -101,15 +102,15 @@ module.exports = function (source, options) {
     case 'application/json':
       params['content-type'] = new Keyword('json')
       params['form-params'] = source.postData.jsonObj
-      delete params.headers['content-type']
+      delete params.headers[helpers.getHeaderName(params.headers, 'content-type')]
       break
     case 'application/x-www-form-urlencoded':
       params['form-params'] = source.postData.paramsObj
-      delete params.headers['content-type']
+      delete params.headers[helpers.getHeaderName(params.headers, 'content-type')]
       break
     case 'text/plain':
       params.body = source.postData.text
-      delete params.headers['content-type']
+      delete params.headers[helpers.getHeaderName(params.headers, 'content-type')]
       break
     case 'multipart/form-data':
       params.multipart = source.postData.params.map(function (x) {
@@ -121,14 +122,14 @@ module.exports = function (source, options) {
             content: x.value}
         }
       })
-      delete params.headers['content-type']
+      delete params.headers[helpers.getHeaderName(params.headers, 'content-type')]
       break
   }
 
-  switch (params.headers.accept) {
+  switch (helpers.getHeader(params.headers, 'accept')) {
     case 'application/json':
       params.accept = new Keyword('json')
-      delete params.headers.accept
+      delete params.headers[helpers.getHeaderName(params.headers, 'accept')]
       break
   }
 

@@ -7,7 +7,6 @@ var util = require('util')
  *
  * @param {number} length Length of the array to return
  * @param {string} str String to pad out with
- * @return {string}
  */
 function buildString (length, str) {
   return Array.apply(null, new Array(length)).map(String.prototype.valueOf, str).join('')
@@ -17,33 +16,23 @@ function buildString (length, str) {
  * Create a string corresponding to a Dictionary or Array literal representation with pretty option
  * and indentation.
  */
-function concatArray (arr, pretty, indentation, indentLevel) {
+function concatValues (concatType, values, pretty, indentation, indentLevel) {
   var currentIndent = buildString(indentLevel, indentation)
   var closingBraceIndent = buildString(indentLevel - 1, indentation)
   var join = pretty ? ',\n' + currentIndent : ', '
+  var openingBrace = concatType === 'object' ? '{' : '['
+  var closingBrace = concatType === 'object' ? '}' : ']'
 
   if (pretty) {
-    return '[\n' + currentIndent + arr.join(join) + '\n' + closingBraceIndent + ']'
+    return openingBrace + '\n' + currentIndent + values.join(join) + '\n' + closingBraceIndent + closingBrace
   } else {
-    return '[' + arr.join(join) + ']'
+    return openingBrace + values.join(join) + closingBrace
   }
 }
 
 module.exports = {
   /**
-   * Create a string corresponding to a valid declaration and initialization of a Swift array or dictionary literal
-   *
-   * @param {string} name Desired name of the instance
-   * @param {Object} parameters Key-value object of parameters to translate to a Swift object litearal
-   * @param {Object} opts Target options
-   * @return {string}
-   */
-  literalDeclaration: function (name, parameters, opts) {
-    return util.format('let %s = %s', name, this.literalRepresentation(parameters, opts))
-  },
-
-  /**
-   * Create a valid Swift string of a literal value according to its type.
+   * Create a valid Python string of a literal value according to its type.
    *
    * @param {*} value Any JavaScript literal
    * @param {Object} opts Target options
@@ -55,8 +44,8 @@ module.exports = {
     switch (Object.prototype.toString.call(value)) {
       case '[object Number]':
         return value
+
       case '[object Array]':
-        // Don't prettify arrays nto not take too much space
         var pretty = false
         var valuesRepresentation = value.map(function (v) {
           // Switch to prettify if the value is a dictionary with multiple keys
@@ -65,15 +54,21 @@ module.exports = {
           }
           return this.literalRepresentation(v, opts, indentLevel)
         }.bind(this))
-        return concatArray(valuesRepresentation, pretty, opts.indent, indentLevel)
+        return concatValues('array', valuesRepresentation, pretty, opts.indent, indentLevel)
+
       case '[object Object]':
         var keyValuePairs = []
         for (var k in value) {
           keyValuePairs.push(util.format('"%s": %s', k, this.literalRepresentation(value[k], opts, indentLevel)))
         }
-        return concatArray(keyValuePairs, opts.pretty && keyValuePairs.length > 1, opts.indent, indentLevel)
+        return concatValues('object', keyValuePairs, opts.pretty && keyValuePairs.length > 1, opts.indent, indentLevel)
+
+      case '[object Null]':
+        return 'None'
+
       case '[object Boolean]':
-        return value.toString()
+        return value ? 'True' : 'False'
+
       default:
         if (value === null || value === undefined) {
           return ''

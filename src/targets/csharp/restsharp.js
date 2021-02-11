@@ -1,6 +1,7 @@
 'use strict'
 
 var CodeBuilder = require('../../helpers/code-builder')
+var helpers = require('../../helpers/headers')
 
 module.exports = function (source, options) {
   var code = new CodeBuilder()
@@ -31,7 +32,11 @@ module.exports = function (source, options) {
   }
 
   if (source.postData.text) {
-    code.push('request.AddParameter("%s", %s, ParameterType.RequestBody);', source.allHeaders['content-type'], JSON.stringify(source.postData.text))
+    code.push(
+      'request.AddParameter("%s", %s, ParameterType.RequestBody);',
+      helpers.getHeader(source.allHeaders, 'content-type'),
+      JSON.stringify(source.postData.text)
+    )
   }
 
   code.push('IRestResponse response = client.Execute(request);')

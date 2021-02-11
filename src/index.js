@@ -7,6 +7,7 @@ var es = require('event-stream')
 var MultiPartForm = require('form-data')
 var qs = require('querystring')
 var reducer = require('./helpers/reducer')
+var helpers = require('./helpers/headers')
 var targets = require('./targets')
 var url = require('url')
 var validate = require('har-validator/lib/async')
@@ -165,7 +166,14 @@ HTTPSnippet.prototype.prepare = function (request) {
         }
 
         request.postData.boundary = boundary
-        request.headersObj['content-type'] = 'multipart/form-data; boundary=' + boundary
+
+        // Since headers are case-sensitive we need to see if there's an existing `Content-Type` header that we can
+        // override.
+        const contentTypeHeader = helpers.hasHeader(request.headersObj, 'content-type')
+          ? helpers.getHeaderName(request.headersObj, 'content-type')
+          : 'content-type'
+
+        request.headersObj[contentTypeHeader] = 'multipart/form-data; boundary=' + boundary
       }
       break
 
