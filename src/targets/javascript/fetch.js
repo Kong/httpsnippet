@@ -44,7 +44,9 @@ module.exports = function (source, options) {
       break
 
     case 'application/json':
-      options.body = opts.useObjectBody ? source.postData.jsonObj : JSON.stringify(source.postData.jsonObj)
+      if (source.postData.jsonObj) {
+        options.body = opts.useObjectBody ? source.postData.jsonObj : JSON.stringify(source.postData.jsonObj)
+      }
       break
 
     case 'multipart/form-data':
