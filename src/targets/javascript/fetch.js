@@ -65,6 +65,7 @@ module.exports = function (source, options) {
 
   code
     .push(`fetch("${source.fullUrl}", ${JSON.stringify(options, null, opts.indent)})`)
+    .push('.then(res => res.json())')
     .push('.then(response => {')
     .push(1, 'console.log(response);')
     .push('})')
