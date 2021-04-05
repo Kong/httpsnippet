@@ -4,6 +4,7 @@ fetch("http://mockbin.com/har", {
     "cookie": "foo=bar; bar=baz"
   }
 })
+.then(response => response.json())
 .then(response => {
   console.log(response);
 })
