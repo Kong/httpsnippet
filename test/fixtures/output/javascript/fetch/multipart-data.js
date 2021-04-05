@@ -7,6 +7,7 @@ fetch("http://mockbin.com/har", {
     "content-type": "multipart/form-data; boundary=---011000010111000001101001"
   }
 })
+.then(response => response.json())
 .then(response => {
   console.log(response);
 })
