@@ -5,6 +5,7 @@ fetch("http://mockbin.com/har", {
   },
   "body": "{\"foo\":null}"
 })
+.then(response => response.json())
 .then(response => {
   console.log(response);
 })
