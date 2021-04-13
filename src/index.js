@@ -221,15 +221,9 @@ HTTPSnippet.prototype.prepare = function (request, encodeUri = true) {
   request.uriObj.query = null
   request.uriObj.search = null
   request.uriObj.path = request.uriObj.pathname
-  if (!encodeUri) {
-    request.uriObj.path = decodeURI(request.uriObj.pathname)
-  }
 
   // keep the base url clean of queryString
   request.url = url.format(request.uriObj)
-  if (!encodeUri) {
-    request.url = decodeURI(url.format(request.uriObj))
-  }
 
   // update the uri object
   request.uriObj.query = request.queryObj
@@ -241,8 +235,14 @@ HTTPSnippet.prototype.prepare = function (request, encodeUri = true) {
 
   // construct a full url
   request.fullUrl = url.format(request.uriObj)
+
+
   if (!encodeUri) {
-    request.fullUrl = decodeURI(url.format(request.uriObj))
+    request.fullUrl = decodeURI(request.fullUrl)
+    request.url = decodeURI(request.url)
+    request.uriObj.path = decodeURI(request.uriObj.path)
+    request.uriObj.pathname = decodeURI(request.uriObj.pathname)
+    request.uriObj.href = decodeURI(request.uriObj.href)
   }
 
   return request
