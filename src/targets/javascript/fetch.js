@@ -77,8 +77,16 @@ module.exports = function (source, options) {
     // read, so if you pass the `useObjectBody` option we keep the object as a literal and use
     // this transform function to wrap the literal in a `JSON.stringify` call.
     transform: (object, property, originalResult) => {
-      if (property === 'body' && opts.useObjectBody && source.postData.mimeType === 'application/json') {
-        return 'JSON.stringify(' + originalResult + ')'
+      if (property === 'body') {
+        if (source.postData.mimeType === 'application/x-www-form-urlencoded') {
+          return `new URLSearchParams(${originalResult})`
+        }
+
+        if (opts.useObjectBody) {
+          if (source.postData.mimeType === 'application/json') {
+            return 'JSON.stringify(' + originalResult + ')'
+          }
+        }
       }
 
       return originalResult
