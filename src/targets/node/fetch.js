@@ -22,13 +22,9 @@ module.exports = function (source, options) {
   const code = new CodeBuilder(opts.indent)
 
   code.push('const fetch = require(\'node-fetch\');')
-  const url = source.url
+  const url = source.fullUrl
   const reqOpts = {
     method: source.method
-  }
-
-  if (Object.keys(source.queryObj).length) {
-    reqOpts.qs = source.queryObj
   }
 
   if (Object.keys(source.headersObj).length) {
