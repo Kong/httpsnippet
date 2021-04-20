@@ -3,11 +3,11 @@
 $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'http://mockbin.com/har', [
-    'multipart' => array(
-        array(
+    'multipart' => [
+        [
             'foo' => 'bar',
-        ),
-    ),
+        ],
+    ],
 ]);
 
 echo $response->getBody();
