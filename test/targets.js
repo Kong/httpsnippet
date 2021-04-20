@@ -1,4 +1,4 @@
-/* global describe, it */
+/* global describe, it, beforeEach */
 
 'use strict'
 
@@ -47,7 +47,7 @@ const skipMe = {
     'clj_http': ['jsonObj-null-value', 'jsonObj-multiline']
   },
   '*': {
-    '*': ['multipart-data', 'multipart-file', 'multipart-form-data']
+    '*': []
   }
 }
 
@@ -77,19 +77,118 @@ var itShouldGenerateOutput = function (request, path, target, client) {
       this.skip()
     }
     var instance = new HTTPSnippet(fixtures.requests[request])
-    var result = instance.convert(target, client) + '\n'
+
+    // `form-data` sets the line break as `\r\n`, but we can't easily replicate that in our fixtures so let's convert
+    // it to a standard line break instead.
+    var result = instance.convert(target, client).replace(/\r\n/g, '\n').trim()
 
     result.should.be.a.String()
-    result.should.equal(output[fixture].toString())
+    result.should.equal(output[fixture].toString().trim())
   })
 }
 
 describe('Available Targets', function () {
-  var targets = HTTPSnippet.availableTargets()
-
-  targets.forEach(function (target) {
+  HTTPSnippet.availableTargets().forEach(function (target) {
     it('available-targets.json should include ' + target.title, function () {
       fixtures['available-targets'].should.containEql(target)
+    })
+  })
+})
+
+describe('Custom targets', function () {
+  describe('Adding a custom target', function () {
+    it('should throw if the target does has no info object', function () {
+      (function () {
+        HTTPSnippet.addTarget({})
+      }).should.throw(Error)
+    })
+
+    it('should throw if the target does not have a properly constructed info object', function () {
+      (function () {
+        HTTPSnippet.addTarget({info: {key: ''}})
+      }).should.throw(Error)
+    })
+
+    it('should throw if the target already exists', function () {
+      (function () {
+        HTTPSnippet.addTarget(targets.node)
+      }).should.throw(Error)
+    })
+
+    it('should throw if the target has no client', function () {
+      (function () {
+        HTTPSnippet.addTarget({
+          info: targets.node.info
+        })
+      }).should.throw(Error)
+    })
+
+    it('should add and convert for a new custom target', function () {
+      const customTarget = require('./fixtures/customTarget')
+
+      HTTPSnippet.addTarget(customTarget)
+      const target = HTTPSnippet.availableTargets().find(function (target) { return target.key === customTarget.info.key })
+      const client = target.clients.find(function (client) { return client.key === customTarget.info.default })
+      client.should.be.an.Object()
+
+      Object.keys(fixtures.requests).filter(clearInfo).forEach(function (request) {
+        // Re-using the `request` module fixtures and framework since we copied it to create a custom client.
+        itShouldGenerateOutput(request, 'node/request/', customTarget.info.key, customTarget.info.default)
+      })
+    })
+  })
+
+  describe('Adding a custom client target', function () {
+    let customClient
+
+    beforeEach(function () {
+      // Re-using the existing request client instead of mocking out something completely new.
+      customClient = {
+        ...targets.node.request,
+        info: {
+          key: 'axios-test',
+          title: 'Axios',
+          link: 'https://www.npmjs.com/package/axios',
+          description: 'Promise based HTTP client for the browser and node.js'
+        }
+      }
+    })
+
+    it('should throw if client already exists', function () {
+      (function () {
+        HTTPSnippet.addTargetClient('node', {...customClient, info: {...customClient.info, key: 'axios'}})
+      }).should.throw(Error)
+    })
+
+    it("should throw if the client's target does not exist", function () {
+      (function () {
+        HTTPSnippet.addTargetClient('node.js', customClient)
+      }).should.throw(Error)
+    })
+
+    it('should throw if the client does has no info object', function () {
+      (function () {
+        HTTPSnippet.addTargetClient('node', {})
+      }).should.throw(Error)
+    })
+
+    it('should throw if the target does not have a properly constructed info object', function () {
+      (function () {
+        HTTPSnippet.addTargetClient('node', {info: {key: ''}})
+      }).should.throw(Error)
+    })
+
+    it('should add and convert for a new custom client target', function () {
+      HTTPSnippet.addTargetClient('node', customClient)
+
+      const target = HTTPSnippet.availableTargets().find(function (target) { return target.key === 'node' })
+      const client = target.clients.find(function (client) { return client.key === customClient.info.key })
+      client.should.be.an.Object()
+
+      Object.keys(fixtures.requests).filter(clearInfo).forEach(function (request) {
+        // Re-using the `request` module fixtures and framework since we copied it to create a custom client target.
+        itShouldGenerateOutput(request, 'node/request/', 'node', customClient.info.key)
+      })
     })
   })
 })

@@ -1,8 +1,8 @@
-var data = JSON.stringify({
+const data = JSON.stringify({
   "foo": "bar"
 });
 
-var xhr = new XMLHttpRequest();
+const xhr = new XMLHttpRequest();
 xhr.withCredentials = true;
 
 xhr.addEventListener("readystatechange", function () {

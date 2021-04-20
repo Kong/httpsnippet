@@ -1,3 +1,5 @@
+/* eslint-env browser */
+
 'use strict'
 
 var debug = require('debug')('httpsnippet')
@@ -5,9 +7,12 @@ var es = require('event-stream')
 var MultiPartForm = require('form-data')
 var qs = require('querystring')
 var reducer = require('./helpers/reducer')
+var helpers = require('./helpers/headers')
 var targets = require('./targets')
 var url = require('url')
 var validate = require('har-validator/lib/async')
+
+const { formDataIterator, isBlob } = require('./helpers/form-data.js')
 
 // constructor
 var HTTPSnippet = function (data) {
@@ -68,9 +73,14 @@ HTTPSnippet.prototype.prepare = function (request) {
 
   // construct headers objects
   if (request.headers && request.headers.length) {
-    // loweCase header keys
+    var http2VersionRegex = /^HTTP\/2/
     request.headersObj = request.headers.reduce(function (headers, header) {
-      headers[header.name.toLowerCase()] = header.value
+      var headerName = header.name
+      if (request.httpVersion.match(http2VersionRegex)) {
+        headerName = headerName.toLowerCase()
+      }
+
+      headers[headerName] = header.value
       return headers
     }, {})
   }
@@ -104,22 +114,66 @@ HTTPSnippet.prototype.prepare = function (request) {
       if (request.postData.params) {
         var form = new MultiPartForm()
 
+        // The `form-data` module returns one of two things: a native FormData object, or its own polyfill. Since the
+        // polyfill does not support the full API of the native FormData object, when this library is running in a
+        // browser environment it'll fail on two things:
+        //
+        //  - The API for `form.append()` has three arguments and the third should only be present when the second is a
+        //    Blob or USVString.
+        //  - `FormData.pipe()` isn't a function.
+        //
+        // Since the native FormData object is iterable, we easily detect what version of `form-data` we're working
+        // with here to allow `multipart/form-data` requests to be compiled under both browser and Node environments.
+        //
+        // This hack is pretty awful but it's the only way we can use this library in the browser as if we code this
+        // against just the native FormData object, we can't polyfill that back into Node because Blob and File objects,
+        // which something like `formdata-polyfill` requires, don't exist there.
+        const isNativeFormData = (typeof form[Symbol.iterator] === 'function')
+
         // easter egg
-        form._boundary = '---011000010111000001101001'
+        const boundary = '---011000010111000001101001'
+        if (!isNativeFormData) {
+          form._boundary = boundary
+        }
 
         request.postData.params.forEach(function (param) {
-          form.append(param.name, param.value || '', {
-            filename: param.fileName || null,
-            contentType: param.contentType || null
-          })
+          const name = param.name
+          const value = param.value || ''
+          const filename = param.fileName || null
+
+          if (isNativeFormData) {
+            if (isBlob(value)) {
+              form.append(name, value, filename)
+            } else {
+              form.append(name, value)
+            }
+          } else {
+            form.append(name, value, {
+              filename: filename,
+              contentType: param.contentType || null
+            })
+          }
         })
 
-        form.pipe(es.map(function (data, cb) {
-          request.postData.text += data
-        }))
+        if (isNativeFormData) {
+          for (var data of formDataIterator(form, boundary)) {
+            request.postData.text += data
+          }
+        } else {
+          form.pipe(es.map(function (data, cb) {
+            request.postData.text += data
+          }))
+        }
 
-        request.postData.boundary = form.getBoundary()
-        request.headersObj['content-type'] = 'multipart/form-data; boundary=' + form.getBoundary()
+        request.postData.boundary = boundary
+
+        // Since headers are case-sensitive we need to see if there's an existing `Content-Type` header that we can
+        // override.
+        const contentTypeHeader = helpers.hasHeader(request.headersObj, 'content-type')
+          ? helpers.getHeaderName(request.headersObj, 'content-type')
+          : 'content-type'
+
+        request.headersObj[contentTypeHeader] = 'multipart/form-data; boundary=' + boundary
       }
       break
 
@@ -220,6 +274,34 @@ HTTPSnippet.prototype._matchTarget = function (target, client) {
 
 // exports
 module.exports = HTTPSnippet
+
+module.exports.addTarget = function (target) {
+  if (!('info' in target)) {
+    throw new Error('The supplied custom target must contain an `info` object.')
+  } else if (!('key' in target.info) || !('title' in target.info) || !('extname' in target.info) || !('default' in target.info)) {
+    throw new Error('The supplied custom target must have an `info` object with a `key`, `title`, `extname`, and `default` property.')
+  } else if (targets.hasOwnProperty(target.info.key)) {
+    throw new Error('The supplied custom target already exists.')
+  } else if (Object.keys(target).length === 1) {
+    throw new Error('A custom target must have a client defined on it.')
+  }
+
+  targets[target.info.key] = target
+}
+
+module.exports.addTargetClient = function (target, client) {
+  if (!targets.hasOwnProperty(target)) {
+    throw new Error(`Sorry, but no ${target} target exists to add clients to.`)
+  } else if (!('info' in client)) {
+    throw new Error('The supplied custom target client must contain an `info` object.')
+  } else if (!('key' in client.info) || !('title' in client.info)) {
+    throw new Error('The supplied custom target client must have an `info` object with a `key` and `title` property.')
+  } else if (targets[target].hasOwnProperty(client.info.key)) {
+    throw new Error('The supplied custom target client already exists, please use a different key')
+  }
+
+  targets[target][client.info.key] = client
+}
 
 module.exports.availableTargets = function () {
   return Object.keys(targets).map(function (key) {

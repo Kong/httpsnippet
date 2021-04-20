@@ -22,7 +22,7 @@ module.exports = function (source, options) {
   var includeFS = false
   var code = new CodeBuilder(opts.indent)
 
-  code.push('var request = require("request");')
+  code.push("const request = require('request');")
       .blank()
 
   var reqOpts = {
@@ -61,7 +61,7 @@ module.exports = function (source, options) {
           return
         }
 
-        if (param.fileName && !param.value) {
+        if (param.fileName) {
           includeFS = true
 
           attachment.value = 'fs.createReadStream("' + param.fileName + '")'
@@ -90,21 +90,21 @@ module.exports = function (source, options) {
   if (source.cookies.length) {
     reqOpts.jar = 'JAR'
 
-    code.push('var jar = request.jar();')
+    code.push('const jar = request.jar();')
 
     var url = source.url
 
     source.cookies.forEach(function (cookie) {
-      code.push('jar.setCookie(request.cookie("%s=%s"), "%s");', encodeURIComponent(cookie.name), encodeURIComponent(cookie.value), url)
+      code.push("jar.setCookie(request.cookie('%s=%s'), '%s');", encodeURIComponent(cookie.name), encodeURIComponent(cookie.value), url)
     })
     code.blank()
   }
 
   if (includeFS) {
-    code.unshift('var fs = require("fs");')
+    code.unshift("const fs = require('fs');")
   }
 
-  code.push('var options = %s;', stringifyObject(reqOpts, { indent: '  ', inlineCharacterLimit: 80 }))
+  code.push('const options = %s;', stringifyObject(reqOpts, { indent: '  ', inlineCharacterLimit: 80 }))
     .blank()
 
   code.push(util.format('request(options, %s', 'function (error, response, body) {'))
@@ -115,7 +115,7 @@ module.exports = function (source, options) {
       .push('});')
       .blank()
 
-  return code.join().replace('"JAR"', 'jar').replace(/"fs\.createReadStream\(\\"(.+)\\"\)"/, 'fs.createReadStream("$1")')
+  return code.join().replace('"JAR"', 'jar').replace(/'fs\.createReadStream\("(.+)"\)'/g, "fs.createReadStream('$1')")
 }
 
 module.exports.info = {

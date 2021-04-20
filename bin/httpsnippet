@@ -56,6 +56,11 @@ cmd.args.forEach(function (fileName) {
     })
 
     .then(function (output) {
+      if (!output) {
+        var targetNames = HTTPSnippet.availableTargets().map(function (t) { return t.key }).join(', ')
+        return console.error('%s %s is not a valid target. Valid targets: %s', chalk.red('✖'), chalk.red(cmd.target), chalk.cyan(targetNames))
+      }
+
       // print
       if (!cmd.output) {
         return console.log('%s %s > %s [%s] :\n%s', chalk.green('✓'), chalk.cyan.bold(file), chalk.yellow(cmd.target), chalk.yellow(cmd.client ? cmd.client : 'default'), output)

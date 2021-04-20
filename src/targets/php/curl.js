@@ -72,7 +72,7 @@ module.exports = function (source, options) {
     value: source.postData ? source.postData.text : undefined
   }]
 
-  code.push('curl_setopt_array($curl, array(')
+  code.push('curl_setopt_array($curl, [')
 
   var curlopts = new CodeBuilder(opts.indent, '\n' + opts.indent)
 
@@ -97,13 +97,13 @@ module.exports = function (source, options) {
   })
 
   if (headers.length) {
-    curlopts.push('CURLOPT_HTTPHEADER => array(')
+    curlopts.push('CURLOPT_HTTPHEADER => [')
       .push(1, headers.join(',\n' + opts.indent + opts.indent))
-      .push('),')
+      .push('],')
   }
 
   code.push(1, curlopts.join())
-    .push('));')
+    .push(']);')
     .blank()
     .push('$response = curl_exec($curl);')
     .push('$err = curl_error($curl);')

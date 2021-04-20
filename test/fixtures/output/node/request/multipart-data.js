@@ -1,16 +1,14 @@
-var request = require("request");
+const fs = require('fs');
+const request = require('request');
 
-var options = {
+const options = {
   method: 'POST',
   url: 'http://mockbin.com/har',
   headers: {'content-type': 'multipart/form-data; boundary=---011000010111000001101001'},
   formData: {
     foo: {
-      value: 'Hello World',
-      options: {
-        filename: 'hello.txt',
-        contentType: 'text/plain'
-      }
+      value: fs.createReadStream('hello.txt'),
+      options: {filename: 'hello.txt', contentType: 'text/plain'}
     }
   }
 };

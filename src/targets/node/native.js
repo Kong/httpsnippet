@@ -28,20 +28,20 @@ module.exports = function (source, options) {
     headers: source.allHeaders
   }
 
-  code.push('var http = require("%s");', source.uriObj.protocol.replace(':', ''))
+  code.push('const http = require("%s");', source.uriObj.protocol.replace(':', ''))
 
   code.blank()
-      .push('var options = %s;', JSON.stringify(reqOpts, null, opts.indent))
+      .push('const options = %s;', JSON.stringify(reqOpts, null, opts.indent))
       .blank()
-      .push('var req = http.request(options, function (res) {')
-      .push(1, 'var chunks = [];')
+      .push('const req = http.request(options, function (res) {')
+      .push(1, 'const chunks = [];')
       .blank()
       .push(1, 'res.on("data", function (chunk) {')
       .push(2, 'chunks.push(chunk);')
       .push(1, '});')
       .blank()
       .push(1, 'res.on("end", function () {')
-      .push(2, 'var body = Buffer.concat(chunks);')
+      .push(2, 'const body = Buffer.concat(chunks);')
       .push(2, 'console.log(body.toString());')
       .push(1, '});')
       .push('});')
@@ -50,7 +50,7 @@ module.exports = function (source, options) {
   switch (source.postData.mimeType) {
     case 'application/x-www-form-urlencoded':
       if (source.postData.paramsObj) {
-        code.unshift('var qs = require("querystring");')
+        code.unshift('const qs = require("querystring");')
         code.push('req.write(qs.stringify(%s));', stringifyObject(source.postData.paramsObj, {
           indent: '  ',
           inlineCharacterLimit: 80

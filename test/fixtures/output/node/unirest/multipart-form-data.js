@@ -1,9 +1,9 @@
-var unirest = require("unirest");
+const unirest = require("unirest");
 
-var req = unirest("POST", "http://mockbin.com/har");
+const req = unirest("POST", "http://mockbin.com/har");
 
 req.headers({
-  "content-type": "multipart/form-data; boundary=---011000010111000001101001"
+  "Content-Type": "multipart/form-data; boundary=---011000010111000001101001"
 });
 
 req.multipart([

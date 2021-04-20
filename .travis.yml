@@ -7,7 +7,7 @@ node_js:
 
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install -qq --yes python3 php5-curl php5-cli
+  - sudo apt-get install -qq php7.0 php7.0-curl php7.0-cli
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
 
 before_script:

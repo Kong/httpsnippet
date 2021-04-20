@@ -5,9 +5,10 @@ fetch("http://mockbin.com/har", {
     "x-foo": "Bar"
   }
 })
+.then(response => response.json())
 .then(response => {
   console.log(response);
 })
 .catch(err => {
-  console.log(err);
+  console.error(err);
 });

@@ -4,15 +4,15 @@ $request = new HttpRequest();
 $request->setUrl('http://mockbin.com/har');
 $request->setMethod(HTTP_METH_POST);
 
-$request->setHeaders(array(
+$request->setHeaders([
   'content-type' => 'application/x-www-form-urlencoded'
-));
+]);
 
 $request->setContentType('application/x-www-form-urlencoded');
-$request->setPostFields(array(
+$request->setPostFields([
   'foo' => 'bar',
   'hello' => 'world'
-));
+]);
 
 try {
   $response = $request->send();

@@ -12,8 +12,14 @@
 
 var util = require('util')
 var CodeBuilder = require('../../helpers/code-builder')
+var helpers = require('./helpers')
 
 module.exports = function (source, options) {
+  var opts = Object.assign({
+    indent: '    ',
+    pretty: true
+  }, options)
+
   // Start snippet
   var code = new CodeBuilder('    ')
 
@@ -34,10 +40,23 @@ module.exports = function (source, options) {
   }
 
   // Construct payload
-  var payload = JSON.stringify(source.postData.text)
+  let hasPayload = false
+  let jsonPayload = false
+  switch (source.postData.mimeType) {
+    case 'application/json':
+      if (source.postData.jsonObj) {
+        code.push('payload = %s', helpers.literalRepresentation(source.postData.jsonObj, opts))
+        jsonPayload = true
+        hasPayload = true
+      }
+      break
 
-  if (payload) {
-    code.push('payload = %s', payload)
+    default:
+      var payload = JSON.stringify(source.postData.text)
+      if (payload) {
+        code.push('payload = %s', payload)
+        hasPayload = true
+      }
   }
 
   // Construct headers
@@ -47,7 +66,7 @@ module.exports = function (source, options) {
 
   if (headerCount === 1) {
     for (header in headers) {
-      code.push('headers = {\'%s\': \'%s\'}', header, headers[header])
+      code.push('headers = {"%s": "%s"}', header, headers[header])
           .blank()
     }
   } else if (headerCount > 1) {
@@ -57,13 +76,13 @@ module.exports = function (source, options) {
 
     for (header in headers) {
       if (count++ !== headerCount) {
-        code.push(1, '\'%s\': "%s",', header, headers[header])
+        code.push(1, '"%s": "%s",', header, headers[header])
       } else {
-        code.push(1, '\'%s\': "%s"', header, headers[header])
+        code.push(1, '"%s": "%s"', header, headers[header])
       }
     }
 
-    code.push(1, '}')
+    code.push('}')
         .blank()
   }
 
@@ -71,8 +90,12 @@ module.exports = function (source, options) {
   var method = source.method
   var request = util.format('response = requests.request("%s", url', method)
 
-  if (payload) {
-    request += ', data=payload'
+  if (hasPayload) {
+    if (jsonPayload) {
+      request += ', json=payload'
+    } else {
+      request += ', data=payload'
+    }
   }
 
   if (headerCount > 0) {
@@ -100,5 +123,3 @@ module.exports.info = {
   link: 'http://docs.python-requests.org/en/latest/api/#requests.request',
   description: 'Requests HTTP library'
 }
-
-// response = requests.request("POST", url, data=payload, headers=headers, params=querystring)

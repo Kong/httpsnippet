@@ -11,6 +11,7 @@
 'use strict'
 
 var CodeBuilder = require('../../helpers/code-builder')
+var helpers = require('../../helpers/headers')
 
 module.exports = function (source, options) {
   var opts = Object.assign({
@@ -38,7 +39,7 @@ module.exports = function (source, options) {
       break
 
     case 'multipart/form-data':
-      code.push('var form = new FormData();')
+      code.push('const form = new FormData();')
 
       source.postData.params.forEach(function (param) {
         code.push('form.append(%s, %s);', JSON.stringify(param.name), JSON.stringify(param.value || param.fileName || ''))
@@ -50,9 +51,12 @@ module.exports = function (source, options) {
       settings.data = '[form]'
 
       // remove the contentType header
-      if (~settings.headers['content-type'].indexOf('boundary')) {
-        delete settings.headers['content-type']
+      if (helpers.hasHeader(settings.headers, 'content-type')) {
+        if (helpers.getHeader(settings.headers, 'content-type').indexOf('boundary')) {
+          delete settings.headers[helpers.getHeaderName(settings.headers, 'content-type')]
+        }
       }
+
       code.blank()
       break
 
@@ -62,7 +66,7 @@ module.exports = function (source, options) {
       }
   }
 
-  code.push('var settings = ' + JSON.stringify(settings, null, opts.indent).replace('"[form]"', 'form'))
+  code.push('const settings = ' + JSON.stringify(settings, null, opts.indent).replace('"[form]"', 'form') + ';')
       .blank()
       .push('$.ajax(settings).done(function (response) {')
       .push(1, 'console.log(response);')

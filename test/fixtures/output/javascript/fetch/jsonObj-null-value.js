@@ -3,13 +3,12 @@ fetch("http://mockbin.com/har", {
   "headers": {
     "content-type": "application/json"
   },
-  "body": {
-    "foo": null
-  }
+  "body": "{\"foo\":null}"
 })
+.then(response => response.json())
 .then(response => {
   console.log(response);
 })
 .catch(err => {
-  console.log(err);
+  console.error(err);
 });

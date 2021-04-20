@@ -40,11 +40,11 @@ module.exports = function (source, options) {
       break
 
     case 'application/json':
-      options.body = source.postData.jsonObj
+      options.body = JSON.stringify(source.postData.jsonObj)
       break
 
     case 'multipart/form-data':
-      code.push('var form = new FormData();')
+      code.push('const form = new FormData();')
 
       source.postData.params.forEach(function (param) {
         code.push(
@@ -65,11 +65,12 @@ module.exports = function (source, options) {
 
   code
     .push(`fetch("${source.fullUrl}", ${JSON.stringify(options, null, opts.indent)})`)
+    .push('.then(response => response.json())')
     .push('.then(response => {')
     .push(1, 'console.log(response);')
     .push('})')
     .push('.catch(err => {')
-    .push(1, 'console.log(err);')
+    .push(1, 'console.error(err);')
     .push('});')
 
   return code.join()

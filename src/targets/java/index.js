@@ -9,5 +9,7 @@ module.exports = {
   },
 
   okhttp: require('./okhttp'),
-  unirest: require('./unirest')
+  unirest: require('./unirest'),
+  asynchttp: require('./asynchttp'),
+  nethttp: require('./nethttp')
 }

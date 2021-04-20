@@ -45,11 +45,16 @@ fixtures.cli.forEach(function (cli) {
               err.should.be.null()
             }
 
+            // Clone the fixture we're testing against to another object because for multipart/form-data cases we're
+            // deleting the header, and if we don't clone the fixture to another object, that deleted header will cause
+            // other tests to fail because it's missing where other tests are expecting it.
+            const fixture = JSON.parse(JSON.stringify(fixtures.requests[request]))
+
             // make an exception for multipart/form-data
-            if (fixtures.requests[request].headers) {
-              fixtures.requests[request].headers.forEach(function (header, index) {
-                if (header.name === 'content-type' && header.value === 'multipart/form-data') {
-                  delete fixtures.requests[request].headers[index]
+            if (fixture.headers) {
+              fixture.headers.forEach(function (header, index) {
+                if (header.name.toLowerCase() === 'content-type' && header.value === 'multipart/form-data') {
+                  delete fixture.headers[index]
                 }
               })
             }
@@ -59,7 +64,7 @@ fixtures.cli.forEach(function (cli) {
             har.log.entries[0].should.have.property('request')
             // BUG: Mockbin returns http url even when request is for https url
             if (request !== 'https') {
-              har.log.entries[0].request.should.containDeep(fixtures.requests[request])
+              har.log.entries[0].request.should.containDeep(fixture)
             }
             done()
           })

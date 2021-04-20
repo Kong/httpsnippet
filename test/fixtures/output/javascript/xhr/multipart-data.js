@@ -1,7 +1,7 @@
-var data = new FormData();
+const data = new FormData();
 data.append("foo", "Hello World");
 
-var xhr = new XMLHttpRequest();
+const xhr = new XMLHttpRequest();
 xhr.withCredentials = true;
 
 xhr.addEventListener("readystatechange", function () {
