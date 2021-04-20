@@ -3,10 +3,10 @@
 $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'http://mockbin.com/har', [
-    'form_params' => array(
-    'foo' => 'bar',
-    'hello' => 'world'
-),
+    'form_params' => [
+        'foo' => 'bar',
+       'hello' => 'world'
+    ],
     'headers' => [
         'content-type' => 'application/x-www-form-urlencoded',
     ],
