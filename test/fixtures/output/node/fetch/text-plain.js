@@ -1,7 +1,6 @@
 const fetch = require('node-fetch');
 
 const url = 'http://mockbin.com/har';
-
 const options = {method: 'POST', headers: {'content-type': 'text/plain'}, body: 'Hello World'};
 
 fetch(url, options)

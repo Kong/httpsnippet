@@ -1,7 +1,6 @@
 const fetch = require('node-fetch');
 
 const url = 'http://mockbin.com/har';
-
 const options = {method: 'PROPFIND'};
 
 fetch(url, options)

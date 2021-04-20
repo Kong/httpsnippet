@@ -6,7 +6,6 @@ encodedParams.set('foo', 'bar');
 encodedParams.set('hello', 'world');
 
 const url = 'http://mockbin.com/har';
-
 const options = {
   method: 'POST',
   headers: {'content-type': 'application/x-www-form-urlencoded'},
