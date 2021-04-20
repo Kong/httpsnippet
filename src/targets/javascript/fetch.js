@@ -76,6 +76,7 @@ module.exports = function (source, options) {
   }
 
   code.push("fetch('%s', options)", source.fullUrl)
+    .push(1, '.then(response => response.json())')
     .push(1, '.then(response => console.log(response))')
     .push(1, '.catch(err => console.error(err));')
 
