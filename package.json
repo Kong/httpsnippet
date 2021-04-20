@@ -1,5 +1,5 @@
 {
-  "version": "1.24.0",
+  "version": "1.25.0",
   "name": "httpsnippet",
   "description": "HTTP Request snippet generator for *most* languages",
   "author": "Ahmad Nassri <ahmad@mashape.com> (https://www.mashape.com/)",
