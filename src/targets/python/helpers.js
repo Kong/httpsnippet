@@ -6,6 +6,7 @@ var util = require('util')
  * Create an string of given length filled with blank spaces
  *
  * @param {number} length Length of the array to return
+ * @param {string} str String to pad out with
  * @return {string}
  */
 function buildString (length, str) {
