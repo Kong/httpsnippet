@@ -67,7 +67,7 @@ module.exports = function (source, options) {
       }
   }
 
-  code.push('const options = %s;', stringifyObject(options, {indent: opts.indent, inlineCharacterLimit: 80}))
+  code.push('const options = %s;', stringifyObject(options, { indent: opts.indent, inlineCharacterLimit: 80 }))
     .blank()
 
   if (source.postData.mimeType === 'multipart/form-data') {
