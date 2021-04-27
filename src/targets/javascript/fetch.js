@@ -21,11 +21,15 @@ module.exports = function (source, options) {
     options
   )
 
+  const stringifyObject = require('stringify-object')
   const code = new CodeBuilder(opts.indent)
 
   options = {
-    method: source.method,
-    headers: source.allHeaders
+    method: source.method
+  }
+
+  if (Object.keys(source.allHeaders).length) {
+    options.headers = source.allHeaders
   }
 
   if (opts.credentials !== null) {
@@ -63,15 +67,18 @@ module.exports = function (source, options) {
       }
   }
 
-  code
-    .push(`fetch("${source.fullUrl}", ${JSON.stringify(options, null, opts.indent)})`)
-    .push('.then(response => response.json())')
-    .push('.then(response => {')
-    .push(1, 'console.log(response);')
-    .push('})')
-    .push('.catch(err => {')
-    .push(1, 'console.error(err);')
-    .push('});')
+  code.push('const options = %s;', stringifyObject(options, { indent: opts.indent, inlineCharacterLimit: 80 }))
+    .blank()
+
+  if (source.postData.mimeType === 'multipart/form-data') {
+    code.push('options.body = form;')
+      .blank()
+  }
+
+  code.push("fetch('%s', options)", source.fullUrl)
+    .push(1, '.then(response => response.json())')
+    .push(1, '.then(response => console.log(response))')
+    .push(1, '.catch(err => console.error(err));')
 
   return code.join()
 }
