@@ -10,16 +10,16 @@
 
 'use strict'
 
-var CodeBuilder = require('../../helpers/code-builder')
+const CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var opts = Object.assign({
+  const opts = Object.assign({
     indent: '  '
   }, options)
 
-  var code = new CodeBuilder(opts.indent)
+  const code = new CodeBuilder(opts.indent)
 
-  var methods = [ 'GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS' ]
+  const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS']
 
   if (methods.indexOf(source.method.toUpperCase()) === -1) {
     code.push('HttpResponse<String> response = Unirest.customMethod("%s","%s")', source.method.toUpperCase(), source.fullUrl)
@@ -28,7 +28,7 @@ module.exports = function (source, options) {
   }
 
   // Add headers, including the cookies
-  var headers = Object.keys(source.allHeaders)
+  const headers = Object.keys(source.allHeaders)
 
   // construct headers
   if (headers.length) {

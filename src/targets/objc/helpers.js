@@ -1,6 +1,6 @@
 'use strict'
 
-var util = require('util')
+const util = require('util')
 
 module.exports = {
   /**
@@ -33,8 +33,8 @@ module.exports = {
    *   NSDictionary *params = @{ @"a": @"b", @"c": @"d" };
    */
   nsDeclaration: function (nsClass, name, parameters, indent) {
-    var opening = nsClass + ' *' + name + ' = '
-    var literal = this.literalRepresentation(parameters, indent ? opening.length : undefined)
+    const opening = nsClass + ' *' + name + ' = '
+    const literal = this.literalRepresentation(parameters, indent ? opening.length : undefined)
     return opening + literal + ';'
   },
 
@@ -45,24 +45,30 @@ module.exports = {
    * @return {string}
    */
   literalRepresentation: function (value, indentation) {
-    var join = indentation === undefined ? ', ' : ',\n   ' + this.blankString(indentation)
+    const join = indentation === undefined ? ', ' : ',\n   ' + this.blankString(indentation)
 
     switch (Object.prototype.toString.call(value)) {
       case '[object Number]':
         return '@' + value
-      case '[object Array]':
-        var valuesRepresentation = value.map(function (v) {
+
+      case '[object Array]': {
+        const valuesRepresentation = value.map(function (v) {
           return this.literalRepresentation(v)
         }.bind(this))
         return '@[ ' + valuesRepresentation.join(join) + ' ]'
-      case '[object Object]':
-        var keyValuePairs = []
-        for (var k in value) {
+      }
+
+      case '[object Object]': {
+        const keyValuePairs = []
+        for (const k in value) {
           keyValuePairs.push(util.format('@"%s": %s', k, this.literalRepresentation(value[k])))
         }
         return '@{ ' + keyValuePairs.join(join) + ' }'
+      }
+
       case '[object Boolean]':
         return value ? '@YES' : '@NO'
+
       default:
         if (value === null || value === undefined) {
           return ''

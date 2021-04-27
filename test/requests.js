@@ -2,16 +2,17 @@
 
 'use strict'
 
-var fixtures = require('./fixtures')
-var HTTPSnippet = require('../src')
-var targets = require('../src/targets')
-var shell = require('child_process')
-var util = require('util')
+const fixtures = require('./fixtures')
+const HTTPSnippet = require('../src')
+const targets = require('../src/targets')
+const shell = require('child_process')
+const util = require('util')
 
 require('should')
 
-var base = './test/fixtures/output/'
-var requests = [ 'application-form-encoded',
+const base = './test/fixtures/output/'
+const requests = [
+  'application-form-encoded',
   'application-json',
   'cookies',
   'custom-method',
@@ -28,19 +29,20 @@ fixtures.cli.forEach(function (cli) {
     cli.clients.forEach(function (client) {
       requests.forEach(function (request) {
         it(client + ' request should match mock for ' + request, function (done) {
-          var stdout = ''
-          var fixture = cli.target + '/' + client + '/' + request + HTTPSnippet.extname(cli.target)
-          var command = util.format(cli.run, base + fixture)
+          let stdout = ''
+          const fixture = cli.target + '/' + client + '/' + request + HTTPSnippet.extname(cli.target)
+          const command = util.format(cli.run, base + fixture)
 
-          var ls = shell.exec(command)
+          const ls = shell.exec(command)
 
           ls.stdout.on('data', function (data) {
             stdout += data
           })
 
           ls.on('exit', function (code) {
+            let har
             try {
-              var har = JSON.parse(stdout)
+              har = JSON.parse(stdout)
             } catch (err) {
               err.should.be.null()
             }

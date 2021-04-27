@@ -10,18 +10,18 @@
 
 'use strict'
 
-var util = require('util')
-var helpers = require('../../helpers/shell')
-var CodeBuilder = require('../../helpers/code-builder')
+const util = require('util')
+const helpers = require('../../helpers/shell')
+const CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var opts = Object.assign({
+  const opts = Object.assign({
     indent: '  ',
     short: false,
     verbose: false
   }, options)
 
-  var code = new CodeBuilder(opts.indent, opts.indent !== false ? ' \\\n' + opts.indent : ' ')
+  const code = new CodeBuilder(opts.indent, opts.indent !== false ? ' \\\n' + opts.indent : ' ')
 
   if (opts.verbose) {
     code.push('wget %s', opts.short ? '-v' : '--verbose')
@@ -32,7 +32,7 @@ module.exports = function (source, options) {
   code.push('--method %s', helpers.quote(source.method))
 
   Object.keys(source.allHeaders).forEach(function (key) {
-    var header = util.format('%s: %s', key, source.allHeaders[key])
+    const header = util.format('%s: %s', key, source.allHeaders[key])
     code.push('--header %s', helpers.quote(header))
   })
 
@@ -41,7 +41,7 @@ module.exports = function (source, options) {
   }
 
   code.push(opts.short ? '-O' : '--output-document')
-      .push('- %s', helpers.quote(source.fullUrl))
+    .push('- %s', helpers.quote(source.fullUrl))
 
   return code.join()
 }

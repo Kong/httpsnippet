@@ -2,14 +2,14 @@
 
 'use strict'
 
-var chalk = require('chalk')
-var cmd = require('commander')
-var fs = require('fs')
-var readFile = require('fs-readfile-promise')
-var writeFile = require('fs-writefile-promise')
-var HTTPSnippet = require('..')
-var path = require('path')
-var pkg = require('../package.json')
+const chalk = require('chalk')
+const cmd = require('commander')
+const fs = require('fs')
+const readFile = require('fs-readfile-promise')
+const writeFile = require('fs-writefile-promise')
+const HTTPSnippet = require('..')
+const path = require('path')
+const pkg = require('../package.json')
 
 cmd
   .version(pkg.version)
@@ -23,8 +23,9 @@ if (!cmd.args.length || !cmd.target) {
   cmd.help()
 }
 
+let dir
 if (cmd.output) {
-  var dir = path.resolve(cmd.output)
+  dir = path.resolve(cmd.output)
 
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir)
@@ -32,7 +33,7 @@ if (cmd.output) {
 }
 
 cmd.args.forEach(function (fileName) {
-  var file = path.basename(fileName)
+  const file = path.basename(fileName)
 
   readFile(fileName)
     .then(JSON.parse)
@@ -57,7 +58,7 @@ cmd.args.forEach(function (fileName) {
 
     .then(function (output) {
       if (!output) {
-        var targetNames = HTTPSnippet.availableTargets().map(function (t) { return t.key }).join(', ')
+        const targetNames = HTTPSnippet.availableTargets().map(function (t) { return t.key }).join(', ')
         return console.error('%s %s is not a valid target. Valid targets: %s', chalk.red('✖'), chalk.red(cmd.target), chalk.cyan(targetNames))
       }
 
@@ -67,9 +68,9 @@ cmd.args.forEach(function (fileName) {
       }
 
       // write to file
-      var name = path.basename(file, path.extname(file))
+      const name = path.basename(file, path.extname(file))
 
-      var filename = path.format({
+      const filename = path.format({
         dir: dir,
         base: name + HTTPSnippet.extname(cmd.target)
       })

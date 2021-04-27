@@ -74,8 +74,8 @@ function getHeader (boundary, name, field) {
 module.exports.getBoundary = () => {
   // This generates a 50 character boundary similar to those used by Firefox.
   // They are optimized for boyer-moore parsing.
-  var boundary = '--------------------------'
-  for (var i = 0; i < 24; i++) {
+  let boundary = '--------------------------'
+  for (let i = 0; i < 24; i++) {
     boundary += Math.floor(Math.random() * 10).toString(16)
   }
 

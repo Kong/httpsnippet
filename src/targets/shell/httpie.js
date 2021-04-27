@@ -10,12 +10,12 @@
 
 'use strict'
 
-var util = require('util')
-var shell = require('../../helpers/shell')
-var CodeBuilder = require('../../helpers/code-builder')
+const util = require('util')
+const shell = require('../../helpers/shell')
+const CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var opts = Object.assign({
+  const opts = Object.assign({
     body: false,
     cert: false,
     headers: false,
@@ -30,10 +30,10 @@ module.exports = function (source, options) {
     verify: false
   }, options)
 
-  var code = new CodeBuilder(opts.indent, opts.indent !== false ? ' \\\n' + opts.indent : ' ')
+  const code = new CodeBuilder(opts.indent, opts.indent !== false ? ' \\\n' + opts.indent : ' ')
 
-  var raw = false
-  var flags = []
+  let raw = false
+  const flags = []
 
   if (opts.headers) {
     flags.push(opts.short ? '-h' : '--headers')
@@ -73,10 +73,10 @@ module.exports = function (source, options) {
 
   // construct query params
   if (opts.queryParams) {
-    var queryStringKeys = Object.keys(source.queryObj)
+    const queryStringKeys = Object.keys(source.queryObj)
 
     queryStringKeys.forEach(function (name) {
-      var value = source.queryObj[name]
+      const value = source.queryObj[name]
 
       if (Array.isArray(value)) {
         value.forEach(function (val) {
