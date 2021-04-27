@@ -21,6 +21,7 @@ module.exports = function (source, options) {
     options
   )
 
+  const stringifyObject = require('stringify-object')
   const code = new CodeBuilder(opts.indent)
 
   options = {
