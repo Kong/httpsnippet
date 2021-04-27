@@ -10,22 +10,22 @@
 
 'use strict'
 
-var helpers = require('./helpers')
-var CodeBuilder = require('../../helpers/code-builder')
+const helpers = require('./helpers')
+const CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var opts = Object.assign({
+  const opts = Object.assign({
     closingTag: false,
     indent: '  ',
     noTags: false,
     shortTags: false
   }, options)
 
-  var code = new CodeBuilder(opts.indent)
+  const code = new CodeBuilder(opts.indent)
 
   if (!opts.noTags) {
     code.push(opts.shortTags ? '<?' : '<?php')
-        .blank()
+      .blank()
   }
 
   if (!~helpers.methods.indexOf(source.method.toUpperCase())) {
@@ -33,7 +33,7 @@ module.exports = function (source, options) {
   }
 
   code.push('$request = new HttpRequest();')
-      .push('$request->setUrl(%s);', helpers.convert(source.url))
+    .push('$request->setUrl(%s);', helpers.convert(source.url))
 
   if (~helpers.methods.indexOf(source.method.toUpperCase())) {
     code.push('$request->setMethod(HTTP_METH_%s);', source.method.toUpperCase())
@@ -45,44 +45,44 @@ module.exports = function (source, options) {
 
   if (Object.keys(source.queryObj).length) {
     code.push('$request->setQueryData(%s);', helpers.convert(source.queryObj, opts.indent))
-        .blank()
+      .blank()
   }
 
   if (Object.keys(source.headersObj).length) {
     code.push('$request->setHeaders(%s);', helpers.convert(source.headersObj, opts.indent))
-        .blank()
+      .blank()
   }
 
   if (Object.keys(source.cookiesObj).length) {
     code.push('$request->setCookies(%s);', helpers.convert(source.cookiesObj, opts.indent))
-        .blank()
+      .blank()
   }
 
   switch (source.postData.mimeType) {
     case 'application/x-www-form-urlencoded':
       code.push('$request->setContentType(%s);', helpers.convert(source.postData.mimeType))
-          .push('$request->setPostFields(%s);', helpers.convert(source.postData.paramsObj, opts.indent))
-          .blank()
+        .push('$request->setPostFields(%s);', helpers.convert(source.postData.paramsObj, opts.indent))
+        .blank()
       break
 
     default:
       if (source.postData.text) {
         code.push('$request->setBody(%s);', helpers.convert(source.postData.text))
-            .blank()
+          .blank()
       }
   }
 
   code.push('try {')
-      .push(1, '$response = $request->send();')
-      .blank()
-      .push(1, 'echo $response->getBody();')
-      .push('} catch (HttpException $ex) {')
-      .push(1, 'echo $ex;')
-      .push('}')
+    .push(1, '$response = $request->send();')
+    .blank()
+    .push(1, 'echo $response->getBody();')
+    .push('} catch (HttpException $ex) {')
+    .push(1, 'echo $ex;')
+    .push('}')
 
   if (!opts.noTags && opts.closingTag) {
     code.blank()
-        .push('?>')
+      .push('?>')
   }
 
   return code.join()

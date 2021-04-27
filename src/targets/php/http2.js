@@ -10,41 +10,41 @@
 
 'use strict'
 
-var helpers = require('./helpers')
-var headerHelpers = require('../../helpers/headers')
-var CodeBuilder = require('../../helpers/code-builder')
+const helpers = require('./helpers')
+const headerHelpers = require('../../helpers/headers')
+const CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var opts = Object.assign({
+  const opts = Object.assign({
     closingTag: false,
     indent: '  ',
     noTags: false,
     shortTags: false
   }, options)
 
-  var code = new CodeBuilder(opts.indent)
-  var hasBody = false
+  const code = new CodeBuilder(opts.indent)
+  let hasBody = false
 
   if (!opts.noTags) {
     code.push(opts.shortTags ? '<?' : '<?php')
-        .blank()
+      .blank()
   }
 
   code.push('$client = new http\\Client;')
-      .push('$request = new http\\Client\\Request;')
-      .blank()
+    .push('$request = new http\\Client\\Request;')
+    .blank()
 
   switch (source.postData.mimeType) {
     case 'application/x-www-form-urlencoded':
       code.push('$body = new http\\Message\\Body;')
-          .push('$body->append(new http\\QueryString(%s));', helpers.convert(source.postData.paramsObj, opts.indent))
-          .blank()
+        .push('$body->append(new http\\QueryString(%s));', helpers.convert(source.postData.paramsObj, opts.indent))
+        .blank()
       hasBody = true
       break
 
-    case 'multipart/form-data':
-      var files = []
-      var fields = {}
+    case 'multipart/form-data': {
+      const files = []
+      const fields = {}
 
       source.postData.params.forEach(function (param) {
         if (param.fileName) {
@@ -60,10 +60,10 @@ module.exports = function (source, options) {
       })
 
       code.push('$body = new http\\Message\\Body;')
-          .push('$body->addForm(%s, %s);',
-            Object.keys(fields).length ? helpers.convert(fields, opts.indent) : 'null',
-            files.length ? helpers.convert(files, opts.indent) : 'null'
-          )
+        .push('$body->addForm(%s, %s);',
+          Object.keys(fields).length ? helpers.convert(fields, opts.indent) : 'null',
+          files.length ? helpers.convert(files, opts.indent) : 'null'
+        )
 
       // remove the contentType header
       if (headerHelpers.hasHeader(source.headersObj, 'content-type')) {
@@ -76,48 +76,49 @@ module.exports = function (source, options) {
 
       hasBody = true
       break
+    }
 
     default:
       if (source.postData.text) {
         code.push('$body = new http\\Message\\Body;')
-            .push('$body->append(%s);', helpers.convert(source.postData.text))
-            .blank()
+          .push('$body->append(%s);', helpers.convert(source.postData.text))
+          .blank()
         hasBody = true
       }
   }
 
   code.push('$request->setRequestUrl(%s);', helpers.convert(source.url))
-      .push('$request->setRequestMethod(%s);', helpers.convert(source.method))
+    .push('$request->setRequestMethod(%s);', helpers.convert(source.method))
 
   if (hasBody) {
     code.push('$request->setBody($body);')
-        .blank()
+      .blank()
   }
 
   if (Object.keys(source.queryObj).length) {
     code.push('$request->setQuery(new http\\QueryString(%s));', helpers.convert(source.queryObj, opts.indent))
-        .blank()
+      .blank()
   }
 
   if (Object.keys(source.headersObj).length) {
     code.push('$request->setHeaders(%s);', helpers.convert(source.headersObj, opts.indent))
-        .blank()
+      .blank()
   }
 
   if (Object.keys(source.cookiesObj).length) {
     code.blank()
-        .push('$client->setCookies(%s);', helpers.convert(source.cookiesObj, opts.indent))
-        .blank()
+      .push('$client->setCookies(%s);', helpers.convert(source.cookiesObj, opts.indent))
+      .blank()
   }
 
   code.push('$client->enqueue($request)->send();')
-      .push('$response = $client->getResponse();')
-      .blank()
-      .push('echo $response->getBody();')
+    .push('$response = $client->getResponse();')
+    .blank()
+    .push('echo $response->getBody();')
 
   if (!opts.noTags && opts.closingTag) {
     code.blank()
-        .push('?>')
+      .push('?>')
   }
 
   return code.join()

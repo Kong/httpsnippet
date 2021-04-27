@@ -10,25 +10,25 @@
 
 'use strict'
 
-var CodeBuilder = require('../../helpers/code-builder')
+const CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   // Let's Go!
-  var code = new CodeBuilder('\t')
+  const code = new CodeBuilder('\t')
 
   // Define Options
-  var opts = Object.assign({
+  const opts = Object.assign({
     showBoilerplate: true,
     checkErrors: false,
     printBody: true,
     timeout: -1
   }, options)
 
-  var errorPlaceholder = opts.checkErrors ? 'err' : '_'
+  const errorPlaceholder = opts.checkErrors ? 'err' : '_'
 
-  var indent = opts.showBoilerplate ? 1 : 0
+  const indent = opts.showBoilerplate ? 1 : 0
 
-  var errorCheck = function () {
+  const errorCheck = function () {
     if (opts.checkErrors) {
       code.push(indent, 'if err != nil {')
         .push(indent + 1, 'panic(err)')
@@ -64,7 +64,7 @@ module.exports = function (source, options) {
   }
 
   // Create client
-  var client
+  let client
   if (opts.timeout > 0) {
     client = 'client'
     code.push(indent, 'client := http.Client{')

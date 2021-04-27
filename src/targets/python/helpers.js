@@ -1,6 +1,6 @@
 'use strict'
 
-var util = require('util')
+const util = require('util')
 
 /**
  * Create an string of given length filled with blank spaces
@@ -17,11 +17,11 @@ function buildString (length, str) {
  * and indentation.
  */
 function concatValues (concatType, values, pretty, indentation, indentLevel) {
-  var currentIndent = buildString(indentLevel, indentation)
-  var closingBraceIndent = buildString(indentLevel - 1, indentation)
-  var join = pretty ? ',\n' + currentIndent : ', '
-  var openingBrace = concatType === 'object' ? '{' : '['
-  var closingBrace = concatType === 'object' ? '}' : ']'
+  const currentIndent = buildString(indentLevel, indentation)
+  const closingBraceIndent = buildString(indentLevel - 1, indentation)
+  const join = pretty ? ',\n' + currentIndent : ', '
+  const openingBrace = concatType === 'object' ? '{' : '['
+  const closingBrace = concatType === 'object' ? '}' : ']'
 
   if (pretty) {
     return openingBrace + '\n' + currentIndent + values.join(join) + '\n' + closingBraceIndent + closingBrace
@@ -45,9 +45,9 @@ module.exports = {
       case '[object Number]':
         return value
 
-      case '[object Array]':
-        var pretty = false
-        var valuesRepresentation = value.map(function (v) {
+      case '[object Array]': {
+        let pretty = false
+        const valuesRepresentation = value.map(function (v) {
           // Switch to prettify if the value is a dictionary with multiple keys
           if (Object.prototype.toString.call(v) === '[object Object]') {
             pretty = Object.keys(v).length > 1
@@ -55,13 +55,15 @@ module.exports = {
           return this.literalRepresentation(v, opts, indentLevel)
         }.bind(this))
         return concatValues('array', valuesRepresentation, pretty, opts.indent, indentLevel)
+      }
 
-      case '[object Object]':
-        var keyValuePairs = []
-        for (var k in value) {
+      case '[object Object]': {
+        const keyValuePairs = []
+        for (const k in value) {
           keyValuePairs.push(util.format('"%s": %s', k, this.literalRepresentation(value[k], opts, indentLevel)))
         }
         return concatValues('object', keyValuePairs, opts.pretty && keyValuePairs.length > 1, opts.indent, indentLevel)
+      }
 
       case '[object Null]':
         return 'None'

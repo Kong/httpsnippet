@@ -11,9 +11,9 @@
 
 'use strict'
 
-var CRLF = '\r\n'
-var CodeBuilder = require('../../helpers/code-builder')
-var util = require('util')
+const CRLF = '\r\n'
+const CodeBuilder = require('../../helpers/code-builder')
+const util = require('util')
 
 /**
  * Request follows the request message format in accordance to RFC 7230, Section 3.
@@ -21,7 +21,7 @@ var util = require('util')
  * See more at https://tools.ietf.org/html/rfc7230#section-3.
  */
 module.exports = function (source, options) {
-  var opts = Object.assign(
+  const opts = Object.assign(
     {
       absoluteURI: false,
       autoContentLength: true,
@@ -32,12 +32,12 @@ module.exports = function (source, options) {
 
   // RFC 7230 Section 3. Message Format
   // All lines have no indentation, and should be terminated with CRLF.
-  var code = new CodeBuilder('', CRLF)
+  const code = new CodeBuilder('', CRLF)
 
   // RFC 7230 Section 5.3. Request Target
   // Determines if the Request-Line should use 'absolute-form' or 'origin-form'.
   // Basically it means whether the "http://domain.com" will prepend the full url.
-  var requestUrl = opts.absoluteURI ? source.fullUrl : source.uriObj.path
+  const requestUrl = opts.absoluteURI ? source.fullUrl : source.uriObj.path
 
   // RFC 7230 Section 3.1.1. Request-Line
   code.push('%s %s %s', source.method, requestUrl, source.httpVersion)
@@ -45,7 +45,7 @@ module.exports = function (source, options) {
   // RFC 7231 Section 5. Header Fields
   Object.keys(source.allHeaders).forEach(function (key) {
     // Capitalize header keys, even though it's not required by the spec.
-    var keyCapitalized = key.toLowerCase().replace(/(^|-)(\w)/g, function (x) {
+    const keyCapitalized = key.toLowerCase().replace(/(^|-)(\w)/g, function (x) {
       return x.toUpperCase()
     })
 
@@ -78,8 +78,8 @@ module.exports = function (source, options) {
   code.blank()
 
   // Separate header section and message body section.
-  var headerSection = code.join()
-  var messageBody = ''
+  const headerSection = code.join()
+  let messageBody = ''
 
   // RFC 7230 Section 3.3. Message Body
   if (source.postData.text) {

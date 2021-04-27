@@ -10,20 +10,20 @@
 
 'use strict'
 
-var CodeBuilder = require('../../helpers/code-builder')
+const CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var opts = Object.assign({
+  const opts = Object.assign({
     indent: '  '
   }, options)
 
-  var includeFS = false
-  var code = new CodeBuilder(opts.indent)
+  let includeFS = false
+  const code = new CodeBuilder(opts.indent)
 
   code.push('const unirest = require("unirest");')
-      .blank()
-      .push('const req = unirest("%s", "%s");', source.method, source.url)
-      .blank()
+    .blank()
+    .push('const req = unirest("%s", "%s");', source.method, source.url)
+    .blank()
 
   if (source.cookies.length) {
     code.push('const CookieJar = unirest.jar();')
@@ -38,12 +38,12 @@ module.exports = function (source, options) {
 
   if (Object.keys(source.queryObj).length) {
     code.push('req.query(%s);', JSON.stringify(source.queryObj, null, opts.indent))
-        .blank()
+      .blank()
   }
 
   if (Object.keys(source.headersObj).length) {
     code.push('req.headers(%s);', JSON.stringify(source.headersObj, null, opts.indent))
-        .blank()
+      .blank()
   }
 
   switch (source.postData.mimeType) {
@@ -57,16 +57,16 @@ module.exports = function (source, options) {
     case 'application/json':
       if (source.postData.jsonObj) {
         code.push('req.type("json");')
-            .push('req.send(%s);', JSON.stringify(source.postData.jsonObj, null, opts.indent))
-            .blank()
+          .push('req.send(%s);', JSON.stringify(source.postData.jsonObj, null, opts.indent))
+          .blank()
       }
       break
 
-    case 'multipart/form-data':
-      var multipart = []
+    case 'multipart/form-data': {
+      const multipart = []
 
       source.postData.params.forEach(function (param) {
-        var part = {}
+        const part = {}
 
         if (param.fileName && !param.value) {
           includeFS = true
@@ -88,6 +88,7 @@ module.exports = function (source, options) {
       code.push('req.multipart(%s);', JSON.stringify(multipart, null, opts.indent))
         .blank()
       break
+    }
 
     default:
       if (source.postData.text) {
@@ -101,11 +102,11 @@ module.exports = function (source, options) {
   }
 
   code.push('req.end(function (res) {')
-      .push(1, 'if (res.error) throw new Error(res.error);')
-      .blank()
-      .push(1, 'console.log(res.body);')
-      .push('});')
-      .blank()
+    .push(1, 'if (res.error) throw new Error(res.error);')
+    .blank()
+    .push(1, 'console.log(res.body);')
+    .push('});')
+    .blank()
 
   return code.join().replace(/"fs\.createReadStream\(\\"(.+)\\"\)"/, 'fs.createReadStream("$1")')
 }

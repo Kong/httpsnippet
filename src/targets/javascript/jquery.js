@@ -10,17 +10,17 @@
 
 'use strict'
 
-var CodeBuilder = require('../../helpers/code-builder')
-var helpers = require('../../helpers/headers')
+const CodeBuilder = require('../../helpers/code-builder')
+const helpers = require('../../helpers/headers')
 
 module.exports = function (source, options) {
-  var opts = Object.assign({
+  const opts = Object.assign({
     indent: '  '
   }, options)
 
-  var code = new CodeBuilder(opts.indent)
+  const code = new CodeBuilder(opts.indent)
 
-  var settings = {
+  const settings = {
     async: true,
     crossDomain: true,
     url: source.fullUrl,
@@ -67,10 +67,10 @@ module.exports = function (source, options) {
   }
 
   code.push('const settings = ' + JSON.stringify(settings, null, opts.indent).replace('"[form]"', 'form') + ';')
-      .blank()
-      .push('$.ajax(settings).done(function (response) {')
-      .push(1, 'console.log(response);')
-      .push('});')
+    .blank()
+    .push('$.ajax(settings).done(function (response) {')
+    .push(1, 'console.log(response);')
+    .push('});')
 
   return code.join()
 }

@@ -10,11 +10,11 @@
 
 'use strict'
 
-var util = require('util')
-var CodeBuilder = require('../../helpers/code-builder')
+const util = require('util')
+const CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var opts = Object.assign({
+  const opts = Object.assign({
     closingTag: false,
     indent: '  ',
     maxRedirects: 10,
@@ -24,7 +24,7 @@ module.exports = function (source, options) {
     timeout: 30
   }, options)
 
-  var code = new CodeBuilder(opts.indent)
+  const code = new CodeBuilder(opts.indent)
 
   if (!opts.noTags) {
     code.push(opts.shortTags ? '<?' : '<?php')
@@ -34,7 +34,7 @@ module.exports = function (source, options) {
   code.push('$curl = curl_init();')
     .blank()
 
-  var curlOptions = [{
+  const curlOptions = [{
     escape: true,
     name: 'CURLOPT_PORT',
     value: source.uriObj.port
@@ -74,7 +74,7 @@ module.exports = function (source, options) {
 
   code.push('curl_setopt_array($curl, [')
 
-  var curlopts = new CodeBuilder(opts.indent, '\n' + opts.indent)
+  const curlopts = new CodeBuilder(opts.indent, '\n' + opts.indent)
 
   curlOptions.forEach(function (option) {
     if (!~[null, undefined].indexOf(option.value)) {
@@ -83,7 +83,7 @@ module.exports = function (source, options) {
   })
 
   // construct cookies
-  var cookies = source.cookies.map(function (cookie) {
+  const cookies = source.cookies.map(function (cookie) {
     return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value)
   })
 
@@ -92,7 +92,7 @@ module.exports = function (source, options) {
   }
 
   // construct cookies
-  var headers = Object.keys(source.headersObj).sort().map(function (key) {
+  const headers = Object.keys(source.headersObj).sort().map(function (key) {
     return util.format('"%s: %s"', key, source.headersObj[key])
   })
 

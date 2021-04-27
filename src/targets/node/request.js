@@ -10,22 +10,22 @@
 
 'use strict'
 
-var util = require('util')
-var stringifyObject = require('stringify-object')
-var CodeBuilder = require('../../helpers/code-builder')
+const util = require('util')
+const stringifyObject = require('stringify-object')
+const CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var opts = Object.assign({
+  const opts = Object.assign({
     indent: '  '
   }, options)
 
-  var includeFS = false
-  var code = new CodeBuilder(opts.indent)
+  let includeFS = false
+  const code = new CodeBuilder(opts.indent)
 
   code.push("const request = require('request');")
-      .blank()
+    .blank()
 
-  var reqOpts = {
+  const reqOpts = {
     method: source.method,
     url: source.url
   }
@@ -54,7 +54,7 @@ module.exports = function (source, options) {
       reqOpts.formData = {}
 
       source.postData.params.forEach(function (param) {
-        var attachment = {}
+        const attachment = {}
 
         if (!param.fileName && !param.fileName && !param.contentType) {
           reqOpts.formData[param.name] = param.value
@@ -92,7 +92,7 @@ module.exports = function (source, options) {
 
     code.push('const jar = request.jar();')
 
-    var url = source.url
+    const url = source.url
 
     source.cookies.forEach(function (cookie) {
       code.push("jar.setCookie(request.cookie('%s=%s'), '%s');", encodeURIComponent(cookie.name), encodeURIComponent(cookie.value), url)
@@ -109,11 +109,11 @@ module.exports = function (source, options) {
 
   code.push(util.format('request(options, %s', 'function (error, response, body) {'))
 
-      .push(1, 'if (error) throw new Error(error);')
-      .blank()
-      .push(1, 'console.log(body);')
-      .push('});')
-      .blank()
+    .push(1, 'if (error) throw new Error(error);')
+    .blank()
+    .push(1, 'console.log(body);')
+    .push('});')
+    .blank()
 
   return code.join().replace('"JAR"', 'jar').replace(/'fs\.createReadStream\("(.+)"\)'/g, "fs.createReadStream('$1')")
 }

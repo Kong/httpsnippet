@@ -10,21 +10,21 @@
 
 'use strict'
 
-var CodeBuilder = require('../../helpers/code-builder')
-var helpers = require('../../helpers/headers')
+const CodeBuilder = require('../../helpers/code-builder')
+const helpers = require('../../helpers/headers')
 
 module.exports = function (source, options) {
-  var opts = Object.assign({
+  const opts = Object.assign({
     indent: '  ',
     cors: true
   }, options)
 
-  var code = new CodeBuilder(opts.indent)
+  const code = new CodeBuilder(opts.indent)
 
   switch (source.postData.mimeType) {
     case 'application/json':
       code.push('const data = JSON.stringify(%s);', JSON.stringify(source.postData.jsonObj, null, opts.indent))
-          .push(null)
+        .push(null)
       break
 
     case 'multipart/form-data':
@@ -46,7 +46,7 @@ module.exports = function (source, options) {
 
     default:
       code.push('const data = %s;', JSON.stringify(source.postData.text || null))
-          .blank()
+        .blank()
   }
 
   code.push('const xhr = new XMLHttpRequest();')
@@ -56,20 +56,20 @@ module.exports = function (source, options) {
   }
 
   code.blank()
-      .push('xhr.addEventListener("readystatechange", function () {')
-      .push(1, 'if (this.readyState === this.DONE) {')
-      .push(2, 'console.log(this.responseText);')
-      .push(1, '}')
-      .push('});')
-      .blank()
-      .push('xhr.open(%s, %s);', JSON.stringify(source.method), JSON.stringify(source.fullUrl))
+    .push('xhr.addEventListener("readystatechange", function () {')
+    .push(1, 'if (this.readyState === this.DONE) {')
+    .push(2, 'console.log(this.responseText);')
+    .push(1, '}')
+    .push('});')
+    .blank()
+    .push('xhr.open(%s, %s);', JSON.stringify(source.method), JSON.stringify(source.fullUrl))
 
   Object.keys(source.allHeaders).forEach(function (key) {
     code.push('xhr.setRequestHeader(%s, %s);', JSON.stringify(key), JSON.stringify(source.allHeaders[key]))
   })
 
   code.blank()
-      .push('xhr.send(data);')
+    .push('xhr.send(data);')
 
   return code.join()
 }

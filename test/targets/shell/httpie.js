@@ -1,12 +1,10 @@
-/* global it */
-
 'use strict'
 
 require('should')
 
 module.exports = function (HTTPSnippet, fixtures) {
   it('should ask for verbose output', function () {
-    var result = new HTTPSnippet(fixtures.requests.short).convert('shell', 'httpie', {
+    const result = new HTTPSnippet(fixtures.requests.short).convert('shell', 'httpie', {
       indent: false,
       verbose: true
     })
@@ -16,7 +14,7 @@ module.exports = function (HTTPSnippet, fixtures) {
   })
 
   it('should use short flags', function () {
-    var result = new HTTPSnippet(fixtures.requests.short).convert('shell', 'httpie', {
+    const result = new HTTPSnippet(fixtures.requests.short).convert('shell', 'httpie', {
       body: true,
       cert: 'foo',
       headers: true,
@@ -35,7 +33,7 @@ module.exports = function (HTTPSnippet, fixtures) {
   })
 
   it('should use long flags', function () {
-    var result = new HTTPSnippet(fixtures.requests.short).convert('shell', 'httpie', {
+    const result = new HTTPSnippet(fixtures.requests.short).convert('shell', 'httpie', {
       body: true,
       cert: 'foo',
       headers: true,
@@ -53,7 +51,7 @@ module.exports = function (HTTPSnippet, fixtures) {
   })
 
   it('should use custom indentation', function () {
-    var result = new HTTPSnippet(fixtures.requests.full).convert('shell', 'httpie', {
+    const result = new HTTPSnippet(fixtures.requests.full).convert('shell', 'httpie', {
       indent: '@'
     })
 
@@ -62,7 +60,7 @@ module.exports = function (HTTPSnippet, fixtures) {
   })
 
   it('should use queryString parameters', function () {
-    var result = new HTTPSnippet(fixtures.requests.query).convert('shell', 'httpie', {
+    const result = new HTTPSnippet(fixtures.requests.query).convert('shell', 'httpie', {
       indent: false,
       queryParams: true
     })
@@ -72,7 +70,7 @@ module.exports = function (HTTPSnippet, fixtures) {
   })
 
   it('should build parameterized output of query string', function () {
-    var result = new HTTPSnippet(fixtures.requests.query).convert('shell', 'httpie', {
+    const result = new HTTPSnippet(fixtures.requests.query).convert('shell', 'httpie', {
       indent: false,
       queryParams: true
     })
@@ -82,7 +80,7 @@ module.exports = function (HTTPSnippet, fixtures) {
   })
 
   it('should build parameterized output of post data', function () {
-    var result = new HTTPSnippet(fixtures.requests['application-form-encoded']).convert('shell', 'httpie', {
+    const result = new HTTPSnippet(fixtures.requests['application-form-encoded']).convert('shell', 'httpie', {
       short: true,
       indent: false,
       queryParams: true
