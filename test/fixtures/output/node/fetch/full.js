@@ -4,11 +4,10 @@ const encodedParams = new URLSearchParams();
 
 encodedParams.set('foo', 'bar');
 
-let url = 'http://mockbin.com/har';
+let url = 'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value';
 
 let options = {
   method: 'POST',
-  qs: {foo: ['bar', 'baz'], baz: 'abc', key: 'value'},
   headers: {
     accept: 'application/json',
     'content-type': 'application/x-www-form-urlencoded',

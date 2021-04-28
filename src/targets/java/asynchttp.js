@@ -10,21 +10,21 @@
 
 'use strict'
 
-var CodeBuilder = require('../../helpers/code-builder')
+const CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var opts = Object.assign({
+  const opts = Object.assign({
     indent: '  '
   }, options)
 
-  var code = new CodeBuilder(opts.indent)
+  const code = new CodeBuilder(opts.indent)
 
   code.push('AsyncHttpClient client = new DefaultAsyncHttpClient();')
 
   code.push(`client.prepare("${source.method.toUpperCase()}", "${source.fullUrl}")`)
 
   // Add headers, including the cookies
-  var headers = Object.keys(source.allHeaders)
+  const headers = Object.keys(source.allHeaders)
 
   // construct headers
   if (headers.length) {

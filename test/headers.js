@@ -1,13 +1,11 @@
-/* global describe, it */
-
 'use strict'
 
-var helpers = require('../src/helpers/headers')
-var should = require('should')
+const helpers = require('../src/helpers/headers')
+const should = require('should')
 
 const headers = {
   'Content-Type': 'multipart/form-data; boundary=---011000010111000001101001',
-  'accept': 'application/json'
+  accept: 'application/json'
 }
 
 describe('Headers', function () {

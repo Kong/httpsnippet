@@ -10,17 +10,17 @@
 
 'use strict'
 
-var stringifyObject = require('stringify-object')
-var CodeBuilder = require('../../helpers/code-builder')
+const stringifyObject = require('stringify-object')
+const CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var opts = Object.assign({
+  const opts = Object.assign({
     indent: '  '
   }, options)
 
-  var code = new CodeBuilder(opts.indent)
+  const code = new CodeBuilder(opts.indent)
 
-  var reqOpts = {
+  const reqOpts = {
     method: source.method,
     hostname: source.uriObj.hostname,
     port: source.uriObj.port,
@@ -31,21 +31,21 @@ module.exports = function (source, options) {
   code.push('const http = require("%s");', source.uriObj.protocol.replace(':', ''))
 
   code.blank()
-      .push('const options = %s;', JSON.stringify(reqOpts, null, opts.indent))
-      .blank()
-      .push('const req = http.request(options, function (res) {')
-      .push(1, 'const chunks = [];')
-      .blank()
-      .push(1, 'res.on("data", function (chunk) {')
-      .push(2, 'chunks.push(chunk);')
-      .push(1, '});')
-      .blank()
-      .push(1, 'res.on("end", function () {')
-      .push(2, 'const body = Buffer.concat(chunks);')
-      .push(2, 'console.log(body.toString());')
-      .push(1, '});')
-      .push('});')
-      .blank()
+    .push('const options = %s;', JSON.stringify(reqOpts, null, opts.indent))
+    .blank()
+    .push('const req = http.request(options, function (res) {')
+    .push(1, 'const chunks = [];')
+    .blank()
+    .push(1, 'res.on("data", function (chunk) {')
+    .push(2, 'chunks.push(chunk);')
+    .push(1, '});')
+    .blank()
+    .push(1, 'res.on("end", function () {')
+    .push(2, 'const body = Buffer.concat(chunks);')
+    .push(2, 'console.log(body.toString());')
+    .push(1, '});')
+    .push('});')
+    .blank()
 
   switch (source.postData.mimeType) {
     case 'application/x-www-form-urlencoded':

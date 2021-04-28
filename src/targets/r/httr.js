@@ -10,12 +10,12 @@
 
 'use strict'
 
-var util = require('util')
-var CodeBuilder = require('../../helpers/code-builder')
+const util = require('util')
+const CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
   // Start snippet
-  var code = new CodeBuilder()
+  const code = new CodeBuilder()
 
   // Import httr
   code.push('library(httr)')
@@ -26,20 +26,19 @@ module.exports = function (source, options) {
     .blank()
 
   // Construct query string
-  var query
-  var qs = source.queryObj
-  var queryCount = Object.keys(qs).length
-  delete source.queryObj['key']
+  const qs = source.queryObj
+  const queryCount = Object.keys(qs).length
+  delete source.queryObj.key
 
   if (source.queryString.length === 1) {
     code.push('queryString <- list(%s = "%s")', Object.keys(qs), Object.values(qs).toString())
       .blank()
   } else if (source.queryString.length > 1) {
-    var count = 1
+    let count = 1
 
     code.push('queryString <- list(')
 
-    for (query in qs) {
+    for (const query in qs) {
       if (count++ !== queryCount - 1) {
         code.push('  %s = "%s",', query, qs[query].toString())
       } else {
@@ -52,7 +51,7 @@ module.exports = function (source, options) {
   }
 
   // Construct payload
-  var payload = JSON.stringify(source.postData.text)
+  const payload = JSON.stringify(source.postData.text)
 
   if (payload) {
     code.push('payload <- %s', payload)
@@ -85,14 +84,13 @@ module.exports = function (source, options) {
   }
 
   // Construct headers
-  var head
-  var headers = source.allHeaders
-  var headerCount = Object.keys(headers).length
-  var header = ''
-  var cookies
-  var accept
+  const headers = source.allHeaders
+  let headerCount = Object.keys(headers).length
+  let header = ''
+  let cookies
+  let accept
 
-  for (head in headers) {
+  for (const head in headers) {
     if (head.toLowerCase() === 'accept') {
       accept = ', accept("' + headers[head] + '")'
       headerCount = headerCount - 1
@@ -106,8 +104,8 @@ module.exports = function (source, options) {
   }
 
   // Construct request
-  var method = source.method
-  var request = util.format('response <- VERB("%s", url', method)
+  const method = source.method
+  let request = util.format('response <- VERB("%s", url', method)
 
   if (payload) {
     request += ', body = payload'

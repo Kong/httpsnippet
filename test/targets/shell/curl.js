@@ -1,12 +1,10 @@
-/* global it */
-
 'use strict'
 
 require('should')
 
 module.exports = function (HTTPSnippet, fixtures) {
   it('should use short options', function () {
-    var result = new HTTPSnippet(fixtures.requests.full).convert('shell', 'curl', {
+    const result = new HTTPSnippet(fixtures.requests.full).convert('shell', 'curl', {
       short: true,
       indent: false
     })
@@ -16,7 +14,7 @@ module.exports = function (HTTPSnippet, fixtures) {
   })
 
   it('should use binary option', function () {
-    var result = new HTTPSnippet(fixtures.requests.full).convert('shell', 'curl', {
+    const result = new HTTPSnippet(fixtures.requests.full).convert('shell', 'curl', {
       short: true,
       indent: false,
       binary: true
@@ -27,7 +25,7 @@ module.exports = function (HTTPSnippet, fixtures) {
   })
 
   it('should use short globoff option', function () {
-    var result = new HTTPSnippet(fixtures.requests.nested).convert('shell', 'curl', {
+    const result = new HTTPSnippet(fixtures.requests.nested).convert('shell', 'curl', {
       short: true,
       indent: false,
       globOff: true
@@ -38,7 +36,7 @@ module.exports = function (HTTPSnippet, fixtures) {
   })
 
   it('should use long globoff option', function () {
-    var result = new HTTPSnippet(fixtures.requests.nested).convert('shell', 'curl', {
+    const result = new HTTPSnippet(fixtures.requests.nested).convert('shell', 'curl', {
       indent: false,
       globOff: true
     })
@@ -48,7 +46,7 @@ module.exports = function (HTTPSnippet, fixtures) {
   })
 
   it('should not de-glob when globoff is false', function () {
-    var result = new HTTPSnippet(fixtures.requests.nested).convert('shell', 'curl', {
+    const result = new HTTPSnippet(fixtures.requests.nested).convert('shell', 'curl', {
       indent: false,
       globOff: false
     })
@@ -58,7 +56,7 @@ module.exports = function (HTTPSnippet, fixtures) {
   })
 
   it('should use --http1.0 for HTTP/1.0', function () {
-    var result = new HTTPSnippet(fixtures.curl.http1).convert('shell', 'curl', {
+    const result = new HTTPSnippet(fixtures.curl.http1).convert('shell', 'curl', {
       indent: false
     })
 
@@ -67,7 +65,7 @@ module.exports = function (HTTPSnippet, fixtures) {
   })
 
   it('should use custom indentation', function () {
-    var result = new HTTPSnippet(fixtures.requests.full).convert('shell', 'curl', {
+    const result = new HTTPSnippet(fixtures.requests.full).convert('shell', 'curl', {
       indent: '@'
     })
 
