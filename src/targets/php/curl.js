@@ -37,7 +37,7 @@ module.exports = function (source, options) {
       code.push('$postData = http_build_query('+helpers.convert(source.postData.paramsObj, opts.indent)+');')
         .blank()
     } else {
-      code.push('$postData = "'+source.postData.text+'"')
+      code.push('$postData = "'+source.postData.text+'";')
         .blank()
     }
   }
