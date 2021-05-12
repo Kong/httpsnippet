@@ -1,5 +1,9 @@
 <?php
 
+$postData = http_build_query([
+  'foo' => 'bar'
+]);
+
 $curl = curl_init();
 
 curl_setopt_array($curl, [
@@ -10,7 +14,7 @@ curl_setopt_array($curl, [
   CURLOPT_TIMEOUT => 30,
   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
   CURLOPT_CUSTOMREQUEST => "POST",
-  CURLOPT_POSTFIELDS => "foo=bar",
+  CURLOPT_POSTFIELDS => $postData,
   CURLOPT_COOKIE => "foo=bar; bar=baz",
   CURLOPT_HTTPHEADER => [
     "accept: application/json",

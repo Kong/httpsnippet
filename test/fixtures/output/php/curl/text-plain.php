@@ -1,5 +1,7 @@
 <?php
 
+$postData = "Hello World";
+
 $curl = curl_init();
 
 curl_setopt_array($curl, [
@@ -10,7 +12,7 @@ curl_setopt_array($curl, [
   CURLOPT_TIMEOUT => 30,
   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
   CURLOPT_CUSTOMREQUEST => "POST",
-  CURLOPT_POSTFIELDS => "Hello World",
+  CURLOPT_POSTFIELDS => $postData,
   CURLOPT_HTTPHEADER => [
     "content-type: text/plain"
   ],

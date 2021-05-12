@@ -32,14 +32,12 @@ module.exports = function (source, options) {
       .blank()
   }
 
-  if (source.postData) {
-    if (source.postData.mimeType === 'application/x-www-form-urlencoded') {
-      code.push('$postData = http_build_query(' + helpers.convert(source.postData.paramsObj, opts.indent) + ');')
-        .blank()
-    } else {
-      code.push('$postData = "' + source.postData.text + '";')
-        .blank()
-    }
+  if (source.postData.mimeType === 'application/x-www-form-urlencoded') {
+    code.push('$postData = http_build_query(' + helpers.convert(source.postData.paramsObj, opts.indent) + ');')
+      .blank()
+  } else if (source.postData.text) {
+    code.push('$postData = ' + JSON.stringify(source.postData.text) + ';')
+      .blank()
   }
 
   code.push('$curl = curl_init();')
@@ -80,7 +78,7 @@ module.exports = function (source, options) {
   }, {
     escape: false,
     name: 'CURLOPT_POSTFIELDS',
-    value: source.postData ? '$postData' : undefined
+    value: source.postData.text || (source.postData.mimeType === 'application/x-www-form-urlencoded' && source.postData.paramsObj) ? '$postData' : undefined
   }]
 
   code.push('curl_setopt_array($curl, [')
