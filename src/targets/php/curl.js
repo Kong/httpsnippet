@@ -33,11 +33,11 @@ module.exports = function (source, options) {
   }
 
   if (source.postData) {
-    if (source.postData.mimeType == 'application/x-www-form-urlencoded') {
-      code.push('$postData = http_build_query('+helpers.convert(source.postData.paramsObj, opts.indent)+');')
+    if (source.postData.mimeType === 'application/x-www-form-urlencoded') {
+      code.push('$postData = http_build_query(' + helpers.convert(source.postData.paramsObj, opts.indent) + ');')
         .blank()
     } else {
-      code.push('$postData = "'+source.postData.text+'";')
+      code.push('$postData = "' + source.postData.text + '";')
         .blank()
     }
   }
