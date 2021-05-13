@@ -11,7 +11,7 @@
 'use strict'
 
 const util = require('util')
-const shell = require('../../helpers/shell')
+const shell = require('./helpers')
 const CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {

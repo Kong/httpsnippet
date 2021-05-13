@@ -35,5 +35,23 @@ module.exports = {
    */
   hasHeader: (headers, name) => {
     return Boolean(Object.keys(headers).find(k => k.toLowerCase() === name.toLowerCase()))
+  },
+
+  /**
+   * Determines if a given mimetype is JSON, or a variant of such.
+   *
+   * @param {string}} mimeType
+   * @returns {boolean}
+   */
+  isMimeTypeJson: (mimeType) => {
+    return [
+      'application/json',
+      'application/x-json',
+      'text/json',
+      'text/x-json',
+      '+json'
+    ].some(function (type) {
+      return mimeType.indexOf(type) > -1
+    })
   }
 }
