@@ -5,7 +5,7 @@ const options = {
     accept: 'application/json',
     'content-type': 'application/x-www-form-urlencoded'
   },
-  body: {foo: 'bar'}
+  body: new URLSearchParams({foo: 'bar'})
 };
 
 fetch('http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value', options)
