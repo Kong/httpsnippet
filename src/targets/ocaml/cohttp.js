@@ -10,24 +10,24 @@
 
 'use strict'
 
-var CodeBuilder = require('../../helpers/code-builder')
+const CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var opts = Object.assign({
+  const opts = Object.assign({
     indent: '  '
   }, options)
 
-  var methods = ['get', 'post', 'head', 'delete', 'patch', 'put', 'options']
-  var code = new CodeBuilder(opts.indent)
+  const methods = ['get', 'post', 'head', 'delete', 'patch', 'put', 'options']
+  const code = new CodeBuilder(opts.indent)
 
   code.push('open Cohttp_lwt_unix')
-      .push('open Cohttp')
-      .push('open Lwt')
-      .blank()
-      .push('let uri = Uri.of_string "%s" in', source.fullUrl)
+    .push('open Cohttp')
+    .push('open Lwt')
+    .blank()
+    .push('let uri = Uri.of_string "%s" in', source.fullUrl)
 
   // Add headers, including the cookies
-  var headers = Object.keys(source.allHeaders)
+  const headers = Object.keys(source.allHeaders)
 
   if (headers.length === 1) {
     code.push('let headers = Header.add (Header.init ()) "%s" "%s" in', headers[0], source.allHeaders[headers[0]])
@@ -58,7 +58,7 @@ module.exports = function (source, options) {
 
   // Catch result
   code.push('>>= fun (res, body_stream) ->')
-      .push(1, '(* Do stuff with the result *)')
+    .push(1, '(* Do stuff with the result *)')
 
   return code.join()
 }

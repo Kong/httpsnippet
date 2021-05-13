@@ -1,6 +1,6 @@
 'use strict'
 
-var util = require('util')
+const util = require('util')
 
 /**
  * Create an string of given length filled with blank spaces
@@ -18,9 +18,9 @@ function buildString (length, str) {
  * and indentation.
  */
 function concatArray (arr, pretty, indentation, indentLevel) {
-  var currentIndent = buildString(indentLevel, indentation)
-  var closingBraceIndent = buildString(indentLevel - 1, indentation)
-  var join = pretty ? ',\n' + currentIndent : ', '
+  const currentIndent = buildString(indentLevel, indentation)
+  const closingBraceIndent = buildString(indentLevel - 1, indentation)
+  const join = pretty ? ',\n' + currentIndent : ', '
 
   if (pretty) {
     return '[\n' + currentIndent + arr.join(join) + '\n' + closingBraceIndent + ']'
@@ -55,10 +55,11 @@ module.exports = {
     switch (Object.prototype.toString.call(value)) {
       case '[object Number]':
         return value
-      case '[object Array]':
+
+      case '[object Array]': {
         // Don't prettify arrays nto not take too much space
-        var pretty = false
-        var valuesRepresentation = value.map(function (v) {
+        let pretty = false
+        const valuesRepresentation = value.map(function (v) {
           // Switch to prettify if the value is a dictionary with multiple keys
           if (Object.prototype.toString.call(v) === '[object Object]') {
             pretty = Object.keys(v).length > 1
@@ -66,14 +67,19 @@ module.exports = {
           return this.literalRepresentation(v, opts, indentLevel)
         }.bind(this))
         return concatArray(valuesRepresentation, pretty, opts.indent, indentLevel)
-      case '[object Object]':
-        var keyValuePairs = []
-        for (var k in value) {
+      }
+
+      case '[object Object]': {
+        const keyValuePairs = []
+        for (const k in value) {
           keyValuePairs.push(util.format('"%s": %s', k, this.literalRepresentation(value[k], opts, indentLevel)))
         }
         return concatArray(keyValuePairs, opts.pretty && keyValuePairs.length > 1, opts.indent, indentLevel)
+      }
+
       case '[object Boolean]':
         return value.toString()
+
       default:
         if (value === null || value === undefined) {
           return ''

@@ -1,15 +1,13 @@
-/* global describe, it */
-
 'use strict'
 
-var fixtures = require('./fixtures')
-var HTTPSnippet = require('../src')
+const fixtures = require('./fixtures')
+const HTTPSnippet = require('../src')
 
-var should = require('should')
+const should = require('should')
 
 describe('HTTPSnippet', function () {
   it('should return false if no matching target', function (done) {
-    var snippet = new HTTPSnippet(fixtures.requests.short)
+    const snippet = new HTTPSnippet(fixtures.requests.short)
 
     snippet.convert(null).should.eql(false)
 
@@ -17,11 +15,11 @@ describe('HTTPSnippet', function () {
   })
 
   it('should fail validation', function (done) {
-    var snippet;
+    let snippet;
 
     /* eslint-disable no-extra-parens */
     (function () {
-      snippet = new HTTPSnippet({yolo: 'foo'})
+      snippet = new HTTPSnippet({ yolo: 'foo' })
     }).should.throw(Error)
 
     should.not.exist(snippet)
@@ -30,12 +28,12 @@ describe('HTTPSnippet', function () {
   })
 
   it('should parse HAR file with multiple entries', function (done) {
-    var snippet = new HTTPSnippet(fixtures.har)
+    const snippet = new HTTPSnippet(fixtures.har)
 
     snippet.should.have.property('requests').and.be.an.Array()
     snippet.requests.length.should.equal(2)
 
-    var results = snippet.convert('shell')
+    const results = snippet.convert('shell')
 
     results.should.be.an.Array()
     results.length.should.equal(2)
@@ -44,7 +42,7 @@ describe('HTTPSnippet', function () {
   })
 
   it('should convert multipart/mixed to multipart/form-data', function (done) {
-    var req = new HTTPSnippet(fixtures.mimetypes['multipart/mixed']).requests[0]
+    const req = new HTTPSnippet(fixtures.mimetypes['multipart/mixed']).requests[0]
 
     req.postData.mimeType.should.eql('multipart/form-data')
 
@@ -52,7 +50,7 @@ describe('HTTPSnippet', function () {
   })
 
   it('should convert multipart/related to multipart/form-data', function (done) {
-    var req = new HTTPSnippet(fixtures.mimetypes['multipart/related']).requests[0]
+    const req = new HTTPSnippet(fixtures.mimetypes['multipart/related']).requests[0]
 
     req.postData.mimeType.should.eql('multipart/form-data')
 
@@ -60,7 +58,7 @@ describe('HTTPSnippet', function () {
   })
 
   it('should convert multipart/alternative to multipart/form-data', function (done) {
-    var req = new HTTPSnippet(fixtures.mimetypes['multipart/alternative']).requests[0]
+    const req = new HTTPSnippet(fixtures.mimetypes['multipart/alternative']).requests[0]
 
     req.postData.mimeType.should.eql('multipart/form-data')
 
@@ -68,7 +66,7 @@ describe('HTTPSnippet', function () {
   })
 
   it('should convert text/json to application/json', function (done) {
-    var req = new HTTPSnippet(fixtures.mimetypes['text/json']).requests[0]
+    const req = new HTTPSnippet(fixtures.mimetypes['text/json']).requests[0]
 
     req.postData.mimeType.should.eql('application/json')
 
@@ -76,7 +74,7 @@ describe('HTTPSnippet', function () {
   })
 
   it('should convert text/x-json to application/json', function (done) {
-    var req = new HTTPSnippet(fixtures.mimetypes['text/x-json']).requests[0]
+    const req = new HTTPSnippet(fixtures.mimetypes['text/x-json']).requests[0]
 
     req.postData.mimeType.should.eql('application/json')
 
@@ -84,7 +82,7 @@ describe('HTTPSnippet', function () {
   })
 
   it('should convert application/x-json to application/json', function (done) {
-    var req = new HTTPSnippet(fixtures.mimetypes['application/x-json']).requests[0]
+    const req = new HTTPSnippet(fixtures.mimetypes['application/x-json']).requests[0]
 
     req.postData.mimeType.should.eql('application/json')
 
@@ -92,7 +90,7 @@ describe('HTTPSnippet', function () {
   })
 
   it('should gracefully fallback if not able to parse JSON', function (done) {
-    var req = new HTTPSnippet(fixtures.mimetypes['invalid-json']).requests[0]
+    const req = new HTTPSnippet(fixtures.mimetypes['invalid-json']).requests[0]
 
     req.postData.mimeType.should.eql('text/plain')
 
@@ -100,7 +98,7 @@ describe('HTTPSnippet', function () {
   })
 
   it('should set postData.text = empty string when postData.params === undefined in application/x-www-form-urlencoded', function (done) {
-    var req = new HTTPSnippet(fixtures.mimetypes['application/x-www-form-urlencoded']).requests[0]
+    const req = new HTTPSnippet(fixtures.mimetypes['application/x-www-form-urlencoded']).requests[0]
 
     req.postData.text.should.eql('')
 
@@ -108,7 +106,7 @@ describe('HTTPSnippet', function () {
   })
 
   it('should add "uriObj" to source object', function (done) {
-    var req = new HTTPSnippet(fixtures.requests.query).requests[0]
+    const req = new HTTPSnippet(fixtures.requests.query).requests[0]
 
     req.uriObj.should.be.an.Object()
 
@@ -139,7 +137,7 @@ describe('HTTPSnippet', function () {
   })
 
   it('should add "queryObj" to source object', function (done) {
-    var req = new HTTPSnippet(fixtures.requests.query).requests[0]
+    const req = new HTTPSnippet(fixtures.requests.query).requests[0]
 
     req.queryObj.should.be.an.Object()
     req.queryObj.should.eql({
@@ -155,11 +153,11 @@ describe('HTTPSnippet', function () {
   })
 
   it('should add "headersObj" to source object', function (done) {
-    var req = new HTTPSnippet(fixtures.requests.headers).requests[0]
+    const req = new HTTPSnippet(fixtures.requests.headers).requests[0]
 
     req.headersObj.should.be.an.Object()
     req.headersObj.should.eql({
-      'accept': 'application/json',
+      accept: 'application/json',
       'x-foo': 'Bar'
     })
 
@@ -167,18 +165,18 @@ describe('HTTPSnippet', function () {
   })
 
   it('should add "headersObj" to source object case insensitive when HTTP/1.0', function (done) {
-    var fixture = Object.assign({}, fixtures.requests.headers)
+    const fixture = Object.assign({}, fixtures.requests.headers)
     fixture.httpVersion = 'HTTP/1.1'
     fixture.headers = fixture.headers.concat({
       name: 'Kong-Admin-Token',
       value: 'Hunter1'
     })
 
-    var req = new HTTPSnippet(fixture).requests[0]
+    const req = new HTTPSnippet(fixture).requests[0]
     req.headersObj.should.be.an.Object()
     req.headersObj.should.eql({
       'Kong-Admin-Token': 'Hunter1',
-      'accept': 'application/json',
+      accept: 'application/json',
       'x-foo': 'Bar'
     })
 
@@ -186,18 +184,18 @@ describe('HTTPSnippet', function () {
   })
 
   it('should add "headersObj" to source object in lowercase when HTTP/2.x', function (done) {
-    var fixture = Object.assign({}, fixtures.requests.headers)
+    const fixture = Object.assign({}, fixtures.requests.headers)
     fixture.httpVersion = 'HTTP/2'
     fixture.headers = fixture.headers.concat({
       name: 'Kong-Admin-Token',
       value: 'Hunter1'
     })
 
-    var req = new HTTPSnippet(fixture).requests[0]
+    const req = new HTTPSnippet(fixture).requests[0]
     req.headersObj.should.be.an.Object()
     req.headersObj.should.eql({
       'kong-admin-token': 'Hunter1',
-      'accept': 'application/json',
+      accept: 'application/json',
       'x-foo': 'Bar'
     })
 
@@ -205,7 +203,7 @@ describe('HTTPSnippet', function () {
   })
 
   it('should modify orignal url to strip query string', function (done) {
-    var req = new HTTPSnippet(fixtures.requests.query).requests[0]
+    const req = new HTTPSnippet(fixtures.requests.query).requests[0]
 
     req.url.should.be.a.String()
     req.url.should.eql('http://mockbin.com/har')
@@ -214,7 +212,7 @@ describe('HTTPSnippet', function () {
   })
 
   it('should add "fullUrl" to source object', function (done) {
-    var req = new HTTPSnippet(fixtures.requests.query).requests[0]
+    const req = new HTTPSnippet(fixtures.requests.query).requests[0]
 
     req.fullUrl.should.be.a.String()
     req.fullUrl.should.eql('http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value')
@@ -223,7 +221,7 @@ describe('HTTPSnippet', function () {
   })
 
   it('should fix "path" property of "uriObj" to match queryString', function (done) {
-    var req = new HTTPSnippet(fixtures.requests.query).requests[0]
+    const req = new HTTPSnippet(fixtures.requests.query).requests[0]
 
     req.uriObj.path.should.be.a.String()
     req.uriObj.path.should.eql('/har?foo=bar&foo=baz&baz=abc&key=value')

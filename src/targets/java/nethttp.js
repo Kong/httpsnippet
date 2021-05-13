@@ -10,22 +10,22 @@
 
 'use strict'
 
-var CodeBuilder = require('../../helpers/code-builder')
+const CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var opts = Object.assign(
+  const opts = Object.assign(
     {
       indent: '  '
     },
     options
   )
 
-  var code = new CodeBuilder(opts.indent)
+  const code = new CodeBuilder(opts.indent)
 
   code.push('HttpRequest request = HttpRequest.newBuilder()')
   code.push(2, '.uri(URI.create("%s"))', source.fullUrl)
 
-  var headers = Object.keys(source.allHeaders)
+  const headers = Object.keys(source.allHeaders)
 
   // construct headers
   if (headers.length) {

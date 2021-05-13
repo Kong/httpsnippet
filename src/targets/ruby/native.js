@@ -1,12 +1,12 @@
 'use strict'
 
-var CodeBuilder = require('../../helpers/code-builder')
+const CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var code = new CodeBuilder()
+  const code = new CodeBuilder()
 
   code.push('require \'uri\'')
-      .push('require \'net/http\'')
+    .push('require \'net/http\'')
 
   if (source.uriObj.protocol === 'https:') {
     code.push('require \'openssl\'')
@@ -16,30 +16,30 @@ module.exports = function (source, options) {
 
   // To support custom methods we check for the supported methods
   // and if doesn't exist then we build a custom class for it
-  var method = source.method.toUpperCase()
-  var methods = ['GET', 'POST', 'HEAD', 'DELETE', 'PATCH', 'PUT', 'OPTIONS', 'COPY', 'LOCK', 'UNLOCK', 'MOVE', 'TRACE']
-  var capMethod = method.charAt(0) + method.substring(1).toLowerCase()
+  const method = source.method.toUpperCase()
+  const methods = ['GET', 'POST', 'HEAD', 'DELETE', 'PATCH', 'PUT', 'OPTIONS', 'COPY', 'LOCK', 'UNLOCK', 'MOVE', 'TRACE']
+  const capMethod = method.charAt(0) + method.substring(1).toLowerCase()
   if (methods.indexOf(method) < 0) {
     code.push('class Net::HTTP::%s < Net::HTTPRequest', capMethod)
-        .push('  METHOD = \'%s\'', method.toUpperCase())
-        .push('  REQUEST_HAS_BODY = \'%s\'', source.postData.text ? 'true' : 'false')
-        .push('  RESPONSE_HAS_BODY = true')
-        .push('end')
-        .blank()
+      .push('  METHOD = \'%s\'', method.toUpperCase())
+      .push('  REQUEST_HAS_BODY = \'%s\'', source.postData.text ? 'true' : 'false')
+      .push('  RESPONSE_HAS_BODY = true')
+      .push('end')
+      .blank()
   }
 
   code.push('url = URI("%s")', source.fullUrl)
-      .blank()
-      .push('http = Net::HTTP.new(url.host, url.port)')
+    .blank()
+    .push('http = Net::HTTP.new(url.host, url.port)')
 
   if (source.uriObj.protocol === 'https:') {
     code.push('http.use_ssl = true')
   }
 
   code.blank()
-      .push('request = Net::HTTP::%s.new(url)', capMethod)
+    .push('request = Net::HTTP::%s.new(url)', capMethod)
 
-  var headers = Object.keys(source.allHeaders)
+  const headers = Object.keys(source.allHeaders)
   if (headers.length) {
     headers.forEach(function (key) {
       code.push('request["%s"] = \'%s\'', key, source.allHeaders[key])
@@ -51,8 +51,8 @@ module.exports = function (source, options) {
   }
 
   code.blank()
-      .push('response = http.request(request)')
-      .push('puts response.read_body')
+    .push('response = http.request(request)')
+    .push('puts response.read_body')
 
   return code.join()
 }

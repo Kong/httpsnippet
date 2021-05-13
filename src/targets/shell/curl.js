@@ -10,22 +10,31 @@
 
 'use strict'
 
-var util = require('util')
-var helpers = require('./helpers')
-var headerHelpers = require('../../helpers/headers')
-var CodeBuilder = require('../../helpers/code-builder')
+const util = require('util')
+const helpers = require('./helpers')
+const headerHelpers = require('../../helpers/headers')
+const CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var opts = Object.assign({
+  const opts = Object.assign({
     indent: '  ',
     short: false,
-    binary: false
+    binary: false,
+    globOff: false
   }, options)
 
-  var code = new CodeBuilder(opts.indent, opts.indent !== false ? ' \\\n' + opts.indent : ' ')
+  const code = new CodeBuilder(opts.indent, opts.indent !== false ? ' \\\n' + opts.indent : ' ')
 
-  code.push('curl %s %s', opts.short ? '-X' : '--request', source.method)
-      .push(util.format('%s%s', opts.short ? '' : '--url ', helpers.quote(source.fullUrl)))
+  const globOption = opts.short ? '-g' : '--globoff'
+  const requestOption = opts.short ? '-X' : '--request'
+  let formattedUrl = helpers.quote(source.fullUrl)
+
+  code.push('curl %s %s', requestOption, source.method)
+  if (opts.globOff) {
+    formattedUrl = unescape(formattedUrl)
+    code.push(globOption)
+  }
+  code.push(util.format('%s%s', opts.short ? '' : '--url ', formattedUrl))
 
   if (source.httpVersion === 'HTTP/1.0') {
     code.push(opts.short ? '-0' : '--http1.0')
@@ -33,7 +42,7 @@ module.exports = function (source, options) {
 
   // construct headers
   Object.keys(source.headersObj).sort().forEach(function (key) {
-    var header = util.format('%s: %s', key, source.headersObj[key])
+    const header = util.format('%s: %s', key, source.headersObj[key])
     code.push('%s %s', opts.short ? '-H' : '--header', helpers.quote(header))
   })
 
@@ -44,8 +53,8 @@ module.exports = function (source, options) {
   // construct post params
   switch (source.postData.mimeType) {
     case 'multipart/form-data':
-      source.postData.params.map(function (param) {
-        var post = ''
+      source.postData.params.forEach(function (param) {
+        let post = ''
         if (param.fileName) {
           post = util.format('%s=@%s', param.name, param.fileName)
         } else {
@@ -58,7 +67,7 @@ module.exports = function (source, options) {
 
     case 'application/x-www-form-urlencoded':
       if (source.postData.params) {
-        source.postData.params.map(function (param) {
+        source.postData.params.forEach(function (param) {
           code.push(
             '%s %s', opts.binary ? '--data-binary' : (opts.short ? '-d' : '--data'),
             helpers.quote(util.format('%s=%s', param.name, param.value))

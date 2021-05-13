@@ -10,18 +10,18 @@
 
 'use strict'
 
-var CodeBuilder = require('../../helpers/code-builder')
+const CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var opts = Object.assign({
+  const opts = Object.assign({
     indent: '  '
   }, options)
 
-  var code = new CodeBuilder(opts.indent)
+  const code = new CodeBuilder(opts.indent)
 
-  var methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD']
+  const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD']
 
-  var methodsWithBody = ['POST', 'PUT', 'DELETE', 'PATCH']
+  const methodsWithBody = ['POST', 'PUT', 'DELETE', 'PATCH']
 
   code.push('OkHttpClient client = new OkHttpClient();')
     .blank()
@@ -54,7 +54,7 @@ module.exports = function (source, options) {
   }
 
   // Add headers, including the cookies
-  var headers = Object.keys(source.allHeaders)
+  const headers = Object.keys(source.allHeaders)
 
   // construct headers
   if (headers.length) {

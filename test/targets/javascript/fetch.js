@@ -7,7 +7,7 @@ require('should')
 module.exports = function (HTTPSnippet, fixtures) {
   describe('`useObjectBody` is enabled', () => {
     it('should respond with stringify on `application/json` requests', function () {
-      var result = new HTTPSnippet(fixtures.requests['application-json']).convert('javascript', 'fetch', {
+      const result = new HTTPSnippet(fixtures.requests['application-json']).convert('javascript', 'fetch', {
         useObjectBody: true
       })
 
@@ -32,7 +32,7 @@ fetch('http://mockbin.com/har', options)
     })
 
     it('should respond without stringify on `application-form-encoded` requests', function () {
-      var result = new HTTPSnippet(fixtures.requests['application-form-encoded']).convert('javascript', 'fetch', {
+      const result = new HTTPSnippet(fixtures.requests['application-form-encoded']).convert('javascript', 'fetch', {
         useObjectBody: true
       })
 
@@ -51,7 +51,7 @@ fetch('http://mockbin.com/har', options)
   })
 
   it('should respond without stringify when `useObjectBody` is disabled', function () {
-    var result = new HTTPSnippet(fixtures.requests['application-json']).convert('javascript', 'fetch', {
+    const result = new HTTPSnippet(fixtures.requests['application-json']).convert('javascript', 'fetch', {
       useObjectBody: false
     })
 

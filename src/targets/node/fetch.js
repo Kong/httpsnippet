@@ -10,20 +10,20 @@
 
 'use strict'
 
-var stringifyObject = require('stringify-object')
-var CodeBuilder = require('../../helpers/code-builder')
+const stringifyObject = require('stringify-object')
+const CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var opts = Object.assign({
+  const opts = Object.assign({
     indent: '  '
   }, options)
 
-  var includeFS = false
-  var code = new CodeBuilder(opts.indent)
+  let includeFS = false
+  const code = new CodeBuilder(opts.indent)
 
   code.push('const fetch = require(\'node-fetch\');')
-  var url = source.fullUrl
-  var reqOpts = {
+  const url = source.fullUrl
+  const reqOpts = {
     method: source.method
   }
 
@@ -76,7 +76,7 @@ module.exports = function (source, options) {
 
   // construct cookies argument
   if (source.cookies.length) {
-    var cookies = ''
+    let cookies = ''
     source.cookies.forEach(function (cookie) {
       cookies = cookies + encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value) + '; '
     })
@@ -104,7 +104,8 @@ module.exports = function (source, options) {
       }
 
       return originalResult
-    }}))
+    }
+  }))
     .blank()
 
   if (includeFS) {
@@ -117,9 +118,9 @@ module.exports = function (source, options) {
   }
 
   code.push('fetch(url, options)')
-      .push(1, '.then(res => res.json())')
-      .push(1, '.then(json => console.log(json))')
-      .push(1, '.catch(err => console.error(\'error:\' + err));')
+    .push(1, '.then(res => res.json())')
+    .push(1, '.then(json => console.log(json))')
+    .push(1, '.catch(err => console.error(\'error:\' + err));')
 
   return code.join()
     .replace(/'encodedParams'/, 'encodedParams')

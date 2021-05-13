@@ -1,28 +1,26 @@
-/* global describe, it, beforeEach */
-
 'use strict'
 
-var fixtures = require('./fixtures')
-var fs = require('fs')
-var glob = require('glob')
-var HTTPSnippet = require('../src')
-var path = require('path')
-var should = require('should')
-var targets = require('../src/targets')
+const fixtures = require('./fixtures')
+const fs = require('fs')
+const glob = require('glob')
+const HTTPSnippet = require('../src')
+const path = require('path')
+const should = require('should')
+const targets = require('../src/targets')
 
-var base = './test/fixtures/output/'
+const base = './test/fixtures/output/'
 
 // read all output files
-var output = glob.sync('**/*', {cwd: base, nodir: true}).reduce(function (obj, name) {
+const output = glob.sync('**/*', { cwd: base, nodir: true }).reduce(function (obj, name) {
   obj[name] = fs.readFileSync(base + name)
   return obj
 }, {})
 
-var clearInfo = function (key) {
+const clearInfo = function (key) {
   return !~['info', 'index'].indexOf(key)
 }
 
-var itShouldHaveTests = function (target, client) {
+const itShouldHaveTests = function (target, client) {
   it(target + ' should have tests', function (done) {
     fs.readdir(path.join(__dirname, 'targets', target), function (err, files) {
       should.not.exist(err)
@@ -33,7 +31,7 @@ var itShouldHaveTests = function (target, client) {
   })
 }
 
-var itShouldHaveInfo = function (name, obj) {
+const itShouldHaveInfo = function (name, obj) {
   it(name + ' should have info method', function () {
     obj.should.have.property('info').and.be.an.Object()
     obj.info.key.should.equal(name).and.be.a.String()
@@ -43,16 +41,16 @@ var itShouldHaveInfo = function (name, obj) {
 
 // TODO: investigate issues with these fixtures
 const skipMe = {
-  'clojure': {
-    'clj_http': ['jsonObj-null-value', 'jsonObj-multiline']
+  clojure: {
+    clj_http: ['jsonObj-null-value', 'jsonObj-multiline']
   },
   '*': {
     '*': []
   }
 }
 
-var itShouldHaveRequestTestOutputFixture = function (request, target, client) {
-  var fixture = target + '/' + client + '/' + request + HTTPSnippet.extname(target)
+const itShouldHaveRequestTestOutputFixture = function (request, target, client) {
+  const fixture = target + '/' + client + '/' + request + HTTPSnippet.extname(target)
 
   it('should have output test for ' + request, function () {
     if (skipMe[target] &&
@@ -65,8 +63,8 @@ var itShouldHaveRequestTestOutputFixture = function (request, target, client) {
   })
 }
 
-var itShouldGenerateOutput = function (request, path, target, client) {
-  var fixture = path + request + HTTPSnippet.extname(target)
+const itShouldGenerateOutput = function (request, path, target, client) {
+  const fixture = path + request + HTTPSnippet.extname(target)
 
   it('should generate ' + request + ' snippet', function () {
     if (Object.keys(output).indexOf(fixture) === -1 ||
@@ -77,17 +75,17 @@ var itShouldGenerateOutput = function (request, path, target, client) {
       this.skip()
     }
 
-    var options = {}
+    const options = {}
     if (request === 'query-encoded') {
       // Query strings in this HAR are already escaped.
       options.escapeQueryStrings = false
     }
 
-    var instance = new HTTPSnippet(fixtures.requests[request], options)
+    const instance = new HTTPSnippet(fixtures.requests[request], options)
 
     // `form-data` sets the line break as `\r\n`, but we can't easily replicate that in our fixtures so let's convert
     // it to a standard line break instead.
-    var result = instance.convert(target, client).replace(/\r\n/g, '\n').trim()
+    const result = instance.convert(target, client).replace(/\r\n/g, '\n').trim()
 
     result.should.be.a.String()
     result.should.equal(output[fixture].toString().trim())
@@ -112,7 +110,7 @@ describe('Custom targets', function () {
 
     it('should throw if the target does not have a properly constructed info object', function () {
       (function () {
-        HTTPSnippet.addTarget({info: {key: ''}})
+        HTTPSnippet.addTarget({ info: { key: '' } })
       }).should.throw(Error)
     })
 
@@ -163,7 +161,7 @@ describe('Custom targets', function () {
 
     it('should throw if client already exists', function () {
       (function () {
-        HTTPSnippet.addTargetClient('node', {...customClient, info: {...customClient.info, key: 'axios'}})
+        HTTPSnippet.addTargetClient('node', { ...customClient, info: { ...customClient.info, key: 'axios' } })
       }).should.throw(Error)
     })
 
@@ -181,7 +179,7 @@ describe('Custom targets', function () {
 
     it('should throw if the target does not have a properly constructed info object', function () {
       (function () {
-        HTTPSnippet.addTargetClient('node', {info: {key: ''}})
+        HTTPSnippet.addTargetClient('node', { info: { key: '' } })
       }).should.throw(Error)
     })
 
@@ -212,7 +210,7 @@ describe('Targets', function () {
 
           itShouldHaveTests(target, client)
 
-          var test = require(path.join(__dirname, 'targets', target, client))
+          const test = require(path.join(__dirname, 'targets', target, client))
 
           test(HTTPSnippet, fixtures)
 

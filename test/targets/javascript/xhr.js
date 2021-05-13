@@ -1,12 +1,10 @@
-/* global it */
-
 'use strict'
 
 require('should')
 
 module.exports = function (HTTPSnippet, fixtures) {
   it('should not use cors', function () {
-    var result = new HTTPSnippet(fixtures.requests.short).convert('javascript', 'xhr', {
+    const result = new HTTPSnippet(fixtures.requests.short).convert('javascript', 'xhr', {
       cors: false
     })
 

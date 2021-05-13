@@ -54,6 +54,7 @@
     "test": "mocha --no-timeouts"
   },
   "standard": {
+    "env": "mocha",
     "ignore": [
       "**/test/fixtures/**"
     ]
@@ -69,10 +70,10 @@
     "echint": "^4.0.2",
     "glob": "^7.1.6",
     "istanbul": "^0.4.0",
-    "mocha": "^8.1.1",
+    "mocha": "^8.2.1",
     "require-directory": "^2.1.1",
     "should": "^13.2.3",
-    "standard": "^10.0.2"
+    "standard": "^16.0.3"
   },
   "dependencies": {
     "event-stream": "4.0.1",

@@ -18,6 +18,7 @@ module.exports = {
    * @return {string}
    */
   getHeaderName: (headers, name) => {
+    // eslint-disable-next-line array-callback-return
     return Object.keys(headers).find(k => {
       if (k.toLowerCase() === name.toLowerCase()) {
         return k

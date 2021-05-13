@@ -1,20 +1,19 @@
-/* global it */
-
 'use strict'
 
 require('should')
 
 module.exports = function (HTTPSnippet, fixtures) {
   it('should support false boilerplate option', function () {
-    var result = new HTTPSnippet(fixtures.requests.full).convert('go', 'native', {
+    const result = new HTTPSnippet(fixtures.requests.full).convert('go', 'native', {
       showBoilerplate: false
     })
 
     result.should.be.a.String()
     result.should.eql('url := "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value"\n\npayload := strings.NewReader("foo=bar")\n\nreq, _ := http.NewRequest("POST", url, payload)\n\nreq.Header.Add("cookie", "foo=bar; bar=baz")\nreq.Header.Add("accept", "application/json")\nreq.Header.Add("content-type", "application/x-www-form-urlencoded")\n\nres, _ := http.DefaultClient.Do(req)\n\ndefer res.Body.Close()\nbody, _ := ioutil.ReadAll(res.Body)\n\nfmt.Println(res)\nfmt.Println(string(body))')
   })
+
   it('should support checkErrors option', function () {
-    var result = new HTTPSnippet(fixtures.requests.full).convert('go', 'native', {
+    const result = new HTTPSnippet(fixtures.requests.full).convert('go', 'native', {
       checkErrors: true
     })
 
@@ -59,8 +58,9 @@ func main() {
 
 }`)
   })
+
   it('should support printBody option', function () {
-    var result = new HTTPSnippet(fixtures.requests.full).convert('go', 'native', {
+    const result = new HTTPSnippet(fixtures.requests.full).convert('go', 'native', {
       printBody: false
     })
 
@@ -91,8 +91,9 @@ func main() {
 
 }`)
   })
+
   it('should support timeout option', function () {
-    var result = new HTTPSnippet(fixtures.requests.full).convert('go', 'native', {
+    const result = new HTTPSnippet(fixtures.requests.full).convert('go', 'native', {
       timeout: 30
     })
 
