@@ -11,7 +11,8 @@
 'use strict'
 
 var util = require('util')
-var helpers = require('../../helpers/shell')
+var helpers = require('./helpers')
+var headerHelpers = require('../../helpers/headers')
 var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
@@ -74,10 +75,38 @@ module.exports = function (source, options) {
     default:
       // raw request body
       if (source.postData.text) {
-        code.push(
-          '%s %s', opts.binary ? '--data-binary' : (opts.short ? '-d' : '--data'),
-          helpers.quote(source.postData.text)
-        )
+        let builtPayload = false
+
+        // If we're dealing with a JSON variant, and our payload is JSON let's make it look a little nicer.
+        if (headerHelpers.isMimeTypeJson(source.postData.mimeType)) {
+          // If our postData is less than 20 characters, let's keep it all on one line so as to not make the snippet
+          // overly lengthy
+          if (source.postData.text.length > 20) {
+            try {
+              const jsonPayload = JSON.parse(source.postData.text)
+
+              // If the JSON object has a single quote we should prepare it inside of a HEREDOC because the single
+              // quote in something like `string's` can't be escaped when used with `--data`.
+              //
+              // Basically this boils down to `--data @- <<EOF...EOF` vs `--data '...'`.
+              builtPayload = true
+              code.push(
+                source.postData.text.indexOf("'") > 0 ? '%s @- <<EOF\n%s\nEOF' : "%s '\n%s\n'",
+                opts.binary ? '--data-binary' : (opts.short ? '-d' : '--data'),
+                JSON.stringify(jsonPayload, null, opts.indent)
+              )
+            } catch (err) {
+              // no-op
+            }
+          }
+        }
+
+        if (!builtPayload) {
+          code.push(
+            '%s %s', opts.binary ? '--data-binary' : (opts.short ? '-d' : '--data'),
+            helpers.quote(source.postData.text)
+          )
+        }
       }
   }
 

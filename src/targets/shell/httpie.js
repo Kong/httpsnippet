@@ -11,7 +11,7 @@
 'use strict'
 
 var util = require('util')
-var shell = require('../../helpers/shell')
+var shell = require('./helpers')
 var CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
