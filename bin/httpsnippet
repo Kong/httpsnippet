@@ -17,10 +17,21 @@ cmd
   .option('-t, --target <target>', 'target output')
   .option('-c, --client [client]', 'target client library')
   .option('-o, --output <directory>', 'write output to directory')
+  .option('-x, --extra [{"optionKey": "optionValue"}]', 'provide extra options for the target/client')
   .parse(process.argv)
 
 if (!cmd.args.length || !cmd.target) {
   cmd.help()
+}
+
+let extraOptions
+if (cmd.extra) {
+  try {
+    extraOptions = JSON.parse(cmd.extra)
+  } catch (e) {
+    console.error('%s failed to parse options %s (should be JSON)', chalk.red('✖'), chalk.cyan.bold(cmd.extra))
+    process.exit()
+  }
 }
 
 let dir
@@ -53,7 +64,7 @@ cmd.args.forEach(function (fileName) {
     })
 
     .then(function (snippet) {
-      return snippet.convert(cmd.target, cmd.client)
+      return snippet.convert(cmd.target, cmd.client, extraOptions)
     })
 
     .then(function (output) {
