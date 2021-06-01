@@ -20,7 +20,8 @@ module.exports = function (source, options) {
     indent: '  ',
     short: false,
     binary: false,
-    globOff: false
+    globOff: false,
+    escapeBrackets: false
   }, options)
 
   const code = new CodeBuilder(opts.indent, opts.indent !== false ? ' \\\n' + opts.indent : ' ')
@@ -28,6 +29,10 @@ module.exports = function (source, options) {
   const globOption = opts.short ? '-g' : '--globoff'
   const requestOption = opts.short ? '-X' : '--request'
   let formattedUrl = helpers.quote(source.fullUrl)
+
+  if (opts.escapeBrackets) {
+    formattedUrl = formattedUrl.replace(/\[/g, '\\[').replace(/\]/g, '\\]')
+  }
 
   code.push('curl %s %s', requestOption, source.method)
   if (opts.globOff) {

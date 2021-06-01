@@ -64,6 +64,27 @@ module.exports = function (HTTPSnippet, fixtures) {
     result.should.eql('curl --request GET --url http://mockbin.com/request --http1.0')
   })
 
+  it('should escape brackets in query strings when `escapeQueryStrings` is `false` and `escapeBrackets` is `true`', function () {
+    const har = {
+      method: 'GET',
+      url: 'http://mockbin.com/har',
+      httpVersion: 'HTTP/1.1',
+      queryString: [
+        {
+          name: 'where',
+          value: '[["$attributed_flow","=","FLOW_ID"]]'
+        }
+      ]
+    }
+
+    const result = new HTTPSnippet(har, { escapeQueryStrings: false }).convert('shell', 'curl', {
+      escapeBrackets: true
+    })
+
+    result.should.be.a.String()
+    result.replace(/\\\n/g, '').should.eql("curl --request GET   --url 'http://mockbin.com/har?where=\\[\\[\"$attributed_flow\",\"=\",\"FLOW_ID\"\\]\\]'")
+  })
+
   it('should use custom indentation', function () {
     const result = new HTTPSnippet(fixtures.requests.full).convert('shell', 'curl', {
       indent: '@'
