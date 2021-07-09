@@ -4,6 +4,6 @@ url = "http://mockbin.com/har"
 
 headers = { "cookie": "foo=bar; bar=baz" }
 
-response = requests.request("POST", url, headers=headers)
+response = requests.post(url, headers=headers)
 
 print(response.text)

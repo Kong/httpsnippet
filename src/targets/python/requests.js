@@ -14,6 +14,16 @@ const util = require('util')
 const CodeBuilder = require('../../helpers/code-builder')
 const helpers = require('./helpers')
 
+const builtInMethods = [
+  'HEAD',
+  'GET',
+  'POST',
+  'PUT',
+  'PATCH',
+  'DELETE',
+  'OPTIONS'
+]
+
 module.exports = function (source, options) {
   const opts = Object.assign({
     indent: '    ',
@@ -89,7 +99,10 @@ module.exports = function (source, options) {
 
   // Construct request
   const method = source.method
-  let request = util.format('response = requests.request("%s", url', method)
+
+  let request = builtInMethods.includes(method)
+    ? util.format('response = requests.%s(url', method.toLowerCase())
+    : util.format('response = requests.request("%s", url', method)
 
   if (hasPayload) {
     if (jsonPayload) {

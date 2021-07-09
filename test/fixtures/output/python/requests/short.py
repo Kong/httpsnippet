@@ -2,6 +2,6 @@ import requests
 
 url = "http://mockbin.com/har"
 
-response = requests.request("GET", url)
+response = requests.get(url)
 
 print(response.text)
