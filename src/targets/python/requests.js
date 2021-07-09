@@ -62,6 +62,14 @@ module.exports = function (source, options) {
       }
       break
 
+    case 'application/x-www-form-urlencoded':
+      if (source.postData.paramsObj) {
+        code.push('payload = %s', helpers.literalRepresentation(source.postData.paramsObj, opts))
+        hasPayload = true
+        break
+      }
+      // Otherwise, fall through to treat as plain text:
+
     default: {
       const payload = JSON.stringify(source.postData.text)
       if (payload) {

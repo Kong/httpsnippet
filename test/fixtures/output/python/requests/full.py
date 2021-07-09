@@ -8,7 +8,7 @@ querystring = {
     "key": "value"
 }
 
-payload = "foo=bar"
+payload = { "foo": "bar" }
 headers = {
     "cookie": "foo=bar; bar=baz",
     "accept": "application/json",
