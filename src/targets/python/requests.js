@@ -34,7 +34,7 @@ module.exports = function (source, options) {
   // Construct query string
   let qs
   if (Object.keys(source.queryObj).length) {
-    qs = 'querystring = ' + JSON.stringify(source.queryObj)
+    qs = 'querystring = ' + helpers.literalRepresentation(source.queryObj, opts)
 
     code.push(qs)
       .blank()
@@ -67,7 +67,7 @@ module.exports = function (source, options) {
 
   if (headerCount === 1) {
     for (const header in headers) {
-      code.push('headers = {"%s": "%s"}', header, headers[header])
+      code.push('headers = { "%s": "%s" }', header, headers[header])
         .blank()
     }
   } else if (headerCount > 1) {

@@ -25,6 +25,8 @@ function concatValues (concatType, values, pretty, indentation, indentLevel) {
 
   if (pretty) {
     return openingBrace + '\n' + currentIndent + values.join(join) + '\n' + closingBraceIndent + closingBrace
+  } else if (concatType === 'object' && values.length > 0) {
+    return openingBrace + ' ' + values.join(join) + ' ' + closingBrace
   } else {
     return openingBrace + values.join(join) + closingBrace
   }

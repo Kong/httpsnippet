@@ -13,7 +13,7 @@ module.exports = function (HTTPSnippet) {
 
 url = "http://mockbin.com/har"
 
-querystring = {"param":"value"}
+querystring = { "param": "value" }
 
 response = requests.request("GET", url, params=querystring)
 

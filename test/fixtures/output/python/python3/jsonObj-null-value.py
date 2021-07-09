@@ -4,7 +4,7 @@ conn = http.client.HTTPConnection("mockbin.com")
 
 payload = "{\"foo\":null}"
 
-headers = { 'content-type': "application/json" }
+headers = { "content-type": "application/json" }
 
 conn.request("POST", "/har", payload, headers)
 
