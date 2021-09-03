@@ -12,6 +12,7 @@
 
 const util = require('util')
 const helpers = require('../../helpers/shell')
+const headerHelpers = require('../../helpers/headers')
 const CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
@@ -37,6 +38,22 @@ module.exports = function (source, options) {
 
   if (source.httpVersion === 'HTTP/1.0') {
     code.push(opts.short ? '-0' : '--http1.0')
+  }
+
+  // if multipart form data, we want to remove the boundary
+  if (source.postData.mimeType === 'multipart/form-data') {
+    const contentTypeHeaderName = headerHelpers.getHeaderName(source.headersObj, 'content-type')
+    const contentTypeHeader = source.headersObj[contentTypeHeaderName]
+
+    if (contentTypeHeaderName && contentTypeHeader) {
+      // remove the leading semi colon and boundary
+      // up to the next semi colon or the end of string
+      const noBoundary = contentTypeHeader.replace(/; boundary.+?(?=(;|$))/, '')
+
+      // replace the content-type header with no boundary in both headersObj and allHeaders
+      source.headersObj[contentTypeHeaderName] = noBoundary
+      source.allHeaders[contentTypeHeaderName] = noBoundary
+    }
   }
 
   // construct headers
