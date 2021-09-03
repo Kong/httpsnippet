@@ -12,6 +12,7 @@ module.exports = {
   node: require('./node'),
   objc: require('./objc'),
   ocaml: require('./ocaml'),
+  perl: require('./perl'),
   php: require('./php'),
   powershell: require('./powershell'),
   python: require('./python'),
