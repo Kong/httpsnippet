@@ -23,7 +23,7 @@ npm install --save httpsnippet
 
 ```
 
-  Usage: httpsnippet [options] <file>
+  Usage: httpsnippet [options] <files ...>
 
   Options:
 
@@ -32,6 +32,7 @@ npm install --save httpsnippet
     -t, --target <target>     target output
     -c, --client [client]     target client library
     -o, --output <directory>  write output to directory
+    -x, --extra [{"optionKey": "optionValue"}]  provide extra options for the target/client
 
 ```
 
@@ -62,6 +63,13 @@ snippets/
 ├── endpoint-2.js
 └── endpoint-3.js
 ```
+
+provide extra options:
+
+```shell
+httpsnippet example.json --target http --output ./snippets -x '{"autoHost": false, "autoContentLength": false}'
+```
+
 
 ## API
 
