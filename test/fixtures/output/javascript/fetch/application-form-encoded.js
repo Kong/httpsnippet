@@ -1,7 +1,7 @@
 const options = {
   method: 'POST',
   headers: {'content-type': 'application/x-www-form-urlencoded'},
-  body: {foo: 'bar', hello: 'world'}
+  body: new URLSearchParams({foo: 'bar', hello: 'world'})
 };
 
 fetch('http://mockbin.com/har', options)
