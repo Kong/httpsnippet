@@ -67,7 +67,17 @@ module.exports = function (source, options) {
       }
   }
 
-  code.push('const options = %s;', stringifyObject(options, { indent: opts.indent, inlineCharacterLimit: 80 }))
+  code.push('const options = %s;', stringifyObject(options, {
+    indent: opts.indent,
+    inlineCharacterLimit: 80,
+    transform: (object, property, originalResult) => {
+      if (property === 'body' && source.postData.mimeType === 'application/x-www-form-urlencoded') {
+        return `new URLSearchParams(${originalResult})`
+      }
+
+      return originalResult
+    }
+  }))
     .blank()
 
   if (source.postData.mimeType === 'multipart/form-data') {
