@@ -3,14 +3,16 @@
 $client = new \GuzzleHttp\Client();
 
 $response = $client->request('POST', 'http://mockbin.com/har', [
-    'multipart' => [
+  'multipart' => [
     [
         'name' => 'foo',
-        'type' => 'text/plain',
-        'file' => 'test/fixtures/files/hello.txt',
-        'data' => null,
+        'filename' => 'test/fixtures/files/hello.txt',
+        'contents' => null,
+        'headers' => [
+                'Content-Type' => 'text/plain'
+        ]
     ]
-]
+  ]
 ]);
 
 echo $response->getBody();

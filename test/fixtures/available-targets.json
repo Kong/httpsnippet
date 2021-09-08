@@ -135,9 +135,9 @@
       },
       {
         "key": "guzzle",
-        "title": "Guzzle v6",
+        "title": "Guzzle v7",
         "link": "http://docs.guzzlephp.org/en/stable/",
-        "description": "PHP with guzzle v6"
+        "description": "PHP with guzzle v7"
       }
     ]
   },

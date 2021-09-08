@@ -1,6 +1,6 @@
 /**
  * @description
- * HTTP code snippet generator for PHP using curl-ext.
+ * HTTP code snippet generator for PHP using Guzzle.
  *
  * @author
  * @RobertoArruda
@@ -9,98 +9,116 @@
  */
 'use strict'
 
-var util = require('util')
-var helpers = require('./helpers')
-var CodeBuilder = require('../../helpers/code-builder')
+const util = require('util')
+const helpers = require('./helpers')
+const headerHelpers = require('../../helpers/headers')
+const CodeBuilder = require('../../helpers/code-builder')
 
 module.exports = function (source, options) {
-  var opts = Object.assign({
+  const opts = Object.assign({
     closingTag: false,
-    indent: '    ',
-    maxRedirects: 10,
-    namedErrors: false,
+    indent: '  ',
     noTags: false,
-    shortTags: false,
-    timeout: 30
+    shortTags: false
   }, options)
 
-  var code = new CodeBuilder(opts.indent)
+  const code = new CodeBuilder(opts.indent)
 
   if (!opts.noTags) {
     code.push(opts.shortTags ? '<?' : '<?php')
       .blank()
   }
 
-  code.push('$client = new \\GuzzleHttp\\Client();')
-    .blank()
-    .push('$response = $client->request(\'' + source.method + '\', \'' + source.fullUrl + '\', [')
+  const requestOptions = new CodeBuilder(opts.indent)
 
-  var requestOptions = new CodeBuilder(opts.indent)
+  switch (source.postData.mimeType) {
+    case 'application/x-www-form-urlencoded':
+      requestOptions.push(
+        1,
+        "'form_params' => %s,",
+        helpers.convert(source.postData.paramsObj, opts.indent + opts.indent, opts.indent)
+      )
+      break
+
+    case 'multipart/form-data': {
+      const fields = []
+
+      source.postData.params.forEach(function (param) {
+        if (param.fileName) {
+          const field = {
+            name: param.name,
+            filename: param.fileName,
+            contents: param.value
+          }
+
+          if (param.contentType) {
+            field.headers = { 'Content-Type': param.contentType }
+          }
+
+          fields.push(field)
+        } else if (param.value) {
+          fields.push({
+            name: param.name,
+            contents: param.value
+          })
+        }
+      })
+
+      if (fields.length) {
+        requestOptions.push(
+          1,
+          "'multipart' => %s",
+          helpers.convert(fields, opts.indent + opts.indent, opts.indent)
+        )
+      }
+
+      // Guzzle adds its own boundary for multipart requests.
+      if (headerHelpers.hasHeader(source.headersObj, 'content-type')) {
+        if (~headerHelpers.getHeader(source.headersObj, 'content-type').indexOf('boundary')) {
+          delete source.headersObj[headerHelpers.getHeaderName(source.headersObj, 'content-type')]
+        }
+      }
+      break
+    }
+
+    default:
+      if (source.postData.text) {
+        requestOptions.push(1, "'body' => %s,", helpers.convert(source.postData.text))
+      }
+  }
 
   // construct headers
-  var headers = Object.keys(source.headersObj).sort().map(function (key) {
-    return opts.indent + opts.indent + util.format('\'%s\' => \'%s\',', key, source.headersObj[key])
+  const headers = Object.keys(source.headersObj).sort().map(function (key) {
+    return opts.indent + opts.indent + util.format("'%s' => '%s',", key, source.headersObj[key])
   })
 
   // construct cookies
-  var cookies = source.cookies.map(function (cookie) {
+  const cookies = source.cookies.map(function (cookie) {
     return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value)
   })
 
   if (cookies.length) {
-    headers.push(opts.indent + opts.indent + util.format('CURLOPT_COOKIE => \'%s\',', cookies.join('; ')))
+    headers.push(opts.indent + opts.indent + util.format("'cookie' => '%s',", cookies.join('; ')))
   }
 
   if (headers.length) {
-    requestOptions.push(1, '\'headers\' => [')
+    requestOptions.push(1, "'headers' => [")
       .push(headers.join('\n'))
       .push(1, '],')
   }
 
-  switch (source.postData.mimeType) {
-    case 'application/x-www-form-urlencoded':
-      code.push(1, '\'form_params\' => %s,', helpers.convert(source.postData.paramsObj, opts.indent))
-      break
+  code.push('$client = new \\GuzzleHttp\\Client();')
+    .blank()
 
-    case 'multipart/form-data':
-      var files = []
-      var fields = {}
-
-      source.postData.params.forEach(function (param) {
-        if (param.fileName) {
-          files.push({
-            name: param.name,
-            type: param.contentType,
-            file: param.fileName,
-            data: param.value
-          })
-        } else if (param.value) {
-          fields[param.name] = param.value
-        }
-      })
-
-      code.push(
-        1,
-        '\'multipart\' => [%s => %s],',
-        Object.keys(fields).length ? helpers.convert(fields, opts.indent) : 'NULL',
-        files.length ? helpers.convert(files, opts.indent) : 'NULL'
-      )
-
-      // remove the contentType header
-      if (~source.headersObj['content-type'].indexOf('boundary')) {
-        delete source.headersObj['content-type']
-      }
-      break
-
-    default:
-      if (source.postData.text) {
-        code.push(1, '\'body\' => %s,', helpers.convert(source.postData.text))
-      }
+  if (requestOptions.code.length) {
+    code.push(`$response = $client->request('${source.method}', '${source.fullUrl}', [`)
+      .push(requestOptions.join(','))
+      .push(']);')
+  } else {
+    code.push(`$response = $client->request('${source.method}', '${source.fullUrl}');`)
   }
 
-  code.push(requestOptions.join())
-    .push(']);')
-    .blank()
+  code.blank()
     .push('echo $response->getBody();')
 
   if (!opts.noTags && opts.closingTag) {
@@ -113,7 +131,7 @@ module.exports = function (source, options) {
 
 module.exports.info = {
   key: 'guzzle',
-  title: 'Guzzle v6',
+  title: 'Guzzle v7',
   link: 'http://docs.guzzlephp.org/en/stable/',
-  description: 'PHP with guzzle v6'
+  description: 'PHP with guzzle v7'
 }
