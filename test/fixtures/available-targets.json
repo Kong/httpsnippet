@@ -132,6 +132,12 @@
         "title": "HTTP v2",
         "link": "http://devel-m6w6.rhcloud.com/mdref/http",
         "description": "PHP with pecl/http v2"
+      },
+      {
+        "key": "guzzle",
+        "title": "Guzzle v7",
+        "link": "http://docs.guzzlephp.org/en/stable/",
+        "description": "PHP with guzzle v7"
       }
     ]
   },
