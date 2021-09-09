@@ -83,12 +83,8 @@ module.exports = function (source, options) {
   })
 
   // construct cookies
-  const cookies = source.cookies.map(function (cookie) {
-    return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value)
-  })
-
-  if (cookies.length) {
-    curlopts.push(util.format('CURLOPT_COOKIE => "%s",', cookies.join('; ')))
+  if (source.allHeaders.cookie) {
+    curlopts.push(util.format('CURLOPT_COOKIE => "%s",', source.allHeaders.cookie))
   }
 
   // construct cookies

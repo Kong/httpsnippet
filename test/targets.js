@@ -78,7 +78,7 @@ const itShouldGenerateOutput = function (request, path, target, client) {
     const options = {}
     if (request === 'query-encoded') {
       // Query strings in this HAR are already escaped.
-      options.escapeQueryStrings = false
+      options.harIsAlreadyEncoded = true
     }
 
     const instance = new HTTPSnippet(fixtures.requests[request], options)

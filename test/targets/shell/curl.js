@@ -64,25 +64,63 @@ module.exports = function (HTTPSnippet, fixtures) {
     result.should.eql('curl --request GET --url http://mockbin.com/request --http1.0')
   })
 
-  it('should escape brackets in query strings when `escapeQueryStrings` is `false` and `escapeBrackets` is `true`', function () {
-    const har = {
-      method: 'GET',
-      url: 'http://mockbin.com/har',
-      httpVersion: 'HTTP/1.1',
-      queryString: [
-        {
-          name: 'where',
-          value: '[["$attributed_flow","=","FLOW_ID"]]'
+  describe('`harIsAlreadyEncoded` option', () => {
+    it('should not double-encode already encoded data', function () {
+      const har = {
+        log: {
+          entries: [
+            {
+              request: {
+                cookies: [
+                  { name: 'user', value: encodeURIComponent('abc^') }
+                ],
+                headers: [],
+                headersSize: 0,
+                queryString: [
+                  { name: 'stringPound', value: encodeURIComponent('somethign&nothing=true') },
+                  { name: 'stringHash', value: encodeURIComponent('hash#data') },
+                  { name: 'stringArray', value: encodeURIComponent('where[4]=10') },
+                  { name: 'stringWeird', value: encodeURIComponent('properties["$email"] == "testing"') },
+                  { name: 'array', value: encodeURIComponent('something&nothing=true') },
+                  { name: 'array', value: encodeURIComponent('nothing&something=false') },
+                  { name: 'array', value: encodeURIComponent('another item') }
+                ],
+                bodySize: 0,
+                method: 'POST',
+                url: 'https://httpbin.org/anything',
+                httpVersion: 'HTTP/1.1'
+              }
+            }
+          ]
         }
-      ]
-    }
+      }
 
-    const result = new HTTPSnippet(har, { escapeQueryStrings: false }).convert('shell', 'curl', {
-      escapeBrackets: true
+      const result = new HTTPSnippet(har, { harIsAlreadyEncoded: true }).convert('shell', 'curl')
+
+      result.should.be.a.String()
+      result.replace(/\\\n/g, '').should.eql("curl --request POST   --url 'https://httpbin.org/anything?stringPound=somethign%26nothing%3Dtrue&stringHash=hash%23data&stringArray=where%5B4%5D%3D10&stringWeird=properties%5B%22%24email%22%5D%20%3D%3D%20%22testing%22&array=something%26nothing%3Dtrue&array=nothing%26something%3Dfalse&array=another%20item'   --cookie user=abc%5E")
     })
 
-    result.should.be.a.String()
-    result.replace(/\\\n/g, '').should.eql("curl --request GET   --url 'http://mockbin.com/har?where=\\[\\[\"$attributed_flow\",\"=\",\"FLOW_ID\"\\]\\]'")
+    it('should escape brackets in query strings when `harIsAlreadyEncoded` is `true` and `escapeBrackets` is `true`', function () {
+      const har = {
+        method: 'GET',
+        url: 'http://mockbin.com/har',
+        httpVersion: 'HTTP/1.1',
+        queryString: [
+          {
+            name: 'where',
+            value: '[["$attributed_flow","=","FLOW_ID"]]'
+          }
+        ]
+      }
+
+      const result = new HTTPSnippet(har, { harIsAlreadyEncoded: true }).convert('shell', 'curl', {
+        escapeBrackets: true
+      })
+
+      result.should.be.a.String()
+      result.replace(/\\\n/g, '').should.eql("curl --request GET   --url 'http://mockbin.com/har?where=\\[\\[\"$attributed_flow\",\"=\",\"FLOW_ID\"\\]\\]'")
+    })
   })
 
   it('should use custom indentation', function () {

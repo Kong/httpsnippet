@@ -87,15 +87,18 @@ module.exports = function (source, options) {
   }
 
   // construct cookies argument
-  if (source.cookies.length) {
+  if (source.allHeaders.cookie) {
     reqOpts.jar = 'JAR'
 
     code.push('const jar = request.jar();')
 
     const url = source.url
 
-    source.cookies.forEach(function (cookie) {
-      code.push("jar.setCookie(request.cookie('%s=%s'), '%s');", encodeURIComponent(cookie.name), encodeURIComponent(cookie.value), url)
+    // Cookies are already encoded within `source.allHeaders` so we can pull them out of that instead of doing our
+    // own encoding work.
+    source.allHeaders.cookie.split('; ').forEach(function (cookie) {
+      const [name, value] = cookie.split('=')
+      code.push("jar.setCookie(request.cookie('%s=%s'), '%s');", name, value, url)
     })
     code.blank()
   }

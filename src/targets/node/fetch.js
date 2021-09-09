@@ -27,8 +27,8 @@ module.exports = function (source, options) {
     method: source.method
   }
 
-  if (Object.keys(source.headersObj).length) {
-    reqOpts.headers = source.headersObj
+  if (Object.keys(source.allHeaders).length) {
+    reqOpts.headers = source.allHeaders
   }
 
   switch (source.postData.mimeType) {
@@ -72,21 +72,6 @@ module.exports = function (source, options) {
       if (source.postData.text) {
         reqOpts.body = source.postData.text
       }
-  }
-
-  // construct cookies argument
-  if (source.cookies.length) {
-    let cookies = ''
-    source.cookies.forEach(function (cookie) {
-      cookies = cookies + encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value) + '; '
-    })
-
-    if (reqOpts.headers) {
-      reqOpts.headers.cookie = cookies
-    } else {
-      reqOpts.headers = {}
-      reqOpts.headers.cookie = cookies
-    }
   }
 
   code.blank()

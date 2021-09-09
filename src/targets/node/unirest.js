@@ -25,11 +25,14 @@ module.exports = function (source, options) {
     .push('const req = unirest("%s", "%s");', source.method, source.url)
     .blank()
 
-  if (source.cookies.length) {
+  if (source.allHeaders.cookie) {
     code.push('const CookieJar = unirest.jar();')
 
-    source.cookies.forEach(function (cookie) {
-      code.push('CookieJar.add("%s=%s","%s");', encodeURIComponent(cookie.name), encodeURIComponent(cookie.value), source.url)
+    // Cookies are already encoded within `source.allHeaders` so we can pull them out of that instead of doing our
+    // own encoding work.
+    source.allHeaders.cookie.split('; ').forEach(function (cookie) {
+      const [name, value] = cookie.split('=')
+      code.push('CookieJar.add("%s=%s","%s");', name, value, source.url)
     })
 
     code.push('req.jar(CookieJar);')

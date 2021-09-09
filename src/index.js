@@ -20,7 +20,7 @@ const HTTPSnippet = function (data, opts = {}) {
   const input = Object.assign({}, data)
 
   const options = Object.assign({
-    escapeQueryStrings: true
+    harIsAlreadyEncoded: false
   }, opts)
 
   // prep the main container
@@ -96,7 +96,11 @@ HTTPSnippet.prototype.prepare = function (request, options) {
 
   // construct Cookie header
   const cookies = request.cookies.map(function (cookie) {
-    return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value)
+    if (options.harIsAlreadyEncoded) {
+      return cookie.name + '=' + cookie.value
+    } else {
+      return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value)
+    }
   })
 
   if (cookies.length) {
@@ -228,13 +232,13 @@ HTTPSnippet.prototype.prepare = function (request, options) {
 
   // update the uri object
   request.uriObj.query = request.queryObj
-  if (options.escapeQueryStrings) {
+  if (options.harIsAlreadyEncoded) {
     request.uriObj.search = qs.stringify(request.queryObj, {
+      encode: false,
       indices: false
     })
   } else {
     request.uriObj.search = qs.stringify(request.queryObj, {
-      encode: false,
       indices: false
     })
   }
