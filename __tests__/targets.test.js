@@ -1,11 +1,11 @@
-const fixtures = require('./fixtures');
+const fixtures = require('./__fixtures__');
 const fs = require('fs');
 const glob = require('glob');
 const HTTPSnippet = require('../src');
 const path = require('path');
 const targets = require('../src/targets');
 
-const base = './__tests__/fixtures/output/';
+const base = './__tests__/__fixtures__/output/';
 
 // read all output files
 const output = glob.sync('**/*', { cwd: base, nodir: true }).reduce(function (obj, name) {
@@ -131,7 +131,7 @@ describe('Custom targets', () => {
     });
 
     describe('full add + convert flow', () => {
-      const customTarget = require('./fixtures/customTarget');
+      const customTarget = require('./__fixtures__/customTarget');
 
       let client;
 

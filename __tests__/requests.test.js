@@ -1,10 +1,10 @@
-const fixtures = require('./fixtures');
+const fixtures = require('./__fixtures__');
 const HTTPSnippet = require('../src');
 const targets = require('../src/targets');
 const shell = require('child_process');
 const { format } = require('util');
 
-const base = './__tests__/fixtures/output/';
+const base = './__tests__/__fixtures__/output/';
 const requests = [
   'application-form-encoded',
   'application-json',
