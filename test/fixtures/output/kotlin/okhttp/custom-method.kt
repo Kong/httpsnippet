@@ -1,7 +1,7 @@
 val client = OkHttpClient()
 
 val request = Request.Builder()
-  .url("http://mockbin.com/har")
+  .url("https://httpbin.org/anything")
   .method("PROPFIND", null)
   .build()
 

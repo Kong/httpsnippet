@@ -1,11 +1,11 @@
 const qs = require("querystring");
-const http = require("http");
+const http = require("https");
 
 const options = {
   "method": "POST",
-  "hostname": "mockbin.com",
+  "hostname": "httpbin.org",
   "port": null,
-  "path": "/har?foo=bar&foo=baz&baz=abc&key=value",
+  "path": "/anything?foo=bar&foo=baz&baz=abc&key=value",
   "headers": {
     "cookie": "foo=bar; bar=baz",
     "accept": "application/json",

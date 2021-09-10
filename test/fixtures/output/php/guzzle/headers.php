@@ -2,9 +2,9 @@
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'http://mockbin.com/har', [
+$response = $client->request('GET', 'https://httpbin.org/headers', [
   'headers' => [
-    'accept' => 'application/json',
+    'accept' => 'text/json',
     'x-foo' => 'Bar',
   ],
 ]);

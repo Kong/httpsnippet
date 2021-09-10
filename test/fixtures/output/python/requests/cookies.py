@@ -1,9 +1,9 @@
 import requests
 
-url = "http://mockbin.com/har"
+url = "https://httpbin.org/cookies"
 
 headers = {"cookie": "foo=bar; bar=baz"}
 
-response = requests.request("POST", url, headers=headers)
+response = requests.request("GET", url, headers=headers)
 
 print(response.text)

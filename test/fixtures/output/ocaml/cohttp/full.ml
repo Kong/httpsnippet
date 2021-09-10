@@ -2,7 +2,7 @@ open Cohttp_lwt_unix
 open Cohttp
 open Lwt
 
-let uri = Uri.of_string "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value" in
+let uri = Uri.of_string "https://httpbin.org/anything?foo=bar&foo=baz&baz=abc&key=value" in
 let headers = Header.add_list (Header.init ()) [
   ("cookie", "foo=bar; bar=baz");
   ("accept", "application/json");

@@ -30,7 +30,7 @@ const HTTPSnippet = require('httpsnippet');
 
 const snippet = new HTTPSnippet({
   method: 'GET',
-  url: 'http://mockbin.com/request'
+  url: 'https://httpbin.com/anything'
 });
 ```
 
@@ -62,7 +62,7 @@ const HTTPSnippet = require('httpsnippet');
 
 const snippet = new HTTPSnippet({
   method: 'GET',
-  url: 'http://mockbin.com/request'
+  url: 'https://httpbin.com/anything'
 });
 
 // generate Node.js: Native output
@@ -100,7 +100,7 @@ const HTTPSnippet = require('httpsnippet');
 
 const snippet = new HTTPSnippet({
   method: 'GET',
-  url: 'http://mockbin.com/request'
+  url: 'https://httpbin.com/anything'
 });
 
 // generate Shell: cURL output

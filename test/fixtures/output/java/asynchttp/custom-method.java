@@ -1,5 +1,5 @@
 AsyncHttpClient client = new DefaultAsyncHttpClient();
-client.prepare("PROPFIND", "http://mockbin.com/har")
+client.prepare("PROPFIND", "https://httpbin.org/anything")
   .execute()
   .toCompletableFuture()
   .thenAccept(System.out::println)

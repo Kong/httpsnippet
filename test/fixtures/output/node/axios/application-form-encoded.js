@@ -2,7 +2,7 @@ var axios = require("axios").default;
 
 var options = {
   method: 'POST',
-  url: 'http://mockbin.com/har',
+  url: 'https://httpbin.org/anything',
   headers: {'content-type': 'application/x-www-form-urlencoded'},
   data: {foo: 'bar', hello: 'world'}
 };

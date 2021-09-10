@@ -9,6 +9,6 @@ xhr.addEventListener("readystatechange", function () {
   }
 });
 
-xhr.open("PROPFIND", "http://mockbin.com/har");
+xhr.open("PROPFIND", "https://httpbin.org/anything");
 
 xhr.send(data);

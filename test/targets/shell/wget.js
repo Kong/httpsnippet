@@ -6,7 +6,7 @@ module.exports = function (HTTPSnippet, fixtures) {
     });
 
     expect(result).toBe(
-      "wget -q --method POST --header 'cookie: foo=bar; bar=baz' --header 'accept: application/json' --header 'content-type: application/x-www-form-urlencoded' --body-data foo=bar -O - 'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value'"
+      "wget -q --method POST --header 'cookie: foo=bar; bar=baz' --header 'accept: application/json' --header 'content-type: application/x-www-form-urlencoded' --body-data foo=bar -O - 'https://httpbin.org/anything?foo=bar&foo=baz&baz=abc&key=value'"
     );
   });
 
@@ -17,7 +17,7 @@ module.exports = function (HTTPSnippet, fixtures) {
       verbose: true,
     });
 
-    expect(result).toBe('wget -v --method GET -O - http://mockbin.com/har');
+    expect(result).toBe('wget -v --method GET -O - https://httpbin.org/anything');
   });
 
   test('should ask for --verbose output', function () {
@@ -27,7 +27,7 @@ module.exports = function (HTTPSnippet, fixtures) {
       verbose: true,
     });
 
-    expect(result).toBe('wget --verbose --method GET --output-document - http://mockbin.com/har');
+    expect(result).toBe('wget --verbose --method GET --output-document - https://httpbin.org/anything');
   });
 
   test('should use custom indentation', function () {
@@ -36,7 +36,7 @@ module.exports = function (HTTPSnippet, fixtures) {
     });
 
     expect(result.replace(/\\\n/g, '')).toBe(
-      "wget --quiet @--method POST @--header 'cookie: foo=bar; bar=baz' @--header 'accept: application/json' @--header 'content-type: application/x-www-form-urlencoded' @--body-data foo=bar @--output-document @- 'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value'"
+      "wget --quiet @--method POST @--header 'cookie: foo=bar; bar=baz' @--header 'accept: application/json' @--header 'content-type: application/x-www-form-urlencoded' @--body-data foo=bar @--output-document @- 'https://httpbin.org/anything?foo=bar&foo=baz&baz=abc&key=value'"
     );
   });
 };

@@ -1,5 +1,5 @@
 AsyncHttpClient client = new DefaultAsyncHttpClient();
-client.prepare("POST", "http://mockbin.com/har")
+client.prepare("GET", "https://httpbin.org/cookies")
   .setHeader("cookie", "foo=bar; bar=baz")
   .execute()
   .toCompletableFuture()

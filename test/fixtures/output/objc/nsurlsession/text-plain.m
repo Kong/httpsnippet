@@ -4,7 +4,7 @@ NSDictionary *headers = @{ @"content-type": @"text/plain" };
 
 NSData *postData = [[NSData alloc] initWithData:[@"Hello World" dataUsingEncoding:NSUTF8StringEncoding]];
 
-NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://mockbin.com/har"]
+NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://httpbin.org/anything"]
                                                        cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                    timeoutInterval:10.0];
 [request setHTTPMethod:@"POST"];

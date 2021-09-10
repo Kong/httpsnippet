@@ -5,7 +5,7 @@ let headers = ["content-type": "application/x-www-form-urlencoded"]
 let postData = NSMutableData(data: "foo=bar".data(using: String.Encoding.utf8)!)
 postData.append("&hello=world".data(using: String.Encoding.utf8)!)
 
-let request = NSMutableURLRequest(url: NSURL(string: "http://mockbin.com/har")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://httpbin.org/anything")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

@@ -1,6 +1,6 @@
-GET /har HTTP/1.1
-Accept: application/json
+GET /headers HTTP/1.1
+Accept: text/json
 X-Foo: Bar
-Host: mockbin.com
+Host: httpbin.org
 
 

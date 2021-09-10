@@ -1,13 +1,13 @@
 import http.client
 
-conn = http.client.HTTPConnection("mockbin.com")
+conn = http.client.HTTPSConnection("httpbin.org")
 
 headers = {
-    'accept': "application/json",
+    'accept': "text/json",
     'x-foo': "Bar"
     }
 
-conn.request("GET", "/har", headers=headers)
+conn.request("GET", "/headers", headers=headers)
 
 res = conn.getresponse()
 data = res.read()

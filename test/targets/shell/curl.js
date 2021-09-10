@@ -6,7 +6,7 @@ module.exports = function (HTTPSnippet, fixtures) {
     });
 
     expect(result).toBe(
-      "curl -X POST 'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value' -H 'accept: application/json' -H 'content-type: application/x-www-form-urlencoded' -b 'foo=bar; bar=baz' -d foo=bar"
+      "curl -X POST 'https://httpbin.org/anything?foo=bar&foo=baz&baz=abc&key=value' -H 'accept: application/json' -H 'content-type: application/x-www-form-urlencoded' -b 'foo=bar; bar=baz' -d foo=bar"
     );
   });
 
@@ -18,7 +18,7 @@ module.exports = function (HTTPSnippet, fixtures) {
     });
 
     expect(result).toBe(
-      "curl -X POST 'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value' -H 'accept: application/json' -H 'content-type: application/x-www-form-urlencoded' -b 'foo=bar; bar=baz' --data-binary foo=bar"
+      "curl -X POST 'https://httpbin.org/anything?foo=bar&foo=baz&baz=abc&key=value' -H 'accept: application/json' -H 'content-type: application/x-www-form-urlencoded' -b 'foo=bar; bar=baz' --data-binary foo=bar"
     );
   });
 
@@ -29,7 +29,7 @@ module.exports = function (HTTPSnippet, fixtures) {
       globOff: true,
     });
 
-    expect(result).toBe("curl -X GET -g 'http://mockbin.com/har?foo[bar]=baz,zap&fiz=buz&key=value'");
+    expect(result).toBe("curl -X GET -g 'https://httpbin.org/anything?foo[bar]=baz,zap&fiz=buz&key=value'");
   });
 
   test('should use long globoff option', function () {
@@ -39,7 +39,7 @@ module.exports = function (HTTPSnippet, fixtures) {
     });
 
     expect(result).toBe(
-      "curl --request GET --globoff --url 'http://mockbin.com/har?foo[bar]=baz,zap&fiz=buz&key=value'"
+      "curl --request GET --globoff --url 'https://httpbin.org/anything?foo[bar]=baz,zap&fiz=buz&key=value'"
     );
   });
 
@@ -49,15 +49,23 @@ module.exports = function (HTTPSnippet, fixtures) {
       globOff: false,
     });
 
-    expect(result).toBe("curl --request GET --url 'http://mockbin.com/har?foo%5Bbar%5D=baz%2Czap&fiz=buz&key=value'");
+    expect(result).toBe(
+      "curl --request GET --url 'https://httpbin.org/anything?foo%5Bbar%5D=baz%2Czap&fiz=buz&key=value'"
+    );
   });
 
   test('should use --http1.0 for HTTP/1.0', function () {
-    const result = new HTTPSnippet(fixtures.curl.http1).convert('shell', 'curl', {
+    const har = {
+      method: 'GET',
+      url: 'https://httpbin.org/anything',
+      httpVersion: 'HTTP/1.0',
+    };
+
+    const result = new HTTPSnippet(har).convert('shell', 'curl', {
       indent: false,
     });
 
-    expect(result).toBe('curl --request GET --url http://mockbin.com/request --http1.0');
+    expect(result).toBe('curl --request GET --url https://httpbin.org/anything --http1.0');
   });
 
   describe('`harIsAlreadyEncoded` option', () => {
@@ -99,7 +107,7 @@ module.exports = function (HTTPSnippet, fixtures) {
     it('should escape brackets in query strings when `harIsAlreadyEncoded` is `true` and `escapeBrackets` is `true`', function () {
       const har = {
         method: 'GET',
-        url: 'http://mockbin.com/har',
+        url: 'https://httpbin.org/anything',
         httpVersion: 'HTTP/1.1',
         queryString: [
           {
@@ -114,7 +122,7 @@ module.exports = function (HTTPSnippet, fixtures) {
       });
 
       expect(result.replace(/\\\n/g, '')).toBe(
-        'curl --request GET   --url \'http://mockbin.com/har?where=\\[\\["$attributed_flow","=","FLOW_ID"\\]\\]\''
+        'curl --request GET   --url \'https://httpbin.org/anything?where=\\[\\["$attributed_flow","=","FLOW_ID"\\]\\]\''
       );
     });
   });
@@ -125,23 +133,53 @@ module.exports = function (HTTPSnippet, fixtures) {
     });
 
     expect(result.replace(/\\\n/g, '')).toBe(
-      "curl --request POST @--url 'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value' @--header 'accept: application/json' @--header 'content-type: application/x-www-form-urlencoded' @--cookie 'foo=bar; bar=baz' @--data foo=bar"
+      "curl --request POST @--url 'https://httpbin.org/anything?foo=bar&foo=baz&baz=abc&key=value' @--header 'accept: application/json' @--header 'content-type: application/x-www-form-urlencoded' @--cookie 'foo=bar; bar=baz' @--data foo=bar"
     );
   });
 
   test('should send JSON-encoded data with single quotes within a HEREDOC', function () {
-    const result = new HTTPSnippet(fixtures.curl['json-with-singlequotes']).convert('shell', 'curl');
+    const har = {
+      method: 'POST',
+      url: 'https://httpbin.org/anything',
+      headers: [
+        {
+          name: 'content-type',
+          value: 'application/json',
+        },
+      ],
+      postData: {
+        mimeType: 'application/json',
+        text: '{"number":1,"string":"f\'oo"}',
+      },
+    };
+
+    const result = new HTTPSnippet(har).convert('shell', 'curl');
 
     expect(result.replace(/\\\n/g, '').replace(/\n/g, '')).toBe(
-      'curl --request POST   --url http://mockbin.com/har   --header \'content-type: application/json\'   --data @- <<EOF{  "number": 1,  "string": "f\'oo"}EOF'
+      'curl --request POST   --url https://httpbin.org/anything   --header \'content-type: application/json\'   --data @- <<EOF{  "number": 1,  "string": "f\'oo"}EOF'
     );
   });
 
   test('should keep JSON payloads that are smaller than 20 characters on one line', function () {
-    const result = new HTTPSnippet(fixtures.curl['jsonObj-short']).convert('shell', 'curl');
+    const har = {
+      method: 'POST',
+      url: 'https://httpbin.org/anything',
+      headers: [
+        {
+          name: 'content-type',
+          value: 'application/json',
+        },
+      ],
+      postData: {
+        text: '{"foo": "bar"}',
+        mimeType: 'application/json',
+      },
+    };
+
+    const result = new HTTPSnippet(har).convert('shell', 'curl');
 
     expect(result.replace(/\\\n/g, '').replace(/\n/g, '')).toBe(
-      'curl --request POST   --url http://mockbin.com/har   --header \'content-type: application/json\'   --data \'{"foo": "bar"}\''
+      'curl --request POST   --url https://httpbin.org/anything   --header \'content-type: application/json\'   --data \'{"foo": "bar"}\''
     );
   });
 };

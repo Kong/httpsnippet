@@ -8,7 +8,7 @@ $body->addForm([
   'foo' => 'bar'
 ], null);
 
-$request->setRequestUrl('http://mockbin.com/har');
+$request->setRequestUrl('https://httpbin.org/anything');
 $request->setRequestMethod('POST');
 $request->setBody($body);
 

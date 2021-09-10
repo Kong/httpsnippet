@@ -9,7 +9,7 @@ xhr.addEventListener("readystatechange", function () {
   }
 });
 
-xhr.open("POST", "http://mockbin.com/har");
+xhr.open("GET", "https://httpbin.org/cookies");
 xhr.setRequestHeader("cookie", "foo=bar; bar=baz");
 
 xhr.send(data);

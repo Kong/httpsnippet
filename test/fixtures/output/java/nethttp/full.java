@@ -1,5 +1,5 @@
 HttpRequest request = HttpRequest.newBuilder()
-    .uri(URI.create("http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value"))
+    .uri(URI.create("https://httpbin.org/anything?foo=bar&foo=baz&baz=abc&key=value"))
     .header("cookie", "foo=bar; bar=baz")
     .header("accept", "application/json")
     .header("content-type", "application/x-www-form-urlencoded")

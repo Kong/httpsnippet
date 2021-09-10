@@ -5,7 +5,7 @@ module.exports = function (HTTPSnippet, fixtures) {
       verbose: true,
     });
 
-    expect(result).toBe('http --verbose GET http://mockbin.com/har');
+    expect(result).toBe('http --verbose GET https://httpbin.org/anything');
   });
 
   test('should use short flags', function () {
@@ -24,7 +24,7 @@ module.exports = function (HTTPSnippet, fixtures) {
     });
 
     expect(result).toBe(
-      'http -h -b -v -p=x --verify=x --cert=foo --pretty=x --style=x --timeout=1 GET http://mockbin.com/har'
+      'http -h -b -v -p=x --verify=x --cert=foo --pretty=x --style=x --timeout=1 GET https://httpbin.org/anything'
     );
   });
 
@@ -43,7 +43,7 @@ module.exports = function (HTTPSnippet, fixtures) {
     });
 
     expect(result).toBe(
-      'http --headers --body --verbose --print=x --verify=x --cert=foo --pretty=x --style=x --timeout=1 GET http://mockbin.com/har'
+      'http --headers --body --verbose --print=x --verify=x --cert=foo --pretty=x --style=x --timeout=1 GET https://httpbin.org/anything'
     );
   });
 
@@ -53,7 +53,7 @@ module.exports = function (HTTPSnippet, fixtures) {
     });
 
     expect(result.replace(/\\\n/g, '')).toBe(
-      "http --form POST 'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value' @accept:application/json @content-type:application/x-www-form-urlencoded @cookie:'foo=bar; bar=baz' @foo=bar"
+      "http --form POST 'https://httpbin.org/anything?foo=bar&foo=baz&baz=abc&key=value' @accept:application/json @content-type:application/x-www-form-urlencoded @cookie:'foo=bar; bar=baz' @foo=bar"
     );
   });
 
@@ -63,7 +63,9 @@ module.exports = function (HTTPSnippet, fixtures) {
       queryParams: true,
     });
 
-    expect(result.replace(/\\\n/g, '')).toBe('http GET http://mockbin.com/har foo==bar foo==baz baz==abc key==value');
+    expect(result.replace(/\\\n/g, '')).toBe(
+      'http GET https://httpbin.org/anything foo==bar foo==baz baz==abc key==value'
+    );
   });
 
   test('should build parameterized output of query string', function () {
@@ -72,7 +74,9 @@ module.exports = function (HTTPSnippet, fixtures) {
       queryParams: true,
     });
 
-    expect(result.replace(/\\\n/g, '')).toBe('http GET http://mockbin.com/har foo==bar foo==baz baz==abc key==value');
+    expect(result.replace(/\\\n/g, '')).toBe(
+      'http GET https://httpbin.org/anything foo==bar foo==baz baz==abc key==value'
+    );
   });
 
   test('should build parameterized output of post data', function () {
@@ -83,7 +87,7 @@ module.exports = function (HTTPSnippet, fixtures) {
     });
 
     expect(result.replace(/\\\n/g, '')).toBe(
-      'http -f POST http://mockbin.com/har content-type:application/x-www-form-urlencoded foo=bar hello=world'
+      'http -f POST https://httpbin.org/anything content-type:application/x-www-form-urlencoded foo=bar hello=world'
     );
   });
 };

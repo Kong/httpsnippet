@@ -1,5 +1,6 @@
 require 'uri'
 require 'net/http'
+require 'openssl'
 
 class Net::HTTP::Propfind < Net::HTTPRequest
   METHOD = 'PROPFIND'
@@ -7,9 +8,10 @@ class Net::HTTP::Propfind < Net::HTTPRequest
   RESPONSE_HAS_BODY = true
 end
 
-url = URI("http://mockbin.com/har")
+url = URI("https://httpbin.org/anything")
 
 http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
 
 request = Net::HTTP::Propfind.new(url)
 

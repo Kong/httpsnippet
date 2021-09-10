@@ -1,4 +1,4 @@
 curl --request POST \
-  --url http://mockbin.com/har \
+  --url https://httpbin.org/anything \
   --header 'content-type: multipart/form-data' \
   --form foo=@test/fixtures/files/hello.txt

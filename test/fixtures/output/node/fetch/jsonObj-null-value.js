@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 
-const url = 'http://mockbin.com/har';
+const url = 'https://httpbin.org/anything';
 const options = {
   method: 'POST',
   headers: {'content-type': 'application/json'},

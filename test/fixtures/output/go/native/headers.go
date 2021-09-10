@@ -8,11 +8,11 @@ import (
 
 func main() {
 
-	url := "http://mockbin.com/har"
+	url := "https://httpbin.org/headers"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
-	req.Header.Add("accept", "application/json")
+	req.Header.Add("accept", "text/json")
 	req.Header.Add("x-foo", "Bar")
 
 	res, _ := http.DefaultClient.Do(req)

@@ -1,7 +1,7 @@
 <?php
 
 $request = new HttpRequest();
-$request->setUrl('http://mockbin.com/har');
+$request->setUrl('https://httpbin.org/anything');
 $request->setMethod(HTTP_METH_GET);
 
 try {

@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://mockbin.com/har?foo%5Bbar%5D=baz%2Czap&fiz=buz&key=value"]
+NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://httpbin.org/anything?foo%5Bbar%5D=baz%2Czap&fiz=buz&key=value"]
                                                        cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                    timeoutInterval:10.0];
 [request setHTTPMethod:@"GET"];

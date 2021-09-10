@@ -1,6 +1,6 @@
 library(httr)
 
-url <- "http://mockbin.com/har"
+url <- "https://httpbin.org/anything"
 
 response <- VERB("PROPFIND", url, content_type("application/octet-stream"))
 

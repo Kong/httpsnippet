@@ -9,8 +9,8 @@ xhr.addEventListener("readystatechange", function () {
   }
 });
 
-xhr.open("GET", "http://mockbin.com/har");
-xhr.setRequestHeader("accept", "application/json");
+xhr.open("GET", "https://httpbin.org/headers");
+xhr.setRequestHeader("accept", "text/json");
 xhr.setRequestHeader("x-foo", "Bar");
 
 xhr.send(data);

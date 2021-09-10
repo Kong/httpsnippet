@@ -2,7 +2,7 @@
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'http://mockbin.com/har', [
+$response = $client->request('POST', 'https://httpbin.org/anything', [
   'body' => '{"foo":null}',
   'headers' => [
     'content-type' => 'application/json',

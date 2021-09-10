@@ -5,7 +5,7 @@ module.exports = function (HTTPSnippet, fixtures) {
     });
 
     expect(result).toBe(
-      'url := "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value"\n\npayload := strings.NewReader("foo=bar")\n\nreq, _ := http.NewRequest("POST", url, payload)\n\nreq.Header.Add("cookie", "foo=bar; bar=baz")\nreq.Header.Add("accept", "application/json")\nreq.Header.Add("content-type", "application/x-www-form-urlencoded")\n\nres, _ := http.DefaultClient.Do(req)\n\ndefer res.Body.Close()\nbody, _ := ioutil.ReadAll(res.Body)\n\nfmt.Println(res)\nfmt.Println(string(body))'
+      'url := "https://httpbin.org/anything?foo=bar&foo=baz&baz=abc&key=value"\n\npayload := strings.NewReader("foo=bar")\n\nreq, _ := http.NewRequest("POST", url, payload)\n\nreq.Header.Add("cookie", "foo=bar; bar=baz")\nreq.Header.Add("accept", "application/json")\nreq.Header.Add("content-type", "application/x-www-form-urlencoded")\n\nres, _ := http.DefaultClient.Do(req)\n\ndefer res.Body.Close()\nbody, _ := ioutil.ReadAll(res.Body)\n\nfmt.Println(res)\nfmt.Println(string(body))'
     );
   });
 
@@ -25,7 +25,7 @@ import (
 
 func main() {
 
-\turl := "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value"
+\turl := "https://httpbin.org/anything?foo=bar&foo=baz&baz=abc&key=value"
 
 \tpayload := strings.NewReader("foo=bar")
 
@@ -70,7 +70,7 @@ import (
 
 func main() {
 
-\turl := "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value"
+\turl := "https://httpbin.org/anything?foo=bar&foo=baz&baz=abc&key=value"
 
 \tpayload := strings.NewReader("foo=bar")
 
@@ -108,7 +108,7 @@ func main() {
 \t\tTimeout: time.Duration(30 * time.Second),
 \t}
 
-\turl := "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value"
+\turl := "https://httpbin.org/anything?foo=bar&foo=baz&baz=abc&key=value"
 
 \tpayload := strings.NewReader("foo=bar")
 

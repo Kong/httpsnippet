@@ -1,10 +1,10 @@
 const settings = {
   "async": true,
   "crossDomain": true,
-  "url": "http://mockbin.com/har",
+  "url": "https://httpbin.org/headers",
   "method": "GET",
   "headers": {
-    "accept": "application/json",
+    "accept": "text/json",
     "x-foo": "Bar"
   }
 };

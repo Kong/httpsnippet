@@ -8,7 +8,7 @@ import (
 
 func main() {
 
-	url := "http://mockbin.com/har"
+	url := "https://httpbin.org/anything"
 
 	req, _ := http.NewRequest("GET", url, nil)
 

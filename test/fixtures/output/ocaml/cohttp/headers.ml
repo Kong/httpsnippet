@@ -2,9 +2,9 @@ open Cohttp_lwt_unix
 open Cohttp
 open Lwt
 
-let uri = Uri.of_string "http://mockbin.com/har" in
+let uri = Uri.of_string "https://httpbin.org/headers" in
 let headers = Header.add_list (Header.init ()) [
-  ("accept", "application/json");
+  ("accept", "text/json");
   ("x-foo", "Bar");
 ] in
 

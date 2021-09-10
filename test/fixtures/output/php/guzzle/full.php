@@ -2,7 +2,7 @@
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value', [
+$response = $client->request('POST', 'https://httpbin.org/anything?foo=bar&foo=baz&baz=abc&key=value', [
   'form_params' => [
     'foo' => 'bar'
   ],

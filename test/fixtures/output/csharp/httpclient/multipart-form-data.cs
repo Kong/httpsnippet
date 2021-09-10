@@ -2,7 +2,7 @@ var client = new HttpClient();
 var request = new HttpRequestMessage
 {
     Method = HttpMethod.Post,
-    RequestUri = new Uri("http://mockbin.com/har"),
+    RequestUri = new Uri("https://httpbin.org/anything"),
     Content = new MultipartFormDataContent
     {
         new StringContent("bar")

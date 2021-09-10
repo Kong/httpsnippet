@@ -3,8 +3,8 @@
 $client = new http\Client;
 $request = new http\Client\Request;
 
-$request->setRequestUrl('http://mockbin.com/har');
-$request->setRequestMethod('POST');
+$request->setRequestUrl('https://httpbin.org/cookies');
+$request->setRequestMethod('GET');
 
 $client->setCookies([
   'bar' => 'baz',

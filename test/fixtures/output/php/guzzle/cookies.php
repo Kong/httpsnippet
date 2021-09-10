@@ -2,7 +2,7 @@
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'http://mockbin.com/har', [
+$response = $client->request('GET', 'https://httpbin.org/cookies', [
   'headers' => [
     'cookie' => 'foo=bar; bar=baz',
   ],

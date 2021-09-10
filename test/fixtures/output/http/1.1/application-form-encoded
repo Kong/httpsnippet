@@ -1,6 +1,6 @@
-POST /har HTTP/1.1
+POST /anything HTTP/1.1
 Content-Type: application/x-www-form-urlencoded
-Host: mockbin.com
+Host: httpbin.org
 Content-Length: 19
 
 foo=bar&hello=world

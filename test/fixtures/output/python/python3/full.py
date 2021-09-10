@@ -1,6 +1,6 @@
 import http.client
 
-conn = http.client.HTTPConnection("mockbin.com")
+conn = http.client.HTTPSConnection("httpbin.org")
 
 payload = "foo=bar"
 
@@ -10,7 +10,7 @@ headers = {
     'content-type': "application/x-www-form-urlencoded"
     }
 
-conn.request("POST", "/har?foo=bar&foo=baz&baz=abc&key=value", payload, headers)
+conn.request("POST", "/anything?foo=bar&foo=baz&baz=abc&key=value", payload, headers)
 
 res = conn.getresponse()
 data = res.read()

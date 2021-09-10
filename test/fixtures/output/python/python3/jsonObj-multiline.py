@@ -1,12 +1,12 @@
 import http.client
 
-conn = http.client.HTTPConnection("mockbin.com")
+conn = http.client.HTTPSConnection("httpbin.org")
 
 payload = "{\n  \"foo\": \"bar\"\n}"
 
 headers = { 'content-type': "application/json" }
 
-conn.request("POST", "/har", payload, headers)
+conn.request("POST", "/anything", payload, headers)
 
 res = conn.getresponse()
 data = res.read()

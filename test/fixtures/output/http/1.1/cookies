@@ -1,5 +1,5 @@
-POST /har HTTP/1.1
+GET /cookies HTTP/1.1
 Cookie: foo=bar; bar=baz
-Host: mockbin.com
+Host: httpbin.org
 
 

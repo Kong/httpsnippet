@@ -1,6 +1,6 @@
 library(httr)
 
-url <- "http://mockbin.com/har"
+url <- "https://httpbin.org/anything"
 
 payload <- "{\n  \"foo\": \"bar\"\n}"
 

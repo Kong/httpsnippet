@@ -1,5 +1,5 @@
 AsyncHttpClient client = new DefaultAsyncHttpClient();
-client.prepare("POST", "http://mockbin.com/har")
+client.prepare("POST", "https://httpbin.org/anything")
   .setHeader("content-type", "application/json")
   .setBody("{\"foo\":null}")
   .execute()

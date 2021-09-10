@@ -1,6 +1,6 @@
-const options = {method: 'POST', headers: {cookie: 'foo=bar; bar=baz'}};
+const options = {method: 'GET', headers: {cookie: 'foo=bar; bar=baz'}};
 
-fetch('http://mockbin.com/har', options)
+fetch('https://httpbin.org/cookies', options)
   .then(response => response.json())
   .then(response => console.log(response))
   .catch(err => console.error(err));

@@ -3,7 +3,7 @@
 $client = new http\Client;
 $request = new http\Client\Request;
 
-$request->setRequestUrl('http://mockbin.com/har');
+$request->setRequestUrl('https://httpbin.org/anything');
 $request->setRequestMethod('GET');
 $request->setQuery(new http\QueryString([
   'foo' => [

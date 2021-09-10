@@ -1,6 +1,6 @@
 var axios = require("axios").default;
 
-var options = {method: 'PROPFIND', url: 'http://mockbin.com/har'};
+var options = {method: 'PROPFIND', url: 'https://httpbin.org/anything'};
 
 axios.request(options).then(function (response) {
   console.log(response.data);

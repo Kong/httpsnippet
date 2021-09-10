@@ -4,7 +4,7 @@ let headers = ["content-type": "text/plain"]
 
 let postData = NSData(data: "Hello World".data(using: String.Encoding.utf8)!)
 
-let request = NSMutableURLRequest(url: NSURL(string: "http://mockbin.com/har")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://httpbin.org/anything")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

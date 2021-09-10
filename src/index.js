@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 const es = require('event-stream');
 const MultiPartForm = require('form-data');
 const qs = require('qs');
@@ -36,24 +35,26 @@ const HTTPSnippet = function (data, opts = {}) {
   }
 
   entries.forEach(function (entry) {
+    const request = { ...entry.request };
+
     // add optional properties to make validation successful
-    entry.request.httpVersion = entry.request.httpVersion || 'HTTP/1.1';
-    entry.request.queryString = entry.request.queryString || [];
-    entry.request.headers = entry.request.headers || [];
-    entry.request.cookies = entry.request.cookies || [];
-    entry.request.postData = entry.request.postData || {};
-    entry.request.postData.mimeType = entry.request.postData.mimeType || 'application/octet-stream';
+    request.httpVersion = request.httpVersion || 'HTTP/1.1';
+    request.queryString = request.queryString || [];
+    request.headers = request.headers || [];
+    request.cookies = request.cookies || [];
+    request.postData = request.postData || {};
+    request.postData.mimeType = request.postData.mimeType || 'application/octet-stream';
 
-    entry.request.bodySize = 0;
-    entry.request.headersSize = 0;
-    entry.request.postData.size = 0;
+    request.bodySize = 0;
+    request.headersSize = 0;
+    request.postData.size = 0;
 
-    validate.request(entry.request, function (err, valid) {
+    validate.request(request, function (err, valid) {
       if (!valid) {
         throw err;
       }
 
-      self.requests.push(self.prepare(entry.request, options));
+      self.requests.push(self.prepare(request, options));
     });
   });
 };
@@ -81,6 +82,7 @@ HTTPSnippet.prototype.prepare = function (request, options) {
         headerName = headerName.toLowerCase();
       }
 
+      // eslint-disable-next-line no-param-reassign
       headers[headerName] = header.value;
       return headers;
     }, {});
@@ -89,6 +91,7 @@ HTTPSnippet.prototype.prepare = function (request, options) {
   // construct headers objects
   if (request.cookies && request.cookies.length) {
     request.cookiesObj = request.cookies.reduceRight(function (cookies, cookie) {
+      // eslint-disable-next-line no-param-reassign
       cookies[cookie.name] = cookie.value;
       return cookies;
     }, {});
@@ -261,6 +264,7 @@ HTTPSnippet.prototype.prepare = function (request, options) {
 
 HTTPSnippet.prototype.convert = function (target, client, opts) {
   if (!opts && client) {
+    // eslint-disable-next-line no-param-reassign
     opts = client;
   }
 

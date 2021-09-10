@@ -1,6 +1,6 @@
 library(httr)
 
-url <- "http://mockbin.com/har"
+url <- "https://httpbin.org/anything"
 
 queryString <- list(
   startTime = "2019-06-13T19%3A08%3A25.455Z"

@@ -5,7 +5,7 @@ module.exports = function (HTTPSnippet, fixtures) {
     });
 
     expect(result.replace(/\n/g, '')).toBe(
-      'const data = null;const xhr = new XMLHttpRequest();xhr.addEventListener("readystatechange", function () {  if (this.readyState === this.DONE) {    console.log(this.responseText);  }});xhr.open("GET", "http://mockbin.com/har");xhr.send(data);'
+      'const data = null;const xhr = new XMLHttpRequest();xhr.addEventListener("readystatechange", function () {  if (this.readyState === this.DONE) {    console.log(this.responseText);  }});xhr.open("GET", "https://httpbin.org/anything");xhr.send(data);'
     );
   });
 };

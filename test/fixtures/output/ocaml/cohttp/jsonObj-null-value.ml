@@ -2,7 +2,7 @@ open Cohttp_lwt_unix
 open Cohttp
 open Lwt
 
-let uri = Uri.of_string "http://mockbin.com/har" in
+let uri = Uri.of_string "https://httpbin.org/anything" in
 let headers = Header.add (Header.init ()) "content-type" "application/json" in
 let body = Cohttp_lwt_body.of_string "{\"foo\":null}" in
 

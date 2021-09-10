@@ -1,16 +1,15 @@
 module.exports = function (HTTPSnippet) {
   test("should support query parameters provided in HAR's url", function () {
-    const result = new HTTPSnippet({ method: 'GET', url: 'http://mockbin.com/har?param=value' }).convert(
-      'python',
-      'requests',
-      {
-        showBoilerplate: false,
-      }
-    );
+    const har = {
+      method: 'GET',
+      url: 'https://httpbin.org/anything?param=value',
+    };
+
+    const result = new HTTPSnippet(har).convert('python', 'requests', { showBoilerplate: false });
 
     expect(result).toBe(`import requests
 
-url = "http://mockbin.com/har"
+url = "https://httpbin.org/anything"
 
 querystring = {"param":"value"}
 

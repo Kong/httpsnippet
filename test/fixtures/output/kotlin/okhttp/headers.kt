@@ -1,9 +1,9 @@
 val client = OkHttpClient()
 
 val request = Request.Builder()
-  .url("http://mockbin.com/har")
+  .url("https://httpbin.org/headers")
   .get()
-  .addHeader("accept", "application/json")
+  .addHeader("accept", "text/json")
   .addHeader("x-foo", "Bar")
   .build()
 

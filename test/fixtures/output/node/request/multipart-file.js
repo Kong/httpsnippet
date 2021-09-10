@@ -3,7 +3,7 @@ const request = require('request');
 
 const options = {
   method: 'POST',
-  url: 'http://mockbin.com/har',
+  url: 'https://httpbin.org/anything',
   headers: {'content-type': 'multipart/form-data; boundary=---011000010111000001101001'},
   formData: {
     foo: {

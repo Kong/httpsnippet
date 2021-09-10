@@ -1,7 +1,7 @@
 HttpRequest request = HttpRequest.newBuilder()
-    .uri(URI.create("http://mockbin.com/har"))
+    .uri(URI.create("https://httpbin.org/cookies"))
     .header("cookie", "foo=bar; bar=baz")
-    .method("POST", HttpRequest.BodyPublishers.noBody())
+    .method("GET", HttpRequest.BodyPublishers.noBody())
     .build();
 HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 System.out.println(response.body());

@@ -1,6 +1,6 @@
 import requests
 
-url = "http://mockbin.com/har"
+url = "https://httpbin.org/anything"
 
 querystring = {"foo[bar]":"baz,zap","fiz":"buz","key":"value"}
 

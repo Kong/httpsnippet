@@ -23,7 +23,7 @@ for (NSDictionary *param in parameters) {
 [body appendFormat:@"\r\n--%@--\r\n", boundary];
 NSData *postData = [body dataUsingEncoding:NSUTF8StringEncoding];
 
-NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://mockbin.com/har"]
+NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://httpbin.org/anything"]
                                                        cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                    timeoutInterval:10.0];
 [request setHTTPMethod:@"POST"];

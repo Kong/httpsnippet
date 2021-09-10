@@ -1,8 +1,8 @@
 const settings = {
   "async": true,
   "crossDomain": true,
-  "url": "http://mockbin.com/har",
-  "method": "POST",
+  "url": "https://httpbin.org/cookies",
+  "method": "GET",
   "headers": {
     "cookie": "foo=bar; bar=baz"
   }

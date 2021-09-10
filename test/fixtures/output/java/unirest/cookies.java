@@ -1,3 +1,3 @@
-HttpResponse<String> response = Unirest.post("http://mockbin.com/har")
+HttpResponse<String> response = Unirest.get("https://httpbin.org/cookies")
   .header("cookie", "foo=bar; bar=baz")
   .asString();

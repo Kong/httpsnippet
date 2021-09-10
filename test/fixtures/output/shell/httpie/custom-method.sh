@@ -1,1 +1,1 @@
-http PROPFIND http://mockbin.com/har
+http PROPFIND https://httpbin.org/anything

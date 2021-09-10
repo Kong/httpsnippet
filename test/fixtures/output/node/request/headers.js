@@ -2,8 +2,8 @@ const request = require('request');
 
 const options = {
   method: 'GET',
-  url: 'http://mockbin.com/har',
-  headers: {accept: 'application/json', 'x-foo': 'Bar'}
+  url: 'https://httpbin.org/headers',
+  headers: {accept: 'text/json', 'x-foo': 'Bar'}
 };
 
 request(options, function (error, response, body) {

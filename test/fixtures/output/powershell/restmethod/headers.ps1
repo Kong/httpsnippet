@@ -1,4 +1,4 @@
 $headers=@{}
-$headers.Add("accept", "application/json")
+$headers.Add("accept", "text/json")
 $headers.Add("x-foo", "Bar")
-$response = Invoke-RestMethod -Uri 'http://mockbin.com/har' -Method GET -Headers $headers
+$response = Invoke-RestMethod -Uri 'https://httpbin.org/headers' -Method GET -Headers $headers

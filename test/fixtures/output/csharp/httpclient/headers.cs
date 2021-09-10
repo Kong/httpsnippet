@@ -2,10 +2,10 @@ var client = new HttpClient();
 var request = new HttpRequestMessage
 {
     Method = HttpMethod.Get,
-    RequestUri = new Uri("http://mockbin.com/har"),
+    RequestUri = new Uri("https://httpbin.org/headers"),
     Headers =
     {
-        { "accept", "application/json" },
+        { "accept", "text/json" },
         { "x-foo", "Bar" },
     },
 };

@@ -8,9 +8,9 @@ import (
 
 func main() {
 
-	url := "http://mockbin.com/har"
+	url := "https://httpbin.org/cookies"
 
-	req, _ := http.NewRequest("POST", url, nil)
+	req, _ := http.NewRequest("GET", url, nil)
 
 	req.Header.Add("cookie", "foo=bar; bar=baz")
 

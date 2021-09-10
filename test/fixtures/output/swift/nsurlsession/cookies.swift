@@ -2,10 +2,10 @@ import Foundation
 
 let headers = ["cookie": "foo=bar; bar=baz"]
 
-let request = NSMutableURLRequest(url: NSURL(string: "http://mockbin.com/har")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://httpbin.org/cookies")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
-request.httpMethod = "POST"
+request.httpMethod = "GET"
 request.allHTTPHeaderFields = headers
 
 let session = URLSession.shared

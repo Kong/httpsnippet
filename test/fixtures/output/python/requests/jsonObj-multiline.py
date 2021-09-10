@@ -1,6 +1,6 @@
 import requests
 
-url = "http://mockbin.com/har"
+url = "https://httpbin.org/anything"
 
 payload = {"foo": "bar"}
 headers = {"content-type": "application/json"}

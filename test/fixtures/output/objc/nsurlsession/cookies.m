@@ -2,10 +2,10 @@
 
 NSDictionary *headers = @{ @"cookie": @"foo=bar; bar=baz" };
 
-NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://mockbin.com/har"]
+NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://httpbin.org/cookies"]
                                                        cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                    timeoutInterval:10.0];
-[request setHTTPMethod:@"POST"];
+[request setHTTPMethod:@"GET"];
 [request setAllHTTPHeaderFields:headers];
 
 NSURLSession *session = [NSURLSession sharedSession];

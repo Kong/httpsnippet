@@ -6,7 +6,7 @@ var client = new HttpClient(clientHandler);
 var request = new HttpRequestMessage
 {
     Method = HttpMethod.Post,
-    RequestUri = new Uri("http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value"),
+    RequestUri = new Uri("https://httpbin.org/anything?foo=bar&foo=baz&baz=abc&key=value"),
     Headers =
     {
         { "cookie", "foo=bar; bar=baz" },

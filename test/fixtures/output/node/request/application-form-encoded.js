@@ -2,7 +2,7 @@ const request = require('request');
 
 const options = {
   method: 'POST',
-  url: 'http://mockbin.com/har',
+  url: 'https://httpbin.org/anything',
   headers: {'content-type': 'application/x-www-form-urlencoded'},
   form: {foo: 'bar', hello: 'world'}
 };

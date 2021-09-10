@@ -10,6 +10,6 @@ xhr.addEventListener("readystatechange", function () {
   }
 });
 
-xhr.open("POST", "http://mockbin.com/har");
+xhr.open("POST", "https://httpbin.org/anything");
 
 xhr.send(data);

@@ -1,6 +1,6 @@
 const unirest = require("unirest");
 
-const req = unirest("GET", "http://mockbin.com/har");
+const req = unirest("GET", "https://httpbin.org/anything");
 
 req.query({
   "startTime": "2019-06-13T19%3A08%3A25.455Z",

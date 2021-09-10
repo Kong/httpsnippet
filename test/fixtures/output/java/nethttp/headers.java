@@ -1,6 +1,6 @@
 HttpRequest request = HttpRequest.newBuilder()
-    .uri(URI.create("http://mockbin.com/har"))
-    .header("accept", "application/json")
+    .uri(URI.create("https://httpbin.org/headers"))
+    .header("accept", "text/json")
     .header("x-foo", "Bar")
     .method("GET", HttpRequest.BodyPublishers.noBody())
     .build();

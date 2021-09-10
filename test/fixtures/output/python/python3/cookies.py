@@ -1,10 +1,10 @@
 import http.client
 
-conn = http.client.HTTPConnection("mockbin.com")
+conn = http.client.HTTPSConnection("httpbin.org")
 
 headers = { 'cookie': "foo=bar; bar=baz" }
 
-conn.request("POST", "/har", headers=headers)
+conn.request("GET", "/cookies", headers=headers)
 
 res = conn.getresponse()
 data = res.read()

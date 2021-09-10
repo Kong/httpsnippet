@@ -5,4 +5,4 @@ wget --quiet \
   --header 'content-type: application/x-www-form-urlencoded' \
   --body-data foo=bar \
   --output-document \
-  - 'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value'
+  - 'https://httpbin.org/anything?foo=bar&foo=baz&baz=abc&key=value'

@@ -3,4 +3,4 @@ wget --quiet \
   --header 'content-type: application/json' \
   --body-data '{"foo":null}' \
   --output-document \
-  - http://mockbin.com/har
+  - https://httpbin.org/anything

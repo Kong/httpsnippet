@@ -1,11 +1,11 @@
 import Foundation
 
 let headers = [
-  "accept": "application/json",
+  "accept": "text/json",
   "x-foo": "Bar"
 ]
 
-let request = NSMutableURLRequest(url: NSURL(string: "http://mockbin.com/har")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://httpbin.org/headers")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

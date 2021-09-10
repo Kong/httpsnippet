@@ -1,9 +1,9 @@
 const unirest = require("unirest");
 
-const req = unirest("GET", "http://mockbin.com/har");
+const req = unirest("GET", "https://httpbin.org/headers");
 
 req.headers({
-  "accept": "application/json",
+  "accept": "text/json",
   "x-foo": "Bar"
 });
 

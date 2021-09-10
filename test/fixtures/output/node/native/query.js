@@ -1,10 +1,10 @@
-const http = require("http");
+const http = require("https");
 
 const options = {
   "method": "GET",
-  "hostname": "mockbin.com",
+  "hostname": "httpbin.org",
   "port": null,
-  "path": "/har?foo=bar&foo=baz&baz=abc&key=value",
+  "path": "/anything?foo=bar&foo=baz&baz=abc&key=value",
   "headers": {}
 };
 

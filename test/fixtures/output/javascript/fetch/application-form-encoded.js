@@ -4,7 +4,7 @@ const options = {
   body: new URLSearchParams({foo: 'bar', hello: 'world'})
 };
 
-fetch('http://mockbin.com/har', options)
+fetch('https://httpbin.org/anything', options)
   .then(response => response.json())
   .then(response => console.log(response))
   .catch(err => console.error(err));

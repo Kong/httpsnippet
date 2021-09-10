@@ -1,8 +1,8 @@
 <?php
 
 $request = new HttpRequest();
-$request->setUrl('http://mockbin.com/har');
-$request->setMethod(HTTP_METH_POST);
+$request->setUrl('https://httpbin.org/cookies');
+$request->setMethod(HTTP_METH_GET);
 
 $request->setCookies([
   'bar' => 'baz',

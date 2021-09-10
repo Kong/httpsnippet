@@ -1,4 +1,4 @@
-GET /har?foo=bar&foo=baz&baz=abc&key=value HTTP/1.1
-Host: mockbin.com
+GET /anything?foo=bar&foo=baz&baz=abc&key=value HTTP/1.1
+Host: httpbin.org
 
 

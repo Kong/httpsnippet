@@ -9,7 +9,7 @@ xhr.addEventListener("readystatechange", function () {
   }
 });
 
-xhr.open("POST", "http://mockbin.com/har");
+xhr.open("POST", "https://httpbin.org/anything");
 xhr.setRequestHeader("content-type", "text/plain");
 
 xhr.send(data);

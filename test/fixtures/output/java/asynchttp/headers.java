@@ -1,6 +1,6 @@
 AsyncHttpClient client = new DefaultAsyncHttpClient();
-client.prepare("GET", "http://mockbin.com/har")
-  .setHeader("accept", "application/json")
+client.prepare("GET", "https://httpbin.org/headers")
+  .setHeader("accept", "text/json")
   .setHeader("x-foo", "Bar")
   .execute()
   .toCompletableFuture()

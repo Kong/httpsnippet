@@ -1,6 +1,6 @@
 const unirest = require("unirest");
 
-const req = unirest("POST", "http://mockbin.com/har");
+const req = unirest("POST", "https://httpbin.org/anything");
 
 req.headers({
   "content-type": "text/plain"

@@ -12,7 +12,7 @@ let parameters = [
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "http://mockbin.com/har")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://httpbin.org/anything")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"

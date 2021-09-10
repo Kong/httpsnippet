@@ -6,7 +6,7 @@ $request = new http\Client\Request;
 $body = new http\Message\Body;
 $body->append('Hello World');
 
-$request->setRequestUrl('http://mockbin.com/har');
+$request->setRequestUrl('https://httpbin.org/anything');
 $request->setRequestMethod('POST');
 $request->setBody($body);
 

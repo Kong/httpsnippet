@@ -1,5 +1,5 @@
 wget --quiet \
-  --method POST \
+  --method GET \
   --header 'cookie: foo=bar; bar=baz' \
   --output-document \
-  - http://mockbin.com/har
+  - https://httpbin.org/cookies

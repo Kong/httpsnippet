@@ -2,6 +2,6 @@
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'http://mockbin.com/har');
+$response = $client->request('GET', 'https://httpbin.org/anything');
 
 echo $response->getBody();

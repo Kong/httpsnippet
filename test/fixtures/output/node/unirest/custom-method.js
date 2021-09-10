@@ -1,6 +1,6 @@
 const unirest = require("unirest");
 
-const req = unirest("PROPFIND", "http://mockbin.com/har");
+const req = unirest("PROPFIND", "https://httpbin.org/anything");
 
 req.end(function (res) {
   if (res.error) throw new Error(res.error);

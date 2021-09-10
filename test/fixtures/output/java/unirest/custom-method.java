@@ -1,2 +1,2 @@
-HttpResponse<String> response = Unirest.customMethod("PROPFIND","http://mockbin.com/har")
+HttpResponse<String> response = Unirest.customMethod("PROPFIND","https://httpbin.org/anything")
   .asString();

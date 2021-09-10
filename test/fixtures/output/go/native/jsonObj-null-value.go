@@ -9,7 +9,7 @@ import (
 
 func main() {
 
-	url := "http://mockbin.com/har"
+	url := "https://httpbin.org/anything"
 
 	payload := strings.NewReader("{\"foo\":null}")
 

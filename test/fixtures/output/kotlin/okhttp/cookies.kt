@@ -1,8 +1,8 @@
 val client = OkHttpClient()
 
 val request = Request.Builder()
-  .url("http://mockbin.com/har")
-  .post(null)
+  .url("https://httpbin.org/cookies")
+  .get()
   .addHeader("cookie", "foo=bar; bar=baz")
   .build()
 

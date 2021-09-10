@@ -1,9 +1,9 @@
 import requests
 
-url = "http://mockbin.com/har"
+url = "https://httpbin.org/headers"
 
 headers = {
-    "accept": "application/json",
+    "accept": "text/json",
     "x-foo": "Bar"
 }
 

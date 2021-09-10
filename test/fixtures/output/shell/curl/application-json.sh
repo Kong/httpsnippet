@@ -1,5 +1,5 @@
 curl --request POST \
-  --url http://mockbin.com/har \
+  --url https://httpbin.org/anything \
   --header 'content-type: application/json' \
   --data '
 {

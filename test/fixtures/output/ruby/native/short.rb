@@ -1,9 +1,11 @@
 require 'uri'
 require 'net/http'
+require 'openssl'
 
-url = URI("http://mockbin.com/har")
+url = URI("https://httpbin.org/anything")
 
 http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
 

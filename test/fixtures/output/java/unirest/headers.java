@@ -1,4 +1,4 @@
-HttpResponse<String> response = Unirest.get("http://mockbin.com/har")
-  .header("accept", "application/json")
+HttpResponse<String> response = Unirest.get("https://httpbin.org/headers")
+  .header("accept", "text/json")
   .header("x-foo", "Bar")
   .asString();

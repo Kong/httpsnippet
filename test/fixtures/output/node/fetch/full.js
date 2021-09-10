@@ -4,7 +4,7 @@ const encodedParams = new URLSearchParams();
 
 encodedParams.set('foo', 'bar');
 
-const url = 'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value';
+const url = 'https://httpbin.org/anything?foo=bar&foo=baz&baz=abc&key=value';
 const options = {
   method: 'POST',
   headers: {

@@ -1,2 +1,2 @@
-HttpResponse<String> response = Unirest.get("http://mockbin.com/har")
+HttpResponse<String> response = Unirest.get("https://httpbin.org/anything")
   .asString();

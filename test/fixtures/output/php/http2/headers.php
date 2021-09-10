@@ -3,10 +3,10 @@
 $client = new http\Client;
 $request = new http\Client\Request;
 
-$request->setRequestUrl('http://mockbin.com/har');
+$request->setRequestUrl('https://httpbin.org/headers');
 $request->setRequestMethod('GET');
 $request->setHeaders([
-  'accept' => 'application/json',
+  'accept' => 'text/json',
   'x-foo' => 'Bar'
 ]);
 

@@ -1,10 +1,10 @@
-const http = require("http");
+const http = require("https");
 
 const options = {
   "method": "PROPFIND",
-  "hostname": "mockbin.com",
+  "hostname": "httpbin.org",
   "port": null,
-  "path": "/har",
+  "path": "/anything",
   "headers": {}
 };
 

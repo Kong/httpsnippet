@@ -3,7 +3,7 @@ OkHttpClient client = new OkHttpClient();
 MediaType mediaType = MediaType.parse("application/json");
 RequestBody body = RequestBody.create(mediaType, "{\"foo\":null}");
 Request request = new Request.Builder()
-  .url("http://mockbin.com/har")
+  .url("https://httpbin.org/anything")
   .post(body)
   .addHeader("content-type", "application/json")
   .build();

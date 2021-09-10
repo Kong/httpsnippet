@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 
-const url = 'http://mockbin.com/har';
-const options = {method: 'POST', headers: {cookie: 'foo=bar; bar=baz'}};
+const url = 'https://httpbin.org/cookies';
+const options = {method: 'GET', headers: {cookie: 'foo=bar; bar=baz'}};
 
 fetch(url, options)
   .then(res => res.json())

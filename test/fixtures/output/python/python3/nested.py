@@ -1,8 +1,8 @@
 import http.client
 
-conn = http.client.HTTPConnection("mockbin.com")
+conn = http.client.HTTPSConnection("httpbin.org")
 
-conn.request("GET", "/har?foo%5Bbar%5D=baz%2Czap&fiz=buz&key=value")
+conn.request("GET", "/anything?foo%5Bbar%5D=baz%2Czap&fiz=buz&key=value")
 
 res = conn.getresponse()
 data = res.read()

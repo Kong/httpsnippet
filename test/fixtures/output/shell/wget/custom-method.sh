@@ -1,4 +1,4 @@
 wget --quiet \
   --method PROPFIND \
   --output-document \
-  - http://mockbin.com/har
+  - https://httpbin.org/anything

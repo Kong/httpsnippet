@@ -4,7 +4,7 @@ form.append("foo", "test/fixtures/files/hello.txt");
 const settings = {
   "async": true,
   "crossDomain": true,
-  "url": "http://mockbin.com/har",
+  "url": "https://httpbin.org/anything",
   "method": "POST",
   "headers": {},
   "processData": false,

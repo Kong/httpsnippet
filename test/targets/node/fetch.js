@@ -6,7 +6,7 @@ module.exports = function (HTTPSnippet, fixtures) {
 
     expect(result).toBe(`const fetch = require('node-fetch');
 
-const url = 'http://mockbin.com/har';
+const url = 'https://httpbin.org/anything';
 const options = {
   method: 'POST',
   headers: {'content-type': 'application/json'},
@@ -33,7 +33,7 @@ fetch(url, options)
 
     expect(result).toBe(`const fetch = require('node-fetch');
 
-const url = 'http://mockbin.com/har';
+const url = 'https://httpbin.org/anything';
 const options = {
   method: 'POST',
   headers: {'content-type': 'application/json'},
@@ -58,7 +58,7 @@ const encodedParams = new URLSearchParams();
 encodedParams.set('foo', 'bar');
 encodedParams.set('hello', 'world');
 
-const url = 'http://mockbin.com/har';
+const url = 'https://httpbin.org/anything';
 const options = {
   method: 'POST',
   headers: {'content-type': 'application/x-www-form-urlencoded'},

@@ -21,7 +21,7 @@ const testData = fixtures.cli.map(cli => {
   return [targets[cli.target].info.title, cli];
 });
 
-describe.each(testData)('%s Request Validation', (_, cli) => {
+describe.skip.each(testData)('%s Request Validation', (_, cli) => {
   cli.clients.forEach(function (client) {
     requests.forEach(function (request) {
       it(`${client} request should match mock for ${request}`, () => {

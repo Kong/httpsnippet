@@ -2,8 +2,8 @@ import axios from "axios";
 
 const options = {
   method: 'GET',
-  url: 'http://mockbin.com/har',
-  headers: {accept: 'application/json', 'x-foo': 'Bar'}
+  url: 'https://httpbin.org/headers',
+  headers: {accept: 'text/json', 'x-foo': 'Bar'}
 };
 
 axios.request(options).then(function (response) {

@@ -9,7 +9,7 @@ $body->append(new http\QueryString([
   'hello' => 'world'
 ]));
 
-$request->setRequestUrl('http://mockbin.com/har');
+$request->setRequestUrl('https://httpbin.org/anything');
 $request->setRequestMethod('POST');
 $request->setBody($body);
 

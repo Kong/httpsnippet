@@ -1,3 +1,3 @@
 echo '{"foo":null}' |  \
-  http POST http://mockbin.com/har \
+  http POST https://httpbin.org/anything \
   content-type:application/json

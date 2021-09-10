@@ -1,8 +1,8 @@
 var axios = require("axios").default;
 
 var options = {
-  method: 'POST',
-  url: 'http://mockbin.com/har',
+  method: 'GET',
+  url: 'https://httpbin.org/cookies',
   headers: {cookie: 'foo=bar; bar=baz'}
 };
 
