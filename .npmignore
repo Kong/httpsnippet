@@ -1,2 +1,6 @@
+.github/
+coverage/
+test/
 .editorconfig
-test
+.eslint*
+.prettier*

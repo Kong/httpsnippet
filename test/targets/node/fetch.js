@@ -1,17 +1,10 @@
-/* global it */
-
-'use strict'
-
-require('should')
-
 module.exports = function (HTTPSnippet, fixtures) {
-  it('should respond with stringify when useObjectBody is enabled', function () {
+  test('should respond with stringify when useObjectBody is enabled', function () {
     const result = new HTTPSnippet(fixtures.requests['application-json']).convert('node', 'fetch', {
-      useObjectBody: true
-    })
+      useObjectBody: true,
+    });
 
-    result.should.be.a.String()
-    result.should.eql(`const fetch = require('node-fetch');
+    expect(result).toBe(`const fetch = require('node-fetch');
 
 const url = 'http://mockbin.com/har';
 const options = {
@@ -30,17 +23,15 @@ const options = {
 fetch(url, options)
   .then(res => res.json())
   .then(json => console.log(json))
-  .catch(err => console.error('error:' + err));`)
-  })
+  .catch(err => console.error('error:' + err));`);
+  });
 
-  it('should respond without stringify when useObjectBody is disabled', function () {
+  test('should respond without stringify when useObjectBody is disabled', function () {
     const result = new HTTPSnippet(fixtures.requests['application-json']).convert('node', 'fetch', {
-      useObjectBody: false
-    })
+      useObjectBody: false,
+    });
 
-    result.should.be.a.String()
-    // This is identical to /test/fixtures/output/node/fetch/application-json.js, but /test/fixtures/index.js explicitly excludes output, leaving me to copy and paste for the moment.
-    result.should.eql(`const fetch = require('node-fetch');
+    expect(result).toBe(`const fetch = require('node-fetch');
 
 const url = 'http://mockbin.com/har';
 const options = {
@@ -52,17 +43,15 @@ const options = {
 fetch(url, options)
   .then(res => res.json())
   .then(json => console.log(json))
-  .catch(err => console.error('error:' + err));`)
-  })
+  .catch(err => console.error('error:' + err));`);
+  });
 
-  it('should respond without stringify when useObjectBody is enabled on URLSearchParams', function () {
+  test('should respond without stringify when useObjectBody is enabled on URLSearchParams', function () {
     const result = new HTTPSnippet(fixtures.requests['application-form-encoded']).convert('node', 'fetch', {
-      useObjectBody: true
-    })
+      useObjectBody: true,
+    });
 
-    result.should.be.a.String()
-    // This is identical to /test/fixtures/output/node/fetch/application-form-encoded.js, but /test/fixtures/index.js explicitly excludes output, leaving me to copy and paste for the moment.
-    result.should.eql(`const { URLSearchParams } = require('url');
+    expect(result).toBe(`const { URLSearchParams } = require('url');
 const fetch = require('node-fetch');
 const encodedParams = new URLSearchParams();
 
@@ -79,6 +68,6 @@ const options = {
 fetch(url, options)
   .then(res => res.json())
   .then(json => console.log(json))
-  .catch(err => console.error('error:' + err));`)
-  })
-}
+  .catch(err => console.error('error:' + err));`);
+  });
+};

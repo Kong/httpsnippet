@@ -1,12 +1,10 @@
-'use strict'
-
 module.exports = {
   info: {
     key: 'kotlin',
     title: 'Kotlin',
     extname: '.kt',
-    default: 'okhttp'
+    default: 'okhttp',
   },
 
-  okhttp: require('./okhttp')
-}
+  okhttp: require('./okhttp'),
+};

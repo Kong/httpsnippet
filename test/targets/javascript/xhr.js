@@ -1,14 +1,11 @@
-'use strict'
-
-require('should')
-
 module.exports = function (HTTPSnippet, fixtures) {
-  it('should not use cors', function () {
+  test('should not use cors', function () {
     const result = new HTTPSnippet(fixtures.requests.short).convert('javascript', 'xhr', {
-      cors: false
-    })
+      cors: false,
+    });
 
-    result.should.be.a.String()
-    result.replace(/\n/g, '').should.eql('const data = null;const xhr = new XMLHttpRequest();xhr.addEventListener("readystatechange", function () {  if (this.readyState === this.DONE) {    console.log(this.responseText);  }});xhr.open("GET", "http://mockbin.com/har");xhr.send(data);')
-  })
-}
+    expect(result.replace(/\n/g, '')).toBe(
+      'const data = null;const xhr = new XMLHttpRequest();xhr.addEventListener("readystatechange", function () {  if (this.readyState === this.DONE) {    console.log(this.responseText);  }});xhr.open("GET", "http://mockbin.com/har");xhr.send(data);'
+    );
+  });
+};

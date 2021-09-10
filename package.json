@@ -47,33 +47,18 @@
     "url": "https://github.com/readmeio/httpsnippet.git"
   },
   "scripts": {
-    "coverage": "istanbul cover --dir coverage _mocha -- --fgrep 'Request Validation' --invert -R dot",
-    "posttest": "npm run coverage",
-    "pretest": "standard && echint",
-    "quick": "mocha --no-timeouts --fgrep 'Request Validation' --invert",
-    "test": "mocha --no-timeouts"
-  },
-  "standard": {
-    "env": "mocha",
-    "ignore": [
-      "**/test/fixtures/**"
-    ]
-  },
-  "echint": {
-    "ignore": [
-      "coverage/**",
-      "**/node_modules/**",
-      "**/fixtures/**"
-    ]
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "prettier": "prettier --list-different --write \"./**/**.js\"",
+    "test": "jest --coverage"
   },
   "devDependencies": {
-    "echint": "^4.0.2",
+    "@readme/eslint-config": "^6.1.0",
+    "eslint": "^7.32.0",
     "glob": "^7.1.6",
-    "istanbul": "^0.4.0",
-    "mocha": "^8.2.1",
-    "require-directory": "^2.1.1",
-    "should": "^13.2.3",
-    "standard": "^16.0.3"
+    "jest": "^27.1.1",
+    "prettier": "^2.3.2",
+    "require-directory": "^2.1.1"
   },
   "dependencies": {
     "event-stream": "4.0.1",
@@ -81,5 +66,16 @@
     "har-validator": "^5.0.0",
     "qs": "^6.9.6",
     "stringify-object": "^3.3.0"
+  },
+  "prettier": "@readme/eslint-config/prettier",
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/node_modules",
+      "<rootDir>/test/(.*)/fixtures/"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/test/fixtures/",
+      "<rootDir>/test/targets/"
+    ]
   }
 }

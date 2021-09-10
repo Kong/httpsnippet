@@ -1,6 +1,4 @@
-'use strict'
-
-const util = require('util')
+const { format } = require('util');
 
 /**
  * Create an string of given length filled with blank spaces
@@ -9,26 +7,27 @@ const util = require('util')
  * @param {string} str String to pad out with
  * @return {string}
  */
-function buildString (length, str) {
-  return Array.apply(null, new Array(length)).map(String.prototype.valueOf, str).join('')
+function buildString(length, str) {
+  // eslint-disable-next-line prefer-spread
+  return Array.apply(null, new Array(length)).map(String.prototype.valueOf, str).join('');
 }
 
 /**
  * Create a string corresponding to a Dictionary or Array literal representation with pretty option
  * and indentation.
  */
-function concatValues (concatType, values, pretty, indentation, indentLevel) {
-  const currentIndent = buildString(indentLevel, indentation)
-  const closingBraceIndent = buildString(indentLevel - 1, indentation)
-  const join = pretty ? ',\n' + currentIndent : ', '
-  const openingBrace = concatType === 'object' ? '{' : '['
-  const closingBrace = concatType === 'object' ? '}' : ']'
+function concatValues(concatType, values, pretty, indentation, indentLevel) {
+  const currentIndent = buildString(indentLevel, indentation);
+  const closingBraceIndent = buildString(indentLevel - 1, indentation);
+  const join = pretty ? `,\n${currentIndent}` : ', ';
+  const openingBrace = concatType === 'object' ? '{' : '[';
+  const closingBrace = concatType === 'object' ? '}' : ']';
 
   if (pretty) {
-    return openingBrace + '\n' + currentIndent + values.join(join) + '\n' + closingBraceIndent + closingBrace
-  } else {
-    return openingBrace + values.join(join) + closingBrace
+    return `${openingBrace}\n${currentIndent}${values.join(join)}\n${closingBraceIndent}${closingBrace}`;
   }
+
+  return openingBrace + values.join(join) + closingBrace;
 }
 
 module.exports = {
@@ -40,43 +39,47 @@ module.exports = {
    * @return {string}
    */
   literalRepresentation: function (value, opts, indentLevel) {
-    indentLevel = indentLevel === undefined ? 1 : indentLevel + 1
+    // eslint-disable-next-line no-param-reassign
+    indentLevel = indentLevel === undefined ? 1 : indentLevel + 1;
 
     switch (Object.prototype.toString.call(value)) {
       case '[object Number]':
-        return value
+        return value;
 
       case '[object Array]': {
-        let pretty = false
-        const valuesRepresentation = value.map(function (v) {
-          // Switch to prettify if the value is a dictionary with multiple keys
-          if (Object.prototype.toString.call(v) === '[object Object]') {
-            pretty = Object.keys(v).length > 1
-          }
-          return this.literalRepresentation(v, opts, indentLevel)
-        }.bind(this))
-        return concatValues('array', valuesRepresentation, pretty, opts.indent, indentLevel)
+        let pretty = false;
+        const valuesRepresentation = value.map(
+          function (v) {
+            // Switch to prettify if the value is a dictionary with multiple keys
+            if (Object.prototype.toString.call(v) === '[object Object]') {
+              pretty = Object.keys(v).length > 1;
+            }
+            return this.literalRepresentation(v, opts, indentLevel);
+          }.bind(this)
+        );
+        return concatValues('array', valuesRepresentation, pretty, opts.indent, indentLevel);
       }
 
       case '[object Object]': {
-        const keyValuePairs = []
+        const keyValuePairs = [];
+        // eslint-disable-next-line guard-for-in, no-restricted-syntax
         for (const k in value) {
-          keyValuePairs.push(util.format('"%s": %s', k, this.literalRepresentation(value[k], opts, indentLevel)))
+          keyValuePairs.push(format('"%s": %s', k, this.literalRepresentation(value[k], opts, indentLevel)));
         }
-        return concatValues('object', keyValuePairs, opts.pretty && keyValuePairs.length > 1, opts.indent, indentLevel)
+        return concatValues('object', keyValuePairs, opts.pretty && keyValuePairs.length > 1, opts.indent, indentLevel);
       }
 
       case '[object Null]':
-        return 'None'
+        return 'None';
 
       case '[object Boolean]':
-        return value ? 'True' : 'False'
+        return value ? 'True' : 'False';
 
       default:
         if (value === null || value === undefined) {
-          return ''
+          return '';
         }
-        return '"' + value.toString().replace(/"/g, '\\"') + '"'
+        return `"${value.toString().replace(/"/g, '\\"')}"`;
     }
-  }
-}
+  },
+};

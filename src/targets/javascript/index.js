@@ -1,15 +1,13 @@
-'use strict'
-
 module.exports = {
   info: {
     key: 'javascript',
     title: 'JavaScript',
     extname: '.js',
-    default: 'xhr'
+    default: 'xhr',
   },
 
   jquery: require('./jquery'),
   fetch: require('./fetch'),
   xhr: require('./xhr'),
-  axios: require('./axios')
-}
+  axios: require('./axios'),
+};

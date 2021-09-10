@@ -8,115 +8,111 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-'use strict'
-
-const CodeBuilder = require('../../helpers/code-builder')
+const CodeBuilder = require('../../helpers/code-builder');
 
 module.exports = function (source, options) {
-  const opts = Object.assign({
-    indent: '  '
-  }, options)
+  const opts = {
+    indent: '  ',
+    ...options,
+  };
 
-  let includeFS = false
-  const code = new CodeBuilder(opts.indent)
+  let includeFS = false;
+  const code = new CodeBuilder(opts.indent);
 
-  code.push('const unirest = require("unirest");')
+  code
+    .push('const unirest = require("unirest");')
     .blank()
     .push('const req = unirest("%s", "%s");', source.method, source.url)
-    .blank()
+    .blank();
 
   if (source.allHeaders.cookie) {
-    code.push('const CookieJar = unirest.jar();')
+    code.push('const CookieJar = unirest.jar();');
 
     // Cookies are already encoded within `source.allHeaders` so we can pull them out of that instead of doing our
     // own encoding work.
     source.allHeaders.cookie.split('; ').forEach(function (cookie) {
-      const [name, value] = cookie.split('=')
-      code.push('CookieJar.add("%s=%s","%s");', name, value, source.url)
-    })
+      const [name, value] = cookie.split('=');
+      code.push('CookieJar.add("%s=%s","%s");', name, value, source.url);
+    });
 
-    code.push('req.jar(CookieJar);')
-      .blank()
+    code.push('req.jar(CookieJar);').blank();
   }
 
   if (Object.keys(source.queryObj).length) {
-    code.push('req.query(%s);', JSON.stringify(source.queryObj, null, opts.indent))
-      .blank()
+    code.push('req.query(%s);', JSON.stringify(source.queryObj, null, opts.indent)).blank();
   }
 
   if (Object.keys(source.headersObj).length) {
-    code.push('req.headers(%s);', JSON.stringify(source.headersObj, null, opts.indent))
-      .blank()
+    code.push('req.headers(%s);', JSON.stringify(source.headersObj, null, opts.indent)).blank();
   }
 
   switch (source.postData.mimeType) {
     case 'application/x-www-form-urlencoded':
       if (source.postData.paramsObj) {
-        code.push('req.form(%s);', JSON.stringify(source.postData.paramsObj, null, opts.indent))
-          .blank()
+        code.push('req.form(%s);', JSON.stringify(source.postData.paramsObj, null, opts.indent)).blank();
       }
-      break
+      break;
 
     case 'application/json':
       if (source.postData.jsonObj) {
-        code.push('req.type("json");')
+        code
+          .push('req.type("json");')
           .push('req.send(%s);', JSON.stringify(source.postData.jsonObj, null, opts.indent))
-          .blank()
+          .blank();
       }
-      break
+      break;
 
     case 'multipart/form-data': {
-      const multipart = []
+      const multipart = [];
 
       source.postData.params.forEach(function (param) {
-        const part = {}
+        const part = {};
 
         if (param.fileName && !param.value) {
-          includeFS = true
+          includeFS = true;
 
-          part.body = 'fs.createReadStream("' + param.fileName + '")'
+          part.body = `fs.createReadStream("${param.fileName}")`;
         } else if (param.value) {
-          part.body = param.value
+          part.body = param.value;
         }
 
         if (part.body) {
           if (param.contentType) {
-            part['content-type'] = param.contentType
+            part['content-type'] = param.contentType;
           }
 
-          multipart.push(part)
+          multipart.push(part);
         }
-      })
+      });
 
-      code.push('req.multipart(%s);', JSON.stringify(multipart, null, opts.indent))
-        .blank()
-      break
+      code.push('req.multipart(%s);', JSON.stringify(multipart, null, opts.indent)).blank();
+      break;
     }
 
     default:
       if (source.postData.text) {
-        code.push('req.send(%s);', JSON.stringify(source.postData.text, null, opts.indent))
-          .blank()
+        code.push('req.send(%s);', JSON.stringify(source.postData.text, null, opts.indent)).blank();
       }
   }
 
   if (includeFS) {
-    code.unshift('const fs = require("fs");')
+    code.unshift('const fs = require("fs");');
   }
 
-  code.push('req.end(function (res) {')
+  code
+    .push('req.end(function (res) {')
     .push(1, 'if (res.error) throw new Error(res.error);')
     .blank()
     .push(1, 'console.log(res.body);')
     .push('});')
-    .blank()
+    .blank();
 
-  return code.join().replace(/"fs\.createReadStream\(\\"(.+)\\"\)"/, 'fs.createReadStream("$1")')
-}
+  return code.join().replace(/"fs\.createReadStream\(\\"(.+)\\"\)"/, 'fs.createReadStream("$1")');
+};
 
 module.exports.info = {
   key: 'unirest',
   title: 'Unirest',
   link: 'http://unirest.io/nodejs.html',
-  description: 'Lightweight HTTP Request Client Library'
-}
+  description: 'Lightweight HTTP Request Client Library',
+};

@@ -1,13 +1,11 @@
-'use strict'
-
 module.exports = {
   info: {
     key: 'powershell',
     title: 'Powershell',
     extname: '.ps1',
-    default: 'webrequest'
+    default: 'webrequest',
   },
 
   webrequest: require('./webrequest'),
-  restmethod: require('./restmethod')
-}
+  restmethod: require('./restmethod'),
+};

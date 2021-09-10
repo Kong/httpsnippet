@@ -1,110 +1,110 @@
-/* eslint-env browser */
+/* eslint-disable no-param-reassign */
+const es = require('event-stream');
+const MultiPartForm = require('form-data');
+const qs = require('qs');
+const reducer = require('./helpers/reducer');
+const helpers = require('./helpers/headers');
+const targets = require('./targets');
+const url = require('url');
+const validate = require('har-validator/lib/async');
 
-'use strict'
-
-const es = require('event-stream')
-const MultiPartForm = require('form-data')
-const qs = require('qs')
-const reducer = require('./helpers/reducer')
-const helpers = require('./helpers/headers')
-const targets = require('./targets')
-const url = require('url')
-const validate = require('har-validator/lib/async')
-
-const { formDataIterator, isBlob } = require('./helpers/form-data.js')
+const { formDataIterator, isBlob } = require('./helpers/form-data.js');
 
 // constructor
 const HTTPSnippet = function (data, opts = {}) {
-  let entries
-  const self = this
-  const input = Object.assign({}, data)
+  let entries;
+  const self = this;
+  const input = { ...data };
 
-  const options = Object.assign({
-    harIsAlreadyEncoded: false
-  }, opts)
+  const options = {
+    harIsAlreadyEncoded: false,
+    ...opts,
+  };
 
   // prep the main container
-  self.requests = []
+  self.requests = [];
 
   // is it har?
   if (input.log && input.log.entries) {
-    entries = input.log.entries
+    entries = input.log.entries;
   } else {
-    entries = [{
-      request: input
-    }]
+    entries = [
+      {
+        request: input,
+      },
+    ];
   }
 
   entries.forEach(function (entry) {
     // add optional properties to make validation successful
-    entry.request.httpVersion = entry.request.httpVersion || 'HTTP/1.1'
-    entry.request.queryString = entry.request.queryString || []
-    entry.request.headers = entry.request.headers || []
-    entry.request.cookies = entry.request.cookies || []
-    entry.request.postData = entry.request.postData || {}
-    entry.request.postData.mimeType = entry.request.postData.mimeType || 'application/octet-stream'
+    entry.request.httpVersion = entry.request.httpVersion || 'HTTP/1.1';
+    entry.request.queryString = entry.request.queryString || [];
+    entry.request.headers = entry.request.headers || [];
+    entry.request.cookies = entry.request.cookies || [];
+    entry.request.postData = entry.request.postData || {};
+    entry.request.postData.mimeType = entry.request.postData.mimeType || 'application/octet-stream';
 
-    entry.request.bodySize = 0
-    entry.request.headersSize = 0
-    entry.request.postData.size = 0
+    entry.request.bodySize = 0;
+    entry.request.headersSize = 0;
+    entry.request.postData.size = 0;
 
     validate.request(entry.request, function (err, valid) {
       if (!valid) {
-        throw err
+        throw err;
       }
 
-      self.requests.push(self.prepare(entry.request, options))
-    })
-  })
-}
+      self.requests.push(self.prepare(entry.request, options));
+    });
+  });
+};
 
 HTTPSnippet.prototype.prepare = function (request, options) {
   // construct utility properties
-  request.queryObj = {}
-  request.headersObj = {}
-  request.cookiesObj = {}
-  request.allHeaders = {}
-  request.postData.jsonObj = false
-  request.postData.paramsObj = false
+  request.queryObj = {};
+  request.headersObj = {};
+  request.cookiesObj = {};
+  request.allHeaders = {};
+  request.postData.jsonObj = false;
+  request.postData.paramsObj = false;
 
   // construct query objects
   if (request.queryString && request.queryString.length) {
-    request.queryObj = request.queryString.reduce(reducer, {})
+    request.queryObj = request.queryString.reduce(reducer, {});
   }
 
   // construct headers objects
   if (request.headers && request.headers.length) {
-    const http2VersionRegex = /^HTTP\/2/
+    const http2VersionRegex = /^HTTP\/2/;
     request.headersObj = request.headers.reduce(function (headers, header) {
-      let headerName = header.name
+      let headerName = header.name;
       if (request.httpVersion.match(http2VersionRegex)) {
-        headerName = headerName.toLowerCase()
+        headerName = headerName.toLowerCase();
       }
 
-      headers[headerName] = header.value
-      return headers
-    }, {})
+      headers[headerName] = header.value;
+      return headers;
+    }, {});
   }
 
   // construct headers objects
   if (request.cookies && request.cookies.length) {
     request.cookiesObj = request.cookies.reduceRight(function (cookies, cookie) {
-      cookies[cookie.name] = cookie.value
-      return cookies
-    }, {})
+      cookies[cookie.name] = cookie.value;
+      return cookies;
+    }, {});
   }
 
   // construct Cookie header
   const cookies = request.cookies.map(function (cookie) {
     if (options.harIsAlreadyEncoded) {
-      return cookie.name + '=' + cookie.value
-    } else {
-      return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value)
+      return `${cookie.name}=${cookie.value}`;
     }
-  })
+
+    return `${encodeURIComponent(cookie.name)}=${encodeURIComponent(cookie.value)}`;
+  });
 
   if (cookies.length) {
-    request.allHeaders.cookie = cookies.join('; ')
+    request.allHeaders.cookie = cookies.join('; ');
   }
 
   switch (request.postData.mimeType) {
@@ -113,11 +113,11 @@ HTTPSnippet.prototype.prepare = function (request, options) {
     case 'multipart/form-data':
     case 'multipart/alternative':
       // reset values
-      request.postData.text = ''
-      request.postData.mimeType = 'multipart/form-data'
+      request.postData.text = '';
+      request.postData.mimeType = 'multipart/form-data';
 
       if (request.postData.params) {
-        const form = new MultiPartForm()
+        const form = new MultiPartForm();
 
         // The `form-data` module returns one of two things: a native FormData object, or its own polyfill. Since the
         // polyfill does not support the full API of the native FormData object, when this library is running in a
@@ -133,212 +133,225 @@ HTTPSnippet.prototype.prepare = function (request, options) {
         // This hack is pretty awful but it's the only way we can use this library in the browser as if we code this
         // against just the native FormData object, we can't polyfill that back into Node because Blob and File objects,
         // which something like `formdata-polyfill` requires, don't exist there.
-        const isNativeFormData = (typeof form[Symbol.iterator] === 'function')
+        const isNativeFormData = typeof form[Symbol.iterator] === 'function';
 
         // easter egg
-        const boundary = '---011000010111000001101001'
+        const boundary = '---011000010111000001101001';
         if (!isNativeFormData) {
-          form._boundary = boundary
+          form._boundary = boundary;
         }
 
         request.postData.params.forEach(function (param) {
-          const name = param.name
-          const value = param.value || ''
-          const filename = param.fileName || null
+          const name = param.name;
+          const value = param.value || '';
+          const filename = param.fileName || null;
 
           if (isNativeFormData) {
             if (isBlob(value)) {
-              form.append(name, value, filename)
+              form.append(name, value, filename);
             } else {
-              form.append(name, value)
+              form.append(name, value);
             }
           } else {
             form.append(name, value, {
               filename: filename,
-              contentType: param.contentType || null
-            })
+              contentType: param.contentType || null,
+            });
           }
-        })
+        });
 
         if (isNativeFormData) {
+          // eslint-disable-next-line no-restricted-syntax
           for (const data of formDataIterator(form, boundary)) {
-            request.postData.text += data
+            request.postData.text += data;
           }
         } else {
-          // eslint-disable-next-line array-callback-return
-          form.pipe(es.map(function (data, cb) {
-            request.postData.text += data
-          }))
+          form.pipe(
+            // eslint-disable-next-line array-callback-return
+            es.map(function (data) {
+              request.postData.text += data;
+            })
+          );
         }
 
-        request.postData.boundary = boundary
+        request.postData.boundary = boundary;
 
         // Since headers are case-sensitive we need to see if there's an existing `Content-Type` header that we can
         // override.
         const contentTypeHeader = helpers.hasHeader(request.headersObj, 'content-type')
           ? helpers.getHeaderName(request.headersObj, 'content-type')
-          : 'content-type'
+          : 'content-type';
 
-        request.headersObj[contentTypeHeader] = 'multipart/form-data; boundary=' + boundary
+        request.headersObj[contentTypeHeader] = `multipart/form-data; boundary=${boundary}`;
       }
-      break
+      break;
 
     case 'application/x-www-form-urlencoded':
       if (!request.postData.params) {
-        request.postData.text = ''
+        request.postData.text = '';
       } else {
-        request.postData.paramsObj = request.postData.params.reduce(reducer, {})
+        request.postData.paramsObj = request.postData.params.reduce(reducer, {});
 
         // always overwrite
-        request.postData.text = qs.stringify(request.postData.paramsObj)
+        request.postData.text = qs.stringify(request.postData.paramsObj);
       }
-      break
+      break;
 
     case 'text/json':
     case 'text/x-json':
     case 'application/json':
     case 'application/x-json':
-      request.postData.mimeType = 'application/json'
+      request.postData.mimeType = 'application/json';
 
       if (request.postData.text) {
         try {
-          request.postData.jsonObj = JSON.parse(request.postData.text)
+          request.postData.jsonObj = JSON.parse(request.postData.text);
         } catch (e) {
           // force back to text/plain
           // if headers have proper content-type value, then this should also work
-          request.postData.mimeType = 'text/plain'
+          request.postData.mimeType = 'text/plain';
         }
       }
-      break
+      break;
+
+    default:
+    // no-op
   }
 
   // create allHeaders object
-  request.allHeaders = Object.assign(request.allHeaders, request.headersObj)
+  request.allHeaders = Object.assign(request.allHeaders, request.headersObj);
 
   // deconstruct the uri
   // eslint-disable-next-line node/no-deprecated-api
-  request.uriObj = url.parse(request.url, true, true)
+  request.uriObj = url.parse(request.url, true, true);
 
   // merge all possible queryString values
-  request.queryObj = Object.assign(request.queryObj, request.uriObj.query)
+  request.queryObj = Object.assign(request.queryObj, request.uriObj.query);
 
   // reset uriObj values for a clean url
-  request.uriObj.query = null
-  request.uriObj.search = null
-  request.uriObj.path = request.uriObj.pathname
+  request.uriObj.query = null;
+  request.uriObj.search = null;
+  request.uriObj.path = request.uriObj.pathname;
 
   // keep the base url clean of queryString
-  request.url = url.format(request.uriObj)
+  request.url = url.format(request.uriObj);
 
   // update the uri object
-  request.uriObj.query = request.queryObj
+  request.uriObj.query = request.queryObj;
   if (options.harIsAlreadyEncoded) {
     request.uriObj.search = qs.stringify(request.queryObj, {
       encode: false,
-      indices: false
-    })
+      indices: false,
+    });
   } else {
     request.uriObj.search = qs.stringify(request.queryObj, {
-      indices: false
-    })
+      indices: false,
+    });
   }
 
   if (request.uriObj.search) {
-    request.uriObj.path = request.uriObj.pathname + '?' + request.uriObj.search
+    request.uriObj.path = `${request.uriObj.pathname}?${request.uriObj.search}`;
   }
 
   // construct a full url
-  request.fullUrl = url.format(request.uriObj)
+  request.fullUrl = url.format(request.uriObj);
 
-  return request
-}
+  return request;
+};
 
 HTTPSnippet.prototype.convert = function (target, client, opts) {
   if (!opts && client) {
-    opts = client
+    opts = client;
   }
 
-  const func = this._matchTarget(target, client)
+  const func = this._matchTarget(target, client);
   if (func) {
     const results = this.requests.map(function (request) {
-      return func(request, opts)
-    })
+      return func(request, opts);
+    });
 
-    return results.length === 1 ? results[0] : results
+    return results.length === 1 ? results[0] : results;
   }
 
-  return false
-}
+  return false;
+};
 
 HTTPSnippet.prototype._matchTarget = function (target, client) {
   // does it exist?
   // eslint-disable-next-line no-prototype-builtins
   if (!targets.hasOwnProperty(target)) {
-    return false
+    return false;
   }
 
   // shorthand
   if (typeof client === 'string' && typeof targets[target][client] === 'function') {
-    return targets[target][client]
+    return targets[target][client];
   }
 
   // default target
-  return targets[target][targets[target].info.default]
-}
+  return targets[target][targets[target].info.default];
+};
 
 // exports
-module.exports = HTTPSnippet
+module.exports = HTTPSnippet;
 
 module.exports.addTarget = function (target) {
   if (!('info' in target)) {
-    throw new Error('The supplied custom target must contain an `info` object.')
-  } else if (!('key' in target.info) || !('title' in target.info) || !('extname' in target.info) || !('default' in target.info)) {
-    throw new Error('The supplied custom target must have an `info` object with a `key`, `title`, `extname`, and `default` property.')
-  // eslint-disable-next-line no-prototype-builtins
+    throw new Error('The supplied custom target must contain an `info` object.');
+  } else if (
+    !('key' in target.info) ||
+    !('title' in target.info) ||
+    !('extname' in target.info) ||
+    !('default' in target.info)
+  ) {
+    throw new Error(
+      'The supplied custom target must have an `info` object with a `key`, `title`, `extname`, and `default` property.'
+    );
+    // eslint-disable-next-line no-prototype-builtins
   } else if (targets.hasOwnProperty(target.info.key)) {
-    throw new Error('The supplied custom target already exists.')
+    throw new Error('The supplied custom target already exists.');
   } else if (Object.keys(target).length === 1) {
-    throw new Error('A custom target must have a client defined on it.')
+    throw new Error('A custom target must have a client defined on it.');
   }
 
-  targets[target.info.key] = target
-}
+  targets[target.info.key] = target;
+};
 
 module.exports.addTargetClient = function (target, client) {
   // eslint-disable-next-line no-prototype-builtins
   if (!targets.hasOwnProperty(target)) {
-    throw new Error(`Sorry, but no ${target} target exists to add clients to.`)
+    throw new Error(`Sorry, but no ${target} target exists to add clients to.`);
   } else if (!('info' in client)) {
-    throw new Error('The supplied custom target client must contain an `info` object.')
+    throw new Error('The supplied custom target client must contain an `info` object.');
   } else if (!('key' in client.info) || !('title' in client.info)) {
-    throw new Error('The supplied custom target client must have an `info` object with a `key` and `title` property.')
-  // eslint-disable-next-line no-prototype-builtins
+    throw new Error('The supplied custom target client must have an `info` object with a `key` and `title` property.');
+    // eslint-disable-next-line no-prototype-builtins
   } else if (targets[target].hasOwnProperty(client.info.key)) {
-    throw new Error('The supplied custom target client already exists, please use a different key')
+    throw new Error('The supplied custom target client already exists, please use a different key');
   }
 
-  targets[target][client.info.key] = client
-}
+  targets[target][client.info.key] = client;
+};
 
 module.exports.availableTargets = function () {
   return Object.keys(targets).map(function (key) {
-    const target = Object.assign({}, targets[key].info)
+    const target = { ...targets[key].info };
     const clients = Object.keys(targets[key])
       .filter(function (prop) {
-        return !~['info', 'index'].indexOf(prop)
+        return !['info', 'index'].includes(prop);
       })
       .map(function (client) {
-        return targets[key][client].info
-      })
+        return targets[key][client].info;
+      });
 
     if (clients.length) {
-      target.clients = clients
+      target.clients = clients;
     }
 
-    return target
-  })
-}
+    return target;
+  });
+};
 
 module.exports.extname = function (target) {
-  return targets[target] ? targets[target].info.extname : ''
-}
+  return targets[target] ? targets[target].info.extname : '';
+};

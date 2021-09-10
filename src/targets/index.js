@@ -1,5 +1,3 @@
-'use strict'
-
 module.exports = {
   c: require('./c'),
   clojure: require('./clojure'),
@@ -18,5 +16,5 @@ module.exports = {
   r: require('./r'),
   ruby: require('./ruby'),
   shell: require('./shell'),
-  swift: require('./swift')
-}
+  swift: require('./swift'),
+};

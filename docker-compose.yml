@@ -1,5 +1,11 @@
 version: '3'
 services:
+  httpbin:
+    image: kennethreitz/httpbin
   httpsnippet:
     build: .
-    command: [npm, test]
+    command: "npx mocha test/requests.js"
+    environment:
+      - HTTPBIN
+    depends_on:
+      - httpbin

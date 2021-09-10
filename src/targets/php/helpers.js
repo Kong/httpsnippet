@@ -1,59 +1,62 @@
-'use strict'
-
 const convert = function (obj, indent, lastIndent) {
-  let i, result
+  let i;
+  let result;
 
   if (!lastIndent) {
-    lastIndent = ''
+    // eslint-disable-next-line no-param-reassign
+    lastIndent = '';
   }
 
   switch (Object.prototype.toString.call(obj)) {
     case '[object Null]':
-      result = 'null'
-      break
+      result = 'null';
+      break;
 
     case '[object Undefined]':
-      result = 'null'
-      break
+      result = 'null';
+      break;
 
     case '[object String]':
-      result = "'" + obj.replace(/\\/g, '\\\\').replace(/'/g, "'") + "'"
-      break
+      result = `'${obj.replace(/\\/g, '\\\\').replace(/'/g, "'")}'`;
+      break;
 
     case '[object Number]':
-      result = obj.toString()
-      break
+      result = obj.toString();
+      break;
 
     case '[object Array]':
-      result = []
+      result = [];
 
       obj.forEach(function (item) {
-        result.push(convert(item, indent + indent, indent))
-      })
+        result.push(convert(item, indent + indent, indent));
+      });
 
-      result = '[\n' + indent + result.join(',\n' + indent) + '\n' + lastIndent + ']'
-      break
+      // eslint-disable-next-line sonarjs/no-nested-template-literals
+      result = `[\n${indent}${result.join(`,\n${indent}`)}\n${lastIndent}]`;
+      break;
 
     case '[object Object]':
-      result = []
+      result = [];
+      // eslint-disable-next-line no-restricted-syntax
       for (i in obj) {
         // eslint-disable-next-line no-prototype-builtins
         if (obj.hasOwnProperty(i)) {
-          result.push(convert(i, indent) + ' => ' + convert(obj[i], indent + indent, indent))
+          result.push(`${convert(i, indent)} => ${convert(obj[i], indent + indent, indent)}`);
         }
       }
-      result = '[\n' + indent + result.join(',\n' + indent) + '\n' + lastIndent + ']'
-      break
+      // eslint-disable-next-line sonarjs/no-nested-template-literals
+      result = `[\n${indent}${result.join(`,\n${indent}`)}\n${lastIndent}]`;
+      break;
 
     default:
-      result = 'null'
+      result = 'null';
   }
 
-  return result
-}
+  return result;
+};
 
 module.exports = {
-  convert: convert,
+  convert,
   methods: [
     'ACL',
     'BASELINE_CONTROL',
@@ -81,6 +84,6 @@ module.exports = {
     'UNCHECKOUT',
     'UNLOCK',
     'UPDATE',
-    'VERSION_CONTROL'
-  ]
-}
+    'VERSION_CONTROL',
+  ],
+};

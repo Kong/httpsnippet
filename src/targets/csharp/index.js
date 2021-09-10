@@ -1,13 +1,11 @@
-'use strict'
-
 module.exports = {
   info: {
     key: 'csharp',
     title: 'C#',
     extname: '.cs',
-    default: 'restsharp'
+    default: 'restsharp',
   },
 
   restsharp: require('./restsharp'),
-  httpclient: require('./httpclient')
-}
+  httpclient: require('./httpclient'),
+};

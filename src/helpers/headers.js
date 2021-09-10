@@ -7,7 +7,7 @@ module.exports = {
    * @return {string}
    */
   getHeader: (headers, name) => {
-    return headers[Object.keys(headers).find(k => k.toLowerCase() === name.toLowerCase())]
+    return headers[Object.keys(headers).find(k => k.toLowerCase() === name.toLowerCase())];
   },
 
   /**
@@ -18,12 +18,9 @@ module.exports = {
    * @return {string}
    */
   getHeaderName: (headers, name) => {
-    // eslint-disable-next-line array-callback-return
     return Object.keys(headers).find(k => {
-      if (k.toLowerCase() === name.toLowerCase()) {
-        return k
-      }
-    })
+      return k.toLowerCase() === name.toLowerCase();
+    });
   },
 
   /**
@@ -34,7 +31,7 @@ module.exports = {
    * @return {(integer|boolean)}
    */
   hasHeader: (headers, name) => {
-    return Boolean(Object.keys(headers).find(k => k.toLowerCase() === name.toLowerCase()))
+    return Boolean(Object.keys(headers).find(k => k.toLowerCase() === name.toLowerCase()));
   },
 
   /**
@@ -43,15 +40,9 @@ module.exports = {
    * @param {string}} mimeType
    * @returns {boolean}
    */
-  isMimeTypeJson: (mimeType) => {
-    return [
-      'application/json',
-      'application/x-json',
-      'text/json',
-      'text/x-json',
-      '+json'
-    ].some(function (type) {
-      return mimeType.indexOf(type) > -1
-    })
-  }
-}
+  isMimeTypeJson: mimeType => {
+    return ['application/json', 'application/x-json', 'text/json', 'text/x-json', '+json'].some(function (type) {
+      return mimeType.indexOf(type) > -1;
+    });
+  },
+};

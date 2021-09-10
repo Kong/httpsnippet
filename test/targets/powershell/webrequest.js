@@ -1,5 +1,1 @@
-'use strict'
-
-require('should')
-
-module.exports = function (HTTPSnippet, fixtures) {}
+module.exports = function () {};
