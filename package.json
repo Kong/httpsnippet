@@ -70,12 +70,12 @@
   "prettier": "@readme/eslint-config/prettier",
   "jest": {
     "coveragePathIgnorePatterns": [
-      "<rootDir>/node_modules",
-      "<rootDir>/test/(.*)/fixtures/"
+      "<rootDir>/__tests__/(.*)/__fixtures__/",
+      "<rootDir>/node_modules"
     ],
     "testPathIgnorePatterns": [
-      "<rootDir>/test/fixtures/",
-      "<rootDir>/test/targets/"
+      "<rootDir>/__tests__/__fixtures__/",
+      "<rootDir>/__tests__/targets/"
     ]
   }
 }
