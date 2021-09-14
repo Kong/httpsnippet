@@ -48,9 +48,7 @@ module.exports = {
               data: '',
               files: {},
               form: {},
-              headers: {
-                Accept: '*/*',
-              },
+              headers: {},
               json: null,
               method: 'GET',
               url: 'https://httpbin.org/anything?foo=bar&foo=baz&baz=abc&key=value',

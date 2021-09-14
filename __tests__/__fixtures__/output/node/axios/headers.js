@@ -1,6 +1,6 @@
-var axios = require("axios").default;
+const axios = require("axios").default;
 
-var options = {
+const options = {
   method: 'GET',
   url: 'https://httpbin.org/headers',
   headers: {accept: 'text/json', 'x-foo': 'Bar'}

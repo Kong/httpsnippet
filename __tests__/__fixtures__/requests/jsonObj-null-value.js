@@ -42,19 +42,18 @@ module.exports = {
             size: -1,
             mimeType: 'application/json',
             text: JSON.stringify({
-              // args: {},
-              // data: '{\n  "foo": "bar"\n}',
-              // files: {},
-              // form: {},
-              // headers: {
-              //   Accept: '*/*',
-              //   'Content-Type': 'application/json',
-              // },
-              // json: {
-              //   foo: 'bar',
-              // },
-              // method: 'POST',
-              // url: 'https://httpbin.org/anything',
+              args: {},
+              data: '{"foo":null}',
+              files: {},
+              form: {},
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              json: {
+                foo: null,
+              },
+              method: 'POST',
+              url: 'https://httpbin.org/anything',
             }),
           },
           headersSize: -1,

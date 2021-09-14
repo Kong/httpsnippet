@@ -1,6 +1,6 @@
-var axios = require("axios").default;
+const axios = require("axios").default;
 
-var options = {
+const options = {
   method: 'GET',
   url: 'https://httpbin.org/cookies',
   headers: {cookie: 'foo=bar; bar=baz'}

@@ -40,7 +40,6 @@ module.exports = {
               files: {},
               form: {},
               headers: {
-                Accept: '*/*',
                 'Content-Type': 'text/plain',
               },
               json: null,

@@ -36,15 +36,14 @@ module.exports = {
             mimeType: 'application/json',
             text: JSON.stringify({
               args: {},
-              data: '{"foo":null}',
+              data: '{\n  "foo": "bar"\n}',
               files: {},
               form: {},
               headers: {
-                Accept: '*/*',
                 'Content-Type': 'application/json',
               },
               json: {
-                foo: null,
+                foo: 'bar',
               },
               method: 'POST',
               url: 'https://httpbin.org/anything',

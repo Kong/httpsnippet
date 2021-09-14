@@ -6,10 +6,7 @@ const formData = new FormData();
 formData.append('foo', fs.createReadStream('__tests__/__fixtures__/files/hello.txt'));
 
 const url = 'https://httpbin.org/anything';
-const options = {
-  method: 'POST',
-  headers: {'content-type': 'multipart/form-data; boundary=---011000010111000001101001'}
-};
+const options = {method: 'POST'};
 
 options.body = formData;
 

@@ -1,6 +1,9 @@
 {
   "extends": "@readme/eslint-config",
   "root": true,
+  "parserOptions": {
+    "ecmaVersion": 2020
+  },
   "rules": {
     "global-require": "off",
     "no-underscore-dangle": "off",

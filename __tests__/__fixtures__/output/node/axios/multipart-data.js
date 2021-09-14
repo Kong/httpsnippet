@@ -1,6 +1,6 @@
-var axios = require("axios").default;
+const axios = require("axios").default;
 
-var options = {
+const options = {
   method: 'POST',
   url: 'https://httpbin.org/anything',
   headers: {'content-type': 'multipart/form-data; boundary=---011000010111000001101001'},

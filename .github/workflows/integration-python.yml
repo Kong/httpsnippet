@@ -1,0 +1,14 @@
+name: Integrations (Python)
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2.3.4
+
+    - name: Run tests
+      run: docker-compose run integration_python
+
+    - name: Cleanup
+      if: always()
+      run: docker-compose down

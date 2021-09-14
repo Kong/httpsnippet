@@ -1,8 +1,6 @@
 import requests
 
-url = "https://httpbin.org/anything"
-
-querystring = {"foo":["bar","baz"],"baz":"abc","key":"value"}
+url = "https://httpbin.org/anything?foo=bar&foo=baz&baz=abc&key=value"
 
 payload = "foo=bar"
 headers = {
@@ -11,6 +9,6 @@ headers = {
     "content-type": "application/x-www-form-urlencoded"
 }
 
-response = requests.request("POST", url, data=payload, headers=headers, params=querystring)
+response = requests.request("POST", url, data=payload, headers=headers)
 
 print(response.text)

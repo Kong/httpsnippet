@@ -26,15 +26,7 @@ module.exports = function (source, options) {
   code.push('import requests').blank();
 
   // Set URL
-  code.push('url = "%s"', source.url).blank();
-
-  // Construct query string
-  let qs;
-  if (Object.keys(source.queryObj).length) {
-    qs = `querystring = ${JSON.stringify(source.queryObj)}`;
-
-    code.push(qs).blank();
-  }
+  code.push('url = "%s"', source.fullUrl).blank();
 
   // Construct payload
   let hasPayload = false;
@@ -92,10 +84,6 @@ module.exports = function (source, options) {
 
   if (headerCount > 0) {
     request += ', headers=headers';
-  }
-
-  if (qs) {
-    request += ', params=querystring';
   }
 
   request += ')';

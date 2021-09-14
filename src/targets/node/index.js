@@ -4,6 +4,7 @@ module.exports = {
     title: 'Node.js',
     extname: '.js',
     default: 'native',
+    cli: 'node %s',
   },
 
   native: require('./native'),

@@ -39,7 +39,7 @@ module.exports = function (source, options) {
 
     case 'application/json':
       if (source.postData.jsonObj) {
-        reqOptions.body = opts.useObjectBody ? source.postData.jsonObj : JSON.stringify(source.postData.jsonObj);
+        reqOptions.body = source.postData.jsonObj;
       }
       break;
 
@@ -71,18 +71,14 @@ module.exports = function (source, options) {
         inlineCharacterLimit: 80,
 
         // The Fetch API body only accepts string parameters, but stringified JSON can be difficult to
-        // read, so if you pass the `useObjectBody` option we keep the object as a literal and use
-        // this transform function to wrap the literal in a `JSON.stringify` call.
+        // read, so we keep the object as a literal and use this transform function to wrap the literal
+        // in a `JSON.stringify` call.
         transform: (object, property, originalResult) => {
           if (property === 'body') {
             if (source.postData.mimeType === 'application/x-www-form-urlencoded') {
               return `new URLSearchParams(${originalResult})`;
-            }
-
-            if (opts.useObjectBody) {
-              if (source.postData.mimeType === 'application/json') {
-                return `JSON.stringify(${originalResult})`;
-              }
+            } else if (source.postData.mimeType === 'application/json') {
+              return `JSON.stringify(${originalResult})`;
             }
           }
 

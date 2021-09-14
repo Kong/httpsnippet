@@ -52,7 +52,6 @@ module.exports = {
                 hello: 'world',
               },
               headers: {
-                Accept: '*/*',
                 'Content-Type': 'application/x-www-form-urlencoded',
               },
               json: null,

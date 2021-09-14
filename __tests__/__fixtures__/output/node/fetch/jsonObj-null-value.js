@@ -4,7 +4,7 @@ const url = 'https://httpbin.org/anything';
 const options = {
   method: 'POST',
   headers: {'content-type': 'application/json'},
-  body: '{"foo":null}'
+  body: JSON.stringify({foo: null})
 };
 
 fetch(url, options)

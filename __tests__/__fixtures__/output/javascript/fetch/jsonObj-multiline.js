@@ -1,7 +1,7 @@
 const options = {
   method: 'POST',
   headers: {'content-type': 'application/json'},
-  body: '{"foo":"bar"}'
+  body: JSON.stringify({foo: 'bar'})
 };
 
 fetch('https://httpbin.org/anything', options)

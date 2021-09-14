@@ -19,16 +19,12 @@ module.exports = function (source, options) {
 
   const code = new CodeBuilder(opts.indent);
 
-  code.push('var axios = require("axios").default;').blank();
+  code.push('const axios = require("axios").default;');
 
   const reqOpts = {
     method: source.method,
-    url: source.url,
+    url: source.fullUrl,
   };
-
-  if (Object.keys(source.queryObj).length) {
-    reqOpts.params = source.queryObj;
-  }
 
   if (Object.keys(source.allHeaders).length) {
     reqOpts.headers = source.allHeaders;
@@ -36,7 +32,15 @@ module.exports = function (source, options) {
 
   switch (source.postData.mimeType) {
     case 'application/x-www-form-urlencoded':
-      reqOpts.data = source.postData.paramsObj;
+      code.push("const { URLSearchParams } = require('url');");
+      code.push('const encodedParams = new URLSearchParams();');
+      code.blank();
+
+      source.postData.params.forEach(function (param) {
+        code.push(`encodedParams.set('${param.name}', '${param.value}');`);
+      });
+
+      reqOpts.data = 'encodedParams';
       break;
 
     case 'application/json':
@@ -51,7 +55,8 @@ module.exports = function (source, options) {
       }
   }
 
-  code.push('var options = %s;', stringifyObject(reqOpts, { indent: '  ', inlineCharacterLimit: 80 })).blank();
+  code.blank();
+  code.push('const options = %s;', stringifyObject(reqOpts, { indent: '  ', inlineCharacterLimit: 80 })).blank();
 
   code
     .push('axios.request(options).then(function (response) {')
@@ -60,7 +65,7 @@ module.exports = function (source, options) {
     .push(1, 'console.error(error);')
     .push('});');
 
-  return code.join();
+  return code.join().replace(/'encodedParams'/, 'encodedParams');
 };
 
 module.exports.info = {

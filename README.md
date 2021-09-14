@@ -155,9 +155,20 @@ For detailed information on each target, please review the [wiki](https://github
 
 The main difference between this library and the upstream [httpsnippet](https://github.com/Kong/httpsnippet) library are:
 
-* Does not ship with a CLI component
-* Adds a `useObjectBody` option to the `node` and `javascript` targets. This option is a boolean flag that causes the request body to be rendered as an object literal wrapped in `JSON.stringify`. If disabled, it falls back to the original behavior of a stringified object body. This flag defaults to disabled.
+* Does not ship with a CLI component.
+* The `fetch` target for Node and JS both treat body payloads as an object literal and wrap it within `JSON.stringify()`. We do this to keep those targets looking nicer with those kinds of payloads.
 * Contains a `harIsAlreadyEncoded` option on the core library to disable [escaping](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) of cookies and query strings in URLs. Helpful if the HAR being supplied already has them escaped.
+* PHP Guzzle snippets come with `require_once('vendor/autoload.php');` at the top of them.
+* A full integration suite for testing out snippets the library creates.
+
+### Running the integration suite
+
+```
+docker-compose run integration_node
+docker-compose run integration_php
+docker-compose run integration_python
+docker-compose run integration_shell
+```
 
 ## License
 

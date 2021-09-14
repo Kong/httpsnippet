@@ -4,6 +4,7 @@
     "title": "Shell",
     "extname": ".sh",
     "default": "curl",
+    "cli": "%s",
     "clients": [
       {
         "key": "curl",
@@ -30,6 +31,7 @@
     "title": "Node.js",
     "extname": ".js",
     "default": "native",
+    "cli": "node %s",
     "clients": [
       {
         "key": "native",
@@ -114,6 +116,7 @@
     "title": "PHP",
     "extname": ".php",
     "default": "curl",
+    "cli": "php %s",
     "clients": [
       {
         "key": "curl",
@@ -146,6 +149,7 @@
     "title": "Python",
     "extname": ".py",
     "default": "python3",
+    "cli": "python3 %s",
     "clients": [
       {
         "key": "python3",

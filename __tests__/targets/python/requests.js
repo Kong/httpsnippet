@@ -9,11 +9,9 @@ module.exports = function (HTTPSnippet) {
 
     expect(result).toBe(`import requests
 
-url = "https://httpbin.org/anything"
+url = "https://httpbin.org/anything?param=value"
 
-querystring = {"param":"value"}
-
-response = requests.request("GET", url, params=querystring)
+response = requests.request("GET", url)
 
 print(response.text)`);
   });

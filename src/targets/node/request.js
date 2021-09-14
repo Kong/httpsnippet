@@ -24,12 +24,8 @@ module.exports = function (source, options) {
 
   const reqOpts = {
     method: source.method,
-    url: source.url,
+    url: source.fullUrl,
   };
-
-  if (Object.keys(source.queryObj).length) {
-    reqOpts.qs = source.queryObj;
-  }
 
   if (Object.keys(source.headersObj).length) {
     reqOpts.headers = source.headersObj;
@@ -116,7 +112,7 @@ module.exports = function (source, options) {
 
   return code
     .join()
-    .replace('"JAR"', 'jar')
+    .replace("'JAR'", 'jar')
     .replace(/'fs\.createReadStream\("(.+)"\)'/g, "fs.createReadStream('$1')");
 };
 

@@ -2,8 +2,7 @@ const request = require('request');
 
 const options = {
   method: 'GET',
-  url: 'https://httpbin.org/anything',
-  qs: {'foo[bar]': 'baz,zap', fiz: 'buz', key: 'value'}
+  url: 'https://httpbin.org/anything?foo%5Bbar%5D=baz%2Czap&fiz=buz&key=value'
 };
 
 request(options, function (error, response, body) {

@@ -4,6 +4,7 @@ module.exports = {
     title: 'Shell',
     extname: '.sh',
     default: 'curl',
+    cli: '%s',
   },
 
   curl: require('./curl'),

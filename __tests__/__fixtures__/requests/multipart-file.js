@@ -48,7 +48,6 @@ module.exports = {
               },
               form: {},
               headers: {
-                Accept: '*/*',
                 'Content-Type': 'multipart/form-data; boundary=------------------------b74e534478e5833d',
               },
               json: null,

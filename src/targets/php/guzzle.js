@@ -25,8 +25,10 @@ module.exports = function (source, options) {
   const code = new CodeBuilder(opts.indent);
 
   if (!opts.noTags) {
-    code.push(opts.shortTags ? '<?' : '<?php').blank();
+    code.push(opts.shortTags ? '<?' : '<?php');
   }
+
+  code.push("require_once('vendor/autoload.php');").blank();
 
   const requestOptions = new CodeBuilder(opts.indent);
 

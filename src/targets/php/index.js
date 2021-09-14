@@ -4,6 +4,7 @@ module.exports = {
     title: 'PHP',
     extname: '.php',
     default: 'curl',
+    cli: 'php %s',
   },
 
   curl: require('./curl'),
