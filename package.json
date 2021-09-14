@@ -53,18 +53,18 @@
     "test": "jest --coverage"
   },
   "devDependencies": {
-    "@readme/eslint-config": "^6.1.0",
+    "@readme/eslint-config": "^7.1.0",
     "eslint": "^7.32.0",
-    "glob": "^7.1.6",
-    "jest": "^27.1.1",
-    "prettier": "^2.3.2",
+    "glob": "^7.1.7",
+    "jest": "^27.2.0",
+    "prettier": "^2.4.0",
     "require-directory": "^2.1.1"
   },
   "dependencies": {
     "event-stream": "4.0.1",
-    "form-data": "3.0.0",
+    "form-data": "^4.0.0",
     "har-validator": "^5.0.0",
-    "qs": "^6.9.6",
+    "qs": "^6.10.1",
     "stringify-object": "^3.3.0"
   },
   "prettier": "@readme/eslint-config/prettier",

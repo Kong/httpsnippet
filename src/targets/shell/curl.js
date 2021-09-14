@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/no-nested-ternary */
 /**
  * @description
  * HTTP code snippet generator for the Shell using cURL.
