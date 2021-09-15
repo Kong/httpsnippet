@@ -13,7 +13,7 @@ const options = {
     'content-type': 'application/x-www-form-urlencoded'
   },
   form: {foo: 'bar'},
-  jar: 'JAR'
+  jar: jar
 };
 
 request(options, function (error, response, body) {
