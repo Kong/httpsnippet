@@ -7,10 +7,7 @@ formData.append('foo', fs.createReadStream('test/fixtures/files/hello.txt'));
 
 let url = 'http://mockbin.com/har';
 
-let options = {
-  method: 'POST',
-  headers: {'content-type': 'multipart/form-data; boundary=---011000010111000001101001'}
-};
+let options = {method: 'POST'};
 
 options.body = formData;
 

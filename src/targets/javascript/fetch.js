@@ -10,7 +10,9 @@
 
 'use strict'
 
+const headerHelpers = require('../../helpers/headers');
 const CodeBuilder = require('../../helpers/code-builder')
+const stringifyObject = require('stringify-object')
 
 module.exports = function (source, options) {
   const opts = Object.assign(
@@ -21,30 +23,39 @@ module.exports = function (source, options) {
     options
   )
 
-  const stringifyObject = require('stringify-object')
   const code = new CodeBuilder(opts.indent)
 
-  options = {
+  const reqOpts = {
     method: source.method
   }
 
+  // The `form-data` library automatically adds a `Content-Type` header for `multipart/form-data` content and if we
+  // add our own here, data won't be correctly transferred.
+  if (source.postData.mimeType === 'multipart/form-data') {
+    const contentTypeHeader = headerHelpers.getHeaderName(source.allHeaders, 'content-type');
+    if (contentTypeHeader) {
+      // eslint-disable-next-line no-param-reassign
+      delete source.allHeaders[contentTypeHeader];
+    }
+  }
+
   if (Object.keys(source.allHeaders).length) {
-    options.headers = source.allHeaders
+    reqOpts.headers = source.allHeaders
   }
 
   if (opts.credentials !== null) {
-    options.credentials = opts.credentials
+    reqOpts.credentials = opts.credentials
   }
 
   switch (source.postData.mimeType) {
     case 'application/x-www-form-urlencoded':
-      options.body = source.postData.paramsObj
+      reqOpts.body = source.postData.paramsObj
         ? source.postData.paramsObj
         : source.postData.text
       break
 
     case 'application/json':
-      options.body = JSON.stringify(source.postData.jsonObj)
+      reqOpts.body = JSON.stringify(source.postData.jsonObj)
       break
 
     case 'multipart/form-data':
@@ -63,11 +74,11 @@ module.exports = function (source, options) {
 
     default:
       if (source.postData.text) {
-        options.body = source.postData.text
+        reqOpts.body = source.postData.text
       }
   }
 
-  code.push('const options = %s;', stringifyObject(options, {
+  code.push('const options = %s;', stringifyObject(reqOpts, {
     indent: opts.indent,
     inlineCharacterLimit: 80,
     transform: (object, property, originalResult) => {
