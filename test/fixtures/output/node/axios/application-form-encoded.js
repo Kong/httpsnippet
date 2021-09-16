@@ -1,10 +1,16 @@
 var axios = require("axios").default;
 
+var { URLSearchParams } = require('url');
+var encodedParams = new URLSearchParams();
+
+encodedParams.set('foo', 'bar');
+encodedParams.set('hello', 'world');
+
 var options = {
   method: 'POST',
   url: 'http://mockbin.com/har',
   headers: {'content-type': 'application/x-www-form-urlencoded'},
-  data: {foo: 'bar', hello: 'world'}
+  data: encodedParams
 };
 
 axios.request(options).then(function (response) {

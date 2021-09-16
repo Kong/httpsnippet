@@ -1,5 +1,9 @@
 import axios from "axios";
 
+var encodedParams = new URLSearchParams();
+
+encodedParams.set('foo', 'bar');
+
 const options = {
   method: 'POST',
   url: 'http://mockbin.com/har',
@@ -9,7 +13,7 @@ const options = {
     accept: 'application/json',
     'content-type': 'application/x-www-form-urlencoded'
   },
-  data: {foo: 'bar'}
+  data: encodedParams
 };
 
 axios.request(options).then(function (response) {
