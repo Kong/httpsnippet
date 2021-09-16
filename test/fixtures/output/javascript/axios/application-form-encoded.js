@@ -1,6 +1,6 @@
 import axios from "axios";
 
-var encodedParams = new URLSearchParams();
+const encodedParams = new URLSearchParams();
 
 encodedParams.set('foo', 'bar');
 encodedParams.set('hello', 'world');

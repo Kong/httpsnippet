@@ -38,7 +38,7 @@ module.exports = function (source, options) {
 
   switch (source.postData.mimeType) {
     case 'application/x-www-form-urlencoded':
-      code.push('var encodedParams = new URLSearchParams();')
+      code.push('const encodedParams = new URLSearchParams();')
       code.blank()
 
       source.postData.params.forEach(function (param) {

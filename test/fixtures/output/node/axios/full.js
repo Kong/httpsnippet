@@ -1,11 +1,11 @@
-var axios = require("axios").default;
+const axios = require("axios").default;
 
-var { URLSearchParams } = require('url');
-var encodedParams = new URLSearchParams();
+const { URLSearchParams } = require('url');
+const encodedParams = new URLSearchParams();
 
 encodedParams.set('foo', 'bar');
 
-var options = {
+const options = {
   method: 'POST',
   url: 'http://mockbin.com/har',
   params: {foo: ['bar', 'baz'], baz: 'abc', key: 'value'},

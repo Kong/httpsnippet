@@ -1,6 +1,6 @@
-var axios = require("axios").default;
+const axios = require("axios").default;
 
-var options = {
+const options = {
   method: 'POST',
   url: 'http://mockbin.com/har',
   headers: {'content-type': 'text/plain'},

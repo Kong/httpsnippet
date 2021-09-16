@@ -20,7 +20,7 @@ module.exports = function (source, options) {
 
   const code = new CodeBuilder(opts.indent)
 
-  code.push('var axios = require("axios").default;')
+  code.push('const axios = require("axios").default;')
     .blank()
 
   const reqOpts = {
@@ -38,8 +38,8 @@ module.exports = function (source, options) {
 
   switch (source.postData.mimeType) {
     case 'application/x-www-form-urlencoded':
-      code.push("var { URLSearchParams } = require('url');")
-      code.push('var encodedParams = new URLSearchParams();')
+      code.push("const { URLSearchParams } = require('url');")
+      code.push('const encodedParams = new URLSearchParams();')
       code.blank()
 
       source.postData.params.forEach(function (param) {
@@ -63,7 +63,7 @@ module.exports = function (source, options) {
       }
   }
 
-  code.push('var options = %s;', stringifyObject(reqOpts, { indent: '  ', inlineCharacterLimit: 80 }))
+  code.push('const options = %s;', stringifyObject(reqOpts, { indent: '  ', inlineCharacterLimit: 80 }))
     .blank()
 
   code.push(util.format('axios.request(options).then(%s', 'function (response) {'))
