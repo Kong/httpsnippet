@@ -20,16 +20,16 @@ module.exports = function (HTTPSnippet, fixtures) {
       headers: true,
       indent: false,
       pretty: 'x',
-      print: 'x',
+      print: 'y',
       short: true,
-      style: 'x',
+      style: 'z',
       timeout: 1,
       verbose: true,
-      verify: 'x'
+      verify: 'v'
     })
 
     result.should.be.a.String()
-    result.should.eql('http -h -b -v -p=x --verify=x --cert=foo --pretty=x --style=x --timeout=1 GET http://mockbin.com/har')
+    result.should.eql('http -h -b -v -p=y --verify=v --cert=foo --pretty=x --style=z --timeout=1 GET http://mockbin.com/har')
   })
 
   it('should use long flags', function () {
@@ -39,15 +39,15 @@ module.exports = function (HTTPSnippet, fixtures) {
       headers: true,
       indent: false,
       pretty: 'x',
-      print: 'x',
-      style: 'x',
+      print: 'y',
+      style: 'z',
       timeout: 1,
       verbose: true,
-      verify: 'x'
+      verify: 'v'
     })
 
     result.should.be.a.String()
-    result.should.eql('http --headers --body --verbose --print=x --verify=x --cert=foo --pretty=x --style=x --timeout=1 GET http://mockbin.com/har')
+    result.should.eql('http --headers --body --verbose --print=y --verify=v --cert=foo --pretty=x --style=z --timeout=1 GET http://mockbin.com/har')
   })
 
   it('should use custom indentation', function () {

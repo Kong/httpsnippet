@@ -64,7 +64,7 @@ module.exports = function (source, options) {
   }
 
   if (opts.style) {
-    flags.push(util.format('--style=%s', opts.pretty))
+    flags.push(util.format('--style=%s', opts.style))
   }
 
   if (opts.timeout) {
