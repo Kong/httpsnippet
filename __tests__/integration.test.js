@@ -1,5 +1,4 @@
 /* eslint-disable jest/no-conditional-expect */
-/* eslint-disable jest/no-try-expect */
 const fixtures = require('./__fixtures__');
 const HTTPSnippet = require('../src');
 const shell = require('child_process');
@@ -147,7 +146,7 @@ describe.each(clients)('%s', (_, client) => {
         } catch (err) {
           // Some targets always assume that their response is JSON and for this case (`custom-method`) will print out
           // an empty string instead.
-          expect(stdoutTrimmed).toStrictEqual('');
+          expect(stdoutTrimmed).toBe('');
         }
         return;
       }

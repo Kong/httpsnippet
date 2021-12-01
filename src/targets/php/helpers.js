@@ -31,7 +31,6 @@ const convert = function (obj, indent, lastIndent) {
         result.push(convert(item, indent + indent, indent));
       });
 
-      // eslint-disable-next-line sonarjs/no-nested-template-literals
       result = `[\n${indent}${result.join(`,\n${indent}`)}\n${lastIndent}]`;
       break;
 
@@ -44,7 +43,6 @@ const convert = function (obj, indent, lastIndent) {
           result.push(`${convert(i, indent)} => ${convert(obj[i], indent + indent, indent)}`);
         }
       }
-      // eslint-disable-next-line sonarjs/no-nested-template-literals
       result = `[\n${indent}${result.join(`,\n${indent}`)}\n${lastIndent}]`;
       break;
 

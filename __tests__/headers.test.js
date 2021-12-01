@@ -8,15 +8,15 @@ const headers = {
 describe('Headers', () => {
   describe('#getHeader', () => {
     it('should get a header', () => {
-      expect(helpers.getHeader(headers, 'content-type')).toStrictEqual(
+      expect(helpers.getHeader(headers, 'content-type')).toBe(
         'multipart/form-data; boundary=---011000010111000001101001'
       );
 
-      expect(helpers.getHeader(headers, 'content-TYPE')).toStrictEqual(
+      expect(helpers.getHeader(headers, 'content-TYPE')).toBe(
         'multipart/form-data; boundary=---011000010111000001101001'
       );
 
-      expect(helpers.getHeader(headers, 'Accept')).toStrictEqual('application/json');
+      expect(helpers.getHeader(headers, 'Accept')).toBe('application/json');
 
       expect(helpers.getHeader(headers, 'authorization')).toBeUndefined();
     });
@@ -24,9 +24,9 @@ describe('Headers', () => {
 
   describe('#getHeaderName', () => {
     it('should get a header name', () => {
-      expect(helpers.getHeaderName(headers, 'content-type')).toStrictEqual('Content-Type');
-      expect(helpers.getHeaderName(headers, 'content-TYPE')).toStrictEqual('Content-Type');
-      expect(helpers.getHeaderName(headers, 'Accept')).toStrictEqual('accept');
+      expect(helpers.getHeaderName(headers, 'content-type')).toBe('Content-Type');
+      expect(helpers.getHeaderName(headers, 'content-TYPE')).toBe('Content-Type');
+      expect(helpers.getHeaderName(headers, 'Accept')).toBe('accept');
 
       expect(helpers.getHeaderName(headers, 'authorization')).toBeUndefined();
     });

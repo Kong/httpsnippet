@@ -7,7 +7,7 @@ const targets = require('./targets');
 const url = require('url');
 const validate = require('har-validator/lib/async');
 
-const { formDataIterator, isBlob } = require('./helpers/form-data.js');
+const { formDataIterator, isBlob } = require('./helpers/form-data');
 
 // constructor
 const HTTPSnippet = function (data, opts = {}) {
