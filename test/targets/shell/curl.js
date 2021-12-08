@@ -64,6 +64,15 @@ module.exports = function (HTTPSnippet, fixtures) {
     result.should.eql('curl --request GET --url http://mockbin.com/request --http1.0')
   })
 
+  it('should use --compressed for requests that accept encodings', function () {
+    const result = new HTTPSnippet(fixtures.curl.compression).convert('shell', 'curl', {
+      indent: false
+    })
+
+    result.should.be.a.String()
+    result.should.eql("curl --request GET --url http://mockbin.com/har --compressed --header 'accept-encoding: deflate, gzip, br'")
+  })
+
   it('should use custom indentation', function () {
     const result = new HTTPSnippet(fixtures.requests.full).convert('shell', 'curl', {
       indent: '@'

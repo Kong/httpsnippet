@@ -1,0 +1,10 @@
+{
+  "method": "GET",
+  "url": "http://mockbin.com/har",
+  "headers": [
+    {
+      "name": "accept-encoding",
+      "value": "deflate, gzip, br"
+    }
+  ]
+}

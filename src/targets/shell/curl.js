@@ -40,6 +40,10 @@ module.exports = function (source, options) {
     code.push(opts.short ? '-0' : '--http1.0')
   }
 
+  if (headerHelpers.getHeader(source.allHeaders, 'accept-encoding')) {
+    code.push('--compressed')
+  }
+
   // if multipart form data, we want to remove the boundary
   if (source.postData.mimeType === 'multipart/form-data') {
     const contentTypeHeaderName = headerHelpers.getHeaderName(source.headersObj, 'content-type')
