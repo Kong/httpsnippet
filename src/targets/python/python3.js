@@ -16,13 +16,25 @@ module.exports = function (source, options) {
   const code = new CodeBuilder()
   // Start Request
   code.push('import http.client')
-    .blank()
+
+  if (options.insecureSkipVerify) {
+    code.push('import ssl')
+  }
+
+  code.blank()
 
   // Check which protocol to be used for the client connection
   const protocol = source.uriObj.protocol
   if (protocol === 'https:') {
-    code.push('conn = http.client.HTTPSConnection("%s")', source.uriObj.host)
-      .blank()
+    if (options.insecureSkipVerify) {
+      code.push(
+        'conn = http.client.HTTPSConnection("%s", context = ssl._create_unverified_context())',
+        source.uriObj.host
+      ).blank()
+    } else {
+      code.push('conn = http.client.HTTPSConnection("%s")', source.uriObj.host)
+        .blank()
+    }
   } else {
     code.push('conn = http.client.HTTPConnection("%s")', source.uriObj.host)
       .blank()
