@@ -134,4 +134,49 @@ func main() {
 
 }`)
   })
+
+  it('should support insecureSkipVerify option', function () {
+    const result = new HTTPSnippet(fixtures.requests.full).convert('go', 'native', {
+      insecureSkipVerify: true
+    })
+
+    result.should.be.a.String()
+    result.should.eql(`package main
+
+import (
+\t"fmt"
+\t"crypto/tls"
+\t"strings"
+\t"net/http"
+\t"io/ioutil"
+)
+
+func main() {
+
+\tinsecureTransport := http.DefaultTransport.(*http.Transport).Clone()
+\tinsecureTransport.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+\tclient := http.Client{
+\t\tTransport: insecureTransport,
+\t}
+
+\turl := "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value"
+
+\tpayload := strings.NewReader("foo=bar")
+
+\treq, _ := http.NewRequest("POST", url, payload)
+
+\treq.Header.Add("cookie", "foo=bar; bar=baz")
+\treq.Header.Add("accept", "application/json")
+\treq.Header.Add("content-type", "application/x-www-form-urlencoded")
+
+\tres, _ := client.Do(req)
+
+\tdefer res.Body.Close()
+\tbody, _ := ioutil.ReadAll(res.Body)
+
+\tfmt.Println(res)
+\tfmt.Println(string(body))
+
+}`)
+  })
 }

@@ -47,6 +47,10 @@ module.exports = function (source, options) {
       code.push(indent, '"time"')
     }
 
+    if (opts.insecureSkipVerify) {
+      code.push(indent, '"crypto/tls"')
+    }
+
     if (source.postData.text) {
       code.push(indent, '"strings"')
     }
@@ -63,14 +67,28 @@ module.exports = function (source, options) {
       .blank()
   }
 
+  // Create an insecure transport for the client
+  if (opts.insecureSkipVerify) {
+    code.push(indent, 'insecureTransport := http.DefaultTransport.(*http.Transport).Clone()')
+    code.push(indent, 'insecureTransport.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}')
+  }
+
   // Create client
   let client
-  if (opts.timeout > 0) {
+  if (opts.timeout > 0 || opts.insecureSkipVerify) {
     client = 'client'
     code.push(indent, 'client := http.Client{')
-      .push(indent + 1, 'Timeout: time.Duration(%s * time.Second),', opts.timeout)
-      .push(indent, '}')
-      .blank()
+
+    if (opts.timeout > 0) {
+      code.push(indent + 1, 'Timeout: time.Duration(%s * time.Second),', opts.timeout)
+    }
+
+    if (opts.insecureSkipVerify) {
+      code.push(indent + 1, 'Transport: insecureTransport,')
+    }
+
+    code.push(indent, '}')
+    code.blank()
   } else {
     client = 'http.DefaultClient'
   }
