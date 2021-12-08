@@ -8,7 +8,7 @@ const targets = require('../src/targets')
 const shell = require('child_process')
 const util = require('util')
 
-require('should')
+const should = require('should')
 
 const base = './test/fixtures/output/'
 const requests = [
@@ -40,6 +40,11 @@ fixtures.cli.forEach(function (cli) {
           })
 
           ls.on('exit', function (code) {
+            if (code !== 0) {
+              console.error(stdout)
+              should.fail(0, code, `Process '${cli.run.split(' ')[0]}' exited unexpectedly with code ${code}`)
+            }
+
             let har
             try {
               har = JSON.parse(stdout)
