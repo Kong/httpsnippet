@@ -36,6 +36,10 @@ module.exports = function (source, options) {
   }
   code.push(util.format('%s%s', opts.short ? '' : '--url ', formattedUrl))
 
+  if (opts.insecureSkipVerify) {
+    code.push(opts.short ? '-k' : '--insecure')
+  }
+
   if (source.httpVersion === 'HTTP/1.0') {
     code.push(opts.short ? '-0' : '--http1.0')
   }

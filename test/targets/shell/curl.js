@@ -55,6 +55,16 @@ module.exports = function (HTTPSnippet, fixtures) {
     result.should.eql("curl --request GET --url 'http://mockbin.com/har?foo%5Bbar%5D=baz%2Czap&fiz=buz&key=value'")
   })
 
+  it('should support insecureSkipVerify', function () {
+    const result = new HTTPSnippet(fixtures.requests.https).convert('shell', 'curl', {
+      indent: false,
+      insecureSkipVerify: true
+    })
+
+    result.should.be.a.String()
+    result.should.eql('curl --request GET --url https://mockbin.com/har --insecure')
+  })
+
   it('should use --http1.0 for HTTP/1.0', function () {
     const result = new HTTPSnippet(fixtures.curl.http1).convert('shell', 'curl', {
       indent: false
