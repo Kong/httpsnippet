@@ -28,6 +28,10 @@ module.exports = function (source, options) {
     headers: source.allHeaders
   }
 
+  if (options.insecureSkipVerify) {
+    reqOpts.rejectUnauthorized = false
+  }
+
   code.push('const http = require("%s");', source.uriObj.protocol.replace(':', ''))
 
   code.blank()
