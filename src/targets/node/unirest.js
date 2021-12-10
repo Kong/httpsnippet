@@ -63,29 +63,31 @@ module.exports = function (source, options) {
       break;
 
     case 'multipart/form-data': {
-      const multipart = [];
+      if (source.postData.params) {
+        const multipart = [];
 
-      source.postData.params.forEach(function (param) {
-        const part = {};
+        source.postData.params.forEach(function (param) {
+          const part = {};
 
-        if (param.fileName && !param.value) {
-          includeFS = true;
+          if (param.fileName && !param.value) {
+            includeFS = true;
 
-          part.body = `fs.createReadStream("${param.fileName}")`;
-        } else if (param.value) {
-          part.body = param.value;
-        }
-
-        if (part.body) {
-          if (param.contentType) {
-            part['content-type'] = param.contentType;
+            part.body = `fs.createReadStream("${param.fileName}")`;
+          } else if (param.value) {
+            part.body = param.value;
           }
 
-          multipart.push(part);
-        }
-      });
+          if (part.body) {
+            if (param.contentType) {
+              part['content-type'] = param.contentType;
+            }
 
-      code.push('req.multipart(%s);', JSON.stringify(multipart, null, opts.indent)).blank();
+            multipart.push(part);
+          }
+        });
+
+        code.push('req.multipart(%s);', JSON.stringify(multipart, null, opts.indent)).blank();
+      }
       break;
     }
 

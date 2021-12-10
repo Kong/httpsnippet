@@ -30,10 +30,12 @@ module.exports = function (source, options) {
   // The `form-data` library automatically adds a `Content-Type` header for `multipart/form-data` content and if we
   // add our own here, data won't be correctly transferred.
   if (source.postData.mimeType === 'multipart/form-data') {
-    const contentTypeHeader = headerHelpers.getHeaderName(source.allHeaders, 'content-type');
-    if (contentTypeHeader) {
-      // eslint-disable-next-line no-param-reassign
-      delete source.allHeaders[contentTypeHeader];
+    if (source.postData.params) {
+      const contentTypeHeader = headerHelpers.getHeaderName(source.allHeaders, 'content-type');
+      if (contentTypeHeader) {
+        // eslint-disable-next-line no-param-reassign
+        delete source.allHeaders[contentTypeHeader];
+      }
     }
   }
 
@@ -61,21 +63,23 @@ module.exports = function (source, options) {
       break;
 
     case 'multipart/form-data':
-      code.unshift("const FormData = require('form-data');");
-      code.push('const formData = new FormData();');
-      code.blank();
+      if (source.postData.params) {
+        code.unshift("const FormData = require('form-data');");
+        code.push('const formData = new FormData();');
+        code.blank();
 
-      source.postData.params.forEach(function (param) {
-        if (!param.fileName && !param.contentType) {
-          code.push(`formData.append('${param.name}', '${param.value}');`);
-          return;
-        }
+        source.postData.params.forEach(function (param) {
+          if (!param.fileName && !param.contentType) {
+            code.push(`formData.append('${param.name}', '${param.value}');`);
+            return;
+          }
 
-        if (param.fileName) {
-          includeFS = true;
-          code.push(`formData.append('${param.name}', fs.createReadStream('${param.fileName}'));`);
-        }
-      });
+          if (param.fileName) {
+            includeFS = true;
+            code.push(`formData.append('${param.name}', fs.createReadStream('${param.fileName}'));`);
+          }
+        });
+      }
       break;
 
     default:
@@ -112,7 +116,9 @@ module.exports = function (source, options) {
   }
 
   if (source.postData.mimeType === 'multipart/form-data') {
-    code.push('options.body = formData;').blank();
+    if (source.postData.params) {
+      code.push('options.body = formData;').blank();
+    }
   }
 
   code

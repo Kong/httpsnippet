@@ -38,29 +38,31 @@ module.exports = function (source, options) {
       break;
 
     case 'multipart/form-data':
-      code.push('const form = new FormData();');
+      if (source.postData.params) {
+        code.push('const form = new FormData();');
 
-      source.postData.params.forEach(function (param) {
-        code.push(
-          'form.append(%s, %s);',
-          JSON.stringify(param.name),
-          JSON.stringify(param.value || param.fileName || '')
-        );
-      });
+        source.postData.params.forEach(function (param) {
+          code.push(
+            'form.append(%s, %s);',
+            JSON.stringify(param.name),
+            JSON.stringify(param.value || param.fileName || '')
+          );
+        });
 
-      settings.processData = false;
-      settings.contentType = false;
-      settings.mimeType = 'multipart/form-data';
-      settings.data = '[form]';
+        settings.processData = false;
+        settings.contentType = false;
+        settings.mimeType = 'multipart/form-data';
+        settings.data = '[form]';
 
-      // remove the contentType header
-      if (helpers.hasHeader(settings.headers, 'content-type')) {
-        if (helpers.getHeader(settings.headers, 'content-type').indexOf('boundary')) {
-          delete settings.headers[helpers.getHeaderName(settings.headers, 'content-type')];
+        // remove the contentType header
+        if (helpers.hasHeader(settings.headers, 'content-type')) {
+          if (helpers.getHeader(settings.headers, 'content-type').indexOf('boundary')) {
+            delete settings.headers[helpers.getHeaderName(settings.headers, 'content-type')];
+          }
         }
-      }
 
-      code.blank();
+        code.blank();
+      }
       break;
 
     default:

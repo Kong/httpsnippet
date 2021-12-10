@@ -75,16 +75,18 @@ module.exports = function (source, options) {
   // construct post params
   switch (source.postData.mimeType) {
     case 'multipart/form-data':
-      source.postData.params.forEach(function (param) {
-        let post = '';
-        if (param.fileName) {
-          post = format('%s=@%s', param.name, param.fileName);
-        } else {
-          post = format('%s=%s', param.name, param.value);
-        }
+      if (source.postData.params) {
+        source.postData.params.forEach(function (param) {
+          let post = '';
+          if (param.fileName) {
+            post = format('%s=@%s', param.name, param.fileName);
+          } else {
+            post = format('%s=%s', param.name, param.value);
+          }
 
-        code.push('%s %s', opts.short ? '-F' : '--form', helpers.quote(post));
-      });
+          code.push('%s %s', opts.short ? '-F' : '--form', helpers.quote(post));
+        });
+      }
       break;
 
     case 'application/x-www-form-urlencoded':

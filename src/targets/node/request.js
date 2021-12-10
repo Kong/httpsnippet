@@ -44,33 +44,35 @@ module.exports = function (source, options) {
       break;
 
     case 'multipart/form-data':
-      reqOpts.formData = {};
+      if (source.postData.params) {
+        reqOpts.formData = {};
 
-      source.postData.params.forEach(function (param) {
-        const attachment = {};
+        source.postData.params.forEach(function (param) {
+          const attachment = {};
 
-        if (!param.fileName && !param.contentType) {
-          reqOpts.formData[param.name] = param.value;
-          return;
-        }
+          if (!param.fileName && !param.contentType) {
+            reqOpts.formData[param.name] = param.value;
+            return;
+          }
 
-        if (param.fileName) {
-          includeFS = true;
+          if (param.fileName) {
+            includeFS = true;
 
-          attachment.value = `fs.createReadStream("${param.fileName}")`;
-        } else if (param.value) {
-          attachment.value = param.value;
-        }
+            attachment.value = `fs.createReadStream("${param.fileName}")`;
+          } else if (param.value) {
+            attachment.value = param.value;
+          }
 
-        if (param.fileName) {
-          attachment.options = {
-            filename: param.fileName,
-            contentType: param.contentType ? param.contentType : null,
-          };
-        }
+          if (param.fileName) {
+            attachment.options = {
+              filename: param.fileName,
+              contentType: param.contentType ? param.contentType : null,
+            };
+          }
 
-        reqOpts.formData[param.name] = attachment;
-      });
+          reqOpts.formData[param.name] = attachment;
+        });
+      }
       break;
 
     default:

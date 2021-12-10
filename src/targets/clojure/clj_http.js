@@ -128,20 +128,22 @@ module.exports = function (source, options) {
       delete params.headers[helpers.getHeaderName(params.headers, 'content-type')];
       break;
     case 'multipart/form-data':
-      params.multipart = source.postData.params.map(function (x) {
-        if (x.fileName && !x.value) {
+      if (source.postData.params) {
+        params.multipart = source.postData.params.map(function (x) {
+          if (x.fileName && !x.value) {
+            return {
+              name: x.name,
+              content: new File(x.fileName),
+            };
+          }
+
           return {
             name: x.name,
-            content: new File(x.fileName),
+            content: x.value,
           };
-        }
-
-        return {
-          name: x.name,
-          content: x.value,
-        };
-      });
-      delete params.headers[helpers.getHeaderName(params.headers, 'content-type')];
+        });
+        delete params.headers[helpers.getHeaderName(params.headers, 'content-type')];
+      }
       break;
   }
 

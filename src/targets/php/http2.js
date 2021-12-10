@@ -40,41 +40,43 @@ module.exports = function (source, options) {
       break;
 
     case 'multipart/form-data': {
-      const files = [];
-      const fields = {};
+      if (source.postData.params) {
+        const files = [];
+        const fields = {};
 
-      source.postData.params.forEach(function (param) {
-        if (param.fileName) {
-          files.push({
-            name: param.name,
-            type: param.contentType,
-            file: param.fileName,
-            data: param.value,
-          });
-        } else if (param.value) {
-          fields[param.name] = param.value;
+        source.postData.params.forEach(function (param) {
+          if (param.fileName) {
+            files.push({
+              name: param.name,
+              type: param.contentType,
+              file: param.fileName,
+              data: param.value,
+            });
+          } else if (param.value) {
+            fields[param.name] = param.value;
+          }
+        });
+
+        code
+          .push('$body = new http\\Message\\Body;')
+          .push(
+            '$body->addForm(%s, %s);',
+            Object.keys(fields).length ? helpers.convert(fields, opts.indent) : 'null',
+            files.length ? helpers.convert(files, opts.indent) : 'null'
+          );
+
+        // remove the contentType header
+        if (headerHelpers.hasHeader(source.headersObj, 'content-type')) {
+          if (headerHelpers.getHeader(source.headersObj, 'content-type').includes('boundary')) {
+            // eslint-disable-next-line no-param-reassign
+            delete source.headersObj[headerHelpers.getHeaderName(source.headersObj, 'content-type')];
+          }
         }
-      });
 
-      code
-        .push('$body = new http\\Message\\Body;')
-        .push(
-          '$body->addForm(%s, %s);',
-          Object.keys(fields).length ? helpers.convert(fields, opts.indent) : 'null',
-          files.length ? helpers.convert(files, opts.indent) : 'null'
-        );
+        code.blank();
 
-      // remove the contentType header
-      if (headerHelpers.hasHeader(source.headersObj, 'content-type')) {
-        if (headerHelpers.getHeader(source.headersObj, 'content-type').includes('boundary')) {
-          // eslint-disable-next-line no-param-reassign
-          delete source.headersObj[headerHelpers.getHeaderName(source.headersObj, 'content-type')];
-        }
+        hasBody = true;
       }
-
-      code.blank();
-
-      hasBody = true;
       break;
     }
 

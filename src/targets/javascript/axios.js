@@ -46,19 +46,21 @@ module.exports = function (source, options) {
       break;
 
     case 'multipart/form-data':
-      code.push('const form = new FormData();');
+      if (source.postData.params) {
+        code.push('const form = new FormData();');
 
-      source.postData.params.forEach(function (param) {
-        code.push(
-          'form.append(%s, %s);',
-          JSON.stringify(param.name),
-          JSON.stringify(param.value || param.fileName || '')
-        );
-      });
+        source.postData.params.forEach(function (param) {
+          code.push(
+            'form.append(%s, %s);',
+            JSON.stringify(param.name),
+            JSON.stringify(param.value || param.fileName || '')
+          );
+        });
 
-      code.blank();
+        code.blank();
 
-      reqOpts.data = '[form]';
+        reqOpts.data = '[form]';
+      }
       break;
 
     default:

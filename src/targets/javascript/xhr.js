@@ -26,25 +26,27 @@ module.exports = function (source, options) {
       break;
 
     case 'multipart/form-data':
-      code.push('const data = new FormData();');
+      if (source.postData.params) {
+        code.push('const data = new FormData();');
 
-      source.postData.params.forEach(function (param) {
-        code.push(
-          'data.append(%s, %s);',
-          JSON.stringify(param.name),
-          JSON.stringify(param.value || param.fileName || '')
-        );
-      });
+        source.postData.params.forEach(function (param) {
+          code.push(
+            'data.append(%s, %s);',
+            JSON.stringify(param.name),
+            JSON.stringify(param.value || param.fileName || '')
+          );
+        });
 
-      // remove the contentType header
-      if (helpers.hasHeader(source.allHeaders, 'content-type')) {
-        if (helpers.getHeader(source.allHeaders, 'content-type').indexOf('boundary')) {
-          // eslint-disable-next-line no-param-reassign
-          delete source.allHeaders[helpers.getHeaderName(source.allHeaders, 'content-type')];
+        // remove the contentType header
+        if (helpers.hasHeader(source.allHeaders, 'content-type')) {
+          if (helpers.getHeader(source.allHeaders, 'content-type').indexOf('boundary')) {
+            // eslint-disable-next-line no-param-reassign
+            delete source.allHeaders[helpers.getHeaderName(source.allHeaders, 'content-type')];
+          }
         }
-      }
 
-      code.blank();
+        code.blank();
+      }
       break;
 
     default:

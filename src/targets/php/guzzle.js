@@ -42,38 +42,40 @@ module.exports = function (source, options) {
       break;
 
     case 'multipart/form-data': {
-      const fields = [];
+      if (source.postData.params) {
+        const fields = [];
 
-      source.postData.params.forEach(function (param) {
-        if (param.fileName) {
-          const field = {
-            name: param.name,
-            filename: param.fileName,
-            contents: param.value,
-          };
+        source.postData.params.forEach(function (param) {
+          if (param.fileName) {
+            const field = {
+              name: param.name,
+              filename: param.fileName,
+              contents: param.value,
+            };
 
-          if (param.contentType) {
-            field.headers = { 'Content-Type': param.contentType };
+            if (param.contentType) {
+              field.headers = { 'Content-Type': param.contentType };
+            }
+
+            fields.push(field);
+          } else if (param.value) {
+            fields.push({
+              name: param.name,
+              contents: param.value,
+            });
           }
+        });
 
-          fields.push(field);
-        } else if (param.value) {
-          fields.push({
-            name: param.name,
-            contents: param.value,
-          });
+        if (fields.length) {
+          requestOptions.push(1, "'multipart' => %s", helpers.convert(fields, opts.indent + opts.indent, opts.indent));
         }
-      });
 
-      if (fields.length) {
-        requestOptions.push(1, "'multipart' => %s", helpers.convert(fields, opts.indent + opts.indent, opts.indent));
-      }
-
-      // Guzzle adds its own boundary for multipart requests.
-      if (headerHelpers.hasHeader(source.headersObj, 'content-type')) {
-        if (headerHelpers.getHeader(source.headersObj, 'content-type').includes('boundary')) {
-          // eslint-disable-next-line no-param-reassign
-          delete source.headersObj[headerHelpers.getHeaderName(source.headersObj, 'content-type')];
+        // Guzzle adds its own boundary for multipart requests.
+        if (headerHelpers.hasHeader(source.headersObj, 'content-type')) {
+          if (headerHelpers.getHeader(source.headersObj, 'content-type').includes('boundary')) {
+            // eslint-disable-next-line no-param-reassign
+            delete source.headersObj[headerHelpers.getHeaderName(source.headersObj, 'content-type')];
+          }
         }
       }
       break;
