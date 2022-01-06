@@ -4,6 +4,7 @@ module.exports = {
   c: require('./c'),
   clojure: require('./clojure'),
   csharp: require('./csharp'),
+  elixir: require('./elixir'),
   go: require('./go'),
   http: require('./http'),
   java: require('./java'),

@@ -242,6 +242,20 @@
         "description": "Ruby HTTP client"
       }
     ]
+	},
+  {
+    "key": "elixir",
+    "title": "Elixir",
+    "extname": ".ex",
+    "default": "httpoison",
+    "clients": [
+      {
+        "key": "httpoison",
+        "title": "HTTPoison",
+        "link": "https://github.com/edgurgel/httpoison",
+        "description": "HTTP client for Elixir, based on HTTPotion."
+      }
+    ]
   },
   {
     "key": "csharp",
