@@ -17,6 +17,7 @@ module.exports = {
   python: require('./python'),
   r: require('./r'),
   ruby: require('./ruby'),
+  rust: require('./rust'),
   shell: require('./shell'),
   swift: require('./swift')
 }
