@@ -1,6 +1,6 @@
 'use strict'
 
-const util = require('util')
+const formatString = require('./format')
 
 /**
  * Helper object to format and aggragate lines of code.
@@ -13,6 +13,7 @@ const util = require('util')
  */
 const CodeBuilder = function (indentation, join) {
   this.code = []
+  this.indentLevel = 0
   this.indentation = indentation
   this.lineJoin = join || '\n'
 }
@@ -42,7 +43,7 @@ CodeBuilder.prototype.buildLine = function (indentationLevel, line) {
   if (Object.prototype.toString.call(indentationLevel) === '[object String]') {
     slice = 1
     line = indentationLevel
-    indentationLevel = 0
+    indentationLevel = this.indentLevel
   } else if (indentationLevel === null) {
     return null
   }
@@ -55,7 +56,7 @@ CodeBuilder.prototype.buildLine = function (indentationLevel, line) {
   const format = Array.prototype.slice.call(arguments, slice, arguments.length)
   format.unshift(lineIndentation + line)
 
-  return util.format.apply(this, format)
+  return formatString.apply(this, format)
 }
 
 /**
@@ -98,6 +99,33 @@ CodeBuilder.prototype.blank = function () {
  */
 CodeBuilder.prototype.join = function () {
   return this.code.join(this.lineJoin)
+}
+
+/**
+ * Increase indentation level
+ * @returns {this}
+ */
+CodeBuilder.prototype.indent = function () {
+  this.indentLevel++
+  return this
+}
+
+/**
+ * Decrease indentation level
+ * @returns {this}
+ */
+CodeBuilder.prototype.unindent = function () {
+  this.indentLevel--
+  return this
+}
+
+/**
+ * Reset indentation level
+ * @returns {this}
+ */
+CodeBuilder.prototype.reindent = function () {
+  this.indentLevel = 0
+  return this
 }
 
 module.exports = CodeBuilder
