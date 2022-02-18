@@ -14,17 +14,17 @@ function escape (value) {
  * Wraps the `util.format` function and adds the %q and %v format options,
  * where `%q` - escape tricky characters, like newline or quotes
  * and `%v` - JSON-stringify-if-necessary
- * 
+ *
  * @param {string} value
  * @param  {...string} format
- * 
+ *
  * @example
  * format('foo("%q")', { bar: 'baz' })
  * // output: foo("{\"bar\":\"baz\"}")
- * 
+ *
  * format('foo(%v)', { bar: 'baz' })
  * // output: foo({"bar":"baz"})
- * 
+ *
  * @returns {string} Formatted string
  */
 function format (value, ...format) {
