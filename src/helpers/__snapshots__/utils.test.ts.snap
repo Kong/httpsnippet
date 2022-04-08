@@ -142,5 +142,19 @@ Array [
     "key": "javascript",
     "title": "JavaScript",
   },
+  Object {
+    "clients": Array [
+      Object {
+        "description": "An HTTP Request Client Library",
+        "key": "okhttp",
+        "link": "http://square.github.io/okhttp/",
+        "title": "OkHttp",
+      },
+    ],
+    "default": "okhttp",
+    "extname": ".kt",
+    "key": "kotlin",
+    "title": "Kotlin",
+  },
 ]
 `;

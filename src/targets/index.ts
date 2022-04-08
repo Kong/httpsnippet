@@ -6,7 +6,7 @@ import { go } from './go';
 import { http } from './http';
 import { java } from './java';
 import { javascript } from './javascript';
-// import { kotlin } from './kotlin';
+import { kotlin } from './kotlin';
 // import { node } from './node';
 // import { objc } from './objc';
 // import { ocaml } from './ocaml';
@@ -58,7 +58,7 @@ export const targets = {
   http,
   java,
   javascript,
-  // kotlin,
+  kotlin,
   // node,
   // objc,
   // ocaml,
