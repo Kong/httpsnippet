@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "strict": false,
+  },
+  "exclude": [
+    "dist",
+    "test",
+    "**/*.test.ts",
+  ]
+}
