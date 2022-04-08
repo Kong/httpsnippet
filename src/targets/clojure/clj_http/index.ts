@@ -100,7 +100,8 @@ export const clj_http: Client = {
     method = method.toLowerCase();
 
     if (!methods.includes(method)) {
-      return push('Method not supported').join();
+      push('Method not supported');
+      return join();
     }
 
     const params: Record<string, any> = {

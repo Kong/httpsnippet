@@ -32,7 +32,6 @@ export class CodeBuilder {
   unshift = (line: string, indentationLevel?: number) => {
     const newLine = this.indentLine(line, indentationLevel);
     this.code.unshift(newLine);
-    return this;
   };
 
   /**
@@ -41,7 +40,6 @@ export class CodeBuilder {
   push = (line: string, indentationLevel?: number) => {
     const newLine = this.indentLine(line, indentationLevel);
     this.code.push(newLine);
-    return this;
   };
 
   /**
@@ -49,7 +47,6 @@ export class CodeBuilder {
    */
   blank = () => {
     this.code.push('');
-    return this;
   };
 
   /**

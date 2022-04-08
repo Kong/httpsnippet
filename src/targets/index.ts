@@ -2,7 +2,7 @@ import { Request } from '..';
 import { c } from './c';
 import { clojure } from './clojure';
 import { csharp } from './csharp';
-// import { go } from './go';
+import { go } from './go';
 // import { http } from './http';
 // import { java } from './java';
 // import { javascript } from './javascript';
@@ -54,7 +54,7 @@ export const targets = {
   c,
   clojure,
   csharp,
-  // go,
+  go,
   // http,
   // java,
   // javascript,

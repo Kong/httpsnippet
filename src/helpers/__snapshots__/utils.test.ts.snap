@@ -50,5 +50,19 @@ Array [
     "key": "csharp",
     "title": "C#",
   },
+  Object {
+    "clients": Array [
+      Object {
+        "description": "Golang HTTP client request",
+        "key": "native",
+        "link": "http://golang.org/pkg/net/http/#NewRequest",
+        "title": "NewRequest",
+      },
+    ],
+    "default": "native",
+    "extname": ".go",
+    "key": "go",
+    "title": "Go",
+  },
 ]
 `;
