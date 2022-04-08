@@ -14,7 +14,7 @@ const fixtures: [string, Request][] = inputFileNames.map(inputFileName => [
 
 /** useful for debuggin, only run a particular set of targets */
 const targetFilter = [
-  'clojure',
+  'csharp',
 ];
 
 /** useful for debuggin, only run a particular set of targets */
@@ -24,7 +24,7 @@ const clientFilter = [
 
 /** useful for debuggin, only run a particular set of fixtures */
 const fixtureFilter = [
-  // 'full',
+  // 'httpclient',
 ];
 
 const testFilter =

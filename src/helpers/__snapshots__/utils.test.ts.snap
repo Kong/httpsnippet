@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`availableTargets returns all available targets 1`] = `
+Array [
+  Object {
+    "clients": Array [
+      Object {
+        "description": "Simple REST and HTTP API Client for C",
+        "key": "libcurl",
+        "link": "http://curl.haxx.se/libcurl",
+        "title": "Libcurl",
+      },
+    ],
+    "default": "libcurl",
+    "extname": ".c",
+    "key": "c",
+    "title": "C",
+  },
+  Object {
+    "clients": Array [
+      Object {
+        "description": "An idiomatic clojure http client wrapping the apache client.",
+        "key": "clj_http",
+        "link": "https://github.com/dakrone/clj-http",
+        "title": "clj-http",
+      },
+    ],
+    "default": "clj_http",
+    "extname": ".clj",
+    "key": "clojure",
+    "title": "Clojure",
+  },
+  Object {
+    "clients": Array [
+      Object {
+        "description": ".NET Standard HTTP Client",
+        "key": "httpclient",
+        "link": "https://docs.microsoft.com/en-us/dotnet/api/system.net.http.httpclient",
+        "title": "HttpClient",
+      },
+    ],
+    "default": "restsharp",
+    "extname": ".cs",
+    "key": "csharp",
+    "title": "C#",
+  },
+]
+`;

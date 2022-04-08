@@ -1,7 +1,7 @@
 import { Request } from '..';
 import { c } from './c';
 import { clojure } from './clojure';
-// import { csharp } from './csharp';
+import { csharp } from './csharp';
 // import { go } from './go';
 // import { http } from './http';
 // import { java } from './java';
@@ -53,7 +53,7 @@ export type Target = {
 export const targets = {
   c,
   clojure,
-  // csharp,
+  csharp,
   // go,
   // http,
   // java,

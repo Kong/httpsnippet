@@ -51,9 +51,7 @@ export interface Request {
   headersObj: ReducedHelperObject;
   uriObj: UrlWithParsedQuery;
   cookiesObj: ReducedHelperObject;
-  allHeaders: {
-    cookie?: string;
-  };
+  allHeaders: ReducedHelperObject;
 }
 
 interface Entry {
