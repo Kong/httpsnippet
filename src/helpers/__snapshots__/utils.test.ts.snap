@@ -222,5 +222,31 @@ Array [
     "key": "ocaml",
     "title": "OCaml",
   },
+  Object {
+    "clients": Array [
+      Object {
+        "description": "PHP with ext-curl",
+        "key": "curl",
+        "link": "http://php.net/manual/en/book.curl.php",
+        "title": "cURL",
+      },
+      Object {
+        "description": "PHP with pecl/http v1",
+        "key": "http1",
+        "link": "http://php.net/manual/en/book.http.php",
+        "title": "HTTP v1",
+      },
+      Object {
+        "description": "PHP with pecl/http v2",
+        "key": "http2",
+        "link": "http://devel-m6w6.rhcloud.com/mdref/http",
+        "title": "HTTP v2",
+      },
+    ],
+    "default": "curl",
+    "extname": ".php",
+    "key": "php",
+    "title": "PHP",
+  },
 ]
 `;

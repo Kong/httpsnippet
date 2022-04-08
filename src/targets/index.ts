@@ -11,7 +11,7 @@ import { kotlin } from './kotlin';
 import { node } from './node';
 import { objc } from './objc';
 import { ocaml } from './ocaml';
-// import { php } from './php';
+import { php } from './php';
 // import { powershell } from './powershell';
 // import { python } from './python';
 // import { r } from './r';
@@ -63,7 +63,7 @@ export const targets = {
   node,
   objc,
   ocaml,
-  // php,
+  php,
   // powershell,
   // python,
   // r,
