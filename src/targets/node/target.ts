@@ -1,4 +1,4 @@
-import { Target } from '..';
+import { Target } from '../targets';
 import { native } from './native/client';
 import { request } from './request/client';
 import { unirest } from './unirest/client';

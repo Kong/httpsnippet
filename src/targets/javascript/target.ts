@@ -1,4 +1,4 @@
-import { Target } from '..';
+import { Target } from '../targets';
 
 import { axios } from './axios/client';
 import { fetch } from './fetch/client';

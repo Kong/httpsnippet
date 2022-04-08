@@ -1,4 +1,4 @@
-import { Target } from '..';
+import { Target } from '../targets';
 import { okhttp } from './okhttp/client';
 
 export const kotlin: Target = {

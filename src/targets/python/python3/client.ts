@@ -8,7 +8,7 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-import { Client } from '../..';
+import { Client } from '../../targets';
 import { CodeBuilder } from '../../../helpers/code-builder';
 
 export const python3: Client = {

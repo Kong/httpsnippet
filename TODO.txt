@@ -2,6 +2,8 @@ TODO:
 - convert to GitHub actions
 - fix Dockerfile and docker-compose
 - look into the prior usage of the 'debug' package
+- look into CLI and CLI tests
+  - also, move to yargs from commander
 
 later:
 - use prettier for js languages (and more?)

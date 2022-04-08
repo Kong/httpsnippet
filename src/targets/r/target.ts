@@ -1,4 +1,4 @@
-import { Target } from '..';
+import { Target } from '../targets';
 import { httr } from './httr/client';
 
 export const r: Target = {

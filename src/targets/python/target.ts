@@ -1,4 +1,4 @@
-import { Target } from '..';
+import { Target } from '../targets';
 import { python3 } from './python3/client';
 import { requests } from './requests/client';
 

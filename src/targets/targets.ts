@@ -1,4 +1,4 @@
-import { Request } from '..';
+import { Request } from '../httpsnippet';
 import { CodeBuilderOptions } from '../helpers/code-builder';
 import { c } from './c/target';
 import { clojure } from './clojure/target';

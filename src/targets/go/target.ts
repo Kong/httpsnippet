@@ -1,4 +1,4 @@
-import { Target } from '..';
+import { Target } from '../targets';
 import { native } from './native/client';
 
 export const go: Target = {

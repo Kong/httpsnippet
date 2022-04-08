@@ -1,7 +1,7 @@
 import path from 'path';
 import { availableTargets, extname } from '../helpers/utils';
 import { readdirSync, readFileSync } from 'fs';
-import { HTTPSnippet, Request } from '..';
+import { HTTPSnippet, Request } from '../httpsnippet';
 
 const expectedBasePath = ['src', 'fixtures', 'requests'];
 

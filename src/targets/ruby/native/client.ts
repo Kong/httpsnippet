@@ -1,4 +1,4 @@
-import { Client } from '../..';
+import { Client } from '../../targets';
 import { CodeBuilder } from '../../../helpers/code-builder';
 
 export const native: Client = {

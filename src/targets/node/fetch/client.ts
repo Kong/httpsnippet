@@ -9,7 +9,7 @@
  */
 
 import stringifyObject from 'stringify-object';
-import { Client } from '../..';
+import { Client } from '../../targets';
 import { CodeBuilder } from '../../../helpers/code-builder';
 
 export const fetch: Client = {

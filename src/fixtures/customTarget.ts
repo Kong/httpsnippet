@@ -1,4 +1,4 @@
-import { Target } from '../targets';
+import { Target } from '../targets/targets';
 import { request } from '../targets/node/request/client';
 
 export const customTarget = {

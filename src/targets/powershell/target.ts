@@ -1,4 +1,4 @@
-import { Target } from '..';
+import { Target } from '../targets';
 import { webrequest } from './webrequest/client';
 import { restmethod } from './restmethod/client';
 

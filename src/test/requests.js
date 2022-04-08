@@ -1,6 +1,6 @@
 const fixtures = require('../fixtures');
-const HTTPSnippet = require('..');
-const targets = require('../targets');
+const HTTPSnippet = require('../httpsnippet');
+const targets = require('../targets/targets');
 const shell = require('child_process');
 
 const requests = [

@@ -2,7 +2,7 @@ import { map as eventStreamMap } from 'event-stream';
 import FormData from 'form-data';
 import { stringify as queryStringify } from 'querystring';
 import { ReducedHelperObject, reducer } from './helpers/reducer';
-import { Client, ClientId, Target, TargetId, targets } from './targets';
+import { Client, ClientId, Target, TargetId, targets } from './targets/targets';
 import { parse as urlParse, format as urlFormat, UrlWithParsedQuery } from 'url';
 import { getHeaderName } from './helpers/headers';
 import { formDataIterator, isBlob } from './helpers/form-data';
@@ -50,6 +50,11 @@ interface Entry {
 
 interface HarEntry {
   log: {
+    version: string;
+    creator: {
+      name: string;
+      version: string;
+    };
     entries: Entry[];
   };
 }

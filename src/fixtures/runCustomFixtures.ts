@@ -1,7 +1,7 @@
 import { readFile } from 'fs/promises';
 import path from 'path';
-import { HTTPSnippet, Request } from '..';
-import { ClientId, TargetId } from '../targets';
+import { HTTPSnippet, Request } from '../httpsnippet';
+import { ClientId, TargetId } from '../targets/targets';
 
 export interface CustomFixture {
   targetId: TargetId;

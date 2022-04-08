@@ -1,5 +1,5 @@
-import { Client } from '../..';
-import { Request } from '../../..';
+import { Client } from '../../targets';
+import { Request } from '../../../httpsnippet';
 import { CodeBuilder } from '../../../helpers/code-builder';
 import { getHeader } from '../../../helpers/headers';
 

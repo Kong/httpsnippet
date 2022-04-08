@@ -1,4 +1,4 @@
-import { Target } from '..';
+import { Target } from '../targets';
 import { libcurl } from './libcurl/client';
 
 export const c: Target = {
