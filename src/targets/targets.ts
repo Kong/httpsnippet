@@ -30,10 +30,7 @@ export interface ClientInfo {
   description: string;
 }
 
-export type Converter<T extends Record<string, any>> = (
-  request: Request,
-  options?: CodeBuilderOptions & T,
-) => string;
+export type Converter<T extends Record<string, any>> = (request: Request, options?: CodeBuilderOptions & T) => string;
 
 export interface Client<T extends Record<string, any> = Record<string, any>> {
   info: ClientInfo;
@@ -73,4 +70,118 @@ export const targets = {
   ruby,
   shell,
   swift,
+};
+
+export const isTarget = (target: Target): target is Target => {
+  if (typeof target !== 'object' || target === null || Array.isArray(target)) {
+    const got = target === null ? 'null' : Array.isArray(target) ? 'array' : typeof target;
+    throw new Error(`you tried to add a target which is not an object, got type: "${got}"`);
+  }
+
+  if (!Object.hasOwn(target, 'info')) {
+    throw new Error('targets must contain an `info` object');
+  }
+
+  if (!Object.hasOwn(target.info, 'key')) {
+    throw new Error('targets must have an `info` object with the property `key`');
+  }
+
+  if (!target.info.key) {
+    throw new Error('target key must be a unique string');
+  }
+
+  if (Object.hasOwn(targets, target.info.key)) {
+    throw new Error(`a target already exists with this key, \`${target.info.key}\``);
+  }
+
+  if (!Object.hasOwn(target.info, 'title')) {
+    throw new Error('targets must have an `info` object with the property `title`');
+  }
+
+  if (!target.info.title) {
+    throw new Error('target title must be a non-zero-length string');
+  }
+
+  if (!Object.hasOwn(target.info, 'extname')) {
+    throw new Error('targets must have an `info` object with the property `extname`');
+  }
+
+  if (!Object.hasOwn(target, 'clientsById') || !target.clientsById || Object.keys(target.clientsById).length === 0) {
+    throw new Error(`No clients provided in target ${target.info.key}.  You must provide the property \`clientsById\` containg your clients.`);
+  }
+
+  if (!Object.hasOwn(target.info, 'default')) {
+    throw new Error('targets must have an `info` object with the property `default`');
+  }
+
+  if (!Object.hasOwn(target.clientsById, target.info.default)) {
+    throw new Error(
+      `target ${target.info.key} is configured with a default client ${
+        target.info.default
+      }, but no such client was found in the property \`clientsById\` (found ${JSON.stringify(Object.keys(target.clientsById))})`,
+    );
+  }
+
+  Object.values(target.clientsById).forEach(isClient);
+
+  return true;
+};
+
+export const addTarget = (target: Target) => {
+  if (!isTarget(target)) {
+    return;
+  }
+  targets[target.info.key] = target;
+};
+
+export const isClient = (client: Client): client is Client => {
+  if (!client) {
+    throw new Error('clients must be objects');
+  }
+
+  if (!Object.hasOwn(client, 'info')) {
+    throw new Error('targets client must contain an `info` object');
+  }
+
+  if (!Object.hasOwn(client.info, 'key')) {
+    throw new Error('targets client must have an `info` object with property `key`');
+  }
+
+  if (!client.info.key) {
+    throw new Error('client.info.key must contain an identifier unique to this target');
+  }
+
+  if (!Object.hasOwn(client.info, 'title')) {
+    throw new Error('targets client must have an `info` object with property `title`');
+  }
+
+  if (!Object.hasOwn(client.info, 'description')) {
+    throw new Error('targets client must have an `info` object with property `description`');
+  }
+
+  if (!Object.hasOwn(client.info, 'link')) {
+    throw new Error('targets client must have an `info` object with property `link`');
+  }
+
+  if (!Object.hasOwn(client, 'convert') || typeof client.convert !== 'function') {
+    throw new Error('targets client must have a `convert` property containing a conversion function');
+  }
+
+  return true;
+};
+
+export const addTargetClient = (targetId: TargetId, client: Client) => {
+  if (!isClient(client)) {
+    return;
+  }
+
+  if (!Object.hasOwn(targets, targetId)) {
+    throw new Error(`Sorry, but no ${targetId} target exists to add clients to`);
+  }
+
+  if (Object.hasOwn(targets[targetId], client.info.key)) {
+    throw new Error(`the target ${targetId} already has a client with the key ${client.info.key}, please use a different key`);
+  }
+
+  targets[targetId].clientsById[client.info.key] = client;
 };

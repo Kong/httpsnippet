@@ -8,7 +8,9 @@ import { formDataIterator, isBlob } from './helpers/form-data';
 import { validateHarRequest } from './helpers/har-validator';
 import { getHeaderName } from './helpers/headers';
 import { ReducedHelperObject, reducer } from './helpers/reducer';
-import { Client, ClientId, Target, TargetId, targets } from './targets/targets';
+import { ClientId, TargetId, targets } from './targets/targets';
+
+export { addTarget, addTargetClient } from './targets/targets';
 
 const DEBUG_MODE = false;
 
@@ -62,11 +64,7 @@ interface HarEntry {
 }
 
 const isHarEntry = (value: any): value is HarEntry =>
-  typeof value === 'object' &&
-  'log' in value &&
-  typeof value.log === 'object' &&
-  'entries' in value.log &&
-  Array.isArray(value.log.entries);
+  typeof value === 'object' && 'log' in value && typeof value.log === 'object' && 'entries' in value.log && Array.isArray(value.log.entries);
 
 export class HTTPSnippet {
   requests: Request[] = [];
@@ -131,9 +129,7 @@ export class HTTPSnippet {
     if (request.headers && request.headers.length) {
       const http2VersionRegex = /^HTTP\/2/;
       request.headersObj = request.headers.reduce((accumulator, { name, value }) => {
-        const headerName = http2VersionRegex.exec(request.httpVersion)
-          ? name.toLocaleLowerCase()
-          : name;
+        const headerName = http2VersionRegex.exec(request.httpVersion) ? name.toLocaleLowerCase() : name;
         return {
           ...accumulator,
           [headerName]: value,
@@ -153,9 +149,7 @@ export class HTTPSnippet {
     }
 
     // construct Cookie header
-    const cookies = request.cookies?.map(
-      ({ name, value }) => `${encodeURIComponent(name)}=${encodeURIComponent(value)}`,
-    );
+    const cookies = request.cookies?.map(({ name, value }) => `${encodeURIComponent(name)}=${encodeURIComponent(value)}`);
 
     if (cookies?.length) {
       request.allHeaders.cookie = cookies.join('; ');
@@ -233,8 +227,7 @@ export class HTTPSnippet {
           request.postData.boundary = boundary;
 
           // Since headers are case-sensitive we need to see if there's an existing `Content-Type` header that we can override.
-          const contentTypeHeader =
-            getHeaderName(request.headersObj, 'content-type') || 'content-type';
+          const contentTypeHeader = getHeaderName(request.headersObj, 'content-type') || 'content-type';
 
           request.headersObj[contentTypeHeader] = `multipart/form-data; boundary=${boundary}`;
         }
@@ -331,52 +324,3 @@ export class HTTPSnippet {
     return results.length === 1 ? results[0] : results;
   };
 }
-
-export const addTarget = (target: Target) => {
-  if (!('info' in target)) {
-    throw new Error('The supplied custom target must contain an `info` object.');
-  }
-
-  if (
-    !('key' in target.info) ||
-    !('title' in target.info) ||
-    !('extname' in target.info) ||
-    !('default' in target.info)
-  ) {
-    throw new Error(
-      'The supplied custom target must have an `info` object with a `key`, `title`, `extname`, and `default` property.',
-    );
-  }
-
-  if (Object.hasOwn(targets, target.info.key)) {
-    throw new Error('The supplied custom target already exists.');
-  }
-
-  if (Object.keys(target).length === 1) {
-    throw new Error('A custom target must have a client defined on it.');
-  }
-
-  targets[target.info.key] = target;
-};
-
-export const addTargetClient = (targetId: TargetId, client: Client) => {
-  if (!Object.hasOwn(targets, targetId)) {
-    throw new Error(`Sorry, but no ${targetId} target exists to add clients to.`);
-  }
-
-  if (!('info' in client)) {
-    throw new Error('The supplied custom target client must contain an `info` object.');
-  }
-
-  if (!('key' in client.info) || !('title' in client.info)) {
-    throw new Error(
-      'The supplied custom target client must have an `info` object with a `key` and `title` property.',
-    );
-  }
-
-  if (Object.hasOwn(targets[targetId], client.info.key)) {
-    throw new Error('The supplied custom target client already exists, please use a different key');
-  }
-
-  targets[targetId].clientsById[client.info.key] = client;
-};
