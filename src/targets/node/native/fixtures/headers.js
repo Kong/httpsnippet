@@ -7,8 +7,8 @@ const options = {
   path: '/har',
   headers: {
     accept: 'application/json',
-    'x-foo': 'Bar',
-  },
+    'x-foo': 'Bar'
+  }
 };
 
 const req = http.request(options, function (res) {

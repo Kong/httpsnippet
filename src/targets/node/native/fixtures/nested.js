@@ -5,7 +5,7 @@ const options = {
   hostname: 'mockbin.com',
   port: null,
   path: '/har?foo%5Bbar%5D=baz%2Czap&fiz=buz&key=value',
-  headers: {},
+  headers: {}
 };
 
 const req = http.request(options, function (res) {

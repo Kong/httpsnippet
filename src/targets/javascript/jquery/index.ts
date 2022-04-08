@@ -13,47 +13,43 @@ import { Client } from '../..';
 import { CodeBuilder } from '../../../helpers/code-builder';
 import { getHeader, getHeaderName, hasHeader } from '../../../helpers/headers';
 
-export interface JQueryOptions {
-  indent?: string;
-}
-
-export const jquery: Client<JQueryOptions> = {
+export const jquery: Client = {
   info: {
     key: 'jquery',
     title: 'jQuery',
     link: 'http://api.jquery.com/jquery.ajax/',
     description: 'Perform an asynchronous HTTP (Ajax) requests with jQuery',
   },
-  convert: (source, options) => {
+  convert: ({ fullUrl, method, allHeaders, postData }, options) => {
     const opts = {
       indent: '  ',
       ...options,
     };
 
-    const { blank, push, join } = new CodeBuilder(opts.indent);
+    const { blank, push, join } = new CodeBuilder({ indent: opts.indent });
 
     const settings: Record<string, any> = {
       async: true,
       crossDomain: true,
-      url: source.fullUrl,
-      method: source.method,
-      headers: source.allHeaders,
+      url: fullUrl,
+      method: method,
+      headers: allHeaders,
     };
 
-    switch (source.postData.mimeType) {
+    switch (postData.mimeType) {
       case 'application/x-www-form-urlencoded':
-        settings.data = source.postData.paramsObj ? source.postData.paramsObj : source.postData.text;
+        settings.data = postData.paramsObj ? postData.paramsObj : postData.text;
         break;
 
       case 'application/json':
         settings.processData = false;
-        settings.data = source.postData.text;
+        settings.data = postData.text;
         break;
 
       case 'multipart/form-data':
         push('const form = new FormData();');
 
-        source.postData.params.forEach(param => {
+        postData.params.forEach(param => {
           push(`form.append('${param.name}', '${param.value || param.fileName || ''}');`);
         });
 
@@ -63,9 +59,9 @@ export const jquery: Client<JQueryOptions> = {
         settings.data = '[form]';
 
         // remove the contentType header
-        if (hasHeader(source.allHeaders, 'content-type')) {
-          if (getHeader(source.allHeaders, 'content-type')?.includes('boundary')) {
-            delete settings.headers[getHeaderName(source.allHeaders, 'content-type')!];
+        if (hasHeader(allHeaders, 'content-type')) {
+          if (getHeader(allHeaders, 'content-type')?.includes('boundary')) {
+            delete settings.headers[getHeaderName(allHeaders, 'content-type')!];
           }
         }
 
@@ -73,8 +69,8 @@ export const jquery: Client<JQueryOptions> = {
         break;
 
       default:
-        if (source.postData.text) {
-          settings.data = source.postData.text;
+        if (postData.text) {
+          settings.data = postData.text;
         }
     }
 

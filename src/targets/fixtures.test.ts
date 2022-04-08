@@ -14,16 +14,19 @@ const fixtures: [string, Request][] = inputFileNames.map(inputFileName => [
 
 /** useful for debuggin, only run a particular set of targets */
 const targetFilter = [
-  // 'csharp',
+  // put your targetId:
+  // 'node',
 ];
 
 /** useful for debuggin, only run a particular set of targets */
 const clientFilter = [
-  // 'jquery'
+  // put your clientId here:
+  // 'unirest',
 ];
 
 /** useful for debuggin, only run a particular set of fixtures */
 const fixtureFilter = [
+  // put the name of the fixture file you want to isolate (excluding `.json`):
   // 'multipart-file',
 ];
 

@@ -20,11 +20,12 @@ module.exports = function (source, options) {
       short: false,
       binary: false,
       globOff: false,
+      minifiyJSON: false,
     },
     options,
   );
 
-  const code = new CodeBuilder(opts.indent, opts.indent !== false ? ' \\\n' + opts.indent : ' ');
+  const code = new CodeBuilder({ indent: opts.indent, join: opts.indent !== false ? ' \\\n' + opts.indent : ' ' });
 
   const globOption = opts.short ? '-g' : '--globoff';
   const requestOption = opts.short ? '-X' : '--request';

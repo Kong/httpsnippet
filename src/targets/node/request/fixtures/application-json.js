@@ -3,16 +3,16 @@ const request = require('request');
 const options = {
   method: 'POST',
   url: 'http://mockbin.com/har',
-  headers: { 'content-type': 'application/json' },
+  headers: {'content-type': 'application/json'},
   body: {
     number: 1,
     string: 'f"oo',
     arr: [1, 2, 3],
-    nested: { a: 'b' },
-    arr_mix: [1, 'a', { arr_mix_nested: {} }],
-    boolean: false,
+    nested: {a: 'b'},
+    arr_mix: [1, 'a', {arr_mix_nested: {}}],
+    boolean: false
   },
-  json: true,
+  json: true
 };
 
 request(options, function (error, response, body) {

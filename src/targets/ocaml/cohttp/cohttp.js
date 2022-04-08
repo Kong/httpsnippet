@@ -19,7 +19,7 @@ module.exports = function (source, options) {
   );
 
   const methods = ['get', 'post', 'head', 'delete', 'patch', 'put', 'options'];
-  const code = new CodeBuilder(opts.indent);
+  const code = new CodeBuilder({ indent: opts.indent });
 
   code.push('open Cohttp_lwt_unix').push('open Cohttp').push('open Lwt').blank().push(`let uri = Uri.of_string "${source.fullUrl}" in`);
 

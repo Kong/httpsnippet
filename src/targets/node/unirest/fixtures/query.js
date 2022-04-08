@@ -3,9 +3,12 @@ const unirest = require('unirest');
 const req = unirest('GET', 'http://mockbin.com/har');
 
 req.query({
-  foo: ['bar', 'baz'],
+  foo: [
+    'bar',
+    'baz'
+  ],
   baz: 'abc',
-  key: 'value',
+  key: 'value'
 });
 
 req.end(function (res) {

@@ -4,8 +4,8 @@ let url = 'http://mockbin.com/har';
 
 let options = {
   method: 'POST',
-  headers: { 'content-type': 'application/json' },
-  body: '{"foo":"bar"}',
+  headers: {'content-type': 'application/json'},
+  body: '{"foo":"bar"}'
 };
 
 fetch(url, options)

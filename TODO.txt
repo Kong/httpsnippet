@@ -2,6 +2,10 @@
 - remove chaining like `push(..).blank().push(..)
 - look into the prior usage of the 'debug' package
 
+later:
+- use prettier for js languages (and more?)
+- add option to curl for minifying json
+
 changelog:
 
 Breaking:

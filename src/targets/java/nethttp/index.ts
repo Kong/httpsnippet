@@ -15,32 +15,32 @@ export interface NetHttpOptions {
   indent?: string;
 }
 
-export const nethttp: Client<NetHttpOptions> = {
+export const nethttp: Client = {
   info: {
     key: 'nethttp',
     title: 'java.net.http',
     link: 'https://openjdk.java.net/groups/net/httpclient/intro.html',
     description: 'Java Standardized HTTP Client API',
   },
-  convert: (source, options) => {
+  convert: ({ allHeaders, fullUrl, method, postData }, options) => {
     const opts = {
       indent: '  ',
       ...options,
     };
 
-    const { push, join } = new CodeBuilder(opts.indent);
+    const { push, join } = new CodeBuilder({ indent: opts.indent });
 
     push('HttpRequest request = HttpRequest.newBuilder()');
-    push(`.uri(URI.create("${source.fullUrl}"))`, 2);
+    push(`.uri(URI.create("${fullUrl}"))`, 2);
 
-    Object.keys(source.allHeaders).forEach(key => {
-      push(`.header("${key}", "${source.allHeaders[key]}")`, 2);
+    Object.keys(allHeaders).forEach(key => {
+      push(`.header("${key}", "${allHeaders[key]}")`, 2);
     });
 
-    if (source.postData.text) {
-      push(`.method("${source.method.toUpperCase()}", HttpRequest.BodyPublishers.ofString(${JSON.stringify(source.postData.text)}))`, 2);
+    if (postData.text) {
+      push(`.method("${method.toUpperCase()}", HttpRequest.BodyPublishers.ofString(${JSON.stringify(postData.text)}))`, 2);
     } else {
-      push(`.method("${source.method.toUpperCase()}", HttpRequest.BodyPublishers.noBody())`, 2);
+      push(`.method("${method.toUpperCase()}", HttpRequest.BodyPublishers.noBody())`, 2);
     }
 
     push('.build();', 2);

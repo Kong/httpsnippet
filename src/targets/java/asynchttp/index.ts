@@ -11,35 +11,31 @@
 import { Client } from '../..';
 import { CodeBuilder } from '../../../helpers/code-builder';
 
-interface AsyncHttpOptions {
-  indent?: string;
-}
-
-export const asynchttp: Client<AsyncHttpOptions> = {
+export const asynchttp: Client = {
   info: {
     key: 'asynchttp',
     title: 'AsyncHttp',
     link: 'https://github.com/AsyncHttpClient/async-http-client',
     description: 'Asynchronous Http and WebSocket Client library for Java',
   },
-  convert: (source, options) => {
+  convert: ({ method, allHeaders, postData, fullUrl }, options) => {
     const opts = {
       indent: '  ',
       ...options,
     };
-    const { blank, push, join } = new CodeBuilder(opts.indent);
+    const { blank, push, join } = new CodeBuilder({ indent: opts.indent });
 
     push('AsyncHttpClient client = new DefaultAsyncHttpClient();');
 
-    push(`client.prepare("${source.method.toUpperCase()}", "${source.fullUrl}")`);
+    push(`client.prepare("${method.toUpperCase()}", "${fullUrl}")`);
 
     // Add headers, including the cookies
-    Object.keys(source.allHeaders).forEach(key => {
-      push(`.setHeader("${key}", "${source.allHeaders[key]}")`, 1);
+    Object.keys(allHeaders).forEach(key => {
+      push(`.setHeader("${key}", "${allHeaders[key]}")`, 1);
     });
 
-    if (source.postData.text) {
-      push(`.setBody(${JSON.stringify(source.postData.text)})`, 1);
+    if (postData.text) {
+      push(`.setBody(${JSON.stringify(postData.text)})`, 1);
     }
 
     push('.execute()', 1);

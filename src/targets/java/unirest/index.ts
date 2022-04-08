@@ -11,40 +11,36 @@
 import { Client } from '../..';
 import { CodeBuilder } from '../../../helpers/code-builder';
 
-export interface UnirestOptions {
-  indent?: string;
-}
-
-export const unirest: Client<UnirestOptions> = {
+export const unirest: Client = {
   info: {
     key: 'unirest',
     title: 'Unirest',
     link: 'http://unirest.io/java.html',
     description: 'Lightweight HTTP Request Client Library',
   },
-  convert: (source, options) => {
+  convert: ({ method, allHeaders, postData, fullUrl }, options) => {
     const opts = {
       indent: '  ',
       ...options,
     };
 
-    const { join, push } = new CodeBuilder(opts.indent);
+    const { join, push } = new CodeBuilder({ indent: opts.indent });
 
     const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'];
 
-    if (methods.indexOf(source.method.toUpperCase()) === -1) {
-      push(`HttpResponse<String> response = Unirest.customMethod("${source.method.toUpperCase()}","${source.fullUrl}")`);
+    if (methods.indexOf(method.toUpperCase()) === -1) {
+      push(`HttpResponse<String> response = Unirest.customMethod("${method.toUpperCase()}","${fullUrl}")`);
     } else {
-      push(`HttpResponse<String> response = Unirest.${source.method.toLowerCase()}("${source.fullUrl}")`);
+      push(`HttpResponse<String> response = Unirest.${method.toLowerCase()}("${fullUrl}")`);
     }
 
     // Add headers, including the cookies
-    Object.keys(source.allHeaders).forEach(key => {
-      push(`.header("${key}", "${source.allHeaders[key]}")`, 1);
+    Object.keys(allHeaders).forEach(key => {
+      push(`.header("${key}", "${allHeaders[key]}")`, 1);
     });
 
-    if (source.postData.text) {
-      push(`.body(${JSON.stringify(source.postData.text)})`, 1);
+    if (postData.text) {
+      push(`.body(${JSON.stringify(postData.text)})`, 1);
     }
 
     push('.asString();', 1);

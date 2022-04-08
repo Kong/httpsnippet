@@ -12,10 +12,10 @@ import { Client } from '../..';
 import { CodeBuilder } from '../../../helpers/code-builder';
 
 export interface GoNativeOptions {
-  showBoilerplate?: boolean,
-  checkErrors?: boolean,
-  printBody?: boolean,
-  timeout?: number,
+  showBoilerplate?: boolean;
+  checkErrors?: boolean;
+  printBody?: boolean;
+  timeout?: number;
 }
 
 export const native: Client<GoNativeOptions> = {
@@ -25,8 +25,8 @@ export const native: Client<GoNativeOptions> = {
     link: 'http://golang.org/pkg/net/http/#NewRequest',
     description: 'Golang HTTP client request',
   },
-  convert: (source, options) => {
-    const { blank, push, join } = new CodeBuilder('\t');
+  convert: ({ postData, method, allHeaders, fullUrl }, options) => {
+    const { blank, push, join } = new CodeBuilder({ indent: '\t' });
 
     const opts = {
       showBoilerplate: true,
@@ -59,7 +59,7 @@ export const native: Client<GoNativeOptions> = {
         push('"time"', indent);
       }
 
-      if (source.postData.text) {
+      if (postData.text) {
         push('"strings"', indent);
       }
 
@@ -87,26 +87,26 @@ export const native: Client<GoNativeOptions> = {
       client = 'http.DefaultClient';
     }
 
-    push(`url := "${source.fullUrl}"`, indent)
+    push(`url := "${fullUrl}"`, indent);
     blank();
 
     // If we have body content or not create the var and reader or nil
-    if (source.postData.text) {
-      push(`payload := strings.NewReader(${JSON.stringify(source.postData.text)})`, indent);
+    if (postData.text) {
+      push(`payload := strings.NewReader(${JSON.stringify(postData.text)})`, indent);
       blank();
-      push(`req, ${errorPlaceholder} := http.NewRequest("${source.method}", url, payload)`, indent);
+      push(`req, ${errorPlaceholder} := http.NewRequest("${method}", url, payload)`, indent);
       blank();
     } else {
-      push(`req, ${errorPlaceholder} := http.NewRequest("${source.method}", url, nil)`, indent);
+      push(`req, ${errorPlaceholder} := http.NewRequest("${method}", url, nil)`, indent);
       blank();
     }
 
     errorCheck();
 
     // Add headers
-    if (Object.keys(source.allHeaders).length) {
-      Object.keys(source.allHeaders).forEach(function (key) {
-        push(`req.Header.Add("${key}", "${source.allHeaders[key]}")`, indent);
+    if (Object.keys(allHeaders).length) {
+      Object.keys(allHeaders).forEach(function (key) {
+        push(`req.Header.Add("${key}", "${allHeaders[key]}")`, indent);
       });
 
       blank();

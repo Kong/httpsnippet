@@ -5,7 +5,7 @@ const req = unirest('GET', 'http://mockbin.com/har');
 req.query({
   'foo[bar]': 'baz,zap',
   fiz: 'buz',
-  key: 'value',
+  key: 'value'
 });
 
 req.end(function (res) {

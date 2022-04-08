@@ -22,7 +22,7 @@ module.exports = function (source, options) {
   );
 
   // Start snippet
-  const code = new CodeBuilder(opts.indent);
+  const code = new CodeBuilder({ indent: opts.indent });
 
   // Import requests
   code.push('import requests').blank();

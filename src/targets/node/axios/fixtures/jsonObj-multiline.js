@@ -3,8 +3,8 @@ var axios = require('axios').default;
 var options = {
   method: 'POST',
   url: 'http://mockbin.com/har',
-  headers: { 'content-type': 'application/json' },
-  data: { foo: 'bar' },
+  headers: {'content-type': 'application/json'},
+  data: {foo: 'bar'}
 };
 
 axios

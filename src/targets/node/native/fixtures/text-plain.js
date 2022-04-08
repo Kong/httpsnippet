@@ -6,8 +6,8 @@ const options = {
   port: null,
   path: '/har',
   headers: {
-    'content-type': 'text/plain',
-  },
+    'content-type': 'text/plain'
+  }
 };
 
 const req = http.request(options, function (res) {

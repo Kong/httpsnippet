@@ -87,9 +87,7 @@ const jsToEdn = (js: any) => {
   }
 };
 
-export type ClojureCljhttpOptions = ConstructorParameters<typeof CodeBuilder>[0];
-
-export const clj_http: Client<ClojureCljhttpOptions> = {
+export const clj_http: Client = {
   info: {
     key: 'clj_http',
     title: 'clj-http',
@@ -97,7 +95,7 @@ export const clj_http: Client<ClojureCljhttpOptions> = {
     description: 'An idiomatic clojure http client wrapping the apache client.',
   },
   convert: ({ queryObj, method, postData, url, allHeaders }, options) => {
-    const { push, join } = new CodeBuilder(options);
+    const { push, join } = new CodeBuilder({ indent: options?.indent });
     const methods = ['get', 'post', 'put', 'delete', 'patch', 'head', 'options'];
     method = method.toLowerCase();
 

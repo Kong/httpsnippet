@@ -156,5 +156,43 @@ Array [
     "key": "kotlin",
     "title": "Kotlin",
   },
+  Object {
+    "clients": Array [
+      Object {
+        "description": "Node.js native HTTP interface",
+        "key": "native",
+        "link": "http://nodejs.org/api/http.html#http_http_request_options_callback",
+        "title": "HTTP",
+      },
+      Object {
+        "description": "Simplified HTTP request client",
+        "key": "request",
+        "link": "https://github.com/request/request",
+        "title": "Request",
+      },
+      Object {
+        "description": "Lightweight HTTP Request Client Library",
+        "key": "unirest",
+        "link": "http://unirest.io/nodejs.html",
+        "title": "Unirest",
+      },
+      Object {
+        "description": "Promise based HTTP client for the browser and node.js",
+        "key": "axios",
+        "link": "https://github.com/axios/axios",
+        "title": "Axios",
+      },
+      Object {
+        "description": "Simplified HTTP node-fetch client",
+        "key": "fetch",
+        "link": "https://github.com/bitinn/node-fetch",
+        "title": "Fetch",
+      },
+    ],
+    "default": "native",
+    "extname": ".js",
+    "key": "node",
+    "title": "Node.js",
+  },
 ]
 `;

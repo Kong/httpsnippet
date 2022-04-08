@@ -23,7 +23,7 @@ module.exports = function (source, options) {
     options,
   );
 
-  const code = new CodeBuilder(opts.indent);
+  const code = new CodeBuilder({ indent: opts.indent });
   let hasBody = false;
 
   if (!opts.noTags) {

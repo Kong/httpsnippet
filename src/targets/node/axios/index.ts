@@ -8,9 +8,9 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
+import stringifyObject from 'stringify-object';
 import { Client } from '../..';
 import { CodeBuilder } from '../../../helpers/code-builder';
-import stringifyObject from 'stringify-object';
 
 export const axios: Client = {
   info: {
@@ -19,61 +19,49 @@ export const axios: Client = {
     link: 'https://github.com/axios/axios',
     description: 'Promise based HTTP client for the browser and node.js',
   },
-  convert: ({ allHeaders, method, url, queryObj, postData }, options) => {
+  convert: ({ method, url, queryObj, allHeaders, postData }, options) => {
     const opts = {
       indent: '  ',
       ...options,
     };
 
-    const { blank, push, join } = new CodeBuilder({ indent: opts.indent });
+    const { blank, join, push } = new CodeBuilder({ indent: opts.indent });
 
-    push(`import axios from 'axios';`);
+    push(`var axios = require('axios').default;`);
     blank();
 
-    const requestOptions: Record<string, any> = {
-      method: method,
-      url: url,
+    const reqOpts: Record<string, any> = {
+      method,
+      url,
     };
 
     if (Object.keys(queryObj).length) {
-      requestOptions.params = queryObj;
+      reqOpts.params = queryObj;
     }
 
     if (Object.keys(allHeaders).length) {
-      requestOptions.headers = allHeaders;
+      reqOpts.headers = allHeaders;
     }
 
     switch (postData.mimeType) {
       case 'application/x-www-form-urlencoded':
-        requestOptions.data = postData.paramsObj;
+        reqOpts.data = postData.paramsObj;
         break;
 
       case 'application/json':
         if (postData.jsonObj) {
-          requestOptions.data = postData.jsonObj;
+          reqOpts.data = postData.jsonObj;
         }
-        break;
-
-      case 'multipart/form-data':
-        push('const form = new FormData();');
-
-        postData.params.forEach(param => {
-          push(`form.append('${param.name}', '${param.value || param.fileName || ''}');`);
-        });
-
-        blank();
-
-        requestOptions.data = '[form]';
         break;
 
       default:
         if (postData.text) {
-          requestOptions.data = postData.text;
+          reqOpts.data = postData.text;
         }
     }
 
-    const optionString = stringifyObject(requestOptions, { indent: '  ', inlineCharacterLimit: 80 }).replace('"[form]"', 'form');
-    push(`const options = ${optionString};`);
+    const stringifiedOptions = stringifyObject(reqOpts, { indent: '  ', inlineCharacterLimit: 80 });
+    push(`var options = ${stringifiedOptions};`);
     blank();
 
     push('axios');

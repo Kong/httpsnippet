@@ -7,8 +7,8 @@ const options = {
   port: null,
   path: '/har',
   headers: {
-    'content-type': 'application/x-www-form-urlencoded',
-  },
+    'content-type': 'application/x-www-form-urlencoded'
+  }
 };
 
 const req = http.request(options, function (res) {
@@ -24,5 +24,5 @@ const req = http.request(options, function (res) {
   });
 });
 
-req.write(qs.stringify({ foo: 'bar', hello: 'world' }));
+req.write(qs.stringify({foo: 'bar', hello: 'world'}));
 req.end();

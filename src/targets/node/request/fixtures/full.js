@@ -7,13 +7,13 @@ jar.setCookie(request.cookie('bar=baz'), 'http://mockbin.com/har');
 const options = {
   method: 'POST',
   url: 'http://mockbin.com/har',
-  qs: { foo: ['bar', 'baz'], baz: 'abc', key: 'value' },
+  qs: {foo: ['bar', 'baz'], baz: 'abc', key: 'value'},
   headers: {
     accept: 'application/json',
-    'content-type': 'application/x-www-form-urlencoded',
+    'content-type': 'application/x-www-form-urlencoded'
   },
-  form: { foo: 'bar' },
-  jar: 'JAR',
+  form: {foo: 'bar'},
+  jar: jar
 };
 
 request(options, function (error, response, body) {

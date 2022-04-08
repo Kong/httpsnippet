@@ -21,7 +21,7 @@ module.exports = function (source, options) {
     options,
   );
 
-  const code = new CodeBuilder(opts.indent);
+  const code = new CodeBuilder({ indent: opts.indent });
 
   // Markers for headers to be created as litteral objects and later be set on the NSURLRequest if exist
   const req = {

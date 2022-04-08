@@ -3,13 +3,13 @@ const unirest = require('unirest');
 const req = unirest('POST', 'http://mockbin.com/har');
 
 req.headers({
-  'Content-Type': 'multipart/form-data; boundary=---011000010111000001101001',
+  'Content-Type': 'multipart/form-data; boundary=---011000010111000001101001'
 });
 
 req.multipart([
   {
-    body: 'bar',
-  },
+    body: 'bar'
+  }
 ]);
 
 req.end(function (res) {

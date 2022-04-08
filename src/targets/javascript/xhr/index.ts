@@ -14,43 +14,42 @@ import { CodeBuilder } from '../../../helpers/code-builder';
 import { getHeader, getHeaderName, hasHeader } from '../../../helpers/headers';
 
 export interface XhrOptions {
-  indent?: string;
   cors?: boolean;
 }
 
-export const xhr: Client<XhrOptions> = {
+export const xhr: Client = {
   info: {
     key: 'xhr',
     title: 'XMLHttpRequest',
     link: 'https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest',
     description: 'W3C Standard API that provides scripted client functionality',
   },
-  convert: (source, options) => {
+  convert: ({ postData, allHeaders, method, fullUrl }, options) => {
     const opts = {
       indent: '  ',
       cors: true,
       ...options,
     };
 
-    const { blank, push, join } = new CodeBuilder(opts.indent);
+    const { blank, push, join } = new CodeBuilder({ indent: opts.indent });
 
-    switch (source.postData.mimeType) {
+    switch (postData.mimeType) {
       case 'application/json':
-        push(`const data = JSON.stringify(${stringifyObject(source.postData.jsonObj, { indent: opts.indent })});`);
+        push(`const data = JSON.stringify(${stringifyObject(postData.jsonObj, { indent: opts.indent })});`);
         blank();
         break;
 
       case 'multipart/form-data':
         push('const data = new FormData();');
 
-        source.postData.params.forEach(param => {
+        postData.params.forEach(param => {
           push(`data.append('${param.name}', '${param.value || param.fileName || ''}');`);
         });
 
         // remove the contentType header
-        if (hasHeader(source.allHeaders, 'content-type')) {
-          if (getHeader(source.allHeaders, 'content-type')?.includes('boundary')) {
-            delete source.allHeaders[getHeaderName(source.allHeaders, 'content-type')!];
+        if (hasHeader(allHeaders, 'content-type')) {
+          if (getHeader(allHeaders, 'content-type')?.includes('boundary')) {
+            delete allHeaders[getHeaderName(allHeaders, 'content-type')!];
           }
         }
 
@@ -58,7 +57,7 @@ export const xhr: Client<XhrOptions> = {
         break;
 
       default:
-        push(`const data = ${source.postData.text ? `'${source.postData.text}'` : 'null'};`);
+        push(`const data = ${postData.text ? `'${postData.text}'` : 'null'};`);
         blank();
     }
 
@@ -75,10 +74,10 @@ export const xhr: Client<XhrOptions> = {
     push('}', 1);
     push('});');
     blank();
-    push(`xhr.open('${source.method}', '${source.fullUrl}');`);
+    push(`xhr.open('${method}', '${fullUrl}');`);
 
-    Object.keys(source.allHeaders).forEach(key => {
-      push(`xhr.setRequestHeader('${key}', '${source.allHeaders[key]}');`);
+    Object.keys(allHeaders).forEach(key => {
+      push(`xhr.setRequestHeader('${key}', '${allHeaders[key]}');`);
     });
 
     blank();

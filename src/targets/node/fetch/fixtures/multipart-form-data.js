@@ -8,7 +8,7 @@ let url = 'http://mockbin.com/har';
 
 let options = {
   method: 'POST',
-  headers: { 'Content-Type': 'multipart/form-data; boundary=---011000010111000001101001' },
+  headers: {'Content-Type': 'multipart/form-data; boundary=---011000010111000001101001'}
 };
 
 options.body = formData;

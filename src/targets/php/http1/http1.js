@@ -22,7 +22,7 @@ module.exports = function (source, options) {
     options,
   );
 
-  const code = new CodeBuilder(opts.indent);
+  const code = new CodeBuilder({ indent: opts.indent });
 
   if (!opts.noTags) {
     code.push(opts.shortTags ? '<?' : '<?php').blank();

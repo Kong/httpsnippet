@@ -1,4 +1,5 @@
 import { Request } from '..';
+import { CodeBuilderOptions } from '../helpers/code-builder';
 import { c } from './c';
 import { clojure } from './clojure';
 import { csharp } from './csharp';
@@ -7,7 +8,7 @@ import { http } from './http';
 import { java } from './java';
 import { javascript } from './javascript';
 import { kotlin } from './kotlin';
-// import { node } from './node';
+import { node } from './node';
 // import { objc } from './objc';
 // import { ocaml } from './ocaml';
 // import { php } from './php';
@@ -29,9 +30,9 @@ export interface ClientInfo {
   description: string;
 }
 
-export type Converter<T extends unknown> = (request: Request, options?: T) => string;
+export type Converter<T extends Record<string, any> & CodeBuilderOptions> = (request: Request, options?: T) => string;
 
-export interface Client<T extends unknown = {}> {
+export interface Client<T extends Record<string, any> & CodeBuilderOptions = CodeBuilderOptions> {
   info: ClientInfo;
   convert: Converter<T>;
 }
@@ -59,7 +60,7 @@ export const targets = {
   java,
   javascript,
   kotlin,
-  // node,
+  node,
   // objc,
   // ocaml,
   // php,

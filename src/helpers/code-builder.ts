@@ -1,6 +1,20 @@
 const DEFAULT_INDENTATION_CHARACTER = '';
 const DEFAULT_LINE_JOIN = '\n';
 
+export interface CodeBuilderOptions {
+  /**
+   * Desired indentation character for aggregated lines of code
+   * @default ''
+   */
+  indent?: string;
+
+  /**
+   * Desired character to join each line of code
+   * @default \n
+   */
+  join?: string;
+}
+
 export class CodeBuilder {
   code: string[] = [];
   indentationCharacter: string = DEFAULT_INDENTATION_CHARACTER;
@@ -9,12 +23,9 @@ export class CodeBuilder {
   /**
    * Helper object to format and aggragate lines of code.
    * Lines are aggregated in a `code` array, and need to be joined to obtain a proper code snippet.
-   *
-   * @param indentationCharacter Desired indentation character for aggregated lines of code
-   * @param join Desired character to join each line of code
    */
-  constructor(indentationCharacter: string = DEFAULT_INDENTATION_CHARACTER, join: string = DEFAULT_LINE_JOIN) {
-    this.indentationCharacter = indentationCharacter || DEFAULT_INDENTATION_CHARACTER;
+  constructor({ indent, join }: CodeBuilderOptions = {}) {
+    this.indentationCharacter = indent || DEFAULT_INDENTATION_CHARACTER;
     this.lineJoin = join || DEFAULT_LINE_JOIN;
   }
 

@@ -33,11 +33,7 @@ const getDecompressionMethods = (allHeaders: Request['allHeaders']) => {
   return methods;
 };
 
-export interface CSharpHttpclientOptions {
-  indent: string;
-}
-
-export const httpclient: Client<CSharpHttpclientOptions> = {
+export const httpclient: Client = {
   info: {
     key: 'httpclient',
     title: 'HttpClient',
@@ -45,14 +41,12 @@ export const httpclient: Client<CSharpHttpclientOptions> = {
     description: '.NET Standard HTTP Client',
   },
   convert: ({ allHeaders, postData, method, fullUrl }, options) => {
-    const opts = Object.assign(
-      {
-        indent: '    ',
-      },
-      options,
-    );
+    const opts = {
+      indent: '    ',
+      ...options,
+    };
 
-    const { push, join } = new CodeBuilder(opts.indent);
+    const { push, join } = new CodeBuilder({ indent: opts.indent });
 
     let clienthandler = '';
     const cookies = Boolean(allHeaders.cookie);

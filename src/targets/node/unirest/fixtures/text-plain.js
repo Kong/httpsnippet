@@ -3,7 +3,7 @@ const unirest = require('unirest');
 const req = unirest('POST', 'http://mockbin.com/har');
 
 req.headers({
-  'content-type': 'text/plain',
+  'content-type': 'text/plain'
 });
 
 req.send('Hello World');

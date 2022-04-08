@@ -3,7 +3,7 @@ var axios = require('axios').default;
 var options = {
   method: 'GET',
   url: 'http://mockbin.com/har',
-  params: { 'foo[bar]': 'baz,zap', fiz: 'buz', key: 'value' },
+  params: {'foo[bar]': 'baz,zap', fiz: 'buz', key: 'value'}
 };
 
 axios

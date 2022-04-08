@@ -44,8 +44,7 @@ export const http11: Client<Http11Options> = {
 
     // RFC 7230 Section 3. Message Format
     // All lines have no indentation, and should be terminated with CRLF.
-    const { blank, push, join } = new CodeBuilder('', CRLF);
-
+    const { blank, push, join } = new CodeBuilder({ indent: '', join: CRLF });
 
     // RFC 7230 Section 5.3. Request Target
     // Determines if the Request-Line should use 'absolute-form' or 'origin-form'.

@@ -11,9 +11,9 @@ let options = {
   headers: {
     accept: 'application/json',
     'content-type': 'application/x-www-form-urlencoded',
-    cookie: 'foo=bar; bar=baz; ',
+    cookie: 'foo=bar; bar=baz; '
   },
-  body: encodedParams,
+  body: encodedParams
 };
 
 fetch(url, options)

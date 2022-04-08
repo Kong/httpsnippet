@@ -4,7 +4,7 @@ const req = unirest('GET', 'http://mockbin.com/har');
 
 req.headers({
   accept: 'application/json',
-  'x-foo': 'Bar',
+  'x-foo': 'Bar'
 });
 
 req.end(function (res) {

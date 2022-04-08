@@ -9,8 +9,8 @@ const options = {
   headers: {
     cookie: 'foo=bar; bar=baz',
     accept: 'application/json',
-    'content-type': 'application/x-www-form-urlencoded',
-  },
+    'content-type': 'application/x-www-form-urlencoded'
+  }
 };
 
 const req = http.request(options, function (res) {
@@ -26,5 +26,5 @@ const req = http.request(options, function (res) {
   });
 });
 
-req.write(qs.stringify({ foo: 'bar' }));
+req.write(qs.stringify({foo: 'bar'}));
 req.end();

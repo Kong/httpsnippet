@@ -6,8 +6,8 @@ const options = {
   port: null,
   path: '/har',
   headers: {
-    'Content-Type': 'multipart/form-data; boundary=---011000010111000001101001',
-  },
+    'Content-Type': 'multipart/form-data; boundary=---011000010111000001101001'
+  }
 };
 
 const req = http.request(options, function (res) {

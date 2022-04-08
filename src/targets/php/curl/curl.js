@@ -25,7 +25,7 @@ module.exports = function (source, options) {
     options,
   );
 
-  const code = new CodeBuilder(opts.indent);
+  const code = new CodeBuilder({ indent: opts.indent });
 
   if (!opts.noTags) {
     code.push(opts.shortTags ? '<?' : '<?php').blank();
@@ -83,7 +83,7 @@ module.exports = function (source, options) {
 
   code.push('curl_setopt_array($curl, [');
 
-  const curlopts = new CodeBuilder(opts.indent, '\n' + opts.indent);
+  const curlopts = new CodeBuilder({ indent: opts.indent, join: '\n' + opts.indent });
 
   curlOptions.forEach(function (option) {
     if (![null, undefined].includes(option.value)) {

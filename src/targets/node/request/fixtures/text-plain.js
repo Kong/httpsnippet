@@ -3,8 +3,8 @@ const request = require('request');
 const options = {
   method: 'POST',
   url: 'http://mockbin.com/har',
-  headers: { 'content-type': 'text/plain' },
-  body: 'Hello World',
+  headers: {'content-type': 'text/plain'},
+  body: 'Hello World'
 };
 
 request(options, function (error, response, body) {
