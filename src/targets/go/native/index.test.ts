@@ -1,136 +1,47 @@
-import { HTTPSnippet, Request } from "../../..";
-import fullJSON from '../../../fixtures/requests/full.json';
+import { readFile } from 'fs/promises';
+import path from 'path';
+import { HTTPSnippet, Request } from '../../..';
+import full from '../../../fixtures/requests/full.json';
 
-const full = fullJSON as Request;
+const fixtures = [
+  {
+    title: 'should support false boilerplate option',
+    fixtureFile: 'boilerplate-option.go',
+    options: {
+      showBoilerplate: false,
+    },
+  },
+  {
+    title: 'should support checkErrors option',
+    fixtureFile: 'check-errors-option.go',
+    options: {
+      checkErrors: true,
+    },
+  },
+  {
+    title: 'should support printBody option',
+    fixtureFile: 'print-body-option.go',
+    options: {
+      printBody: false,
+    },
+  },
+  {
+    title: 'should support timeout option',
+    fixtureFile: 'timeout-option.go',
+    options: {
+      timeout: 30,
+    },
+  },
+];
 
 describe('go', () => {
-  it('should support false boilerplate option', function () {
-    const result = new HTTPSnippet(full).convert('go', 'native', {
-      showBoilerplate: false,
+  fixtures.forEach(({ title, fixtureFile, options }) => {
+    it(title, async () => {
+      const result = new HTTPSnippet(full as Request).convert('go', 'native', options);
+      const filePath = path.join(__dirname, 'fixtures', fixtureFile);
+      const buffer = await readFile(filePath);
+      const fixture = String(buffer);
+      expect(`${result}\n`).toEqual(fixture);
     });
-  
-    expect(result).toEqual(
-      'url := "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value"\n\npayload := strings.NewReader("foo=bar")\n\nreq, _ := http.NewRequest("POST", url, payload)\n\nreq.Header.Add("cookie", "foo=bar; bar=baz")\nreq.Header.Add("accept", "application/json")\nreq.Header.Add("content-type", "application/x-www-form-urlencoded")\n\nres, _ := http.DefaultClient.Do(req)\n\ndefer res.Body.Close()\nbody, _ := ioutil.ReadAll(res.Body)\n\nfmt.Println(res)\nfmt.Println(string(body))',
-    );
-  });
-
-  it('should support checkErrors option', function () {
-    const result = new HTTPSnippet(full).convert('go', 'native', {
-      checkErrors: true,
-    });
-
-    expect(result).toEqual(`package main
-
-import (
-\t"fmt"
-\t"strings"
-\t"net/http"
-\t"io/ioutil"
-)
-
-func main() {
-
-\turl := "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value"
-
-\tpayload := strings.NewReader("foo=bar")
-
-\treq, err := http.NewRequest("POST", url, payload)
-
-\tif err != nil {
-\t\tpanic(err)
-\t}
-\treq.Header.Add("cookie", "foo=bar; bar=baz")
-\treq.Header.Add("accept", "application/json")
-\treq.Header.Add("content-type", "application/x-www-form-urlencoded")
-
-\tres, err := http.DefaultClient.Do(req)
-\tif err != nil {
-\t\tpanic(err)
-\t}
-
-\tdefer res.Body.Close()
-\tbody, err := ioutil.ReadAll(res.Body)
-\tif err != nil {
-\t\tpanic(err)
-\t}
-
-\tfmt.Println(res)
-\tfmt.Println(string(body))
-
-}`);
-  });
-
-  it('should support printBody option', function () {
-    const result = new HTTPSnippet(full).convert('go', 'native', {
-      printBody: false,
-    });
-
-    expect(result).toEqual(`package main
-
-import (
-\t"fmt"
-\t"strings"
-\t"net/http"
-)
-
-func main() {
-
-\turl := "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value"
-
-\tpayload := strings.NewReader("foo=bar")
-
-\treq, _ := http.NewRequest("POST", url, payload)
-
-\treq.Header.Add("cookie", "foo=bar; bar=baz")
-\treq.Header.Add("accept", "application/json")
-\treq.Header.Add("content-type", "application/x-www-form-urlencoded")
-
-\tres, _ := http.DefaultClient.Do(req)
-
-\tfmt.Println(res)
-
-}`);
-  });
-
-  it('should support timeout option', function () {
-    const result = new HTTPSnippet(full).convert('go', 'native', {
-      timeout: 30,
-    });
-
-    expect(result).toEqual(`package main
-
-import (
-\t"fmt"
-\t"time"
-\t"strings"
-\t"net/http"
-\t"io/ioutil"
-)
-
-func main() {
-
-\tclient := http.Client{
-\t\tTimeout: time.Duration(30 * time.Second),
-\t}
-
-\turl := "http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value"
-
-\tpayload := strings.NewReader("foo=bar")
-
-\treq, _ := http.NewRequest("POST", url, payload)
-
-\treq.Header.Add("cookie", "foo=bar; bar=baz")
-\treq.Header.Add("accept", "application/json")
-\treq.Header.Add("content-type", "application/x-www-form-urlencoded")
-
-\tres, _ := client.Do(req)
-
-\tdefer res.Body.Close()
-\tbody, _ := ioutil.ReadAll(res.Body)
-
-\tfmt.Println(res)
-\tfmt.Println(string(body))
-
-}`);
   });
 });
