@@ -25,23 +25,23 @@ module.exports = function (source, options) {
   const code = new CodeBuilder(opts.indent, opts.indent !== false ? ' \\\n' + opts.indent : ' ');
 
   if (opts.verbose) {
-    code.push('wget %s', opts.short ? '-v' : '--verbose');
+    code.push(`wget ${opts.short ? '-v' : '--verbose'}`);
   } else {
-    code.push('wget %s', opts.short ? '-q' : '--quiet');
+    code.push(`wget ${opts.short ? '-q' : '--quiet'}`);
   }
 
-  code.push('--method %s', helpers.quote(source.method));
+  code.push(`--method ${helpers.quote(source.method)}`);
 
   Object.keys(source.allHeaders).forEach(function (key) {
-    const header = util.format('%s: %s', key, source.allHeaders[key]);
-    code.push('--header %s', helpers.quote(header));
+    const header = `${key}: ${source.allHeaders[key]}`;
+    code.push(`--header ${helpers.quote(header)}`);
   });
 
   if (source.postData.text) {
     code.push('--body-data ' + helpers.escape(helpers.quote(source.postData.text)));
   }
 
-  code.push(opts.short ? '-O' : '--output-document').push('- %s', helpers.quote(source.fullUrl));
+  code.push(opts.short ? '-O' : '--output-document').push(`- ${helpers.quote(source.fullUrl)}`);
 
   return code.join();
 };

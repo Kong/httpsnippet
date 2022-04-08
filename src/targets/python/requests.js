@@ -28,7 +28,7 @@ module.exports = function (source, options) {
   code.push('import requests').blank();
 
   // Set URL
-  code.push('url = "%s"', source.url).blank();
+  code.push(`url = "${source.url}"`).blank();
 
   // Construct query string
   let qs;
@@ -44,7 +44,7 @@ module.exports = function (source, options) {
   switch (source.postData.mimeType) {
     case 'application/json':
       if (source.postData.jsonObj) {
-        code.push('payload = %s', helpers.literalRepresentation(source.postData.jsonObj, opts));
+        code.push(`payload = ${helpers.literalRepresentation(source.postData.jsonObj, opts)}`);
         jsonPayload = true;
         hasPayload = true;
       }
@@ -53,7 +53,7 @@ module.exports = function (source, options) {
     default: {
       const payload = JSON.stringify(source.postData.text);
       if (payload) {
-        code.push('payload = %s', payload);
+        code.push(`payload = ${payload}`);
         hasPayload = true;
       }
     }
@@ -65,7 +65,7 @@ module.exports = function (source, options) {
 
   if (headerCount === 1) {
     for (const header in headers) {
-      code.push('headers = {"%s": "%s"}', header, headers[header]).blank();
+      code.push(`headers = {"${header}": "${headers[header]}"}`).blank();
     }
   } else if (headerCount > 1) {
     let count = 1;
@@ -74,9 +74,9 @@ module.exports = function (source, options) {
 
     for (const header in headers) {
       if (count++ !== headerCount) {
-        code.push(1, '"%s": "%s",', header, headers[header]);
+        code.push(1, `"${header}": "${headers[header]}",`);
       } else {
-        code.push(1, '"%s": "%s"', header, headers[header]);
+        code.push(1, `"${header}": "${headers[header]}"`);
       }
     }
 
@@ -85,7 +85,7 @@ module.exports = function (source, options) {
 
   // Construct request
   const method = source.method;
-  let request = util.format('response = requests.request("%s", url', method);
+  let request = `response = requests.request("${method}", url`;
 
   if (hasPayload) {
     if (jsonPayload) {

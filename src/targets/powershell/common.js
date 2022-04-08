@@ -21,7 +21,7 @@ module.exports = function (command) {
       headers.forEach(function (key) {
         if (key !== 'connection') {
           // Not allowed
-          code.push('$headers.Add("%s", "%s")', key, source.headersObj[key]);
+          code.push(`$headers.Add("${key}", "${source.headersObj[key]}")`);
         }
       });
       commandOptions.push('-Headers $headers');
@@ -34,9 +34,9 @@ module.exports = function (command) {
       source.cookies.forEach(function (cookie) {
         code.push('$cookie = New-Object System.Net.Cookie');
 
-        code.push("$cookie.Name = '%s'", cookie.name);
-        code.push("$cookie.Value = '%s'", cookie.value);
-        code.push("$cookie.Domain = '%s'", source.uriObj.host);
+        code.push(`$cookie.Name = '${cookie.name}'`);
+        code.push(`$cookie.Value = '${cookie.value}'`);
+        code.push(`$cookie.Domain = '${source.uriObj.host}'`);
 
         code.push('$session.Cookies.Add($cookie)');
       });
@@ -44,11 +44,11 @@ module.exports = function (command) {
     }
 
     if (source.postData.text) {
-      commandOptions.push("-ContentType '" + helpers.getHeader(source.allHeaders, 'content-type') + "'");
-      commandOptions.push("-Body '" + source.postData.text + "'");
+      commandOptions.push('-ContentType \'' + helpers.getHeader(source.allHeaders, 'content-type') + '\'');
+      commandOptions.push('-Body \'' + source.postData.text + '\'');
     }
 
-    code.push("$response = %s -Uri '%s' -Method %s %s", command, source.fullUrl, source.method, commandOptions.join(' '));
+    code.push(`$response = ${command} -Uri '${source.fullUrl}' -Method ${source.method} ${commandOptions.join(' ')}`);
     return code.join();
   };
 };

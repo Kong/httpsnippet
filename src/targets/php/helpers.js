@@ -15,7 +15,7 @@ const convert = function (obj, indent, lastIndent) {
       break;
 
     case '[object String]':
-      result = "'" + obj.replace(/\\/g, '\\\\').replace(/'/g, "'") + "'";
+      result = '\'' + obj.replace(/\\/g, '\\\\').replace(/'/g, '\'') + '\'';
       break;
 
     case '[object Number]':

@@ -28,23 +28,18 @@ interface Entry {
 
 interface HarEntry {
   log: {
-    entries: Entry[]
-  }
-};
+    entries: Entry[];
+  };
+}
 
-const isHarEntry = (value: any): value is HarEntry => (
-  typeof value === 'object'
-  && 'log' in value
-  && typeof value.log === 'object'
-  && 'entries' in value.log
-  && Array.isArray(value.log.entries)
-);
+const isHarEntry = (value: any): value is HarEntry =>
+  typeof value === 'object' && 'log' in value && typeof value.log === 'object' && 'entries' in value.log && Array.isArray(value.log.entries);
 
 type HTTPSnippetConstructor = HarEntry | Request;
 
 export class HTTPSnippet {
   requests = [];
-  
+
   constructor(input: HTTPSnippetConstructor) {
     let entries: Entry[] = [];
 
@@ -159,7 +154,7 @@ export class HTTPSnippet {
           // TODO: THIS ABSOLUTELY MUST BE REMOVED.
           // IT BREAKS SOME USE-CASES FOR MULTIPART FORMS THAT DEPEND ON BEING ABLE TO SET THE BOUNDARY.
           // easter egg
-          const boundary = '---011000010111000001101001';  // this is binary for "api". yep.
+          const boundary = '---011000010111000001101001'; // this is binary for "api". yep.
           if (!isNativeFormData) {
             // @ts-expect-error THIS IS WRONG.  VERY WRONG.
             form._boundary = boundary;
@@ -189,9 +184,11 @@ export class HTTPSnippet {
               request.postData.text += data;
             }
           } else {
-            form.pipe(eventStreamMap(data => {
+            form.pipe(
+              eventStreamMap(data => {
                 request.postData.text += data;
-              }));
+              }),
+            );
           }
 
           request.postData.boundary = boundary;

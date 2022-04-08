@@ -29,11 +29,11 @@ module.exports = function (source, options) {
     headers: source.allHeaders,
   };
 
-  code.push('const http = require("%s");', source.uriObj.protocol.replace(':', ''));
+  code.push(`const http = require("${source.uriObj.protocol.replace(':', '')}");`);
 
   code
     .blank()
-    .push('const options = %s;', JSON.stringify(reqOpts, null, opts.indent))
+    .push(`const options = ${JSON.stringify(reqOpts, null, opts.indent)};`)
     .blank()
     .push('const req = http.request(options, function (res) {')
     .push(1, 'const chunks = [];')
@@ -54,11 +54,10 @@ module.exports = function (source, options) {
       if (source.postData.paramsObj) {
         code.unshift('const qs = require("querystring");');
         code.push(
-          'req.write(qs.stringify(%s));',
-          stringifyObject(source.postData.paramsObj, {
+          `req.write(qs.stringify(${stringifyObject(source.postData.paramsObj, {
             indent: '  ',
             inlineCharacterLimit: 80,
-          }),
+          })}));`,
         );
       }
       break;
@@ -66,18 +65,17 @@ module.exports = function (source, options) {
     case 'application/json':
       if (source.postData.jsonObj) {
         code.push(
-          'req.write(JSON.stringify(%s));',
-          stringifyObject(source.postData.jsonObj, {
+          `req.write(JSON.stringify(${stringifyObject(source.postData.jsonObj, {
             indent: '  ',
             inlineCharacterLimit: 80,
-          }),
+          })}));`,
         );
       }
       break;
 
     default:
       if (source.postData.text) {
-        code.push('req.write(%s);', JSON.stringify(source.postData.text, null, opts.indent));
+        code.push(`req.write(${JSON.stringify(source.postData.text, null, opts.indent)});`);
       }
   }
 

@@ -1,7 +1,7 @@
 require('should');
 
 module.exports = function (HTTPSnippet) {
-  it("should support query parameters provided in HAR's url", function () {
+  it('should support query parameters provided in HAR\'s url', function () {
     const result = new HTTPSnippet({ method: 'GET', url: 'http://mockbin.com/har?param=value' }).convert('python', 'requests', {
       showBoilerplate: false,
     });

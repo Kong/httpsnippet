@@ -36,7 +36,7 @@ module.exports = function (source, options) {
     case 'application/x-www-form-urlencoded':
       code
         .push('$body = new http\\Message\\Body;')
-        .push('$body->append(new http\\QueryString(%s));', helpers.convert(source.postData.paramsObj, opts.indent))
+        .push(`$body->append(new http\\QueryString(${helpers.convert(source.postData.paramsObj, opts.indent)}));`)
         .blank();
       hasBody = true;
       break;
@@ -58,13 +58,10 @@ module.exports = function (source, options) {
         }
       });
 
-      code
-        .push('$body = new http\\Message\\Body;')
-        .push(
-          '$body->addForm(%s, %s);',
-          Object.keys(fields).length ? helpers.convert(fields, opts.indent) : 'null',
-          files.length ? helpers.convert(files, opts.indent) : 'null',
-        );
+      const a = Object.keys(fields).length ? helpers.convert(fields, opts.indent) : 'null';
+      const b = files.length ? helpers.convert(files, opts.indent) : 'null';
+
+      code.push('$body = new http\\Message\\Body;').push(`$body->addForm(${a}, ${b});`);
 
       // remove the contentType header
       if (headerHelpers.hasHeader(source.headersObj, 'content-type')) {
@@ -81,27 +78,33 @@ module.exports = function (source, options) {
 
     default:
       if (source.postData.text) {
-        code.push('$body = new http\\Message\\Body;').push('$body->append(%s);', helpers.convert(source.postData.text)).blank();
+        code
+          .push('$body = new http\\Message\\Body;')
+          .push(`$body->append(${helpers.convert(source.postData.text)});`)
+          .blank();
         hasBody = true;
       }
   }
 
-  code.push('$request->setRequestUrl(%s);', helpers.convert(source.url)).push('$request->setRequestMethod(%s);', helpers.convert(source.method));
+  code.push(`$request->setRequestUrl(${helpers.convert(source.url)});`).push(`$request->setRequestMethod(${helpers.convert(source.method)});`);
 
   if (hasBody) {
     code.push('$request->setBody($body);').blank();
   }
 
   if (Object.keys(source.queryObj).length) {
-    code.push('$request->setQuery(new http\\QueryString(%s));', helpers.convert(source.queryObj, opts.indent)).blank();
+    code.push(`$request->setQuery(new http\\QueryString(${helpers.convert(source.queryObj, opts.indent)}));`).blank();
   }
 
   if (Object.keys(source.headersObj).length) {
-    code.push('$request->setHeaders(%s);', helpers.convert(source.headersObj, opts.indent)).blank();
+    code.push(`$request->setHeaders(${helpers.convert(source.headersObj, opts.indent)});`).blank();
   }
 
   if (Object.keys(source.cookiesObj).length) {
-    code.blank().push('$client->setCookies(%s);', helpers.convert(source.cookiesObj, opts.indent)).blank();
+    code
+      .blank()
+      .push(`$client->setCookies(${helpers.convert(source.cookiesObj, opts.indent)});`)
+      .blank();
   }
 
   code.push('$client->enqueue($request)->send();').push('$response = $client->getResponse();').blank().push('echo $response->getBody();');

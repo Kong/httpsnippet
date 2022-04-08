@@ -19,7 +19,7 @@ module.exports = function (source, options) {
   code.push('library(httr)').blank();
 
   // Set URL
-  code.push('url <- "%s"', source.url).blank();
+  code.push(`url <- "${source.url}"`).blank();
 
   // Construct query string
   const qs = source.queryObj;
@@ -27,7 +27,7 @@ module.exports = function (source, options) {
   delete source.queryObj.key;
 
   if (source.queryString.length === 1) {
-    code.push('queryString <- list(%s = "%s")', Object.keys(qs), Object.values(qs).toString()).blank();
+    code.push(`queryString <- list(${Object.keys(qs)} = "${Object.values(qs).toString()}")`).blank();
   } else if (source.queryString.length > 1) {
     let count = 1;
 
@@ -35,9 +35,9 @@ module.exports = function (source, options) {
 
     for (const query in qs) {
       if (count++ !== queryCount - 1) {
-        code.push('  %s = "%s",', query, qs[query].toString());
+        code.push(`  ${query} = "${qs[query].toString()}",`);
       } else {
-        code.push('  %s = "%s"', query, qs[query].toString());
+        code.push(`  ${query} = "${qs[query].toString()}"`);
       }
     }
 
@@ -48,7 +48,7 @@ module.exports = function (source, options) {
   const payload = JSON.stringify(source.postData.text);
 
   if (payload) {
-    code.push('payload <- %s', payload).blank();
+    code.push(`payload <- ${payload}`).blank();
   }
 
   // Define encode
@@ -87,23 +87,23 @@ module.exports = function (source, options) {
       cookies = ', set_cookies(`' + headers[head].replace(/;/g, '", `').replace(/` /g, '`').replace(/=/g, '` = "') + '")';
       headerCount = headerCount - 1;
     } else if (head.toLowerCase() !== 'content-type') {
-      header = header + head.replace('-', '_') + " = '" + headers[head];
+      header = header + head.replace('-', '_') + ' = \'' + headers[head];
       if (headerCount > 1) {
-        header = header + "', ";
+        header = header + '\', ';
       }
     }
   }
 
   // Construct request
   const method = source.method;
-  let request = util.format('response <- VERB("%s", url', method);
+  let request = `response <- VERB("${method}", url`;
 
   if (payload) {
     request += ', body = payload';
   }
 
   if (header !== '') {
-    request += ', add_headers(' + header + "')";
+    request += ', add_headers(' + header + '\')';
   }
 
   if (source.queryString.length) {

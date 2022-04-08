@@ -163,7 +163,7 @@ describe('Custom targets', function () {
       }.should.throw(Error));
     });
 
-    it("should throw if the client's target does not exist", function () {
+    it('should throw if the client\'s target does not exist', function () {
       (function () {
         HTTPSnippet.addTargetClient('node.js', customClient);
       }.should.throw(Error));

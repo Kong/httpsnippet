@@ -21,21 +21,21 @@ module.exports = function (source, options) {
   const code = new CodeBuilder(opts.indent);
 
   code.push('HttpRequest request = HttpRequest.newBuilder()');
-  code.push(2, '.uri(URI.create("%s"))', source.fullUrl);
+  code.push(2, `.uri(URI.create("${source.fullUrl}"))`);
 
   const headers = Object.keys(source.allHeaders);
 
   // construct headers
   if (headers.length) {
     headers.forEach(function (key) {
-      code.push(2, '.header("%s", "%s")', key, source.allHeaders[key]);
+      code.push(2, `.header("${key}", "${source.allHeaders[key]}")`);
     });
   }
 
   if (source.postData.text) {
-    code.push(2, '.method("%s", HttpRequest.BodyPublishers.ofString(%s))', source.method.toUpperCase(), JSON.stringify(source.postData.text));
+    code.push(2, `.method("${source.method.toUpperCase()}", HttpRequest.BodyPublishers.ofString(${JSON.stringify(source.postData.text)}))`);
   } else {
-    code.push(2, '.method("%s", HttpRequest.BodyPublishers.noBody())', source.method.toUpperCase());
+    code.push(2, `.method("${source.method.toUpperCase()}", HttpRequest.BodyPublishers.noBody())`);
   }
 
   code.push(2, '.build();');

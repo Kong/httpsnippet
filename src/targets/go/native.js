@@ -77,12 +77,12 @@ module.exports = function (source, options) {
   // If we have body content or not create the var and reader or nil
   if (source.postData.text) {
     code
-      .push(indent, 'payload := strings.NewReader(%s)', JSON.stringify(source.postData.text))
+      .push(indent, `payload := strings.NewReader(${JSON.stringify(source.postData.text)})`)
       .blank()
-      .push(indent, 'req, %s := http.NewRequest("%s", url, payload)', errorPlaceholder, source.method)
+      .push(indent, `req, ${errorPlaceholder} := http.NewRequest("${source.method}", url, payload)`)
       .blank();
   } else {
-    code.push(indent, 'req, %s := http.NewRequest("%s", url, nil)', errorPlaceholder, source.method).blank();
+    code.push(indent, `req, ${errorPlaceholder} := http.NewRequest("${source.method}", url, nil)`).blank();
   }
 
   errorCheck();
@@ -90,19 +90,19 @@ module.exports = function (source, options) {
   // Add headers
   if (Object.keys(source.allHeaders).length) {
     Object.keys(source.allHeaders).forEach(function (key) {
-      code.push(indent, 'req.Header.Add("%s", "%s")', key, source.allHeaders[key]);
+      code.push(indent, `req.Header.Add("${key}", "${source.allHeaders[key]}")`);
     });
 
     code.blank();
   }
 
   // Make request
-  code.push(indent, 'res, %s := %s.Do(req)', errorPlaceholder, client);
+  code.push(indent, `res, ${errorPlaceholder} := ${client}.Do(req)`);
   errorCheck();
 
   // Get Body
   if (opts.printBody) {
-    code.blank().push(indent, 'defer res.Body.Close()').push(indent, 'body, %s := ioutil.ReadAll(res.Body)', errorPlaceholder);
+    code.blank().push(indent, 'defer res.Body.Close()').push(indent, `body, ${errorPlaceholder} := ioutil.ReadAll(res.Body)`);
     errorCheck();
   }
 

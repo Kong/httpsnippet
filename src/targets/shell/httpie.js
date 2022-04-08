@@ -49,27 +49,27 @@ module.exports = function (source, options) {
   }
 
   if (opts.print) {
-    flags.push(util.format('%s=%s', opts.short ? '-p' : '--print', opts.print));
+    flags.push(`${opts.short ? '-p' : '--print'}=${opts.print}`);
   }
 
   if (opts.verify) {
-    flags.push(util.format('--verify=%s', opts.verify));
+    flags.push(`--verify=${opts.verify}`);
   }
 
   if (opts.cert) {
-    flags.push(util.format('--cert=%s', opts.cert));
+    flags.push(`--cert=${opts.cert}`);
   }
 
   if (opts.pretty) {
-    flags.push(util.format('--pretty=%s', opts.pretty));
+    flags.push(`--pretty=${opts.pretty}`);
   }
 
   if (opts.style) {
-    flags.push(util.format('--style=%s', opts.pretty));
+    flags.push(`--style=${opts.pretty}`);
   }
 
   if (opts.timeout) {
-    flags.push(util.format('--timeout=%s', opts.timeout));
+    flags.push(`--timeout=${opts.timeout}`);
   }
 
   // construct query params
@@ -81,10 +81,10 @@ module.exports = function (source, options) {
 
       if (Array.isArray(value)) {
         value.forEach(function (val) {
-          code.push('%s==%s', name, shell.quote(val));
+          code.push(`${name}==${shell.quote(val)}`);
         });
       } else {
-        code.push('%s==%s', name, shell.quote(value));
+        code.push(`${name}==${shell.quote(value)}`);
       }
     });
   }
@@ -93,7 +93,7 @@ module.exports = function (source, options) {
   Object.keys(source.allHeaders)
     .sort()
     .forEach(function (key) {
-      code.push('%s:%s', key, shell.quote(source.allHeaders[key]));
+      code.push(`${key}:${shell.quote(source.allHeaders[key])}`);
     });
 
   if (source.postData.mimeType === 'application/x-www-form-urlencoded') {
@@ -102,7 +102,7 @@ module.exports = function (source, options) {
       flags.push(opts.short ? '-f' : '--form');
 
       source.postData.params.forEach(function (param) {
-        code.push('%s=%s', param.name, shell.quote(param.value));
+        code.push(`${param.name}=${shell.quote(param.value)}`);
       });
     }
   } else {

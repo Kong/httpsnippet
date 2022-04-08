@@ -18,15 +18,15 @@ module.exports = function (source, options) {
   // Check which protocol to be used for the client connection
   const protocol = source.uriObj.protocol;
   if (protocol === 'https:') {
-    code.push('conn = http.client.HTTPSConnection("%s")', source.uriObj.host).blank();
+    code.push(`conn = http.client.HTTPSConnection("${source.uriObj.host}")`).blank();
   } else {
-    code.push('conn = http.client.HTTPConnection("%s")', source.uriObj.host).blank();
+    code.push(`conn = http.client.HTTPConnection("${source.uriObj.host}")`).blank();
   }
 
   // Create payload string if it exists
   const payload = JSON.stringify(source.postData.text);
   if (payload) {
-    code.push('payload = %s', payload).blank();
+    code.push(`payload = ${payload}`).blank();
   }
 
   // Create Headers
@@ -34,7 +34,7 @@ module.exports = function (source, options) {
   const headerCount = Object.keys(headers).length;
   if (headerCount === 1) {
     for (const header in headers) {
-      code.push('headers = { \'%s\': "%s" }', header, headers[header]).blank();
+      code.push(`headers = { '${header}': "${headers[header]}" }`).blank();
     }
   } else if (headerCount > 1) {
     let count = 1;
@@ -43,9 +43,9 @@ module.exports = function (source, options) {
 
     for (const header in headers) {
       if (count++ !== headerCount) {
-        code.push('    \'%s\': "%s",', header, headers[header]);
+        code.push(`    '${header}': "${headers[header]}",`);
       } else {
-        code.push('    \'%s\': "%s"', header, headers[header]);
+        code.push(`    '${header}': "${headers[header]}"`);
       }
     }
 
@@ -56,13 +56,13 @@ module.exports = function (source, options) {
   const method = source.method;
   const path = source.uriObj.path;
   if (payload && headerCount) {
-    code.push('conn.request("%s", "%s", payload, headers)', method, path);
+    code.push(`conn.request("${method}", "${path}", payload, headers)`);
   } else if (payload && !headerCount) {
-    code.push('conn.request("%s", "%s", payload)', method, path);
+    code.push(`conn.request("${method}", "${path}", payload)`);
   } else if (!payload && headerCount) {
-    code.push('conn.request("%s", "%s", headers=headers)', method, path);
+    code.push(`conn.request("${method}", "${path}", headers=headers)`);
   } else {
-    code.push('conn.request("%s", "%s")', method, path);
+    code.push(`conn.request("${method}", "${path}")`);
   }
 
   // Get Response

@@ -3,10 +3,10 @@ const CodeBuilder = require('../../helpers/code-builder');
 module.exports = function (source, options) {
   const code = new CodeBuilder();
 
-  code.push("require 'uri'").push("require 'net/http'");
+  code.push('require \'uri\'').push('require \'net/http\'');
 
   if (source.uriObj.protocol === 'https:') {
-    code.push("require 'openssl'");
+    code.push('require \'openssl\'');
   }
 
   code.blank();
@@ -18,31 +18,31 @@ module.exports = function (source, options) {
   const capMethod = method.charAt(0) + method.substring(1).toLowerCase();
   if (methods.indexOf(method) < 0) {
     code
-      .push('class Net::HTTP::%s < Net::HTTPRequest', capMethod)
-      .push("  METHOD = '%s'", method.toUpperCase())
-      .push("  REQUEST_HAS_BODY = '%s'", source.postData.text ? 'true' : 'false')
+      .push(`class Net::HTTP::${capMethod} < Net::HTTPRequest`)
+      .push(`  METHOD = '${method.toUpperCase()}'`)
+      .push(`  REQUEST_HAS_BODY = '${source.postData.text ? 'true' : 'false'}'`)
       .push('  RESPONSE_HAS_BODY = true')
       .push('end')
       .blank();
   }
 
-  code.push('url = URI("%s")', source.fullUrl).blank().push('http = Net::HTTP.new(url.host, url.port)');
+  code.push(`url = URI("${source.fullUrl}")`).blank().push('http = Net::HTTP.new(url.host, url.port)');
 
   if (source.uriObj.protocol === 'https:') {
     code.push('http.use_ssl = true').push('http.verify_mode = OpenSSL::SSL::VERIFY_NONE');
   }
 
-  code.blank().push('request = Net::HTTP::%s.new(url)', capMethod);
+  code.blank().push(`request = Net::HTTP::${capMethod}.new(url)`);
 
   const headers = Object.keys(source.allHeaders);
   if (headers.length) {
     headers.forEach(function (key) {
-      code.push('request["%s"] = \'%s\'', key, source.allHeaders[key]);
+      code.push(`request["${key}"] = '${source.allHeaders[key]}'`);
     });
   }
 
   if (source.postData.text) {
-    code.push('request.body = %s', JSON.stringify(source.postData.text));
+    code.push(`request.body = ${JSON.stringify(source.postData.text)}`);
   }
 
   code.blank().push('response = http.request(request)').push('puts response.read_body');

@@ -53,12 +53,12 @@ module.exports = function (source, options) {
       }
   }
 
-  code.push('var options = %s;', stringifyObject(reqOpts, { indent: '  ', inlineCharacterLimit: 80 })).blank();
+  code.push(`var options = ${stringifyObject(reqOpts, { indent: '  ', inlineCharacterLimit: 80 })};`).blank();
 
   code
-    .push(util.format('axios.request(options).then(%s', 'function (response) {'))
+    .push('axios.request(options).then(function (response) {')
     .push(1, 'console.log(response.data);')
-    .push('}).catch(%s', 'function (error) {')
+    .push('}).catch(function (error) {')
     .push(1, 'console.error(error);')
     .push('});');
 

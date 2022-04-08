@@ -14,5 +14,5 @@ describe('CodeBuilder', () => {
       const result = builder.buildLine(output, 2);
       expect(result).toEqual('console.log("\t\thello world")');
     });
-  })
-})
+  });
+});

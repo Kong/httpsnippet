@@ -47,16 +47,12 @@ module.exports = function (source, options) {
         code
           .blank()
           .push(
-            'NSMutableData *postData = [[NSMutableData alloc] initWithData:[@"%s=%s" dataUsingEncoding:NSUTF8StringEncoding]];',
-            source.postData.params[0].name,
-            source.postData.params[0].value,
+            `NSMutableData *postData = [[NSMutableData alloc] initWithData:[@"${source.postData.params[0].name}=${source.postData.params[0].value}" dataUsingEncoding:NSUTF8StringEncoding]];`,
           );
 
         for (let i = 1, len = source.postData.params.length; i < len; i++) {
           code.push(
-            '[postData appendData:[@"&%s=%s" dataUsingEncoding:NSUTF8StringEncoding]];',
-            source.postData.params[i].name,
-            source.postData.params[i].value,
+            `[postData appendData:[@"&${source.postData.params[i].name}=${source.postData.params[i].value}" dataUsingEncoding:NSUTF8StringEncoding]];`,
           );
         }
         break;
@@ -76,7 +72,7 @@ module.exports = function (source, options) {
         // The user can just edit the parameters NSDictionary or put this part of a snippet in a multipart builder method.
         code
           .push(helpers.nsDeclaration('NSArray', 'parameters', source.postData.params, opts.pretty))
-          .push('NSString *boundary = @"%s";', source.postData.boundary)
+          .push(`NSString *boundary = @"${source.postData.boundary}";`)
           .blank()
           .push('NSError *error;')
           .push('NSMutableString *body = [NSMutableString string];')
@@ -147,5 +143,5 @@ module.exports.info = {
   key: 'nsurlsession',
   title: 'NSURLSession',
   link: 'https://developer.apple.com/library/mac/documentation/Foundation/Reference/NSURLSession_class/index.html',
-  description: "Foundation's NSURLSession request",
+  description: 'Foundation\'s NSURLSession request',
 };

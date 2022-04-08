@@ -43,7 +43,7 @@ module.exports = function (source, options) {
       code.push('const form = new FormData();');
 
       source.postData.params.forEach(function (param) {
-        code.push('form.append(%s, %s);', JSON.stringify(param.name), JSON.stringify(param.value || param.fileName || ''));
+        code.push(`form.append(${JSON.stringify(param.name)}, ${JSON.stringify(param.value || param.fileName || '')});`);
       });
 
       settings.processData = false;

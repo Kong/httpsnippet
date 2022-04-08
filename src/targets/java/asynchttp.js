@@ -30,12 +30,12 @@ module.exports = function (source, options) {
   // construct headers
   if (headers.length) {
     headers.forEach(function (key) {
-      code.push(1, '.setHeader("%s", "%s")', key, source.allHeaders[key]);
+      code.push(1, `.setHeader("${key}", "${source.allHeaders[key]}")`);
     });
   }
 
   if (source.postData.text) {
-    code.push(1, '.setBody(%s)', JSON.stringify(source.postData.text));
+    code.push(1, `.setBody(${JSON.stringify(source.postData.text)})`);
   }
 
   code.push(1, '.execute()');

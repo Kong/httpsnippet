@@ -60,8 +60,8 @@ module.exports = {
 
       case '[object Object]': {
         const keyValuePairs = [];
-        for (const k in value) {
-          keyValuePairs.push(util.format('@"%s": %s', k, this.literalRepresentation(value[k])));
+        for (const key in value) {
+          keyValuePairs.push(`@"${key}": ${this.literalRepresentation(value[key])}`);
         }
         return '@{ ' + keyValuePairs.join(join) + ' }';
       }

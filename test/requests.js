@@ -26,10 +26,10 @@ fixtures.cli.forEach(function (cli) {
   describe(targets[cli.target].info.title + ' Request Validation', function () {
     cli.clients.forEach(function (client) {
       requests.forEach(function (request) {
-        it(client + ' request should match mock for ' + request, function (done) {
+        it(`${client} request should match mock for ${request}`, function (done) {
           let stdout = '';
-          const fixture = cli.target + '/' + client + '/' + request + HTTPSnippet.extname(cli.target);
-          const command = util.format(cli.run, base + fixture);
+          const fixture = `${cli.target}/${client}/${request}${HTTPSnippet.extname(cli.target)}`;
+          const command = util.format(cli.run, `${base}${fixture}`);
 
           const ls = shell.exec(command);
 

@@ -143,7 +143,7 @@ module.exports = function (source, options) {
       break;
   }
 
-  code.push("(require '[clj-http.client :as client])\n");
+  code.push('(require \'[clj-http.client :as client])\n');
 
   if (objEmpty(filterEmpty(params))) {
     code.push(`(client/${source.method.toLowerCase()} "${source.url}")`);

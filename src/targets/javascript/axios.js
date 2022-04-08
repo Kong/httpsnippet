@@ -51,7 +51,7 @@ module.exports = function (source, options) {
       code.push('const form = new FormData();');
 
       source.postData.params.forEach(function (param) {
-        code.push('form.append(%s, %s);', JSON.stringify(param.name), JSON.stringify(param.value || param.fileName || ''));
+        code.push(`form.append(${JSON.stringify(param.name)}, ${JSON.stringify(param.value || param.fileName || '')});`);
       });
 
       code.blank();
@@ -65,12 +65,12 @@ module.exports = function (source, options) {
       }
   }
 
-  code.push('const options = %s;', stringifyObject(reqOpts, { indent: '  ', inlineCharacterLimit: 80 }).replace('"[form]"', 'form')).blank();
+  code.push(`const options = ${stringifyObject(reqOpts, { indent: '  ', inlineCharacterLimit: 80 }).replace('"[form]"', 'form')};`).blank();
 
   code
-    .push(util.format('axios.request(options).then(%s', 'function (response) {'))
+    .push('axios.request(options).then(function (response) {')
     .push(1, 'console.log(response.data);')
-    .push('}).catch(%s', 'function (error) {')
+    .push('}).catch(function (error) {')
     .push(1, 'console.error(error);')
     .push('});');
 

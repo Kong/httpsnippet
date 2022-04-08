@@ -87,7 +87,7 @@ module.exports = function (source, options) {
 
   curlOptions.forEach(function (option) {
     if (!~[null, undefined].indexOf(option.value)) {
-      curlopts.push(util.format('%s => %s,', option.name, option.escape ? JSON.stringify(option.value) : option.value));
+      curlopts.push(`${option.name} => ${option.escape ? JSON.stringify(option.value) : option.value},`);
     }
   });
 
@@ -97,14 +97,14 @@ module.exports = function (source, options) {
   });
 
   if (cookies.length) {
-    curlopts.push(util.format('CURLOPT_COOKIE => "%s",', cookies.join('; ')));
+    curlopts.push(`CURLOPT_COOKIE => "${cookies.join('; ')}",`);
   }
 
   // construct cookies
   const headers = Object.keys(source.headersObj)
     .sort()
     .map(function (key) {
-      return util.format('"%s: %s"', key, source.headersObj[key]);
+      return `"${key}: ${source.headersObj[key]}"`;
     });
 
   if (headers.length) {

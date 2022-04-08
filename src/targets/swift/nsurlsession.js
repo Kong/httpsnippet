@@ -48,12 +48,10 @@ module.exports = function (source, options) {
         code
           .blank()
           .push(
-            'let postData = NSMutableData(data: "%s=%s".data(using: String.Encoding.utf8)!)',
-            source.postData.params[0].name,
-            source.postData.params[0].value,
+            `let postData = NSMutableData(data: "${source.postData.params[0].name}=${source.postData.params[0].value}".data(using: String.Encoding.utf8)!)`,
           );
         for (let i = 1, len = source.postData.params.length; i < len; i++) {
-          code.push('postData.append("&%s=%s".data(using: String.Encoding.utf8)!)', source.postData.params[i].name, source.postData.params[i].value);
+          code.push(`postData.append("&${source.postData.params[i].name}=${source.postData.params[i].value}".data(using: String.Encoding.utf8)!)`);
         }
         break;
 
@@ -75,7 +73,7 @@ module.exports = function (source, options) {
         code
           .push(helpers.literalDeclaration('parameters', source.postData.params, opts))
           .blank()
-          .push('let boundary = "%s"', source.postData.boundary)
+          .push(`let boundary = "${source.postData.boundary}"`)
           .blank()
           .push('var body = ""')
           .push('var error: NSError? = nil')
@@ -99,17 +97,17 @@ module.exports = function (source, options) {
         break;
 
       default:
-        code.blank().push('let postData = NSData(data: "%s".data(using: String.Encoding.utf8)!)', source.postData.text);
+        code.blank().push(`let postData = NSData(data: "${source.postData.text}".data(using: String.Encoding.utf8)!)`);
     }
   }
 
   code
     .blank()
     // NSURLRequestUseProtocolCachePolicy is the default policy, let's just always set it to avoid confusion.
-    .push('let request = NSMutableURLRequest(url: NSURL(string: "%s")! as URL,', source.fullUrl)
+    .push(`let request = NSMutableURLRequest(url: NSURL(string: "${source.fullUrl}")! as URL,`)
     .push('                                        cachePolicy: .useProtocolCachePolicy,')
-    .push('                                    timeoutInterval: %s)', parseInt(opts.timeout, 10).toFixed(1))
-    .push('request.httpMethod = "%s"', source.method);
+    .push(`                                    timeoutInterval: ${parseInt(opts.timeout, 10).toFixed(1)})`)
+    .push(`request.httpMethod = "${source.method}"`);
 
   if (req.hasHeaders) {
     code.push('request.allHTTPHeaderFields = headers');
@@ -142,5 +140,5 @@ module.exports.info = {
   key: 'nsurlsession',
   title: 'NSURLSession',
   link: 'https://developer.apple.com/library/mac/documentation/Foundation/Reference/NSURLSession_class/index.html',
-  description: "Foundation's NSURLSession request",
+  description: 'Foundation\'s NSURLSession request',
 };

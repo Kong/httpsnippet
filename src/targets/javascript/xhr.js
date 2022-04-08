@@ -24,14 +24,14 @@ module.exports = function (source, options) {
 
   switch (source.postData.mimeType) {
     case 'application/json':
-      code.push('const data = JSON.stringify(%s);', JSON.stringify(source.postData.jsonObj, null, opts.indent)).push(null);
+      code.push(`const data = JSON.stringify(${JSON.stringify(source.postData.jsonObj, null, opts.indent)});`).push(null);
       break;
 
     case 'multipart/form-data':
       code.push('const data = new FormData();');
 
       source.postData.params.forEach(function (param) {
-        code.push('data.append(%s, %s);', JSON.stringify(param.name), JSON.stringify(param.value || param.fileName || ''));
+        code.push(`data.append(${JSON.stringify(param.name)}, ${JSON.stringify(param.value || param.fileName || '')});`);
       });
 
       // remove the contentType header
@@ -45,7 +45,7 @@ module.exports = function (source, options) {
       break;
 
     default:
-      code.push('const data = %s;', JSON.stringify(source.postData.text || null)).blank();
+      code.push(`const data = ${JSON.stringify(source.postData.text || null)};`).blank();
   }
 
   code.push('const xhr = new XMLHttpRequest();');
@@ -62,10 +62,10 @@ module.exports = function (source, options) {
     .push(1, '}')
     .push('});')
     .blank()
-    .push('xhr.open(%s, %s);', JSON.stringify(source.method), JSON.stringify(source.fullUrl));
+    .push(`xhr.open(${JSON.stringify(source.method)}, ${JSON.stringify(source.fullUrl)});`);
 
   Object.keys(source.allHeaders).forEach(function (key) {
-    code.push('xhr.setRequestHeader(%s, %s);', JSON.stringify(key), JSON.stringify(source.allHeaders[key]));
+    code.push(`xhr.setRequestHeader(${JSON.stringify(key)}, ${JSON.stringify(source.allHeaders[key])});`);
   });
 
   code.blank().push('xhr.send(data);');

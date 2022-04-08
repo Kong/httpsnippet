@@ -38,7 +38,7 @@ module.exports = function (source, options) {
   const requestUrl = opts.absoluteURI ? source.fullUrl : source.uriObj.path;
 
   // RFC 7230 Section 3.1.1. Request-Line
-  code.push('%s %s %s', source.method, requestUrl, source.httpVersion);
+  code.push(`${source.method} ${requestUrl} ${source.httpVersion}`);
 
   // RFC 7231 Section 5. Header Fields
   Object.keys(source.allHeaders).forEach(function (key) {
@@ -47,13 +47,13 @@ module.exports = function (source, options) {
       return x.toUpperCase();
     });
 
-    code.push('%s', util.format('%s: %s', keyCapitalized, source.allHeaders[key]));
+    code.push(`${keyCapitalized}: ${source.allHeaders[key]}`);
   });
 
   // RFC 7230 Section 5.4. Host
   // Automatically set Host header if option is on and on header already exists.
   if (opts.autoHost && Object.keys(source.allHeaders).indexOf('host') === -1) {
-    code.push('Host: %s', source.uriObj.host);
+    code.push(`Host: ${source.uriObj.host}`);
   }
 
   // RFC 7230 Section 3.3.3. Message Body Length

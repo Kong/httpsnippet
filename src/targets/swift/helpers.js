@@ -37,7 +37,7 @@ module.exports = {
    * @return {string}
    */
   literalDeclaration: function (name, parameters, opts) {
-    return util.format('let %s = %s', name, this.literalRepresentation(parameters, opts));
+    return `let ${name} = ${this.literalRepresentation(parameters, opts)}`;
   },
 
   /**
@@ -71,8 +71,8 @@ module.exports = {
 
       case '[object Object]': {
         const keyValuePairs = [];
-        for (const k in value) {
-          keyValuePairs.push(util.format('"%s": %s', k, this.literalRepresentation(value[k], opts, indentLevel)));
+        for (const key in value) {
+          keyValuePairs.push(`"${key}": ${this.literalRepresentation(value[key], opts, indentLevel)}`);
         }
         return concatArray(keyValuePairs, opts.pretty && keyValuePairs.length > 1, opts.indent, indentLevel);
       }

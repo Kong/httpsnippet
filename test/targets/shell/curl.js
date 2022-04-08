@@ -9,7 +9,7 @@ module.exports = function (HTTPSnippet, fixtures) {
 
     result.should.be.a.String();
     result.should.eql(
-      "curl -X POST 'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value' -H 'accept: application/json' -H 'content-type: application/x-www-form-urlencoded' -b 'foo=bar; bar=baz' -d foo=bar",
+      'curl -X POST \'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value\' -H \'accept: application/json\' -H \'content-type: application/x-www-form-urlencoded\' -b \'foo=bar; bar=baz\' -d foo=bar',
     );
   });
 
@@ -22,7 +22,7 @@ module.exports = function (HTTPSnippet, fixtures) {
 
     result.should.be.a.String();
     result.should.eql(
-      "curl -X POST 'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value' -H 'accept: application/json' -H 'content-type: application/x-www-form-urlencoded' -b 'foo=bar; bar=baz' --data-binary foo=bar",
+      'curl -X POST \'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value\' -H \'accept: application/json\' -H \'content-type: application/x-www-form-urlencoded\' -b \'foo=bar; bar=baz\' --data-binary foo=bar',
     );
   });
 
@@ -34,7 +34,7 @@ module.exports = function (HTTPSnippet, fixtures) {
     });
 
     result.should.be.a.String();
-    result.should.eql("curl -X GET -g 'http://mockbin.com/har?foo[bar]=baz,zap&fiz=buz&key=value'");
+    result.should.eql('curl -X GET -g \'http://mockbin.com/har?foo[bar]=baz,zap&fiz=buz&key=value\'');
   });
 
   it('should use long globoff option', function () {
@@ -44,7 +44,7 @@ module.exports = function (HTTPSnippet, fixtures) {
     });
 
     result.should.be.a.String();
-    result.should.eql("curl --request GET --globoff --url 'http://mockbin.com/har?foo[bar]=baz,zap&fiz=buz&key=value'");
+    result.should.eql('curl --request GET --globoff --url \'http://mockbin.com/har?foo[bar]=baz,zap&fiz=buz&key=value\'');
   });
 
   it('should not de-glob when globoff is false', function () {
@@ -54,7 +54,7 @@ module.exports = function (HTTPSnippet, fixtures) {
     });
 
     result.should.be.a.String();
-    result.should.eql("curl --request GET --url 'http://mockbin.com/har?foo%5Bbar%5D=baz%2Czap&fiz=buz&key=value'");
+    result.should.eql('curl --request GET --url \'http://mockbin.com/har?foo%5Bbar%5D=baz%2Czap&fiz=buz&key=value\'');
   });
 
   it('should use --http1.0 for HTTP/1.0', function () {
@@ -75,7 +75,7 @@ module.exports = function (HTTPSnippet, fixtures) {
     result
       .replace(/\\\n/g, '')
       .should.eql(
-        "curl --request POST @--url 'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value' @--header 'accept: application/json' @--header 'content-type: application/x-www-form-urlencoded' @--cookie 'foo=bar; bar=baz' @--data foo=bar",
+        'curl --request POST @--url \'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value\' @--header \'accept: application/json\' @--header \'content-type: application/x-www-form-urlencoded\' @--cookie \'foo=bar; bar=baz\' @--data foo=bar',
       );
   });
 };

@@ -47,7 +47,7 @@ module.exports = function (source, options) {
       code.push('const form = new FormData();');
 
       source.postData.params.forEach(function (param) {
-        code.push('form.append(%s, %s);', JSON.stringify(param.name), JSON.stringify(param.value || param.fileName || ''));
+        code.push(`form.append(${JSON.stringify(param.name)}, ${JSON.stringify(param.value || param.fileName || '')});`);
       });
 
       code.blank();
@@ -61,8 +61,7 @@ module.exports = function (source, options) {
 
   code
     .push(
-      'const options = %s;',
-      stringifyObject(options, {
+      `const options = ${stringifyObject(options, {
         indent: opts.indent,
         inlineCharacterLimit: 80,
         transform: (object, property, originalResult) => {
@@ -72,7 +71,7 @@ module.exports = function (source, options) {
 
           return originalResult;
         },
-      }),
+      })};`,
     )
     .blank();
 
@@ -81,7 +80,7 @@ module.exports = function (source, options) {
   }
 
   code
-    .push("fetch('%s', options)", source.fullUrl)
+    .push(`fetch('${source.fullUrl}', options)`)
     .push(1, '.then(response => response.json())')
     .push(1, '.then(response => console.log(response))')
     .push(1, '.catch(err => console.error(err));');

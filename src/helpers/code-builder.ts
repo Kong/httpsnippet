@@ -25,11 +25,7 @@ export class CodeBuilder {
   /**
    * Add given indentation level to given string and format the string (variadic)
    */
-  buildLine: LineBuilder<null | string> = (
-    line,
-    indentationLevel = DEFAULT_INDENTATION,
-    ...placeholders
-  ) => {
+  buildLine: LineBuilder<null | string> = (line, indentationLevel = DEFAULT_INDENTATION, ...placeholders) => {
     let lineIndentation = '';
     if (indentationLevel === null) {
       return null;
@@ -47,11 +43,7 @@ export class CodeBuilder {
   /**
    * Add the line at the beginning of the current lines
    */
-  unshift: LineBuilder<CodeBuilder> = (
-    line,
-    indentationLevel = DEFAULT_INDENTATION,
-    ...placeholders
-  ) => {
+  unshift: LineBuilder<CodeBuilder> = (line, indentationLevel = DEFAULT_INDENTATION, ...placeholders) => {
     const newLine = this.buildLine(line, indentationLevel, ...placeholders);
     this.code.unshift(newLine);
     return this;
@@ -60,11 +52,7 @@ export class CodeBuilder {
   /**
    * Add the line at the end of the current lines
    */
-  push : LineBuilder<CodeBuilder> = (
-    line,
-    indentationLevel = DEFAULT_INDENTATION,
-    ...placeholders
-  ) => {
+  push: LineBuilder<CodeBuilder> = (line, indentationLevel = DEFAULT_INDENTATION, ...placeholders) => {
     const newLine = this.buildLine(line, indentationLevel, ...placeholders);
     this.code.push(newLine);
     return this;

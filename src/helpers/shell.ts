@@ -17,6 +17,4 @@ export const quote = (value: string) => {
   return format("'%s'", value.replace(/'/g, "'\\''"));
 };
 
-export const escape = (value: string) => value
-  .replace(/\r/g, '\\r')
-  .replace(/\n/g, '\\n');
+export const escape = (value: string) => value.replace(/\r/g, '\\r').replace(/\n/g, '\\n');

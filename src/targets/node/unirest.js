@@ -21,36 +21,39 @@ module.exports = function (source, options) {
   let includeFS = false;
   const code = new CodeBuilder(opts.indent);
 
-  code.push('const unirest = require("unirest");').blank().push('const req = unirest("%s", "%s");', source.method, source.url).blank();
+  code.push('const unirest = require("unirest");').blank().push(`const req = unirest("${source.method}", "${source.url}");`).blank();
 
   if (source.cookies.length) {
     code.push('const CookieJar = unirest.jar();');
 
     source.cookies.forEach(function (cookie) {
-      code.push('CookieJar.add("%s=%s","%s");', encodeURIComponent(cookie.name), encodeURIComponent(cookie.value), source.url);
+      code.push(`CookieJar.add("${encodeURIComponent(cookie.name)}=${encodeURIComponent(cookie.value)}","${source.url}");`);
     });
 
     code.push('req.jar(CookieJar);').blank();
   }
 
   if (Object.keys(source.queryObj).length) {
-    code.push('req.query(%s);', JSON.stringify(source.queryObj, null, opts.indent)).blank();
+    code.push(`req.query(${JSON.stringify(source.queryObj, null, opts.indent)});`).blank();
   }
 
   if (Object.keys(source.headersObj).length) {
-    code.push('req.headers(%s);', JSON.stringify(source.headersObj, null, opts.indent)).blank();
+    code.push(`req.headers(${JSON.stringify(source.headersObj, null, opts.indent)});`).blank();
   }
 
   switch (source.postData.mimeType) {
     case 'application/x-www-form-urlencoded':
       if (source.postData.paramsObj) {
-        code.push('req.form(%s);', JSON.stringify(source.postData.paramsObj, null, opts.indent)).blank();
+        code.push(`req.form(${JSON.stringify(source.postData.paramsObj, null, opts.indent)});`).blank();
       }
       break;
 
     case 'application/json':
       if (source.postData.jsonObj) {
-        code.push('req.type("json");').push('req.send(%s);', JSON.stringify(source.postData.jsonObj, null, opts.indent)).blank();
+        code
+          .push('req.type("json");')
+          .push(`req.send(${JSON.stringify(source.postData.jsonObj, null, opts.indent)});`)
+          .blank();
       }
       break;
 
@@ -77,13 +80,13 @@ module.exports = function (source, options) {
         }
       });
 
-      code.push('req.multipart(%s);', JSON.stringify(multipart, null, opts.indent)).blank();
+      code.push(`req.multipart(${JSON.stringify(multipart, null, opts.indent)});`).blank();
       break;
     }
 
     default:
       if (source.postData.text) {
-        code.push('req.send(%s);', JSON.stringify(source.postData.text, null, opts.indent)).blank();
+        code.push(`req.send(${JSON.stringify(source.postData.text, null, opts.indent)});`).blank();
       }
   }
 
