@@ -8,8 +8,8 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-import { Client } from '../../targets';
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { Client } from '../../targets';
 
 export interface CurlOptions {
   closingTag?: boolean;
@@ -108,7 +108,9 @@ export const curl: Client<CurlOptions> = {
     });
 
     // construct cookies
-    const curlCookies = cookies.map(cookie => `${encodeURIComponent(cookie.name)}=${encodeURIComponent(cookie.value)}`);
+    const curlCookies = cookies.map(
+      cookie => `${encodeURIComponent(cookie.name)}=${encodeURIComponent(cookie.value)}`,
+    );
     if (curlCookies.length) {
       curlopts.push(`CURLOPT_COOKIE => "${curlCookies.join('; ')}",`);
     }

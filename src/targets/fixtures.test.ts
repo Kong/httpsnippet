@@ -1,7 +1,9 @@
-import path from 'path';
-import { availableTargets, extname } from '../helpers/utils';
 import { readdirSync, readFileSync } from 'fs';
+import path from 'path';
+
+import { availableTargets, extname } from '../helpers/utils';
 import { HTTPSnippet, Request } from '../httpsnippet';
+import { ClientId, TargetId } from './targets';
 
 const expectedBasePath = ['src', 'fixtures', 'requests'];
 
@@ -13,25 +15,25 @@ const fixtures: [string, Request][] = inputFileNames.map(inputFileName => [
 ]);
 
 /** useful for debuggin, only run a particular set of targets */
-const targetFilter = [
+const targetFilter: TargetId[] = [
   // put your targetId:
   // 'node',
 ];
 
 /** useful for debuggin, only run a particular set of targets */
-const clientFilter = [
+const clientFilter: ClientId[] = [
   // put your clientId here:
   // 'unirest',
 ];
 
 /** useful for debuggin, only run a particular set of fixtures */
-const fixtureFilter = [
+const fixtureFilter: string[] = [
   // put the name of the fixture file you want to isolate (excluding `.json`):
   // 'multipart-file',
 ];
 
 const testFilter =
-  <T extends {}>(property: keyof T, list: T[keyof T][]) =>
+  <T>(property: keyof T, list: T[keyof T][]) =>
   (item: T) =>
     list.length > 0 ? list.includes(item[property]) : true;
 
@@ -41,7 +43,14 @@ availableTargets()
     describe(`${title} Request Validation`, () => {
       clients.filter(testFilter('key', clientFilter)).forEach(({ key: clientId }) => {
         fixtures.filter(testFilter(0, fixtureFilter)).forEach(([fixture, request]) => {
-          const basePath = path.join('src', 'targets', targetId, clientId, 'fixtures', `${fixture}${extname(targetId)}`);
+          const basePath = path.join(
+            'src',
+            'targets',
+            targetId,
+            clientId,
+            'fixtures',
+            `${fixture}${extname(targetId)}`,
+          );
           const expected = readFileSync(basePath).toString();
           if (expected === '<MISSING>') {
             console.log(`known missing test for ${targetId}:${clientId} "${fixture}"`);
@@ -51,7 +60,8 @@ availableTargets()
           it(`${clientId} request should match fixture for "${fixture}.json"`, () => {
             const { convert } = new HTTPSnippet(request);
             const result = convert(targetId, clientId); //?
-            expect(result).toEqual(expected);
+
+            expect(result).toStrictEqual(expected);
           });
         });
       });

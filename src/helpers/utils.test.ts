@@ -8,12 +8,12 @@ describe('availableTargets', () => {
 
 describe('extname', () => {
   it('returns the correct extension', () => {
-    expect(extname('c')).toEqual('.c');
-    expect(extname('clojure')).toEqual('.clj');
+    expect(extname('c')).toBe('.c');
+    expect(extname('clojure')).toBe('.clj');
   });
 
   it('returns empty string if the extension is not found', () => {
     // @ts-expect-error intentionally incorrect
-    expect(extname('ziltoid')).toEqual('');
+    expect(extname('ziltoid')).toBe('');
   });
 });

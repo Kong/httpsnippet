@@ -1,5 +1,5 @@
-import { Client } from '../../targets';
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { Client } from '../../targets';
 
 export const native: Client = {
   info: {
@@ -23,9 +23,22 @@ export const native: Client = {
     // To support custom methods we check for the supported methods
     // and if doesn't exist then we build a custom class for it
     const method = rawMethod.toUpperCase();
-    const methods = ['GET', 'POST', 'HEAD', 'DELETE', 'PATCH', 'PUT', 'OPTIONS', 'COPY', 'LOCK', 'UNLOCK', 'MOVE', 'TRACE'];
+    const methods = [
+      'GET',
+      'POST',
+      'HEAD',
+      'DELETE',
+      'PATCH',
+      'PUT',
+      'OPTIONS',
+      'COPY',
+      'LOCK',
+      'UNLOCK',
+      'MOVE',
+      'TRACE',
+    ];
     const capMethod = method.charAt(0) + method.substring(1).toLowerCase();
-    if (methods.indexOf(method) < 0) {
+    if (!methods.includes(method)) {
       push(`class Net::HTTP::${capMethod} < Net::HTTPRequest`);
       push(`  METHOD = '${method.toUpperCase()}'`);
       push(`  REQUEST_HAS_BODY = '${postData.text ? 'true' : 'false'}'`);

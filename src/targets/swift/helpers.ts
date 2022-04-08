@@ -1,5 +1,3 @@
-const util = require('util');
-
 /**
  * Create an string of given length filled with blank spaces
  *
@@ -18,9 +16,8 @@ const concatArray = <T>(arr: T[], pretty: boolean, indentation: string, indentLe
 
   if (pretty) {
     return `[\n${currentIndent}${arr.join(join)}\n${closingBraceIndent}]`;
-  } else {
-    return `[${arr.join(join)}]`;
   }
+  return `[${arr.join(join)}]`;
 };
 
 /**
@@ -31,9 +28,8 @@ const concatArray = <T>(arr: T[], pretty: boolean, indentation: string, indentLe
  * @param opts Target options
  * @return {string}
  */
-export const literalDeclaration = <T, U>(name: string, parameters: T, opts: U) => {
-  return `let ${name} = ${literalRepresentation(parameters, opts)}`;
-};
+export const literalDeclaration = <T, U>(name: string, parameters: T, opts: U) =>
+  `let ${name} = ${literalRepresentation(parameters, opts)}`;
 
 /**
  * Create a valid Swift string of a literal value according to its type.
@@ -41,7 +37,11 @@ export const literalDeclaration = <T, U>(name: string, parameters: T, opts: U) =
  * @param value Any JavaScript literal
  * @param opts Target options
  */
-export const literalRepresentation = <T, U>(value: T, opts: U, indentLevel?: number): number | string => {
+export const literalRepresentation = <T, U>(
+  value: T,
+  opts: U,
+  indentLevel?: number,
+): number | string => {
   indentLevel = indentLevel === undefined ? 1 : indentLevel + 1;
 
   switch (Object.prototype.toString.call(value)) {
@@ -67,8 +67,14 @@ export const literalRepresentation = <T, U>(value: T, opts: U, indentLevel?: num
       for (const key in value) {
         keyValuePairs.push(`"${key}": ${literalRepresentation(value[key], opts, indentLevel)}`);
       }
-      // @ts-expect-error needs better types
-      return concatArray(keyValuePairs, opts.pretty && keyValuePairs.length > 1, opts.indent, indentLevel);
+      return concatArray(
+        keyValuePairs,
+        // @ts-expect-error needs better types
+        opts.pretty && keyValuePairs.length > 1,
+        // @ts-expect-error needs better types
+        opts.indent,
+        indentLevel,
+      );
     }
 
     case '[object Boolean]':

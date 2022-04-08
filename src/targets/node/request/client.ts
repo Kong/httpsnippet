@@ -9,8 +9,9 @@
  */
 
 import stringifyObject from 'stringify-object';
-import { Client } from '../../targets';
+
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { Client } from '../../targets';
 
 export const request: Client = {
   info: {
@@ -32,8 +33,8 @@ export const request: Client = {
     blank();
 
     const reqOpts: Record<string, any> = {
-      method: method,
-      url: url,
+      method,
+      url,
     };
 
     if (Object.keys(queryObj).length) {
@@ -103,7 +104,11 @@ export const request: Client = {
       push('const jar = request.jar();');
 
       cookies.forEach(cookie => {
-        push(`jar.setCookie(request.cookie('${encodeURIComponent(cookie.name)}=${encodeURIComponent(cookie.value)}'), '${url}');`);
+        push(
+          `jar.setCookie(request.cookie('${encodeURIComponent(cookie.name)}=${encodeURIComponent(
+            cookie.value,
+          )}'), '${url}');`,
+        );
       });
       blank();
     }
@@ -112,7 +117,9 @@ export const request: Client = {
       unshift("const fs = require('fs');");
     }
 
-    push(`const options = ${stringifyObject(reqOpts, { indent: '  ', inlineCharacterLimit: 80 })};`);
+    push(
+      `const options = ${stringifyObject(reqOpts, { indent: '  ', inlineCharacterLimit: 80 })};`,
+    );
     blank();
 
     push('request(options, function (error, response, body) {');
@@ -123,6 +130,6 @@ export const request: Client = {
 
     return join()
       .replace("'JAR'", 'jar')
-      .replace(/'fs\.createReadStream\((.*)\)'/, `fs.createReadStream('$1')`);
+      .replace(/'fs\.createReadStream\((.*)\)'/, "fs.createReadStream('$1')");
   },
 };

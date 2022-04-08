@@ -8,8 +8,8 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-import { Client } from '../../targets';
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { Client } from '../../targets';
 
 export const okhttp: Client = {
   info: {
@@ -34,7 +34,9 @@ export const okhttp: Client = {
 
     if (postData.text) {
       if (postData.boundary) {
-        push(`val mediaType = MediaType.parse("${postData.mimeType}; boundary=${postData.boundary}")`);
+        push(
+          `val mediaType = MediaType.parse("${postData.mimeType}; boundary=${postData.boundary}")`,
+        );
       } else {
         push(`val mediaType = MediaType.parse("${postData.mimeType}")`);
       }
@@ -43,13 +45,13 @@ export const okhttp: Client = {
 
     push('val request = Request.Builder()');
     push(`.url("${fullUrl}")`, 1);
-    if (methods.indexOf(method.toUpperCase()) === -1) {
+    if (!methods.includes(method.toUpperCase())) {
       if (postData.text) {
         push(`.method("${method.toUpperCase()}", body)`, 1);
       } else {
         push(`.method("${method.toUpperCase()}", null)`, 1);
       }
-    } else if (methodsWithBody.indexOf(method.toUpperCase()) >= 0) {
+    } else if (methodsWithBody.includes(method.toUpperCase())) {
       if (postData.text) {
         push(`.${method.toLowerCase()}(body)`, 1);
       } else {

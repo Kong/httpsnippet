@@ -8,8 +8,8 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-import { Client } from '../../targets';
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { Client } from '../../targets';
 
 export interface NetHttpOptions {
   indent?: string;
@@ -38,14 +38,21 @@ export const nethttp: Client = {
     });
 
     if (postData.text) {
-      push(`.method("${method.toUpperCase()}", HttpRequest.BodyPublishers.ofString(${JSON.stringify(postData.text)}))`, 2);
+      push(
+        `.method("${method.toUpperCase()}", HttpRequest.BodyPublishers.ofString(${JSON.stringify(
+          postData.text,
+        )}))`,
+        2,
+      );
     } else {
       push(`.method("${method.toUpperCase()}", HttpRequest.BodyPublishers.noBody())`, 2);
     }
 
     push('.build();', 2);
 
-    push('HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());');
+    push(
+      'HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());',
+    );
     push('System.out.println(response.body());');
 
     return join();

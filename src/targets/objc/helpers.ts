@@ -17,7 +17,12 @@
  *   // returns:
  *   NSDictionary *params = @{ @"a": @"b", @"c": @"d" };
  */
-export const nsDeclaration = (nsClass: string, name: string, parameters: Record<string, any>, indent?: boolean) => {
+export const nsDeclaration = (
+  nsClass: string,
+  name: string,
+  parameters: Record<string, any>,
+  indent?: boolean,
+) => {
   const opening = `${nsClass} *${name} = `;
   const literal = literalRepresentation(parameters, indent ? opening.length : undefined);
   return `${opening}${literal};`;

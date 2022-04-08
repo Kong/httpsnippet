@@ -8,8 +8,8 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-import { Client } from '../../targets';
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { Client } from '../../targets';
 
 export const unirest: Client = {
   info: {
@@ -28,8 +28,10 @@ export const unirest: Client = {
 
     const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'];
 
-    if (methods.indexOf(method.toUpperCase()) === -1) {
-      push(`HttpResponse<String> response = Unirest.customMethod("${method.toUpperCase()}","${fullUrl}")`);
+    if (!methods.includes(method.toUpperCase())) {
+      push(
+        `HttpResponse<String> response = Unirest.customMethod("${method.toUpperCase()}","${fullUrl}")`,
+      );
     } else {
       push(`HttpResponse<String> response = Unirest.${method.toLowerCase()}("${fullUrl}")`);
     }

@@ -8,6 +8,7 @@ describe('reducer', () => {
     ];
 
     const result = query.reduce(reducer, {});
+
     expect(result).toMatchObject({ key: 'value', foo: 'bar' });
   });
 
@@ -20,6 +21,7 @@ describe('reducer', () => {
     ];
 
     const result = query.reduce(reducer, {});
+
     expect(result).toMatchObject({ key: 'value', foo: ['bar1', 'bar2', 'bar3'] });
   });
 });

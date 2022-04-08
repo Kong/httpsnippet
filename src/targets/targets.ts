@@ -1,5 +1,5 @@
-import { Request } from '../httpsnippet';
 import { CodeBuilderOptions } from '../helpers/code-builder';
+import { Request } from '../httpsnippet';
 import { c } from './c/target';
 import { clojure } from './clojure/target';
 import { csharp } from './csharp/target';
@@ -30,7 +30,10 @@ export interface ClientInfo {
   description: string;
 }
 
-export type Converter<T extends Record<string, any>> = (request: Request, options?: T & CodeBuilderOptions) => string;
+export type Converter<T extends Record<string, any>> = (
+  request: Request,
+  options?: CodeBuilderOptions & T,
+) => string;
 
 export interface Client<T extends Record<string, any> = Record<string, any>> {
   info: ClientInfo;
@@ -46,10 +49,10 @@ export interface TargetInfo {
   default: string;
 }
 
-export type Target = {
+export interface Target {
   info: TargetInfo;
   clientsById: Record<ClientId, Client>;
-};
+}
 
 export const targets = {
   c,

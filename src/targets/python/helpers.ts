@@ -1,5 +1,3 @@
-const util = require('util');
-
 /**
  * Create an string of given length filled with blank spaces
  *
@@ -14,7 +12,13 @@ function buildString(length: number, str: string) {
  * Create a string corresponding to a Dictionary or Array literal representation with pretty option
  * and indentation.
  */
-function concatValues(concatType: 'array' | 'object', values: any, pretty: boolean, indentation: string, indentLevel: number) {
+function concatValues(
+  concatType: 'array' | 'object',
+  values: any,
+  pretty: boolean,
+  indentation: string,
+  indentLevel: number,
+) {
   const currentIndent = buildString(indentLevel, indentation);
   const closingBraceIndent = buildString(indentLevel - 1, indentation);
   const join = pretty ? `,\n${currentIndent}` : ', ';
@@ -22,10 +26,11 @@ function concatValues(concatType: 'array' | 'object', values: any, pretty: boole
   const closingBrace = concatType === 'object' ? '}' : ']';
 
   if (pretty) {
-    return `${openingBrace}\n${currentIndent}${values.join(join)}\n${closingBraceIndent}${closingBrace}`;
-  } else {
-    return openingBrace + values.join(join) + closingBrace;
+    return `${openingBrace}\n${currentIndent}${values.join(
+      join,
+    )}\n${closingBraceIndent}${closingBrace}`;
   }
+  return openingBrace + values.join(join) + closingBrace;
 }
 
 /**
@@ -35,7 +40,11 @@ function concatValues(concatType: 'array' | 'object', values: any, pretty: boole
  * @param {Object} opts Target options
  * @return {string}
  */
-export const literalRepresentation = (value: any, opts: Record<string, any>, indentLevel?: number): any => {
+export const literalRepresentation = (
+  value: any,
+  opts: Record<string, any>,
+  indentLevel?: number,
+): any => {
   indentLevel = indentLevel === undefined ? 1 : indentLevel + 1;
 
   switch (Object.prototype.toString.call(value)) {
@@ -59,7 +68,13 @@ export const literalRepresentation = (value: any, opts: Record<string, any>, ind
       for (const key in value) {
         keyValuePairs.push(`"${key}": ${literalRepresentation(value[key], opts, indentLevel)}`);
       }
-      return concatValues('object', keyValuePairs, opts.pretty && keyValuePairs.length > 1, opts.indent, indentLevel);
+      return concatValues(
+        'object',
+        keyValuePairs,
+        opts.pretty && keyValuePairs.length > 1,
+        opts.indent,
+        indentLevel,
+      );
     }
 
     case '[object Null]':

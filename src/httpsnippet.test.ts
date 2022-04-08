@@ -1,20 +1,25 @@
-import { HTTPSnippet, Request } from './httpsnippet';
-import short from './fixtures/requests/short.json';
-import query from './fixtures/requests/query.json';
-import headers from './fixtures/requests/headers.json';
 import { mimetypes } from './fixtures/mimetypes';
+import headers from './fixtures/requests/headers.json';
+import query from './fixtures/requests/query.json';
+import short from './fixtures/requests/short.json';
+import { HTTPSnippet, Request } from './httpsnippet';
 
-describe('HTTPSnippet', () => {
+describe('hTTPSnippet', () => {
   it('should return false if no matching target', () => {
     const snippet = new HTTPSnippet(short as Request);
+    // @ts-expect-error intentionally incorrect
     const result = snippet.convert(null);
-    expect(result).toEqual(false);
+
+    expect(result).toBe(false);
   });
 
   it('should fail validation for non-HAR inputs', () => {
+    expect.assertions(1);
+
     // @ts-expect-error intentionally incorrect
     const attempt = () => new HTTPSnippet({ ziltoid: 'the omniscient' });
-    expect(attempt).toThrow();
+
+    expect(attempt).toThrow('validation failed');
   });
 
   it('should parse HAR file with multiple entries', () => {
@@ -83,17 +88,19 @@ describe('HTTPSnippet', () => {
     }[])(`mimetype conversion of $input to $output`, ({ input, expected }) => {
       const snippet = new HTTPSnippet(mimetypes[input]);
       const request = snippet.requests[0];
-      expect(request.postData.mimeType).toEqual(expected);
+
+      expect(request.postData.mimeType).toStrictEqual(expected);
     });
   });
 
   it('should set postData.text to empty string when postData.params is undefined in application/x-www-form-urlencoded', () => {
     const snippet = new HTTPSnippet(mimetypes['application/x-www-form-urlencoded']);
     const request = snippet.requests[0];
-    expect(request.postData.text).toEqual('');
+
+    expect(request.postData.text).toBe('');
   });
 
-  describe('RequestExtras', () => {
+  describe('requestExtras', () => {
     describe('uriObj', () => {
       it('should add uriObj', () => {
         const snippet = new HTTPSnippet(query as Request);
@@ -122,7 +129,8 @@ describe('HTTPSnippet', () => {
       it('should fix the `path` propety of uriObj to match queryString', () => {
         const snippet = new HTTPSnippet(query as Request);
         const request = snippet.requests[0];
-        expect(request.uriObj.path).toEqual('/har?foo=bar&foo=baz&baz=abc&key=value');
+
+        expect(request.uriObj.path).toBe('/har?foo=bar&foo=baz&baz=abc&key=value');
       });
     });
 
@@ -130,6 +138,7 @@ describe('HTTPSnippet', () => {
       it('should add queryObj', () => {
         const snippet = new HTTPSnippet(query as Request);
         const request = snippet.requests[0];
+
         expect(request.queryObj).toMatchObject({ baz: 'abc', key: 'value', foo: ['bar', 'baz'] });
       });
     });
@@ -138,6 +147,7 @@ describe('HTTPSnippet', () => {
       it('should add headersObj', () => {
         const snippet = new HTTPSnippet(headers as Request);
         const request = snippet.requests[0];
+
         expect(request.headersObj).toMatchObject({
           accept: 'application/json',
           'x-foo': 'Bar',
@@ -158,6 +168,7 @@ describe('HTTPSnippet', () => {
         } as Request);
 
         const request = snippet.requests[0];
+
         expect(request.headersObj).toMatchObject({
           'Kong-Admin-Token': 'Ziltoid The Omniscient',
           accept: 'application/json',
@@ -179,6 +190,7 @@ describe('HTTPSnippet', () => {
         } as Request);
 
         const request = snippet.requests[0];
+
         expect(request.headersObj).toMatchObject({
           'kong-admin-token': 'Ziltoid The Omniscient',
           accept: 'application/json',
@@ -191,14 +203,18 @@ describe('HTTPSnippet', () => {
       it('shoudl modify the original url to strip query string', () => {
         const snippet = new HTTPSnippet(query as Request);
         const request = snippet.requests[0];
-        expect(request.url).toEqual('http://mockbin.com/har');
+
+        expect(request.url).toBe('http://mockbin.com/har');
       });
     });
 
     describe('fullUrl', () => {
-      const snippet = new HTTPSnippet(query as Request);
-      const request = snippet.requests[0];
-      expect(request.fullUrl).toEqual('http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value');
+      it('adds fullURL', () => {
+        const snippet = new HTTPSnippet(query as Request);
+        const request = snippet.requests[0];
+
+        expect(request.fullUrl).toBe('http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value');
+      });
     });
   });
 });

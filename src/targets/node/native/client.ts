@@ -9,8 +9,9 @@
  */
 
 import stringifyObject from 'stringify-object';
-import { Client } from '../../targets';
+
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { Client } from '../../targets';
 
 export const native: Client = {
   info: {
@@ -27,7 +28,7 @@ export const native: Client = {
     const { blank, join, push, unshift } = new CodeBuilder({ indent: opts.indent });
 
     const reqOpts = {
-      method: method,
+      method,
       hostname: uriObj.hostname,
       port: uriObj.port,
       path: uriObj.path,
@@ -43,11 +44,11 @@ export const native: Client = {
     push('const req = http.request(options, function (res) {');
     push('const chunks = [];', 1);
     blank();
-    push(`res.on('data', function (chunk) {`, 1);
+    push("res.on('data', function (chunk) {", 1);
     push('chunks.push(chunk);', 2);
     push('});', 1);
     blank();
-    push(`res.on('end', function () {`, 1);
+    push("res.on('end', function () {", 1);
     push('const body = Buffer.concat(chunks);', 2);
     push('console.log(body.toString());', 2);
     push('});', 1);
@@ -57,7 +58,7 @@ export const native: Client = {
     switch (postData.mimeType) {
       case 'application/x-www-form-urlencoded':
         if (postData.paramsObj) {
-          unshift(`const qs = require('querystring');`);
+          unshift("const qs = require('querystring');");
           push(
             `req.write(qs.stringify(${stringifyObject(postData.paramsObj, {
               indent: '  ',

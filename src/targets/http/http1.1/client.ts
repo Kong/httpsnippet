@@ -9,8 +9,8 @@
  * For any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-import { Client } from '../../targets';
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { Client } from '../../targets';
 
 const CRLF = '\r\n';
 
@@ -68,7 +68,7 @@ export const http11: Client<Http11Options> = {
 
     // RFC 7230 Section 3.3.3. Message Body Length
     // Automatically set Content-Length header if option is on, postData is present and no header already exists.
-    if (opts.autoContentLength && postData.text && headerKeys.indexOf('content-length') === -1) {
+    if (opts.autoContentLength && postData.text && !headerKeys.includes('content-length')) {
       const length = Buffer.byteLength(postData.text, 'ascii').toString();
       push(`Content-Length: ${length}`);
     }

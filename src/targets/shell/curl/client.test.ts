@@ -1,7 +1,7 @@
-import { runCustomFixtures } from '../../../fixtures/runCustomFixtures';
 import full from '../../../fixtures/requests/full.json';
 import nested from '../../../fixtures/requests/nested.json';
-import { Request } from '../../..';
+import { runCustomFixtures } from '../../../fixtures/runCustomFixtures';
+import { Request } from '../../../httpsnippet';
 
 runCustomFixtures({
   targetId: 'shell',

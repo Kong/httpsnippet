@@ -26,23 +26,20 @@
  * Extracted from https://github.com/node-fetch/node-fetch/blob/64c5c296a0250b852010746c76144cb9e14698d9/src/utils/form-data.js
  */
 
-import FormData from "form-data";
+import FormData from 'form-data';
 
 const carriage = '\r\n';
 const dashes = '-'.repeat(2);
 
 const NAME = Symbol.toStringTag;
 
-export const isBlob = (object: any) => {
-  return (
-    typeof object === 'object' &&
-    typeof object.arrayBuffer === 'function' &&
-    typeof object.type === 'string' &&
-    typeof object.stream === 'function' &&
-    typeof object.constructor === 'function' &&
-    /^(Blob|File)$/.test(object[NAME])
-  );
-};
+export const isBlob = (object: any) =>
+  typeof object === 'object' &&
+  typeof object.arrayBuffer === 'function' &&
+  typeof object.type === 'string' &&
+  typeof object.stream === 'function' &&
+  typeof object.constructor === 'function' &&
+  /^(Blob|File)$/.test(object[NAME]);
 
 const getFooter = (boundary: string) => `${dashes}${boundary}${dashes}${carriage.repeat(2)}`;
 
@@ -58,7 +55,7 @@ const getHeader = (boundary: string, name: string, field: { name: string; type: 
   }
 
   return `${header}${carriage.repeat(2)}`;
-}
+};
 
 export const formDataIterator = function* (form: FormData, boundary: string) {
   // @ts-expect-error not sure how this ever worked

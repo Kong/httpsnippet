@@ -1,5 +1,4 @@
-
-export type ReducedHelperObject = Record<string, string | string[]>;
+export type ReducedHelperObject = Record<string, string[] | string>;
 
 export const reducer = <T extends { name: string; value: string }>(
   accumulator: ReducedHelperObject,

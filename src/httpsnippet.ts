@@ -1,17 +1,19 @@
 import { map as eventStreamMap } from 'event-stream';
 import FormData from 'form-data';
+import { Param, PostDataCommon, Request as HarRequestType } from 'har-format';
 import { stringify as queryStringify } from 'querystring';
-import { ReducedHelperObject, reducer } from './helpers/reducer';
-import { Client, ClientId, Target, TargetId, targets } from './targets/targets';
-import { parse as urlParse, format as urlFormat, UrlWithParsedQuery } from 'url';
-import { getHeaderName } from './helpers/headers';
+import { format as urlFormat, parse as urlParse, UrlWithParsedQuery } from 'url';
+
 import { formDataIterator, isBlob } from './helpers/form-data';
 import { validateHarRequest } from './helpers/har-validator';
-import { Param, PostDataCommon, PostDataParams, PostDataText, Request as HarRequestType } from 'har-format';
+import { getHeaderName } from './helpers/headers';
+import { ReducedHelperObject, reducer } from './helpers/reducer';
+import { Client, ClientId, Target, TargetId, targets } from './targets/targets';
 
 const DEBUG_MODE = false;
 
 const debug = {
+  // eslint-disable-next-line @typescript-eslint/no-empty-function -- intentional noop
   info: DEBUG_MODE ? console.info : () => {},
 };
 
@@ -42,7 +44,7 @@ export interface RequestExtras {
   allHeaders: ReducedHelperObject;
 }
 
-export type Request = RequestExtras & FixedHarRequestType;
+export type Request = FixedHarRequestType & RequestExtras;
 
 interface Entry {
   request: Partial<FixedHarRequestType>;
@@ -60,7 +62,11 @@ interface HarEntry {
 }
 
 const isHarEntry = (value: any): value is HarEntry =>
-  typeof value === 'object' && 'log' in value && typeof value.log === 'object' && 'entries' in value.log && Array.isArray(value.log.entries);
+  typeof value === 'object' &&
+  'log' in value &&
+  typeof value.log === 'object' &&
+  'entries' in value.log &&
+  Array.isArray(value.log.entries);
 
 export class HTTPSnippet {
   requests: Request[] = [];
@@ -125,7 +131,9 @@ export class HTTPSnippet {
     if (request.headers && request.headers.length) {
       const http2VersionRegex = /^HTTP\/2/;
       request.headersObj = request.headers.reduce((accumulator, { name, value }) => {
-        const headerName = request.httpVersion?.match(http2VersionRegex) ? name.toLocaleLowerCase() : name;
+        const headerName = http2VersionRegex.exec(request.httpVersion)
+          ? name.toLocaleLowerCase()
+          : name;
         return {
           ...accumulator,
           [headerName]: value,
@@ -145,7 +153,9 @@ export class HTTPSnippet {
     }
 
     // construct Cookie header
-    const cookies = request.cookies?.map(({ name, value }) => `${encodeURIComponent(name)}=${encodeURIComponent(value)}`);
+    const cookies = request.cookies?.map(
+      ({ name, value }) => `${encodeURIComponent(name)}=${encodeURIComponent(value)}`,
+    );
 
     if (cookies?.length) {
       request.allHeaders.cookie = cookies.join('; ');
@@ -223,7 +233,8 @@ export class HTTPSnippet {
           request.postData.boundary = boundary;
 
           // Since headers are case-sensitive we need to see if there's an existing `Content-Type` header that we can override.
-          const contentTypeHeader = getHeaderName(request.headersObj, 'content-type') || 'content-type';
+          const contentTypeHeader =
+            getHeaderName(request.headersObj, 'content-type') || 'content-type';
 
           request.headersObj[contentTypeHeader] = `multipart/form-data; boundary=${boundary}`;
         }
@@ -326,11 +337,18 @@ export const addTarget = (target: Target) => {
     throw new Error('The supplied custom target must contain an `info` object.');
   }
 
-  if (!('key' in target.info) || !('title' in target.info) || !('extname' in target.info) || !('default' in target.info)) {
-    throw new Error('The supplied custom target must have an `info` object with a `key`, `title`, `extname`, and `default` property.');
+  if (
+    !('key' in target.info) ||
+    !('title' in target.info) ||
+    !('extname' in target.info) ||
+    !('default' in target.info)
+  ) {
+    throw new Error(
+      'The supplied custom target must have an `info` object with a `key`, `title`, `extname`, and `default` property.',
+    );
   }
 
-  if (targets.hasOwnProperty(target.info.key)) {
+  if (Object.hasOwn(targets, target.info.key)) {
     throw new Error('The supplied custom target already exists.');
   }
 
@@ -342,7 +360,7 @@ export const addTarget = (target: Target) => {
 };
 
 export const addTargetClient = (targetId: TargetId, client: Client) => {
-  if (!targets.hasOwnProperty(targetId)) {
+  if (!Object.hasOwn(targets, targetId)) {
     throw new Error(`Sorry, but no ${targetId} target exists to add clients to.`);
   }
 
@@ -351,10 +369,12 @@ export const addTargetClient = (targetId: TargetId, client: Client) => {
   }
 
   if (!('key' in client.info) || !('title' in client.info)) {
-    throw new Error('The supplied custom target client must have an `info` object with a `key` and `title` property.');
+    throw new Error(
+      'The supplied custom target client must have an `info` object with a `key` and `title` property.',
+    );
   }
 
-  if (targets[targetId].hasOwnProperty(client.info.key)) {
+  if (Object.hasOwn(targets[targetId], client.info.key)) {
     throw new Error('The supplied custom target client already exists, please use a different key');
   }
 

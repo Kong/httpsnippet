@@ -1,6 +1,6 @@
-import { Client } from '../../targets';
 import { CodeBuilder } from '../../../helpers/code-builder';
 import { getHeader } from '../../../helpers/headers';
+import { Client } from '../../targets';
 
 export const restsharp: Client = {
   info: {
@@ -11,7 +11,9 @@ export const restsharp: Client = {
   },
   convert: ({ allHeaders, method, fullUrl, headersObj, cookies, postData }) => {
     const { push, join } = new CodeBuilder();
-    const isSupportedMethod = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'].includes(method.toUpperCase());
+    const isSupportedMethod = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'].includes(
+      method.toUpperCase(),
+    );
 
     if (!isSupportedMethod) {
       return 'Method not supported';

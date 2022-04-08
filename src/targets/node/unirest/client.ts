@@ -9,8 +9,9 @@
  */
 
 import stringifyObject from 'stringify-object';
-import { Client } from '../../targets';
+
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { Client } from '../../targets';
 
 export const unirest: Client = {
   info: {
@@ -28,7 +29,7 @@ export const unirest: Client = {
     let includeFS = false;
     const { blank, join, push, unshift } = new CodeBuilder({ indent: opts.indent });
 
-    push(`const unirest = require('unirest');`);
+    push("const unirest = require('unirest');");
     blank();
     push(`const req = unirest('${method}', '${url}');`);
     blank();
@@ -37,7 +38,11 @@ export const unirest: Client = {
       push('const CookieJar = unirest.jar();');
 
       cookies.forEach(cookie => {
-        push(`CookieJar.add('${encodeURIComponent(cookie.name)}=${encodeURIComponent(cookie.value)}', '${url}');`);
+        push(
+          `CookieJar.add('${encodeURIComponent(cookie.name)}=${encodeURIComponent(
+            cookie.value,
+          )}', '${url}');`,
+        );
       });
 
       push('req.jar(CookieJar);');
@@ -64,7 +69,7 @@ export const unirest: Client = {
 
       case 'application/json':
         if (postData.jsonObj) {
-          push(`req.type('json');`);
+          push("req.type('json');");
           push(`req.send(${stringifyObject(postData.jsonObj, { indent: opts.indent })});`);
           blank();
         }
@@ -106,7 +111,7 @@ export const unirest: Client = {
     }
 
     if (includeFS) {
-      unshift(`const fs = require('fs');`);
+      unshift("const fs = require('fs');");
     }
 
     push('req.end(function (res) {');

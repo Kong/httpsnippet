@@ -8,9 +8,10 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-import { Client } from '../../targets';
-import { CodeBuilder } from '../../../helpers/code-builder';
 import stringifyObject from 'stringify-object';
+
+import { CodeBuilder } from '../../../helpers/code-builder';
+import { Client } from '../../targets';
 
 export const axios: Client = {
   info: {
@@ -27,12 +28,12 @@ export const axios: Client = {
 
     const { blank, push, join } = new CodeBuilder({ indent: opts.indent });
 
-    push(`import axios from 'axios';`);
+    push("import axios from 'axios';");
     blank();
 
     const requestOptions: Record<string, any> = {
-      method: method,
-      url: url,
+      method,
+      url,
     };
 
     if (Object.keys(queryObj).length) {
@@ -72,7 +73,10 @@ export const axios: Client = {
         }
     }
 
-    const optionString = stringifyObject(requestOptions, { indent: '  ', inlineCharacterLimit: 80 }).replace('"[form]"', 'form');
+    const optionString = stringifyObject(requestOptions, {
+      indent: '  ',
+      inlineCharacterLimit: 80,
+    }).replace('"[form]"', 'form');
     push(`const options = ${optionString};`);
     blank();
 

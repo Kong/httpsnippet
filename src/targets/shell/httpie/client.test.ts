@@ -1,9 +1,9 @@
-import { runCustomFixtures } from '../../../fixtures/runCustomFixtures';
-import short from '../../../fixtures/requests/short.json';
+import applicationFormEncoded from '../../../fixtures/requests/application-form-encoded.json';
 import full from '../../../fixtures/requests/full.json';
 import query from '../../../fixtures/requests/query.json';
-import applicationFormEncoded from '../../../fixtures/requests/application-form-encoded.json';
-import { Request } from '../../..';
+import short from '../../../fixtures/requests/short.json';
+import { runCustomFixtures } from '../../../fixtures/runCustomFixtures';
+import { Request } from '../../../httpsnippet';
 
 runCustomFixtures({
   targetId: 'shell',
@@ -36,7 +36,18 @@ runCustomFixtures({
     {
       title: 'should use long flags',
       fixtureFile: 'long-flags.sh',
-      options: { body: true, cert: 'foo', headers: true, indent: false, pretty: 'x', print: 'x', style: 'x', timeout: 1, verbose: true, verify: 'x' },
+      options: {
+        body: true,
+        cert: 'foo',
+        headers: true,
+        indent: false,
+        pretty: 'x',
+        print: 'x',
+        style: 'x',
+        timeout: 1,
+        verbose: true,
+        verify: 'x',
+      },
       request: short as Request,
     },
     {

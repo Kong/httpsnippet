@@ -9,9 +9,10 @@
  */
 
 import stringifyObject from 'stringify-object';
-import { Client } from '../../targets';
+
 import { CodeBuilder } from '../../../helpers/code-builder';
 import { getHeader, getHeaderName, hasHeader } from '../../../helpers/headers';
+import { Client } from '../../targets';
 
 export const jquery: Client = {
   info: {
@@ -32,7 +33,7 @@ export const jquery: Client = {
       async: true,
       crossDomain: true,
       url: fullUrl,
-      method: method,
+      method,
       headers: allHeaders,
     };
 
@@ -61,7 +62,10 @@ export const jquery: Client = {
         // remove the contentType header
         if (hasHeader(allHeaders, 'content-type')) {
           if (getHeader(allHeaders, 'content-type')?.includes('boundary')) {
-            delete settings.headers[getHeaderName(allHeaders, 'content-type')!];
+            const headerName = getHeaderName(allHeaders, 'content-type');
+            if (headerName) {
+              delete settings.headers[headerName];
+            }
           }
         }
 
@@ -74,7 +78,10 @@ export const jquery: Client = {
         }
     }
 
-    const stringifiedSettings = stringifyObject(settings, { indent: opts.indent }).replace(`'[form]'`, 'form');
+    const stringifiedSettings = stringifyObject(settings, { indent: opts.indent }).replace(
+      "'[form]'",
+      'form',
+    );
 
     push(`const settings = ${stringifiedSettings};`);
     blank();

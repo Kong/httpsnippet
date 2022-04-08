@@ -8,12 +8,13 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-import { Client } from '../../targets';
-import { CodeBuilder } from '../../../helpers/code-builder';
 import stringifyObject from 'stringify-object';
 
+import { CodeBuilder } from '../../../helpers/code-builder';
+import { Client } from '../../targets';
+
 interface FetchOptions {
-  credentials?: null | Record<string, string>;
+  credentials?: Record<string, string> | null;
 }
 
 export const fetch: Client<FetchOptions> = {

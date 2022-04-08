@@ -1,4 +1,4 @@
-export const convertType = (obj: any | any[], indent?: string, lastIndent?: string) => {
+export const convertType = (obj: any[] | any, indent?: string, lastIndent?: string) => {
   lastIndent = lastIndent || '';
   indent = indent || '';
 
@@ -15,18 +15,24 @@ export const convertType = (obj: any | any[], indent?: string, lastIndent?: stri
     case '[object Number]':
       return obj.toString();
 
-    case '[object Array]':
-      const contents = obj.map((item: any) => convertType(item, `${indent}${indent}`, indent)).join(`,\n${indent}`);
+    case '[object Array]': {
+      const contents = obj
+        .map((item: any) => convertType(item, `${indent}${indent}`, indent))
+        .join(`,\n${indent}`);
       return `[\n${indent}${contents}\n${lastIndent}]`;
+    }
 
-    case '[object Object]':
+    case '[object Object]': {
       const result: string[] = [];
       for (const i in obj) {
-        if (obj.hasOwnProperty(i)) {
-          result.push(`${convertType(i, indent)} => ${convertType(obj[i], `${indent}${indent}`, indent)}`);
+        if (Object.hasOwn(obj, i)) {
+          result.push(
+            `${convertType(i, indent)} => ${convertType(obj[i], `${indent}${indent}`, indent)}`,
+          );
         }
       }
       return `[\n${indent}${result.join(`,\n${indent}`)}\n${lastIndent}]`;
+    }
 
     default:
       return 'null';

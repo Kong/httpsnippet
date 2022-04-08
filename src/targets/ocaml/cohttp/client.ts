@@ -8,8 +8,8 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-import { Client } from '../../targets';
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { Client } from '../../targets';
 
 export const cohttp: Client = {
   info: {
@@ -37,7 +37,9 @@ export const cohttp: Client = {
     const headers = Object.keys(allHeaders);
 
     if (headers.length === 1) {
-      push(`let headers = Header.add (Header.init ()) "${headers[0]}" "${allHeaders[headers[0]]}" in`);
+      push(
+        `let headers = Header.add (Header.init ()) "${headers[0]}" "${allHeaders[headers[0]]}" in`,
+      );
     } else if (headers.length > 1) {
       push('let headers = Header.add_list (Header.init ()) [');
       headers.forEach(key => {
@@ -57,7 +59,9 @@ export const cohttp: Client = {
 
     const h = headers.length ? '~headers ' : '';
     const b = postData.text ? '~body ' : '';
-    const m = methods.indexOf(method.toLowerCase()) >= 0 ? `\`${method.toUpperCase()}` : `(Code.method_of_string "${method}")`;
+    const m = methods.includes(method.toLowerCase())
+      ? `\`${method.toUpperCase()}`
+      : `(Code.method_of_string "${method}")`;
 
     push(`Client.call ${h}${b}${m} uri`);
 

@@ -8,9 +8,9 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-import { Client } from '../../targets';
 import { CodeBuilder } from '../../../helpers/code-builder';
 import { getHeader, getHeaderName, hasHeader } from '../../../helpers/headers';
+import { Client } from '../../targets';
 import { convertType } from '../helpers';
 
 export interface Http2Options {
@@ -50,7 +50,9 @@ export const http2: Client<Http2Options> = {
     switch (postData.mimeType) {
       case 'application/x-www-form-urlencoded':
         push('$body = new http\\Message\\Body;');
-        push(`$body->append(new http\\QueryString(${convertType(postData.paramsObj, opts.indent)}));`);
+        push(
+          `$body->append(new http\\QueryString(${convertType(postData.paramsObj, opts.indent)}));`,
+        );
         blank();
         hasBody = true;
         break;
@@ -67,7 +69,7 @@ export const http2: Client<Http2Options> = {
         postData.params?.forEach(({ name, fileName, value, contentType }) => {
           if (fileName) {
             files.push({
-              name: name,
+              name,
               type: contentType,
               file: fileName,
               // @ts-expect-error appears to be a genuine error
@@ -89,7 +91,10 @@ export const http2: Client<Http2Options> = {
         // remove the contentType header
         if (hasHeader(headersObj, 'content-type')) {
           if (getHeader(headersObj, 'content-type')?.indexOf('boundary')) {
-            delete headersObj[getHeaderName(headersObj, 'content-type')!];
+            const headerName = getHeaderName(headersObj, 'content-type');
+            if (headerName) {
+              delete headersObj[headerName];
+            }
           }
         }
 

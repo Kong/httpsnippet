@@ -8,8 +8,8 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-import { Client } from '../../targets';
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { Client } from '../../targets';
 import { nsDeclaration } from '../helpers';
 
 export interface NsurlsessionOptions {
@@ -64,7 +64,9 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
             );
 
             for (let i = 1, len = postData.params.length; i < len; i++) {
-              push(`[postData appendData:[@"&${postData.params[i].name}=${postData.params[i].value}" dataUsingEncoding:NSUTF8StringEncoding]];`);
+              push(
+                `[postData appendData:[@"&${postData.params[i].name}=${postData.params[i].value}" dataUsingEncoding:NSUTF8StringEncoding]];`,
+              );
             }
           }
           break;
@@ -73,7 +75,9 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
           if (postData.jsonObj) {
             push(nsDeclaration('NSDictionary', 'parameters', postData.jsonObj, opts.pretty));
             blank();
-            push('NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];');
+            push(
+              'NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];',
+            );
           }
           break;
 
@@ -94,12 +98,18 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
             2,
           );
           push('[body appendFormat:@"Content-Type: %@\\r\\n\\r\\n", param[@"contentType"]];', 2);
-          push('[body appendFormat:@"%@", [NSString stringWithContentsOfFile:param[@"fileName"] encoding:NSUTF8StringEncoding error:&error]];', 2);
+          push(
+            '[body appendFormat:@"%@", [NSString stringWithContentsOfFile:param[@"fileName"] encoding:NSUTF8StringEncoding error:&error]];',
+            2,
+          );
           push('if (error) {', 2);
           push('NSLog(@"%@", error);', 3);
           push('}', 2);
           push('} else {', 1);
-          push('[body appendFormat:@"Content-Disposition:form-data; name=\\"%@\\"\\r\\n\\r\\n", param[@"name"]];', 2);
+          push(
+            '[body appendFormat:@"Content-Disposition:form-data; name=\\"%@\\"\\r\\n\\r\\n", param[@"name"]];',
+            2,
+          );
           push('[body appendFormat:@"%@", param[@"value"]];', 2);
           push('}', 1);
           push('}');
@@ -109,16 +119,26 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
 
         default:
           blank();
-          push(`NSData *postData = [[NSData alloc] initWithData:[@"${postData.text}" dataUsingEncoding:NSUTF8StringEncoding]];`);
+          push(
+            `NSData *postData = [[NSData alloc] initWithData:[@"${postData.text}" dataUsingEncoding:NSUTF8StringEncoding]];`,
+          );
       }
     }
 
     blank();
-    push(`NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"${fullUrl}"]`);
+    push(
+      `NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"${fullUrl}"]`,
+    );
 
     // NSURLRequestUseProtocolCachePolicy is the default policy, let's just always set it to avoid confusion.
-    push('                                                       cachePolicy:NSURLRequestUseProtocolCachePolicy');
-    push(`                                                   timeoutInterval:${opts.timeout.toFixed(1)}];`);
+    push(
+      '                                                       cachePolicy:NSURLRequestUseProtocolCachePolicy',
+    );
+    push(
+      `                                                   timeoutInterval:${opts.timeout.toFixed(
+        1,
+      )}];`,
+    );
     push(`[request setHTTPMethod:@"${method}"];`);
 
     if (req.hasHeaders) {
@@ -134,13 +154,18 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
     // Retrieving the shared session will be less verbose than creating a new one.
     push('NSURLSession *session = [NSURLSession sharedSession];');
     push('NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request');
-    push('                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {');
+    push(
+      '                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {',
+    );
     push('                                            if (error) {', 1);
     push('                                            NSLog(@"%@", error);', 2);
     push('                                            } else {', 1);
 
     // Casting the NSURLResponse to NSHTTPURLResponse so the user can see the status     .
-    push('                                            NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;', 2);
+    push(
+      '                                            NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;',
+      2,
+    );
     push('                                            NSLog(@"%@", httpResponse);', 2);
     push('                                            }', 1);
     push('                                            }];');

@@ -9,8 +9,9 @@
  */
 
 import stringifyObject from 'stringify-object';
-import { Client } from '../../targets';
+
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { Client } from '../../targets';
 
 export const fetch: Client = {
   info: {
@@ -31,7 +32,7 @@ export const fetch: Client = {
     push("const fetch = require('node-fetch');");
     const url = fullUrl;
     const reqOpts: Record<string, any> = {
-      method: method,
+      method,
     };
 
     if (Object.keys(headersObj).length) {
@@ -83,7 +84,9 @@ export const fetch: Client = {
 
     // construct cookies argument
     if (cookies.length) {
-      const cookiesString = cookies.map(cookie => `${encodeURIComponent(cookie.name)}=${encodeURIComponent(cookie.value)}; `).join('');
+      const cookiesString = cookies
+        .map(cookie => `${encodeURIComponent(cookie.name)}=${encodeURIComponent(cookie.value)}; `)
+        .join('');
       if (reqOpts.headers) {
         reqOpts.headers.cookie = cookiesString;
       } else {

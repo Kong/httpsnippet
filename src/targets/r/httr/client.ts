@@ -8,8 +8,8 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-import { Client } from '../../targets';
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { Client } from '../../targets';
 
 export const httr: Client = {
   info: {
@@ -98,10 +98,13 @@ export const httr: Client = {
     for (const head in headers) {
       if (head.toLowerCase() === 'accept') {
         accept = `, accept("${headers[head]}")`;
-        headerCount = headerCount - 1;
+        headerCount -= 1;
       } else if (head.toLowerCase() === 'cookie') {
-        cookies = `, set_cookies(\`${String(headers[head]).replace(/;/g, '", `').replace(/` /g, '`').replace(/=/g, '` = "')}")`;
-        headerCount = headerCount - 1;
+        cookies = `, set_cookies(\`${String(headers[head])
+          .replace(/;/g, '", `')
+          .replace(/` /g, '`')
+          .replace(/[=]/g, '` = "')}")`;
+        headerCount -= 1;
       } else if (head.toLowerCase() !== 'content-type') {
         header = `${header + head.replace('-', '_')} = '${headers[head]}`;
         if (headerCount > 1) {

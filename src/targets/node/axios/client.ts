@@ -9,8 +9,9 @@
  */
 
 import stringifyObject from 'stringify-object';
-import { Client } from '../../targets';
+
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { Client } from '../../targets';
 
 export const axios: Client = {
   info: {
@@ -27,7 +28,7 @@ export const axios: Client = {
 
     const { blank, join, push } = new CodeBuilder({ indent: opts.indent });
 
-    push(`var axios = require('axios').default;`);
+    push("var axios = require('axios').default;");
     blank();
 
     const reqOpts: Record<string, any> = {

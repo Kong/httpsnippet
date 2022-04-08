@@ -1,5 +1,5 @@
-import { Request } from '../../..';
 import { runCustomFixtures } from '../../../fixtures/runCustomFixtures';
+import { Request } from '../../../httpsnippet';
 
 runCustomFixtures({
   targetId: 'python',

@@ -1,7 +1,7 @@
-import { Client } from '../../targets';
-import { Request } from '../../../httpsnippet';
 import { CodeBuilder } from '../../../helpers/code-builder';
 import { getHeader } from '../../../helpers/headers';
+import { Request } from '../../../httpsnippet';
+import { Client } from '../../targets';
 
 const getDecompressionMethods = (allHeaders: Request['allHeaders']) => {
   let acceptEncodings = getHeader(allHeaders, 'accept-encoding');
@@ -73,7 +73,7 @@ export const httpclient: Client = {
 
     const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS', 'TRACE'];
     method = method.toUpperCase();
-    if (method && methods.indexOf(method) !== -1) {
+    if (method && methods.includes(method)) {
       // buildin method
       method = `HttpMethod.${method[0]}${method.substring(1).toLowerCase()}`;
     } else {

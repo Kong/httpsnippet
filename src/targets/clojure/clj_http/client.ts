@@ -8,9 +8,9 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-import { Client } from '../../targets';
 import { CodeBuilder } from '../../../helpers/code-builder';
 import { getHeader, getHeaderName } from '../../../helpers/headers';
+import { Client } from '../../targets';
 
 class Keyword {
   name = '';
@@ -78,7 +78,9 @@ const jsToEdn = (js: any) => {
 
     case 'array': {
       // simple horizontal format
-      const arr = js.reduce((accumulator: string, value: string) => `${accumulator} ${jsToEdn(value)}`, '').trim();
+      const arr = js
+        .reduce((accumulator: string, value: string) => `${accumulator} ${jsToEdn(value)}`, '')
+        .trim();
       return `[${padBlock(1, arr)}]`;
     }
 
@@ -148,12 +150,11 @@ export const clj_http: Client = {
               name: param.name,
               content: new File(param.fileName),
             };
-          } else {
-            return {
-              name: param.name,
-              content: param.value,
-            };
           }
+          return {
+            name: param.name,
+            content: param.value,
+          };
         });
 
         const header = getHeaderName(params.headers, 'content-type');

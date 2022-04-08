@@ -8,10 +8,10 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-import { Client } from '../../targets';
 import { CodeBuilder } from '../../../helpers/code-builder';
 import { getHeaderName } from '../../../helpers/headers';
 import { quote } from '../../../helpers/shell';
+import { Client } from '../../targets';
 
 export interface CurlOptions {
   short?: boolean;
@@ -34,9 +34,11 @@ export const curl: Client<CurlOptions> = {
       globOff: false,
       ...options,
     };
-
-    // @ts-expect-error SEEMS LEGIT
-    const { push, join } = new CodeBuilder({ indent: opts.indent, join: opts.indent !== false ? ` \\\n${opts.indent}` : ' ' });
+    const { push, join } = new CodeBuilder({
+      indent: opts.indent,
+      // @ts-expect-error SEEMS LEGIT
+      join: opts.indent !== false ? ` \\\n${opts.indent}` : ' ',
+    });
 
     const globOption = opts.short ? '-g' : '--globoff';
     const requestOption = opts.short ? '-X' : '--request';
@@ -56,17 +58,18 @@ export const curl: Client<CurlOptions> = {
     // if multipart form data, we want to remove the boundary
     if (postData.mimeType === 'multipart/form-data') {
       const contentTypeHeaderName = getHeaderName(headersObj, 'content-type');
-      const contentTypeHeader = headersObj[contentTypeHeaderName!];
+      if (contentTypeHeaderName) {
+        const contentTypeHeader = headersObj[contentTypeHeaderName];
+        if (contentTypeHeaderName && contentTypeHeader) {
+          // remove the leading semi colon and boundary
+          // up to the next semi colon or the end of string
+          // @ts-expect-error SEEMS LEGIT
+          const noBoundary = contentTypeHeader.replace(/; boundary.+?(?=(;|$))/, '');
 
-      if (contentTypeHeaderName && contentTypeHeader) {
-        // remove the leading semi colon and boundary
-        // up to the next semi colon or the end of string
-        // @ts-expect-error SEEMS LEGIT
-        const noBoundary = contentTypeHeader.replace(/; boundary.+?(?=(;|$))/, '');
-
-        // replace the content-type header with no boundary in both headersObj and allHeaders
-        headersObj[contentTypeHeaderName] = noBoundary;
-        allHeaders[contentTypeHeaderName] = noBoundary;
+          // replace the content-type header with no boundary in both headersObj and allHeaders
+          headersObj[contentTypeHeaderName] = noBoundary;
+          allHeaders[contentTypeHeaderName] = noBoundary;
+        }
       }
     }
 
@@ -100,17 +103,29 @@ export const curl: Client<CurlOptions> = {
       case 'application/x-www-form-urlencoded':
         if (postData.params) {
           postData.params.forEach(param => {
-            push(`${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(`${param.name}=${param.value}`)}`);
+            push(
+              `${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(
+                `${param.name}=${param.value}`,
+              )}`,
+            );
           });
         } else {
-          push(`${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(postData.text)}`);
+          push(
+            `${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(
+              postData.text,
+            )}`,
+          );
         }
         break;
 
       default:
         // raw request body
         if (postData.text) {
-          push(`${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(postData.text)}`);
+          push(
+            `${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(
+              postData.text,
+            )}`,
+          );
         }
     }
 

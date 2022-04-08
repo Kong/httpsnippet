@@ -57,7 +57,10 @@ const itShouldHaveRequestTestOutputFixture = function (request, target, client) 
 
     Object.keys(output)
       .indexOf(fixture)
-      .should.be.greaterThan(-1, `Missing ${fixture} fixture file for target: ${target}. Snippet tests will be skipped.`);
+      .should.be.greaterThan(
+        -1,
+        `Missing ${fixture} fixture file for target: ${target}. Snippet tests will be skipped.`,
+      );
   });
 };
 
@@ -136,7 +139,12 @@ describe('Custom targets', () => {
         .filter(clearInfo)
         .forEach(request => {
           // Re-using the `request` module fixtures and framework since we copied it to create a custom client.
-          itShouldGenerateOutput(request, 'node/request/', customTarget.info.key, customTarget.info.default);
+          itShouldGenerateOutput(
+            request,
+            'node/request/',
+            customTarget.info.key,
+            customTarget.info.default,
+          );
         });
     });
   });
@@ -159,7 +167,10 @@ describe('Custom targets', () => {
 
     it('should throw if client already exists', () => {
       (function () {
-        HTTPSnippet.addTargetClient('node', { ...customClient, info: { ...customClient.info, key: 'axios' } });
+        HTTPSnippet.addTargetClient('node', {
+          ...customClient,
+          info: { ...customClient.info, key: 'axios' },
+        });
       }.should.throw(Error));
     });
 

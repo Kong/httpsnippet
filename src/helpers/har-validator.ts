@@ -24,8 +24,8 @@ export const validateHarRequest = (request: any): request is Request => {
     throw new Error('failed to find HAR request schema');
   }
   const valid = validate(request);
-  if (!valid) {
-    throw new HARError(validate.errors!);
+  if (!valid && validate.errors) {
+    throw new HARError(validate.errors);
   }
   return true;
 };

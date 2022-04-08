@@ -9,9 +9,10 @@
  */
 
 import stringifyObject from 'stringify-object';
-import { Client } from '../../targets';
+
 import { CodeBuilder } from '../../../helpers/code-builder';
 import { getHeader, getHeaderName, hasHeader } from '../../../helpers/headers';
+import { Client } from '../../targets';
 
 export interface XhrOptions {
   cors?: boolean;
@@ -35,7 +36,11 @@ export const xhr: Client = {
 
     switch (postData.mimeType) {
       case 'application/json':
-        push(`const data = JSON.stringify(${stringifyObject(postData.jsonObj, { indent: opts.indent })});`);
+        push(
+          `const data = JSON.stringify(${stringifyObject(postData.jsonObj, {
+            indent: opts.indent,
+          })});`,
+        );
         blank();
         break;
 
@@ -49,7 +54,10 @@ export const xhr: Client = {
         // remove the contentType header
         if (hasHeader(allHeaders, 'content-type')) {
           if (getHeader(allHeaders, 'content-type')?.includes('boundary')) {
-            delete allHeaders[getHeaderName(allHeaders, 'content-type')!];
+            const headerName = getHeaderName(allHeaders, 'content-type');
+            if (headerName) {
+              delete allHeaders[headerName];
+            }
           }
         }
 
@@ -68,7 +76,7 @@ export const xhr: Client = {
     }
 
     blank();
-    push(`xhr.addEventListener('readystatechange', function () {`);
+    push("xhr.addEventListener('readystatechange', function () {");
     push('if (this.readyState === this.DONE) {', 1);
     push('console.log(this.responseText);', 2);
     push('}', 1);

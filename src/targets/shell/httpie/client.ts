@@ -8,9 +8,9 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-import { Client } from '../../targets';
 import { CodeBuilder } from '../../../helpers/code-builder';
 import { quote } from '../../../helpers/shell';
+import { Client } from '../../targets';
 
 export interface HttpieOptions {
   body?: boolean;
@@ -50,8 +50,11 @@ export const httpie: Client<HttpieOptions> = {
       ...options,
     };
 
-    // @ts-expect-error SEEMS LEGIT
-    const { push, join, unshift } = new CodeBuilder({ indent: opts.indent, join: opts.indent !== false ? ` \\\n${opts.indent}` : ' ' });
+    const { push, join, unshift } = new CodeBuilder({
+      indent: opts.indent,
+      // @ts-expect-error SEEMS LEGIT
+      join: opts.indent !== false ? ` \\\n${opts.indent}` : ' ',
+    });
 
     let raw = false;
     const flags = [];

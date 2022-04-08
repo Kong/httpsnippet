@@ -8,9 +8,9 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-import { Client } from '../../targets';
 import { CodeBuilder } from '../../../helpers/code-builder';
 import { escape, quote } from '../../../helpers/shell';
+import { Client } from '../../targets';
 
 export interface WgetOptions {
   short?: boolean;
@@ -32,8 +32,11 @@ export const wget: Client<WgetOptions> = {
       ...options,
     };
 
-    // @ts-expect-error SEEMS LEGIT
-    const { push, join } = new CodeBuilder({ indent: opts.indent, join: opts.indent !== false ? ` \\\n${opts.indent}` : ' ' });
+    const { push, join } = new CodeBuilder({
+      indent: opts.indent,
+      // @ts-expect-error SEEMS LEGIT
+      join: opts.indent !== false ? ` \\\n${opts.indent}` : ' ',
+    });
 
     if (opts.verbose) {
       push(`wget ${opts.short ? '-v' : '--verbose'}`);

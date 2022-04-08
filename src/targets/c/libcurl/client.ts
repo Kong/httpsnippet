@@ -1,5 +1,5 @@
-import { Client } from '../../targets';
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { Client } from '../../targets';
 
 export const libcurl: Client = {
   info: {

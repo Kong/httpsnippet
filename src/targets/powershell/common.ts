@@ -1,15 +1,23 @@
-import { Converter } from '../targets';
 import { CodeBuilder } from '../../helpers/code-builder';
 import { getHeader } from '../../helpers/headers';
+import { Converter } from '../targets';
 
-export type PowershellCommand = 'Invoke-WebRequest' | 'Invoke-RestMethod';
+export type PowershellCommand = 'Invoke-RestMethod' | 'Invoke-WebRequest';
 
 export const generatePowershellConvert = (command: PowershellCommand) => {
-  const convert: Converter<{}> = ({ method, headersObj, cookies, uriObj, fullUrl, postData, allHeaders }) => {
+  const convert: Converter<Record<string, never>> = ({
+    method,
+    headersObj,
+    cookies,
+    uriObj,
+    fullUrl,
+    postData,
+    allHeaders,
+  }) => {
     const { push, join } = new CodeBuilder();
     const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'];
 
-    if (methods.indexOf(method.toUpperCase()) === -1) {
+    if (!methods.includes(method.toUpperCase())) {
       return 'Method not supported';
     }
 

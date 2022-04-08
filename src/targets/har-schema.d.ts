@@ -1,4 +1,4 @@
 declare module 'har-schema' {
-  var schema: object;
+  const schema: object;
   export default schema;
 }

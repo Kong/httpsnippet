@@ -8,8 +8,8 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-import { Client } from '../../targets';
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { Client } from '../../targets';
 
 export const python3: Client = {
   info: {
@@ -18,19 +18,18 @@ export const python3: Client = {
     link: 'https://docs.python.org/3/library/http.client.html',
     description: 'Python3 HTTP Client',
   },
-  convert: ({ uriObj, postData, allHeaders, method }) => {
+  convert: ({ uriObj: { path, protocol, host }, postData, allHeaders, method }) => {
     const { push, blank, join } = new CodeBuilder();
     // Start Request
     push('import http.client');
     blank();
 
     // Check which protocol to be used for the client connection
-    const protocol = uriObj.protocol;
     if (protocol === 'https:') {
-      push(`conn = http.client.HTTPSConnection("${uriObj.host}")`);
+      push(`conn = http.client.HTTPSConnection("${host}")`);
       blank();
     } else {
-      push(`conn = http.client.HTTPConnection("${uriObj.host}")`);
+      push(`conn = http.client.HTTPConnection("${host}")`);
       blank();
     }
 
@@ -67,7 +66,6 @@ export const python3: Client = {
     }
 
     // Make Request
-    const path = uriObj.path;
     if (payload && headerCount) {
       push(`conn.request("${method}", "${path}", payload, headers)`);
     } else if (payload && !headerCount) {
