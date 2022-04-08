@@ -9,5 +9,5 @@
     "downlevelIteration": true,
   },
   "include": ["src"],
-  "exclude": ["dist", "test", "**/*.test.ts"]
+  "exclude": ["dist", "**/*.test.ts"]
 }

@@ -1,7 +1,7 @@
 import { Target } from "..";
 import { libcurl } from './libcurl';
 
-export const c: Target<'c', 'libcurl'> = {
+export const c: Target = {
   info: {
     key: 'c',
     title: 'C',

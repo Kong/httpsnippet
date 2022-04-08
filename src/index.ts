@@ -8,7 +8,6 @@ import { getHeaderName } from './helpers/headers';
 import { formDataIterator, isBlob } from './helpers/form-data.js';
 import { validateHarRequest } from './helpers/har-validator';
 
-
 type TODO = any;
 
 export interface Request {
@@ -47,7 +46,6 @@ export interface Request {
   allHeaders: {
     cookie?: string;
   };
-
 }
 
 interface Entry {
@@ -135,16 +133,17 @@ export class HTTPSnippet {
 
     // construct headers objects
     if (request.cookies && request.cookies.length) {
-      request.cookiesObj = request.cookies.reduceRight((accumulator, { name, value }) => ({
-        ...accumulator,
-        [name]: value,
-      }), {});
+      request.cookiesObj = request.cookies.reduceRight(
+        (accumulator, { name, value }) => ({
+          ...accumulator,
+          [name]: value,
+        }),
+        {},
+      );
     }
 
     // construct Cookie header
-    const cookies = request.cookies.map(({ name, value }) => (
-      `${encodeURIComponent(name)}=${encodeURIComponent(value)}`
-    ));
+    const cookies = request.cookies.map(({ name, value }) => `${encodeURIComponent(name)}=${encodeURIComponent(value)}`);
 
     if (cookies.length) {
       request.allHeaders.cookie = cookies.join('; ');
@@ -217,7 +216,7 @@ export class HTTPSnippet {
           request.postData.boundary = boundary;
 
           // Since headers are case-sensitive we need to see if there's an existing `Content-Type` header that we can override.
-          const contentTypeHeader =  getHeaderName(request.headersObj, 'content-type') || 'content-type';
+          const contentTypeHeader = getHeaderName(request.headersObj, 'content-type') || 'content-type';
 
           request.headersObj[contentTypeHeader] = 'multipart/form-data; boundary=' + boundary;
         }
@@ -290,50 +289,36 @@ export class HTTPSnippet {
     return request;
   };
 
-  convert = (targetId: TargetId, client: ClientId, options: any) => {
-    if (!options && client) {
-      options = client;
+  convert = (targetId: TargetId, clientId?: ClientId, options?: any) => {
+    if (!options && clientId) {
+      options = clientId;
     }
 
-    const func = this._matchTarget(targetId, client);
-    if (func) {
-      const results = this.requests.map(function (request) {
-        return func(request, options);
-      });
-
-      return results.length === 1 ? results[0] : results;
-    }
-
-    return false;
-  };
-
-  _matchTarget = (targetId: TargetId, clientId: ClientId) => {
-    // does it exist?
     const target = targets[targetId];
     if (!target) {
       return false;
     }
 
-    const { clientsById, info } = target;
-
-    // shorthand
-    if (typeof clientId === 'string' && typeof clientsById[clientId] === 'function') {
-      return clientsById[clientId];
-    }
-
-    // default target
-    return clientsById[info.default];
+    const { convert } = target.clientsById[clientId || target.info.default];
+    const results = this.requests.map(request => convert(request, options));
+    return results.length === 1 ? results[0] : results;
   };
 }
 
 export const addTarget = (target: Target) => {
   if (!('info' in target)) {
     throw new Error('The supplied custom target must contain an `info` object.');
-  } else if (!('key' in target.info) || !('title' in target.info) || !('extname' in target.info) || !('default' in target.info)) {
+  }
+
+  if (!('key' in target.info) || !('title' in target.info) || !('extname' in target.info) || !('default' in target.info)) {
     throw new Error('The supplied custom target must have an `info` object with a `key`, `title`, `extname`, and `default` property.');
-  } else if (targets.hasOwnProperty(target.info.key)) {
+  }
+
+  if (targets.hasOwnProperty(target.info.key)) {
     throw new Error('The supplied custom target already exists.');
-  } else if (Object.keys(target).length === 1) {
+  }
+
+  if (Object.keys(target).length === 1) {
     throw new Error('A custom target must have a client defined on it.');
   }
 
@@ -343,29 +328,19 @@ export const addTarget = (target: Target) => {
 export const addTargetClient = (targetId: TargetId, client: Client) => {
   if (!targets.hasOwnProperty(targetId)) {
     throw new Error(`Sorry, but no ${targetId} target exists to add clients to.`);
-  } else if (!('info' in client)) {
+  }
+
+  if (!('info' in client)) {
     throw new Error('The supplied custom target client must contain an `info` object.');
-  } else if (!('key' in client.info) || !('title' in client.info)) {
+  }
+
+  if (!('key' in client.info) || !('title' in client.info)) {
     throw new Error('The supplied custom target client must have an `info` object with a `key` and `title` property.');
-  } else if (targets[targetId].hasOwnProperty(client.info.key)) {
+  }
+
+  if (targets[targetId].hasOwnProperty(client.info.key)) {
     throw new Error('The supplied custom target client already exists, please use a different key');
   }
 
-  targets[targetId][client.info.key] = client;
+  targets[targetId].clientsById[client.info.key] = client;
 };
-
-export const availableTargets = () =>
-  Object.keys(targets).map(targetId => {
-    const target = { ...targets[targetId as TargetId].info };
-    const clients = Object.keys(targets[targetId as TargetId])
-      .filter(key => !~['info', 'index'].indexOf(key))
-      .map(client => targets[targetId as TargetId][client].info);
-
-    if (clients.length) {
-      target.clients = clients;
-    }
-
-    return target;
-  });
-
-export const extname = (targetId: TargetId) => (targets[targetId] ? targets[targetId].info.extname : '');

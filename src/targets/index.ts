@@ -22,23 +22,31 @@ export type TargetId = keyof typeof targets;
 
 export type ClientId = string;
 
+export interface ClientInfo {
+  key: ClientId;
+  title: string;
+  link: string;
+  description: string;
+}
+
+export type Converter = (request: Request, options?: any) => string;
+
 export interface Client {
-  info: {
-    key: ClientId;
-    title: string;
-    link: string;
-    description: string;
-  }
-  convert: (request: Request, options?: any) => string;
+  info: ClientInfo;
+  convert: Converter;
+}
+
+export type Extension = `.${string}`;
+
+export interface TargetInfo {
+  key: TargetId;
+  title: string;
+  extname: Extension;
+  default: string;
 }
 
 export type Target = {
-  info: {
-    key: TargetId;
-    title: string;
-    extname: string;
-    default: string;
-  }
+  info: TargetInfo;
   clientsById: Record<ClientId, Client>;
 }
 

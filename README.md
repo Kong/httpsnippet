@@ -20,8 +20,7 @@ npm install --save httpsnippet
 
 ## Usage
 
-```
-
+```text
   Usage: httpsnippet [options] <files ...>
 
   Options:
@@ -32,7 +31,6 @@ npm install --save httpsnippet
     -c, --client [client]     target client library
     -o, --output <directory>  write output to directory
     -x, --extra [{"optionKey": "optionValue"}]  provide extra options for the target/client
-
 ```
 
 ###### Example
@@ -79,10 +77,10 @@ _Required_ Type: `object`
 
 Name of [conversion target](https://github.com/Kong/httpsnippet/wiki/Targets)
 
-```js
-var HTTPSnippet = require('httpsnippet');
+```ts
+import { HTTPSnippet } from 'httpsnippet';
 
-var snippet = new HTTPSnippet({
+const snippet = new HTTPSnippet({
   method: 'GET',
   url: 'http://mockbin.com/request',
 });
@@ -102,10 +100,10 @@ Type: `object`
 
 Target options, _see [wiki](https://github.com/Kong/httpsnippet/wiki/Targets) for details_
 
-```js
-var HTTPSnippet = require('httpsnippet');
+```ts
+import { HTTPSnippet } from 'httpsnippet';
 
-var snippet = new HTTPSnippet({
+const snippet = new HTTPSnippet({
   method: 'GET',
   url: 'http://mockbin.com/request',
 });
@@ -123,28 +121,28 @@ console.log(
 
 ### convert(target [, client, options])
 
-#### target
+#### Target
 
 _Required_ Type: `string`
 
 Name of [conversion target](https://github.com/Kong/httpsnippet/wiki/Targets)
 
-#### client
+#### Client
 
 Type: `string`
 
 Name of conversion target [client library](https://github.com/Kong/httpsnippet/wiki/Targets)
 
-#### options
+#### Options
 
 Type: `object`
 
 Target options, _see [wiki](https://github.com/Kong/httpsnippet/wiki/Targets) for details_
 
-```js
-var HTTPSnippet = require('httpsnippet');
+```ts
+import { HTTPSnippet } from 'httpsnippet';
 
-var snippet = new HTTPSnippet({
+const snippet = new HTTPSnippet({
   method: 'GET',
   url: 'http://mockbin.com/request',
 });
@@ -168,27 +166,27 @@ _Required_ Type: `object`
 
 Representation of a [conversion target](https://github.com/Kong/httpsnippet/wiki/Creating-Targets). Can use this to use targets that are not officially supported.
 
-```js
-const customLanguageTarget = require('httpsnippet-for-my-lang');
+```ts
+import { customLanguageTarget } from 'httpsnippet-for-my-lang';
 HTTPSnippet.addTarget(customLanguageTarget);
 ```
 
 ### addTargetClient(target, client)
 
-### target
+### Target
 
 _Required_ Type: `string`
 
 Name of [conversion target](https://github.com/Kong/httpsnippet/wiki/Targets)
 
-### client
+### Client
 
 _Required_ Type: `object`
 
 Representation of a [conversion target client](https://github.com/Kong/httpsnippet/wiki/Creating-Targets). Can use this to use target clients that are not officially supported.
 
-```js
-const customClient = require('httpsnippet-for-my-node-http-client');
+```ts
+import { customClient } from 'httpsnippet-for-my-node-http-client';
 HTTPSnippet.addTargetClient('node', customClient);
 ```
 
@@ -211,26 +209,6 @@ For info on creating new conversion targets, please review this [guideline](http
 Moreover, if your pull request contains JavaScript patches or features, you must include relevant unit tests.
 
 Editor preferences are available in the [editor config](.editorconfig) for easy use in common text editors. Read more and download plugins at <http://editorconfig.org>.
-
-## Versioning
-
-For transparency into our release cycle and in striving to maintain backward compatibility, this project is maintained under the Semantic Versioning guidelines. Sometimes we screw up, but we'll adhere to these rules whenever possible.
-
-Releases will be numbered with the following format:
-
-`<major>.<minor>.<patch>`
-
-And constructed with the following guidelines:
-
-- Breaking backward compatibility **bumps the major** while resetting minor and patch
-- New additions without breaking backward compatibility **bumps the minor** while resetting the patch
-- Bug fixes and misc changes **bumps only the patch**
-
-For more information on SemVer, please visit <http://semver.org/>.
-
-## License
-
-[MIT](LICENSE) &copy; [Kong](https://konghq.com)
 
 [license-url]: https://github.com/Kong/httpsnippet/blob/master/LICENSE
 [travis-url]: https://travis-ci.org/Kong/httpsnippet
