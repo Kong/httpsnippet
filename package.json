@@ -2,8 +2,8 @@
   "version": "2.0.0",
   "name": "httpsnippet",
   "description": "HTTP Request snippet generator for *most* languages",
-  "author": "Ahmad Nassri <ahmad@mashape.com> (https://www.mashape.com/)",
-  "homepage": "https://github.com/Mashape/httpsnippet",
+  "author": "Kong <office@konghq.com>",
+  "homepage": "https://github.com/Kong/httpsnippet",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -42,9 +42,9 @@
     "node": ">=16",
     "yarn": "1.22.15"
   },
-  "repository": "Mashape/httpsnippet",
+  "repository": "Kong/httpsnippet",
   "bugs": {
-    "url": "https://github.com/Mashape/httpsnippet/issues"
+    "url": "https://github.com/Kong/httpsnippet/issues"
   },
   "scripts": {
     "clean": "tsc --build tsconfig.build.json --clean",

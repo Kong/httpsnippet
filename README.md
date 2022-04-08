@@ -1,6 +1,6 @@
 # HTTP Snippet [![version][npm-version]][npm-url] [![License][npm-license]][license-url]
 
-> HTTP Request snippet generator for *many* languages & tools including: `cURL`, `HTTPie`, `Javascript`, `Node`, `C`, `Java`, `PHP`, `Objective-C`, `Swift`, `Python`, `Ruby`, `C#`, `Go`, `OCaml` and [more](https://github.com/Mashape/httpsnippet/wiki/Targets)!
+> HTTP Request snippet generator for *many* languages & tools including: `cURL`, `HTTPie`, `Javascript`, `Node`, `C`, `Java`, `PHP`, `Objective-C`, `Swift`, `Python`, `Ruby`, `C#`, `Go`, `OCaml` and [more](https://github.com/Kong/httpsnippet/wiki/Targets)!
 
 Relies on the popular [HAR](http://www.softwareishard.com/blog/har-12-spec/#request) format to import data and describe HTTP calls.
 
@@ -80,7 +80,7 @@ httpsnippet example.json --target http --output ./snippets -x '{"autoHost": fals
 *Required*
 Type: `object`
 
-Name of [conversion target](https://github.com/Mashape/httpsnippet/wiki/Targets)
+Name of [conversion target](https://github.com/Kong/httpsnippet/wiki/Targets)
 
 ```js
 var HTTPSnippet = require('httpsnippet');
@@ -98,13 +98,13 @@ var snippet = new HTTPSnippet({
 *Required*
 Type: `string`
 
-Name of [conversion target](https://github.com/Mashape/httpsnippet/wiki/Targets)
+Name of [conversion target](https://github.com/Kong/httpsnippet/wiki/Targets)
 
 #### options
 
 Type: `object`
 
-Target options, *see [wiki](https://github.com/Mashape/httpsnippet/wiki/Targets) for details*
+Target options, *see [wiki](https://github.com/Kong/httpsnippet/wiki/Targets) for details*
 
 ```js
 var HTTPSnippet = require('httpsnippet');
@@ -130,19 +130,19 @@ console.log(snippet.convert('node', {
 *Required*
 Type: `string`
 
-Name of [conversion target](https://github.com/Mashape/httpsnippet/wiki/Targets)
+Name of [conversion target](https://github.com/Kong/httpsnippet/wiki/Targets)
 
 #### client
 
 Type: `string`
 
-Name of conversion target [client library](https://github.com/Mashape/httpsnippet/wiki/Targets)
+Name of conversion target [client library](https://github.com/Kong/httpsnippet/wiki/Targets)
 
 #### options
 
 Type: `object`
 
-Target options, *see [wiki](https://github.com/Mashape/httpsnippet/wiki/Targets) for details*
+Target options, *see [wiki](https://github.com/Kong/httpsnippet/wiki/Targets) for details*
 
 ```js
 var HTTPSnippet = require('httpsnippet');
@@ -180,7 +180,7 @@ HTTPSnippet.addTarget(customLanguageTarget);
 *Required*
 Type: `string`
 
-Name of [conversion target](https://github.com/Mashape/httpsnippet/wiki/Targets)
+Name of [conversion target](https://github.com/Kong/httpsnippet/wiki/Targets)
 
 ### client
 
@@ -198,7 +198,7 @@ HTTPSnippet.addTargetClient('node', customClient);
 
 At the heart of this module is the [HAR Format](http://www.softwareishard.com/blog/har-12-spec/#request) as the HTTP request description format, please review some of the sample JSON HAR Request objects in [test fixtures](/test/fixtures/requests), or read the [HAR Docs](http://www.softwareishard.com/blog/har-12-spec/#request) for more details.
 
-For detailed information on each target, please review the [wiki](https://github.com/Mashape/httpsnippet/wiki).
+For detailed information on each target, please review the [wiki](https://github.com/Kong/httpsnippet/wiki).
 
 ## Bugs and feature requests
 
@@ -208,7 +208,7 @@ Have a bug or a feature request? Please first read the [issue guidelines](CONTRI
 
 Please read through our [contributing guidelines](CONTRIBUTING.md). Included are directions for opening issues, coding standards, and notes on development.
 
-For info on creating new conversion targets, please review this [guideline](https://github.com/Mashape/httpsnippet/wiki/Creating-Targets)
+For info on creating new conversion targets, please review this [guideline](https://github.com/Kong/httpsnippet/wiki/Creating-Targets)
 
 Moreover, if your pull request contains JavaScript patches or features, you must include relevant unit tests.
 
