@@ -4,7 +4,7 @@ import { clojure } from './clojure';
 import { csharp } from './csharp';
 import { go } from './go';
 import { http } from './http';
-// import { java } from './java';
+import { java } from './java';
 // import { javascript } from './javascript';
 // import { kotlin } from './kotlin';
 // import { node } from './node';
@@ -56,7 +56,7 @@ export const targets = {
   csharp,
   go,
   http,
-  // java,
+  java,
   // javascript,
   // kotlin,
   // node,
