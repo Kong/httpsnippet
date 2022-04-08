@@ -12,7 +12,7 @@ import { node } from './node';
 import { objc } from './objc';
 import { ocaml } from './ocaml';
 import { php } from './php';
-// import { powershell } from './powershell';
+import { powershell } from './powershell';
 // import { python } from './python';
 // import { r } from './r';
 // import { ruby } from './ruby';
@@ -64,7 +64,7 @@ export const targets = {
   objc,
   ocaml,
   php,
-  // powershell,
+  powershell,
   // python,
   // r,
   // ruby,
