@@ -78,21 +78,21 @@ module.exports = function (source, options) {
           .push('var body = ""')
           .push('var error: NSError? = nil')
           .push('for param in parameters {')
-          .push(1, 'let paramName = param["name"]!')
-          .push(1, 'body += "--\\(boundary)\\r\\n"')
-          .push(1, 'body += "Content-Disposition:form-data; name=\\"\\(paramName)\\""')
-          .push(1, 'if let filename = param["fileName"] {')
-          .push(2, 'let contentType = param["content-type"]!')
-          .push(2, 'let fileContent = String(contentsOfFile: filename, encoding: String.Encoding.utf8)')
-          .push(2, 'if (error != nil) {')
-          .push(3, 'print(error)')
-          .push(2, '}')
-          .push(2, 'body += "; filename=\\"\\(filename)\\"\\r\\n"')
-          .push(2, 'body += "Content-Type: \\(contentType)\\r\\n\\r\\n"')
-          .push(2, 'body += fileContent')
-          .push(1, '} else if let paramValue = param["value"] {')
-          .push(2, 'body += "\\r\\n\\r\\n\\(paramValue)"')
-          .push(1, '}')
+          .push('let paramName = param["name"]!', 1)
+          .push('body += "--\\(boundary)\\r\\n"', 1)
+          .push('body += "Content-Disposition:form-data; name=\\"\\(paramName)\\""', 1)
+          .push('if let filename = param["fileName"] {', 1)
+          .push('let contentType = param["content-type"]!', 2)
+          .push('let fileContent = String(contentsOfFile: filename, encoding: String.Encoding.utf8)', 2)
+          .push('if (error != nil) {', 2)
+          .push('print(error)', 3)
+          .push('}', 2)
+          .push('body += "; filename=\\"\\(filename)\\"\\r\\n"', 2)
+          .push('body += "Content-Type: \\(contentType)\\r\\n\\r\\n"', 2)
+          .push('body += fileContent', 2)
+          .push('} else if let paramValue = param["value"] {', 1)
+          .push('body += "\\r\\n\\r\\n\\(paramValue)"', 2)
+          .push('}', 1)
           .push('}');
         break;
 
@@ -122,13 +122,13 @@ module.exports = function (source, options) {
     // Retrieving the shared session will be less verbose than creating a new one.
     .push('let session = URLSession.shared')
     .push('let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in')
-    .push(1, 'if (error != nil) {')
-    .push(2, 'print(error)')
-    .push(1, '} else {')
+    .push('if (error != nil) {', 1)
+    .push('print(error)', 2)
+    .push('} else {', 1)
     // Casting the NSURLResponse to NSHTTPURLResponse so the user can see the status     .
-    .push(2, 'let httpResponse = response as? HTTPURLResponse')
-    .push(2, 'print(httpResponse)')
-    .push(1, '}')
+    .push('let httpResponse = response as? HTTPURLResponse', 2)
+    .push('print(httpResponse)', 2)
+    .push('}', 1)
     .push('})')
     .blank()
     .push('dataTask.resume()');
@@ -140,5 +140,5 @@ module.exports.info = {
   key: 'nsurlsession',
   title: 'NSURLSession',
   link: 'https://developer.apple.com/library/mac/documentation/Foundation/Reference/NSURLSession_class/index.html',
-  description: 'Foundation\'s NSURLSession request',
+  description: "Foundation's NSURLSession request",
 };

@@ -44,11 +44,11 @@ module.exports = function (source, options) {
     code.push('{');
     if (cookies) {
       // enable setting the cookie header
-      code.push(1, 'UseCookies = false,');
+      code.push('UseCookies = false,', 1);
     }
     if (decompressionMethods.length) {
       // enable decompression for supported methods
-      code.push(1, `AutomaticDecompression = ${decompressionMethods.join(' | ')},`);
+      code.push(`AutomaticDecompression = ${decompressionMethods.join(' | ')},`, 1);
     }
     code.push('};');
   }
@@ -67,9 +67,9 @@ module.exports = function (source, options) {
     // custom method
     method = `new HttpMethod("${method}")`;
   }
-  code.push(1, `Method = ${method},`);
+  code.push(`Method = ${method},`, 1);
 
-  code.push(1, `RequestUri = new Uri("${source.fullUrl}"),`);
+  code.push(`RequestUri = new Uri("${source.fullUrl}"),`, 1);
 
   const headers = Object.keys(source.allHeaders).filter(function (header) {
     switch (header.toLowerCase()) {
@@ -83,57 +83,57 @@ module.exports = function (source, options) {
     }
   });
   if (headers.length) {
-    code.push(1, 'Headers =');
-    code.push(1, '{');
+    code.push('Headers =', 1);
+    code.push('{', 1);
     headers.forEach(function (key) {
-      code.push(2, `{ "${key}", "${source.allHeaders[key]}" },`);
+      code.push(`{ "${key}", "${source.allHeaders[key]}" },`, 2);
     });
-    code.push(1, '},');
+    code.push('},', 1);
   }
 
   if (source.postData.text) {
     const contentType = source.postData.mimeType;
     switch (contentType) {
       case 'application/x-www-form-urlencoded':
-        code.push(1, 'Content = new FormUrlEncodedContent(new Dictionary<string, string>');
-        code.push(1, '{');
+        code.push('Content = new FormUrlEncodedContent(new Dictionary<string, string>', 1);
+        code.push('{', 1);
         source.postData.params.forEach(function (param) {
-          code.push(2, `{ "${param.name}", "${param.value}" },`);
+          code.push(`{ "${param.name}", "${param.value}" },`, 2);
         });
-        code.push(1, '}),');
+        code.push('}),', 1);
         break;
       case 'multipart/form-data':
-        code.push(1, 'Content = new MultipartFormDataContent');
-        code.push(1, '{');
+        code.push('Content = new MultipartFormDataContent', 1);
+        code.push('{', 1);
         source.postData.params.forEach(function (param) {
-          code.push(2, `new StringContent(${JSON.stringify(param.value || '')})`);
-          code.push(2, '{');
-          code.push(3, 'Headers =');
-          code.push(3, '{');
+          code.push(`new StringContent(${JSON.stringify(param.value || '')})`, 2);
+          code.push('{', 2);
+          code.push('Headers =', 3);
+          code.push('{', 3);
           if (param.contentType) {
-            code.push(4, `ContentType = new MediaTypeHeaderValue("${param.contentType}"),`);
+            code.push(`ContentType = new MediaTypeHeaderValue("${param.contentType}"),`, 4);
           }
-          code.push(4, 'ContentDisposition = new ContentDispositionHeaderValue("form-data")');
-          code.push(4, '{');
-          code.push(5, `Name = "${param.name}",`);
+          code.push('ContentDisposition = new ContentDispositionHeaderValue("form-data")', 4);
+          code.push('{', 4);
+          code.push(`Name = "${param.name}",`, 5);
           if (param.fileName) {
-            code.push(5, `FileName = "${param.fileName}",`);
+            code.push(`FileName = "${param.fileName}",`, 5);
           }
-          code.push(4, '}');
-          code.push(3, '}');
-          code.push(2, '},');
+          code.push('}', 4);
+          code.push('}', 3);
+          code.push('},', 2);
         });
 
-        code.push(1, '},');
+        code.push('},', 1);
         break;
       default:
-        code.push(1, `Content = new StringContent(${JSON.stringify(source.postData.text || '')})`);
-        code.push(1, '{');
-        code.push(2, 'Headers =');
-        code.push(2, '{');
-        code.push(3, `ContentType = new MediaTypeHeaderValue("${contentType}")`);
-        code.push(2, '}');
-        code.push(1, '}');
+        code.push(`Content = new StringContent(${JSON.stringify(source.postData.text || '')})`, 1);
+        code.push('{', 1);
+        code.push('Headers =', 2);
+        code.push('{', 2);
+        code.push(`ContentType = new MediaTypeHeaderValue("${contentType}")`, 3);
+        code.push('}', 2);
+        code.push('}', 1);
         break;
     }
   }
@@ -142,9 +142,9 @@ module.exports = function (source, options) {
   // send and read response
   code.push('using (var response = await client.SendAsync(request))');
   code.push('{');
-  code.push(1, 'response.EnsureSuccessStatusCode();');
-  code.push(1, 'var body = await response.Content.ReadAsStringAsync();');
-  code.push(1, 'Console.WriteLine(body);');
+  code.push('response.EnsureSuccessStatusCode();', 1);
+  code.push('var body = await response.Content.ReadAsStringAsync();', 1);
+  code.push('Console.WriteLine(body);', 1);
   code.push('}');
 
   return code.join();

@@ -74,9 +74,9 @@ module.exports = function (source, options) {
 
     for (const header in headers) {
       if (count++ !== headerCount) {
-        code.push(1, `"${header}": "${headers[header]}",`);
+        code.push(`"${header}": "${headers[header]}",`, 1);
       } else {
-        code.push(1, `"${header}": "${headers[header]}"`);
+        code.push(`"${header}": "${headers[header]}"`, 1);
       }
     }
 

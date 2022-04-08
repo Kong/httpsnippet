@@ -77,21 +77,21 @@ module.exports = function (source, options) {
           .push('NSError *error;')
           .push('NSMutableString *body = [NSMutableString string];')
           .push('for (NSDictionary *param in parameters) {')
-          .push(1, '[body appendFormat:@"--%@\\r\\n", boundary];')
-          .push(1, 'if (param[@"fileName"]) {')
+          .push('[body appendFormat:@"--%@\\r\\n", boundary];', 1)
+          .push('if (param[@"fileName"]) {', 1)
           .push(
-            2,
             '[body appendFormat:@"Content-Disposition:form-data; name=\\"%@\\"; filename=\\"%@\\"\\r\\n", param[@"name"], param[@"fileName"]];',
+            2,
           )
-          .push(2, '[body appendFormat:@"Content-Type: %@\\r\\n\\r\\n", param[@"contentType"]];')
-          .push(2, '[body appendFormat:@"%@", [NSString stringWithContentsOfFile:param[@"fileName"] encoding:NSUTF8StringEncoding error:&error]];')
-          .push(2, 'if (error) {')
-          .push(3, 'NSLog(@"%@", error);')
-          .push(2, '}')
-          .push(1, '} else {')
-          .push(2, '[body appendFormat:@"Content-Disposition:form-data; name=\\"%@\\"\\r\\n\\r\\n", param[@"name"]];')
-          .push(2, '[body appendFormat:@"%@", param[@"value"]];')
-          .push(1, '}')
+          .push('[body appendFormat:@"Content-Type: %@\\r\\n\\r\\n", param[@"contentType"]];', 2)
+          .push('[body appendFormat:@"%@", [NSString stringWithContentsOfFile:param[@"fileName"] encoding:NSUTF8StringEncoding error:&error]];', 2)
+          .push('if (error) {', 2)
+          .push('NSLog(@"%@", error);', 3)
+          .push('}', 2)
+          .push('} else {', 1)
+          .push('[body appendFormat:@"Content-Disposition:form-data; name=\\"%@\\"\\r\\n\\r\\n", param[@"name"]];', 2)
+          .push('[body appendFormat:@"%@", param[@"value"]];', 2)
+          .push('}', 1)
           .push('}')
           .push('[body appendFormat:@"\\r\\n--%@--\\r\\n", boundary];')
           .push('NSData *postData = [body dataUsingEncoding:NSUTF8StringEncoding];');
@@ -126,13 +126,13 @@ module.exports = function (source, options) {
     .push('NSURLSession *session = [NSURLSession sharedSession];')
     .push('NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request')
     .push('                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {')
-    .push(1, '                                            if (error) {')
-    .push(2, '                                            NSLog(@"%@", error);')
-    .push(1, '                                            } else {')
+    .push('                                            if (error) {', 1)
+    .push('                                            NSLog(@"%@", error);', 2)
+    .push('                                            } else {', 1)
     // Casting the NSURLResponse to NSHTTPURLResponse so the user can see the status     .
-    .push(2, '                                            NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;')
-    .push(2, '                                            NSLog(@"%@", httpResponse);')
-    .push(1, '                                            }')
+    .push('                                            NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;', 2)
+    .push('                                            NSLog(@"%@", httpResponse);', 2)
+    .push('                                            }', 1)
     .push('                                            }];')
     .push('[dataTask resume];');
 
@@ -143,5 +143,5 @@ module.exports.info = {
   key: 'nsurlsession',
   title: 'NSURLSession',
   link: 'https://developer.apple.com/library/mac/documentation/Foundation/Reference/NSURLSession_class/index.html',
-  description: 'Foundation\'s NSURLSession request',
+  description: "Foundation's NSURLSession request",
 };

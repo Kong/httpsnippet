@@ -1,19 +1,20 @@
-export const reducer = (obj, pair) => {
-  if (obj[pair.name] === undefined) {
-    obj[pair.name] = pair.value;
-    return obj;
+export const reducer = <T extends { name: string; value: string }>(
+  accumulator: Record<string, string | string[]>,
+  pair: T,
+) => {
+  const currentValue = accumulator[pair.name];
+  if (currentValue === undefined) {
+    accumulator[pair.name] = pair.value;
+    return accumulator;
   }
 
   // If we already have it as array just push the value
-  if (obj[pair.name] instanceof Array) {
-    obj[pair.name].push(pair.value);
-    return obj;
+  if (Array.isArray(currentValue)) {
+    currentValue.push(pair.value);
+    return accumulator;
   }
 
-  // convert to array
-  const arr = [obj[pair.name], pair.value];
-
-  obj[pair.name] = arr;
-
-  return obj;
+  // convert to array since now we have more than one value for this key
+  accumulator[pair.name] = [currentValue, pair.value];
+  return accumulator;
 };

@@ -1,1 +1,2 @@
 - convert to GitHub actions
+- remove chaining like `push(..).blank().push(..)

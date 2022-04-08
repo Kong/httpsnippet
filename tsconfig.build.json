@@ -4,7 +4,8 @@
     "rootDir": "src",
     "allowJs": true,
     "resolveJsonModule": true,
-    "strict": false
+    "strict": true,
+    "downlevelIteration": true,
   },
   "exclude": ["dist", "test", "**/*.test.ts"]
 }

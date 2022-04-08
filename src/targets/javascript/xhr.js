@@ -24,7 +24,7 @@ module.exports = function (source, options) {
 
   switch (source.postData.mimeType) {
     case 'application/json':
-      code.push(`const data = JSON.stringify(${JSON.stringify(source.postData.jsonObj, null, opts.indent)});`).push(null);
+      code.push(`const data = JSON.stringify(${JSON.stringify(source.postData.jsonObj, null, opts.indent)});`).blank();
       break;
 
     case 'multipart/form-data':
@@ -57,9 +57,9 @@ module.exports = function (source, options) {
   code
     .blank()
     .push('xhr.addEventListener("readystatechange", function () {')
-    .push(1, 'if (this.readyState === this.DONE) {')
-    .push(2, 'console.log(this.responseText);')
-    .push(1, '}')
+    .push('if (this.readyState === this.DONE) {', 1)
+    .push('console.log(this.responseText);', 2)
+    .push('}', 1)
     .push('});')
     .blank()
     .push(`xhr.open(${JSON.stringify(source.method)}, ${JSON.stringify(source.fullUrl)});`);

@@ -23,7 +23,7 @@ module.exports = function (source, options) {
   let includeFS = false;
   const code = new CodeBuilder(opts.indent);
 
-  code.push('const request = require(\'request\');').blank();
+  code.push("const request = require('request');").blank();
 
   const reqOpts = {
     method: source.method,
@@ -101,23 +101,23 @@ module.exports = function (source, options) {
   }
 
   if (includeFS) {
-    code.unshift('const fs = require(\'fs\');');
+    code.unshift("const fs = require('fs');");
   }
 
   code.push(`const options = ${stringifyObject(reqOpts, { indent: '  ', inlineCharacterLimit: 80 })};`).blank();
 
   code
     .push('request(options, function (error, response, body) {')
-    .push(1, 'if (error) throw new Error(error);')
+    .push('if (error) throw new Error(error);', 1)
     .blank()
-    .push(1, 'console.log(body);')
+    .push('console.log(body);', 1)
     .push('});')
     .blank();
 
   return code
     .join()
     .replace('"JAR"', 'jar')
-    .replace(/'fs\.createReadStream\("(.+)"\)'/g, 'fs.createReadStream(\'$1\')');
+    .replace(/'fs\.createReadStream\("(.+)"\)'/g, "fs.createReadStream('$1')");
 };
 
 module.exports.info = {

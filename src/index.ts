@@ -2,12 +2,11 @@ import { map as eventStreamMap } from 'event-stream';
 import * as FormData from 'form-data';
 import { stringify as queryStringify } from 'querystring';
 import { reducer } from './helpers/reducer';
-import helpers from './helpers/headers';
 import targets from './targets';
 import { parse as urlParse, format as urlFormat } from 'url';
 import validate from 'har-validator/lib/async';
-
-const { formDataIterator, isBlob } = require('./helpers/form-data.js');
+import { getHeaderName, hasHeader } from './helpers/headers';
+import { formDataIterator, isBlob } from './helpers/form-data.js';
 
 interface Request {
   httpVersion: string;
@@ -160,7 +159,7 @@ export class HTTPSnippet {
             form._boundary = boundary;
           }
 
-          request.postData.params.forEach(function (param) {
+          request.postData.params.forEach(param => {
             const name = param.name;
             const value = param.value || '';
             const filename = param.fileName || null;
@@ -194,8 +193,8 @@ export class HTTPSnippet {
           request.postData.boundary = boundary;
 
           // Since headers are case-sensitive we need to see if there's an existing `Content-Type` header that we can override.
-          const contentTypeHeader = helpers.hasHeader(request.headersObj, 'content-type')
-            ? helpers.getHeaderName(request.headersObj, 'content-type')
+          const contentTypeHeader = hasHeader(request.headersObj, 'content-type')
+            ? getHeaderName(request.headersObj, 'content-type')
             : 'content-type';
 
           request.headersObj[contentTypeHeader] = 'multipart/form-data; boundary=' + boundary;

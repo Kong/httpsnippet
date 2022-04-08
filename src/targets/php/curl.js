@@ -110,12 +110,12 @@ module.exports = function (source, options) {
   if (headers.length) {
     curlopts
       .push('CURLOPT_HTTPHEADER => [')
-      .push(1, headers.join(',\n' + opts.indent + opts.indent))
+      .push(headers.join(',\n' + opts.indent + opts.indent), 1)
       .push('],');
   }
 
   code
-    .push(1, curlopts.join())
+    .push(curlopts.join(), 1)
     .push(']);')
     .blank()
     .push('$response = curl_exec($curl);')
@@ -126,12 +126,12 @@ module.exports = function (source, options) {
     .push('if ($err) {');
 
   if (opts.namedErrors) {
-    code.push(1, 'echo array_flip(get_defined_constants(true)["curl"])[$err];');
+    code.push('echo array_flip(get_defined_constants(true)["curl"])[$err];', 1);
   } else {
-    code.push(1, 'echo "cURL Error #:" . $err;');
+    code.push('echo "cURL Error #:" . $err;', 1);
   }
 
-  code.push('} else {').push(1, 'echo $response;').push('}');
+  code.push('} else {').push('echo $response;', 1).push('}');
 
   if (!opts.noTags && opts.closingTag) {
     code.blank().push('?>');

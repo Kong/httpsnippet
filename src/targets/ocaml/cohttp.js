@@ -32,7 +32,7 @@ module.exports = function (source, options) {
     code.push('let headers = Header.add_list (Header.init ()) [');
 
     headers.forEach(function (key) {
-      code.push(1, `("${key}", "${source.allHeaders[key]}");`);
+      code.push(`("${key}", "${source.allHeaders[key]}");`, 1);
     });
 
     code.push('] in');
@@ -49,13 +49,12 @@ module.exports = function (source, options) {
 
   const h = headers.length ? '~headers ' : '';
   const b = source.postData.text ? '~body ' : '';
-  const m =
-    methods.indexOf(source.method.toLowerCase()) >= 0 ? '`' + source.method.toUpperCase() : '(Code.method_of_string "' + source.method + '")';
+  const m = methods.indexOf(source.method.toLowerCase()) >= 0 ? '`' + source.method.toUpperCase() : '(Code.method_of_string "' + source.method + '")';
 
   code.push(`Client.call ${h}${b}${m} uri`);
 
   // Catch result
-  code.push('>>= fun (res, body_stream) ->').push(1, '(* Do stuff with the result *)');
+  code.push('>>= fun (res, body_stream) ->').push('(* Do stuff with the result *)', 1);
 
   return code.join();
 };

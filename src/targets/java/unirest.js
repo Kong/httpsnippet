@@ -34,15 +34,15 @@ module.exports = function (source, options) {
   // construct headers
   if (headers.length) {
     headers.forEach(function (key) {
-      code.push(1, `.header("${key}", "${source.allHeaders[key]}")`);
+      code.push(`.header("${key}", "${source.allHeaders[key]}")`, 1);
     });
   }
 
   if (source.postData.text) {
-    code.push(1, `.body(${JSON.stringify(source.postData.text)})`);
+    code.push(`.body(${JSON.stringify(source.postData.text)})`, 1);
   }
 
-  code.push(1, '.asString();');
+  code.push('.asString();', 1);
 
   return code.join();
 };

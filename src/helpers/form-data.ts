@@ -26,12 +26,14 @@
  * Extracted from https://github.com/node-fetch/node-fetch/blob/64c5c296a0250b852010746c76144cb9e14698d9/src/utils/form-data.js
  */
 
+import FormData = require("form-data");
+
 const carriage = '\r\n';
 const dashes = '-'.repeat(2);
 
 const NAME = Symbol.toStringTag;
 
-const isBlob = object => {
+export const isBlob = (object: any) => {
   return (
     typeof object === 'object' &&
     typeof object.arrayBuffer === 'function' &&
@@ -42,19 +44,9 @@ const isBlob = object => {
   );
 };
 
-/**
- * @param {string} boundary
- */
-const getFooter = boundary => `${dashes}${boundary}${dashes}${carriage.repeat(2)}`;
+const getFooter = (boundary: string) => `${dashes}${boundary}${dashes}${carriage.repeat(2)}`;
 
-/**
- * @param {string} boundary
- * @param {string} name
- * @param {*} field
- *
- * @return {string}
- */
-function getHeader(boundary, name, field) {
+const getHeader = (boundary: string, name: string, field: { name: string; type: string }) => {
   let header = '';
 
   header += `${dashes}${boundary}${carriage}`;
@@ -68,25 +60,7 @@ function getHeader(boundary, name, field) {
   return `${header}${carriage.repeat(2)}`;
 }
 
-/**
- * @return {string}
- */
-module.exports.getBoundary = () => {
-  // This generates a 50 character boundary similar to those used by Firefox.
-  // They are optimized for boyer-moore parsing.
-  let boundary = '--------------------------';
-  for (let i = 0; i < 24; i++) {
-    boundary += Math.floor(Math.random() * 10).toString(16);
-  }
-
-  return boundary;
-};
-
-/**
- * @param {FormData} form
- * @param {string} boundary
- */
-module.exports.formDataIterator = function* (form, boundary) {
+export const formDataIterator = function* (form: FormData, boundary: string) {
   for (const [name, value] of form) {
     yield getHeader(boundary, name, value);
 
@@ -101,5 +75,3 @@ module.exports.formDataIterator = function* (form, boundary) {
 
   yield getFooter(boundary);
 };
-
-module.exports.isBlob = isBlob;

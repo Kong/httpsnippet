@@ -96,9 +96,9 @@ module.exports = function (source, options) {
 
   code
     .push('req.end(function (res) {')
-    .push(1, 'if (res.error) throw new Error(res.error);')
+    .push('if (res.error) throw new Error(res.error);', 1)
     .blank()
-    .push(1, 'console.log(res.body);')
+    .push('console.log(res.body);', 1)
     .push('});')
     .blank();
 

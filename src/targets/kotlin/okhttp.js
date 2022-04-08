@@ -36,21 +36,21 @@ module.exports = function (source, options) {
   }
 
   code.push('val request = Request.Builder()');
-  code.push(1, `.url("${source.fullUrl}")`);
+  code.push(`.url("${source.fullUrl}")`, 1);
   if (methods.indexOf(source.method.toUpperCase()) === -1) {
     if (source.postData.text) {
-      code.push(1, `.method("${source.method.toUpperCase()}", body)`);
+      code.push(`.method("${source.method.toUpperCase()}", body)`, 1);
     } else {
-      code.push(1, `.method("${source.method.toUpperCase()}", null)`);
+      code.push(`.method("${source.method.toUpperCase()}", null)`, 1);
     }
   } else if (methodsWithBody.indexOf(source.method.toUpperCase()) >= 0) {
     if (source.postData.text) {
-      code.push(1, `.${source.method.toLowerCase()}(body)`);
+      code.push(`.${source.method.toLowerCase()}(body)`, 1);
     } else {
-      code.push(1, `.${source.method.toLowerCase()}(null)`);
+      code.push(`.${source.method.toLowerCase()}(null)`, 1);
     }
   } else {
-    code.push(1, `.${source.method.toLowerCase()}()`);
+    code.push(`.${source.method.toLowerCase()}()`, 1);
   }
 
   // Add headers, including the cookies
@@ -59,11 +59,11 @@ module.exports = function (source, options) {
   // construct headers
   if (headers.length) {
     headers.forEach(function (key) {
-      code.push(1, `.addHeader("${key}", "${source.allHeaders[key]}")`);
+      code.push(`.addHeader("${key}", "${source.allHeaders[key]}")`, 1);
     });
   }
 
-  code.push(1, '.build()').blank().push('val response = client.newCall(request).execute()');
+  code.push('.build()').blank().push('val response = client.newCall(request).execute()', 1);
 
   return code.join();
 };

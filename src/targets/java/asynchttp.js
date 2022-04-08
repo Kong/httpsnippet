@@ -30,18 +30,18 @@ module.exports = function (source, options) {
   // construct headers
   if (headers.length) {
     headers.forEach(function (key) {
-      code.push(1, `.setHeader("${key}", "${source.allHeaders[key]}")`);
+      code.push(`.setHeader("${key}", "${source.allHeaders[key]}")`, 1);
     });
   }
 
   if (source.postData.text) {
-    code.push(1, `.setBody(${JSON.stringify(source.postData.text)})`);
+    code.push(`.setBody(${JSON.stringify(source.postData.text)})`, 1);
   }
 
-  code.push(1, '.execute()');
-  code.push(1, '.toCompletableFuture()');
-  code.push(1, '.thenAccept(System.out::println)');
-  code.push(1, '.join();');
+  code.push('.execute()', 1);
+  code.push('.toCompletableFuture()', 1);
+  code.push('.thenAccept(System.out::println)', 1);
+  code.push('.join();', 1);
   code.blank();
   code.push('client.close();');
 

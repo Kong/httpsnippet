@@ -22,7 +22,7 @@ module.exports = function (source, options) {
   let includeFS = false;
   const code = new CodeBuilder(opts.indent);
 
-  code.push('const fetch = require(\'node-fetch\');');
+  code.push("const fetch = require('node-fetch');");
   const url = source.fullUrl;
   const reqOpts = {
     method: source.method,
@@ -34,12 +34,12 @@ module.exports = function (source, options) {
 
   switch (source.postData.mimeType) {
     case 'application/x-www-form-urlencoded':
-      code.unshift('const { URLSearchParams } = require(\'url\');');
+      code.unshift("const { URLSearchParams } = require('url');");
       code.push('const encodedParams = new URLSearchParams();');
       code.blank();
 
       source.postData.params.forEach(function (param) {
-        code.push('encodedParams.set(\'' + param.name + '\', \'' + param.value + '\');');
+        code.push("encodedParams.set('" + param.name + "', '" + param.value + "');");
       });
 
       reqOpts.body = 'encodedParams';
@@ -52,19 +52,19 @@ module.exports = function (source, options) {
       break;
 
     case 'multipart/form-data':
-      code.unshift('const FormData = require(\'form-data\');');
+      code.unshift("const FormData = require('form-data');");
       code.push('const formData = new FormData();');
       code.blank();
 
       source.postData.params.forEach(function (param) {
         if (!param.fileName && !param.fileName && !param.contentType) {
-          code.push('formData.append(\'' + param.name + '\', \'' + param.value + '\');');
+          code.push("formData.append('" + param.name + "', '" + param.value + "');");
           return;
         }
 
         if (param.fileName) {
           includeFS = true;
-          code.push('formData.append(\'' + param.name + '\', fs.createReadStream(\'' + param.fileName + '\'));');
+          code.push("formData.append('" + param.name + "', fs.createReadStream('" + param.fileName + "'));");
         }
       });
       break;
@@ -89,20 +89,20 @@ module.exports = function (source, options) {
     }
   }
   code.blank();
-  code.push('let url = \'' + url + '\';').blank();
+  code.push("let url = '" + url + "';").blank();
   code.push(`let options = ${stringifyObject(reqOpts, { indent: '  ', inlineCharacterLimit: 80 })};`).blank();
 
   if (includeFS) {
-    code.unshift('const fs = require(\'fs\');');
+    code.unshift("const fs = require('fs');");
   }
   if (source.postData.mimeType === 'multipart/form-data') {
     code.push('options.body = formData;').blank();
   }
   code
     .push('fetch(url, options)')
-    .push(1, '.then(res => res.json())')
-    .push(1, '.then(json => console.log(json))')
-    .push(1, '.catch(err => console.error(\'error:\' + err));');
+    .push('.then(res => res.json())', 1)
+    .push('.then(json => console.log(json))', 1)
+    .push(".catch(err => console.error('error:' + err));", 1);
 
   return code
     .join()

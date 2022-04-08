@@ -69,9 +69,9 @@ module.exports = function (source, options) {
 
   code
     .push('axios.request(options).then(function (response) {')
-    .push(1, 'console.log(response.data);')
+    .push('console.log(response.data);', 1)
     .push('}).catch(function (error) {')
-    .push(1, 'console.error(error);')
+    .push('console.error(error);', 1)
     .push('});');
 
   return code.join();

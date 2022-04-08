@@ -21,24 +21,24 @@ module.exports = function (source, options) {
   const code = new CodeBuilder(opts.indent);
 
   code.push('HttpRequest request = HttpRequest.newBuilder()');
-  code.push(2, `.uri(URI.create("${source.fullUrl}"))`);
+  code.push(`.uri(URI.create("${source.fullUrl}"))`, 2);
 
   const headers = Object.keys(source.allHeaders);
 
   // construct headers
   if (headers.length) {
     headers.forEach(function (key) {
-      code.push(2, `.header("${key}", "${source.allHeaders[key]}")`);
+      code.push(`.header("${key}", "${source.allHeaders[key]}")`, 2);
     });
   }
 
   if (source.postData.text) {
-    code.push(2, `.method("${source.method.toUpperCase()}", HttpRequest.BodyPublishers.ofString(${JSON.stringify(source.postData.text)}))`);
+    code.push(`.method("${source.method.toUpperCase()}", HttpRequest.BodyPublishers.ofString(${JSON.stringify(source.postData.text)}))`, 2);
   } else {
-    code.push(2, `.method("${source.method.toUpperCase()}", HttpRequest.BodyPublishers.noBody())`);
+    code.push(`.method("${source.method.toUpperCase()}", HttpRequest.BodyPublishers.noBody())`, 2);
   }
 
-  code.push(2, '.build();');
+  code.push('.build();', 2);
 
   code.push('HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());');
   code.push('System.out.println(response.body());');

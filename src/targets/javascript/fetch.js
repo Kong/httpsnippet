@@ -81,9 +81,9 @@ module.exports = function (source, options) {
 
   code
     .push(`fetch('${source.fullUrl}', options)`)
-    .push(1, '.then(response => response.json())')
-    .push(1, '.then(response => console.log(response))')
-    .push(1, '.catch(err => console.error(err));');
+    .push('.then(response => response.json())', 1)
+    .push('.then(response => console.log(response))', 1)
+    .push('.catch(err => console.error(err));', 1);
 
   return code.join();
 };

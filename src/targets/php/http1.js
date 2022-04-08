@@ -70,11 +70,11 @@ module.exports = function (source, options) {
 
   code
     .push('try {')
-    .push(1, '$response = $request->send();')
+    .push('$response = $request->send();', 1)
     .blank()
-    .push(1, 'echo $response->getBody();')
+    .push('echo $response->getBody();', 1)
     .push('} catch (HttpException $ex) {')
-    .push(1, 'echo $ex;')
+    .push('echo $ex;', 1)
     .push('}');
 
   if (!opts.noTags && opts.closingTag) {

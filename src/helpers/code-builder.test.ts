@@ -1,18 +1,18 @@
 import { CodeBuilder } from './code-builder';
 
 describe('CodeBuilder', () => {
-  describe('buildLine', () => {
-    const builder = new CodeBuilder('\t');
+  describe('indentLine', () => {
+    const indentCharacter = '\t';
+    const builder = new CodeBuilder(indentCharacter);
+    const line = 'console.log("hello world")';
     it('handles a single argument', () => {
-      const output = 'console.log("hello world")';
-      const result = builder.buildLine(output);
-      expect(result).toEqual(output);
+      const result = builder.indentLine(line);
+      expect(result).toEqual(line);
     });
 
     it('handels indentation', () => {
-      const output = 'console.log("hello world")';
-      const result = builder.buildLine(output, 2);
-      expect(result).toEqual('console.log("\t\thello world")');
+      const result = builder.indentLine(line, 2);
+      expect(result).toEqual(`${indentCharacter.repeat(2)}${line}`);
     });
   });
 });
