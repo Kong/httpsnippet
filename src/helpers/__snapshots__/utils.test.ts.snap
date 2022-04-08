@@ -38,6 +38,12 @@ Array [
         "link": "https://docs.microsoft.com/en-us/dotnet/api/system.net.http.httpclient",
         "title": "HttpClient",
       },
+      Object {
+        "description": "Simple REST and HTTP API Client for .NET",
+        "key": "restsharp",
+        "link": "http://restsharp.org/",
+        "title": "RestSharp",
+      },
     ],
     "default": "restsharp",
     "extname": ".cs",

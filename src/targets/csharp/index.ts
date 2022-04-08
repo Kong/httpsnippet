@@ -1,5 +1,6 @@
 import { Target } from ".."
 import { httpclient } from './httpclient';
+import { restsharp } from './restsharp';
 
 export const csharp: Target = {
   info: {
@@ -11,6 +12,6 @@ export const csharp: Target = {
 
   clientsById: {
     httpclient,
-    // restsharp,
+    restsharp,
   }
 };

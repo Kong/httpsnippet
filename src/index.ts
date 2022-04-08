@@ -12,7 +12,7 @@ const DEBUG_MODE = false;
 
 const debug = {
   info: DEBUG_MODE ? console.info : () => {},
-}
+};
 
 export interface Request {
   httpVersion: string;
@@ -263,39 +263,48 @@ export class HTTPSnippet {
     }
 
     // create allHeaders object
-    request.allHeaders = {
+    const allHeaders = {
       ...request.allHeaders,
       ...request.headersObj,
     };
 
-    // deconstruct the uri
-    request.uriObj = urlParse(request.url, true, true); //? $.query
+    const parsedUrl = urlParse(request.url, true, true); //?
 
     // query string key/value pairs in with literal querystrings containd within the url
     request.queryObj = {
       ...request.queryObj,
-      ...(request.uriObj.query as ReducedHelperObject),
+      ...(parsedUrl.query as ReducedHelperObject),
     }; //?
 
     // reset uriObj values for a clean url
-    request.uriObj.query = {};
-    request.uriObj.search = null;
-    request.uriObj.path = request.uriObj.pathname;
+    const uriObj = {
+      query: request.queryObj,
+      search: queryStringify(request.queryObj),
+      path: parsedUrl.pathname,
+    };
 
-    // keep the base url clean of queryString
-    request.url = urlFormat(request.uriObj);
-
-    // update the uri object
-    request.uriObj.query = request.queryObj;
-    request.uriObj.search = queryStringify(request.queryObj);
-
-    if (request.uriObj.search) {
-      request.uriObj.path = `${request.uriObj.pathname}?${request.uriObj.search}`;
+    if (uriObj.search) {
+      uriObj.path = `${uriObj.path}?${uriObj.search}`;
     }
 
-    // construct a full url
-    request.fullUrl = urlFormat(request.uriObj);
-    return request;
+    // keep the base url clean of queryString
+    const url = urlFormat({
+      ...parsedUrl,
+      query: null,
+      search: null,
+    }); //?
+
+    const fullUrl = urlFormat({
+      ...parsedUrl,
+      ...uriObj,
+    }); //?
+
+    return {
+      ...request,
+      allHeaders,
+      fullUrl,
+      url,
+    };
   };
 
   convert = (targetId: TargetId, clientId?: ClientId, options?: any) => {
