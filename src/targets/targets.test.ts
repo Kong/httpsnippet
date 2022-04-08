@@ -3,7 +3,7 @@ import path from 'path';
 
 import { availableTargets, extname } from '../helpers/utils';
 import { HTTPSnippet, Request } from '../httpsnippet';
-import { Client, ClientId, isClient, isTarget, TargetId } from './targets';
+import { ClientId, isClient, isTarget, TargetId } from './targets';
 
 const expectedBasePath = ['src', 'fixtures', 'requests'];
 

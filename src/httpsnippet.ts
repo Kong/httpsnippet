@@ -1,6 +1,6 @@
 import { map as eventStreamMap } from 'event-stream';
 import FormData from 'form-data';
-import { Param, PostDataCommon, Request as HarRequestType } from 'har-format';
+import { Param, PostDataCommon, Request as NpmHarRequest } from 'har-format';
 import { stringify as queryStringify } from 'querystring';
 import { format as urlFormat, parse as urlParse, UrlWithParsedQuery } from 'url';
 
@@ -10,6 +10,7 @@ import { getHeaderName } from './helpers/headers';
 import { ReducedHelperObject, reducer } from './helpers/reducer';
 import { ClientId, TargetId, targets } from './targets/targets';
 
+export { availableTargets, extname } from './helpers/utils';
 export { addTarget, addTargetClient } from './targets/targets';
 
 const DEBUG_MODE = false;
@@ -30,7 +31,7 @@ type PostDataBase = PostDataCommon & {
   params?: Param[];
 };
 
-type FixedHarRequestType = Omit<HarRequestType, 'postData'> & { postData: PostDataBase };
+export type HarRequest = Omit<NpmHarRequest, 'postData'> & { postData: PostDataBase };
 
 export interface RequestExtras {
   postData: PostDataBase & {
@@ -46,10 +47,10 @@ export interface RequestExtras {
   allHeaders: ReducedHelperObject;
 }
 
-export type Request = FixedHarRequestType & RequestExtras;
+export type Request = HarRequest & RequestExtras;
 
 interface Entry {
-  request: Partial<FixedHarRequestType>;
+  request: Partial<HarRequest>;
 }
 
 interface HarEntry {
@@ -69,7 +70,7 @@ const isHarEntry = (value: any): value is HarEntry =>
 export class HTTPSnippet {
   requests: Request[] = [];
 
-  constructor(input: HarEntry | Request) {
+  constructor(input: HarEntry | HarRequest) {
     let entries: Entry[] = [];
 
     // prep the main container
@@ -107,7 +108,7 @@ export class HTTPSnippet {
     });
   }
 
-  prepare = (harRequest: FixedHarRequestType) => {
+  prepare = (harRequest: HarRequest) => {
     const request: Request = {
       ...harRequest,
       fullUrl: '',

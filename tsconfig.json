@@ -5,5 +5,5 @@
     "types": ["node", "jest"]
   },
   "exclude": ["dist"],
-  "include": ["bin", "jest.config.js", ".prettierrc.js", ".eslintrc.js", "src"]
+  "include": ["jest.config.js", ".prettierrc.js", ".eslintrc.js", "src"]
 }
