@@ -208,5 +208,19 @@ Array [
     "key": "objc",
     "title": "Objective-C",
   },
+  Object {
+    "clients": Array [
+      Object {
+        "description": "Cohttp is a very lightweight HTTP server using Lwt or Async for OCaml",
+        "key": "cohttp",
+        "link": "https://github.com/mirage/ocaml-cohttp",
+        "title": "CoHTTP",
+      },
+    ],
+    "default": "cohttp",
+    "extname": ".ml",
+    "key": "ocaml",
+    "title": "OCaml",
+  },
 ]
 `;

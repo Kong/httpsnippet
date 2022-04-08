@@ -10,7 +10,7 @@ import { javascript } from './javascript';
 import { kotlin } from './kotlin';
 import { node } from './node';
 import { objc } from './objc';
-// import { ocaml } from './ocaml';
+import { ocaml } from './ocaml';
 // import { php } from './php';
 // import { powershell } from './powershell';
 // import { python } from './python';
@@ -30,9 +30,9 @@ export interface ClientInfo {
   description: string;
 }
 
-export type Converter<T extends Record<string, any> & CodeBuilderOptions> = (request: Request, options?: T) => string;
+export type Converter<T extends Record<string, any>> = (request: Request, options?: T & CodeBuilderOptions) => string;
 
-export interface Client<T extends Record<string, any> & CodeBuilderOptions = CodeBuilderOptions> {
+export interface Client<T extends Record<string, any> = Record<string, any>> {
   info: ClientInfo;
   convert: Converter<T>;
 }
@@ -62,7 +62,7 @@ export const targets = {
   kotlin,
   node,
   objc,
-  // ocaml,
+  ocaml,
   // php,
   // powershell,
   // python,

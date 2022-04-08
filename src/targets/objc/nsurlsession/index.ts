@@ -14,7 +14,7 @@ import { nsDeclaration } from '../helpers';
 
 export interface NsurlsessionOptions {
   pretty?: boolean;
-  timeout: number;
+  timeout?: number;
 }
 
 export const nsurlsession: Client<NsurlsessionOptions> = {
