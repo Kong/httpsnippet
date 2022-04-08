@@ -1,14 +1,17 @@
-import axios from "axios";
+import axios from 'axios';
 
 const options = {
   method: 'POST',
   url: 'http://mockbin.com/har',
-  headers: {'content-type': 'application/json'},
-  data: {foo: 'bar'}
+  headers: { 'content-type': 'application/json' },
+  data: { foo: 'bar' },
 };
 
-axios.request(options).then(function (response) {
-  console.log(response.data);
-}).catch(function (error) {
-  console.error(error);
-});
+axios
+  .request(options)
+  .then(function (response) {
+    console.log(response.data);
+  })
+  .catch(function (error) {
+    console.error(error);
+  });

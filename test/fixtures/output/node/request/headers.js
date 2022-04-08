@@ -3,7 +3,7 @@ const request = require('request');
 const options = {
   method: 'GET',
   url: 'http://mockbin.com/har',
-  headers: {accept: 'application/json', 'x-foo': 'Bar'}
+  headers: { accept: 'application/json', 'x-foo': 'Bar' },
 };
 
 request(options, function (error, response, body) {
@@ -11,4 +11,3 @@ request(options, function (error, response, body) {
 
   console.log(body);
 });
-

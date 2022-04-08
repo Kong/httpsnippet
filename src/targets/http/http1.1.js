@@ -9,9 +9,9 @@
  * For any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-const CRLF = '\r\n'
-const CodeBuilder = require('../../helpers/code-builder')
-const util = require('util')
+const CRLF = '\r\n';
+const CodeBuilder = require('../../helpers/code-builder');
+const util = require('util');
 
 /**
  * Request follows the request message format in accordance to RFC 7230, Section 3.
@@ -23,75 +23,65 @@ module.exports = function (source, options) {
     {
       absoluteURI: false,
       autoContentLength: true,
-      autoHost: true
+      autoHost: true,
     },
-    options
-  )
+    options,
+  );
 
   // RFC 7230 Section 3. Message Format
   // All lines have no indentation, and should be terminated with CRLF.
-  const code = new CodeBuilder('', CRLF)
+  const code = new CodeBuilder('', CRLF);
 
   // RFC 7230 Section 5.3. Request Target
   // Determines if the Request-Line should use 'absolute-form' or 'origin-form'.
   // Basically it means whether the "http://domain.com" will prepend the full url.
-  const requestUrl = opts.absoluteURI ? source.fullUrl : source.uriObj.path
+  const requestUrl = opts.absoluteURI ? source.fullUrl : source.uriObj.path;
 
   // RFC 7230 Section 3.1.1. Request-Line
-  code.push('%s %s %s', source.method, requestUrl, source.httpVersion)
+  code.push('%s %s %s', source.method, requestUrl, source.httpVersion);
 
   // RFC 7231 Section 5. Header Fields
   Object.keys(source.allHeaders).forEach(function (key) {
     // Capitalize header keys, even though it's not required by the spec.
     const keyCapitalized = key.toLowerCase().replace(/(^|-)(\w)/g, function (x) {
-      return x.toUpperCase()
-    })
+      return x.toUpperCase();
+    });
 
-    code.push(
-      '%s',
-      util.format('%s: %s', keyCapitalized, source.allHeaders[key])
-    )
-  })
+    code.push('%s', util.format('%s: %s', keyCapitalized, source.allHeaders[key]));
+  });
 
   // RFC 7230 Section 5.4. Host
   // Automatically set Host header if option is on and on header already exists.
   if (opts.autoHost && Object.keys(source.allHeaders).indexOf('host') === -1) {
-    code.push('Host: %s', source.uriObj.host)
+    code.push('Host: %s', source.uriObj.host);
   }
 
   // RFC 7230 Section 3.3.3. Message Body Length
   // Automatically set Content-Length header if option is on, postData is present and no header already exists.
-  if (
-    opts.autoContentLength &&
-    source.postData.text &&
-    Object.keys(source.allHeaders).indexOf('content-length') === -1
-  ) {
-    code.push(
-      'Content-Length: %d',
-      Buffer.byteLength(source.postData.text, 'ascii')
-    )
+  if (opts.autoContentLength && source.postData.text && Object.keys(source.allHeaders).indexOf('content-length') === -1) {
+    code.push('Content-Length: %d', Buffer.byteLength(source.postData.text, 'ascii'));
   }
 
   // Add extra line after header section.
-  code.blank()
+  code.blank();
 
   // Separate header section and message body section.
-  const headerSection = code.join()
-  let messageBody = ''
+  const headerSection = code.join();
+  let messageBody = '';
 
   // RFC 7230 Section 3.3. Message Body
   if (source.postData.text) {
-    messageBody = source.postData.text
+    messageBody = source.postData.text;
   }
 
   // RFC 7230 Section 3. Message Format
   // Extra CRLF separating the headers from the body.
-  return headerSection + CRLF + messageBody
-}
+  return headerSection + CRLF + messageBody;
+};
 
 module.exports.info = {
   key: '1.1',
   title: 'HTTP/1.1',
   link: 'https://tools.ietf.org/html/rfc7230',
-  description: 'HTTP/1.1 request string in accordance with RFC 7230'
-}
+  description: 'HTTP/1.1 request string in accordance with RFC 7230',
+};

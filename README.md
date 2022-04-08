@@ -1,13 +1,12 @@
 # HTTP Snippet [![version][npm-version]][npm-url] [![License][npm-license]][license-url]
 
-> HTTP Request snippet generator for *many* languages & tools including: `cURL`, `HTTPie`, `Javascript`, `Node`, `C`, `Java`, `PHP`, `Objective-C`, `Swift`, `Python`, `Ruby`, `C#`, `Go`, `OCaml` and [more](https://github.com/Kong/httpsnippet/wiki/Targets)!
+> HTTP Request snippet generator for _many_ languages & tools including: `cURL`, `HTTPie`, `Javascript`, `Node`, `C`, `Java`, `PHP`, `Objective-C`, `Swift`, `Python`, `Ruby`, `C#`, `Go`, `OCaml` and [more](https://github.com/Kong/httpsnippet/wiki/Targets)!
 
 Relies on the popular [HAR](http://www.softwareishard.com/blog/har-12-spec/#request) format to import data and describe HTTP calls.
 
 See it in action on companion service: [APIembed](https://apiembed.com/)
 
-[![Build Status][travis-image]][travis-url]
-[![Downloads][npm-downloads]][npm-url]
+[![Build Status][travis-image]][travis-url] [![Downloads][npm-downloads]][npm-url]
 
 ## Install
 
@@ -70,15 +69,13 @@ provide extra options:
 httpsnippet example.json --target http --output ./snippets -x '{"autoHost": false, "autoContentLength": false}'
 ```
 
-
 ## API
 
 ### HTTPSnippet(source)
 
 #### source
 
-*Required*
-Type: `object`
+_Required_ Type: `object`
 
 Name of [conversion target](https://github.com/Kong/httpsnippet/wiki/Targets)
 
@@ -87,7 +84,7 @@ var HTTPSnippet = require('httpsnippet');
 
 var snippet = new HTTPSnippet({
   method: 'GET',
-  url: 'http://mockbin.com/request'
+  url: 'http://mockbin.com/request',
 });
 ```
 
@@ -95,8 +92,7 @@ var snippet = new HTTPSnippet({
 
 #### target
 
-*Required*
-Type: `string`
+_Required_ Type: `string`
 
 Name of [conversion target](https://github.com/Kong/httpsnippet/wiki/Targets)
 
@@ -104,31 +100,32 @@ Name of [conversion target](https://github.com/Kong/httpsnippet/wiki/Targets)
 
 Type: `object`
 
-Target options, *see [wiki](https://github.com/Kong/httpsnippet/wiki/Targets) for details*
+Target options, _see [wiki](https://github.com/Kong/httpsnippet/wiki/Targets) for details_
 
 ```js
 var HTTPSnippet = require('httpsnippet');
 
 var snippet = new HTTPSnippet({
   method: 'GET',
-  url: 'http://mockbin.com/request'
+  url: 'http://mockbin.com/request',
 });
 
 // generate Node.js: Native output
 console.log(snippet.convert('node'));
 
 // generate Node.js: Native output, indent with tabs
-console.log(snippet.convert('node', {
-  indent: '\t'
-}));
+console.log(
+  snippet.convert('node', {
+    indent: '\t',
+  }),
+);
 ```
 
 ### convert(target [, client, options])
 
 #### target
 
-*Required*
-Type: `string`
+_Required_ Type: `string`
 
 Name of [conversion target](https://github.com/Kong/httpsnippet/wiki/Targets)
 
@@ -142,30 +139,32 @@ Name of conversion target [client library](https://github.com/Kong/httpsnippet/w
 
 Type: `object`
 
-Target options, *see [wiki](https://github.com/Kong/httpsnippet/wiki/Targets) for details*
+Target options, _see [wiki](https://github.com/Kong/httpsnippet/wiki/Targets) for details_
 
 ```js
 var HTTPSnippet = require('httpsnippet');
 
 var snippet = new HTTPSnippet({
   method: 'GET',
-  url: 'http://mockbin.com/request'
+  url: 'http://mockbin.com/request',
 });
 
 // generate Shell: cURL output
-console.log(snippet.convert('shell', 'curl', {
-  indent: '\t'
-}));
+console.log(
+  snippet.convert('shell', 'curl', {
+    indent: '\t',
+  }),
+);
 
 // generate Node.js: Unirest output
 console.log(snippet.convert('node', 'unirest'));
 ```
 
 ### addTarget(target)
+
 #### target
 
-*Required*
-Type: `object`
+_Required_ Type: `object`
 
 Representation of a [conversion target](https://github.com/Kong/httpsnippet/wiki/Creating-Targets). Can use this to use targets that are not officially supported.
 
@@ -175,17 +174,16 @@ HTTPSnippet.addTarget(customLanguageTarget);
 ```
 
 ### addTargetClient(target, client)
+
 ### target
 
-*Required*
-Type: `string`
+_Required_ Type: `string`
 
 Name of [conversion target](https://github.com/Kong/httpsnippet/wiki/Targets)
 
 ### client
 
-*Required*
-Type: `object`
+_Required_ Type: `object`
 
 Representation of a [conversion target client](https://github.com/Kong/httpsnippet/wiki/Creating-Targets). Can use this to use target clients that are not officially supported.
 
@@ -235,10 +233,8 @@ For more information on SemVer, please visit <http://semver.org/>.
 [MIT](LICENSE) &copy; [Kong](https://konghq.com)
 
 [license-url]: https://github.com/Kong/httpsnippet/blob/master/LICENSE
-
 [travis-url]: https://travis-ci.org/Kong/httpsnippet
 [travis-image]: https://api.travis-ci.org/Kong/httpsnippet.svg?branch=master
-
 [npm-url]: https://www.npmjs.com/package/httpsnippet
 [npm-license]: https://img.shields.io/npm/l/httpsnippet.svg?style=flat-square
 [npm-version]: https://img.shields.io/npm/v/httpsnippet.svg?style=flat-square

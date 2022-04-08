@@ -3,7 +3,7 @@ const request = require('request');
 const options = {
   method: 'GET',
   url: 'http://mockbin.com/har',
-  qs: {foo: ['bar', 'baz'], baz: 'abc', key: 'value'}
+  qs: { foo: ['bar', 'baz'], baz: 'abc', key: 'value' },
 };
 
 request(options, function (error, response, body) {
@@ -11,4 +11,3 @@ request(options, function (error, response, body) {
 
   console.log(body);
 });
-

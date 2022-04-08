@@ -1,10 +1,7 @@
 {
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
-    "rootDir": ".",
+    "rootDir": "."
   },
-  "include": [
-    "**/*.test.ts",
-    "src",
-  ],
+  "include": ["**/*.test.ts", ".prettierrc.js", "src"]
 }

@@ -3,8 +3,8 @@ module.exports = {
     key: 'r',
     title: 'R',
     extname: '.r',
-    default: 'httr'
+    default: 'httr',
   },
 
-  httr: require('./httr')
-}
+  httr: require('./httr'),
+};

@@ -1,7 +1,7 @@
 {
   "method": "POST",
   "url": "http://mockbin.com/har",
-  "cookies":  [
+  "cookies": [
     {
       "name": "foo",
       "value": "bar"

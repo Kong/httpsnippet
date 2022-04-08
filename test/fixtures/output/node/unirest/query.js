@@ -1,14 +1,11 @@
-const unirest = require("unirest");
+const unirest = require('unirest');
 
-const req = unirest("GET", "http://mockbin.com/har");
+const req = unirest('GET', 'http://mockbin.com/har');
 
 req.query({
-  "foo": [
-    "bar",
-    "baz"
-  ],
-  "baz": "abc",
-  "key": "value"
+  foo: ['bar', 'baz'],
+  baz: 'abc',
+  key: 'value',
 });
 
 req.end(function (res) {
@@ -16,4 +13,3 @@ req.end(function (res) {
 
   console.log(res.body);
 });
-

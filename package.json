@@ -49,6 +49,7 @@
   "scripts": {
     "clean": "tsc --build tsconfig.build.json --clean",
     "prebuild": "yarn clean",
+    "lint": "yarn prettier --write .",
     "build": "tsc --build tsconfig.build.json",
     "quick": "mocha --no-timeouts --fgrep 'Request Validation' --invert",
     "pretest": "standard && echint",
@@ -77,6 +78,7 @@
     "glob": "^6.0.1",
     "istanbul": "^0.4.0",
     "mocha": "^8.2.1",
+    "prettier": "^2.6.1",
     "require-directory": "^2.1.1",
     "should": "^13.2.3",
     "standard": "^16.0.3",

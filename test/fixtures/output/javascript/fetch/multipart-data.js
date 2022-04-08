@@ -1,9 +1,9 @@
 const form = new FormData();
-form.append("foo", "Hello World");
+form.append('foo', 'Hello World');
 
 const options = {
   method: 'POST',
-  headers: {'content-type': 'multipart/form-data; boundary=---011000010111000001101001'}
+  headers: { 'content-type': 'multipart/form-data; boundary=---011000010111000001101001' },
 };
 
 options.body = form;

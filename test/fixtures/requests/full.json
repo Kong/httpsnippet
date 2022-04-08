@@ -26,7 +26,7 @@
       "value": "application/x-www-form-urlencoded"
     }
   ],
-  "cookies":  [
+  "cookies": [
     {
       "name": "foo",
       "value": "bar"

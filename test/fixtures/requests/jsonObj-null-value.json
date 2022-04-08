@@ -1,10 +1,12 @@
 {
   "url": "http://mockbin.com/har",
   "method": "POST",
-  "headers": [{
-    "name": "content-type",
-    "value": "application/json"
-  }],
+  "headers": [
+    {
+      "name": "content-type",
+      "value": "application/json"
+    }
+  ],
   "postData": {
     "params": [],
     "text": "{\"foo\":null}",
@@ -12,7 +14,7 @@
     "mimeType": "application/json",
     "size": 0,
     "jsonObj": {
-      "foo":null
+      "foo": null
     },
     "paramsObj": false
   }

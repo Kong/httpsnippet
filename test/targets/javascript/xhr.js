@@ -1,12 +1,16 @@
-require('should')
+require('should');
 
 module.exports = function (HTTPSnippet, fixtures) {
   it('should not use cors', function () {
     const result = new HTTPSnippet(fixtures.requests.short).convert('javascript', 'xhr', {
-      cors: false
-    })
+      cors: false,
+    });
 
-    result.should.be.a.String()
-    result.replace(/\n/g, '').should.eql('const data = null;const xhr = new XMLHttpRequest();xhr.addEventListener("readystatechange", function () {  if (this.readyState === this.DONE) {    console.log(this.responseText);  }});xhr.open("GET", "http://mockbin.com/har");xhr.send(data);')
-  })
-}
+    result.should.be.a.String();
+    result
+      .replace(/\n/g, '')
+      .should.eql(
+        'const data = null;const xhr = new XMLHttpRequest();xhr.addEventListener("readystatechange", function () {  if (this.readyState === this.DONE) {    console.log(this.responseText);  }});xhr.open("GET", "http://mockbin.com/har");xhr.send(data);',
+      );
+  });
+};

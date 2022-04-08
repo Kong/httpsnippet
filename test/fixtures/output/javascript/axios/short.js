@@ -1,9 +1,12 @@
-import axios from "axios";
+import axios from 'axios';
 
-const options = {method: 'GET', url: 'http://mockbin.com/har'};
+const options = { method: 'GET', url: 'http://mockbin.com/har' };
 
-axios.request(options).then(function (response) {
-  console.log(response.data);
-}).catch(function (error) {
-  console.error(error);
-});
+axios
+  .request(options)
+  .then(function (response) {
+    console.log(response.data);
+  })
+  .catch(function (error) {
+    console.error(error);
+  });

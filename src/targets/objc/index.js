@@ -3,8 +3,8 @@ module.exports = {
     key: 'objc',
     title: 'Objective-C',
     extname: '.m',
-    default: 'nsurlsession'
+    default: 'nsurlsession',
   },
 
-  nsurlsession: require('./nsurlsession')
-}
+  nsurlsession: require('./nsurlsession'),
+};

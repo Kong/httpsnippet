@@ -8,114 +8,119 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-const util = require('util')
-const shell = require('../../helpers/shell')
-const CodeBuilder = require('../../helpers/code-builder')
+const util = require('util');
+const shell = require('../../helpers/shell');
+const CodeBuilder = require('../../helpers/code-builder');
 
 module.exports = function (source, options) {
-  const opts = Object.assign({
-    body: false,
-    cert: false,
-    headers: false,
-    indent: '  ',
-    pretty: false,
-    print: false,
-    queryParams: false,
-    short: false,
-    style: false,
-    timeout: false,
-    verbose: false,
-    verify: false
-  }, options)
+  const opts = Object.assign(
+    {
+      body: false,
+      cert: false,
+      headers: false,
+      indent: '  ',
+      pretty: false,
+      print: false,
+      queryParams: false,
+      short: false,
+      style: false,
+      timeout: false,
+      verbose: false,
+      verify: false,
+    },
+    options,
+  );
 
-  const code = new CodeBuilder(opts.indent, opts.indent !== false ? ' \\\n' + opts.indent : ' ')
+  const code = new CodeBuilder(opts.indent, opts.indent !== false ? ' \\\n' + opts.indent : ' ');
 
-  let raw = false
-  const flags = []
+  let raw = false;
+  const flags = [];
 
   if (opts.headers) {
-    flags.push(opts.short ? '-h' : '--headers')
+    flags.push(opts.short ? '-h' : '--headers');
   }
 
   if (opts.body) {
-    flags.push(opts.short ? '-b' : '--body')
+    flags.push(opts.short ? '-b' : '--body');
   }
 
   if (opts.verbose) {
-    flags.push(opts.short ? '-v' : '--verbose')
+    flags.push(opts.short ? '-v' : '--verbose');
   }
 
   if (opts.print) {
-    flags.push(util.format('%s=%s', opts.short ? '-p' : '--print', opts.print))
+    flags.push(util.format('%s=%s', opts.short ? '-p' : '--print', opts.print));
   }
 
   if (opts.verify) {
-    flags.push(util.format('--verify=%s', opts.verify))
+    flags.push(util.format('--verify=%s', opts.verify));
   }
 
   if (opts.cert) {
-    flags.push(util.format('--cert=%s', opts.cert))
+    flags.push(util.format('--cert=%s', opts.cert));
   }
 
   if (opts.pretty) {
-    flags.push(util.format('--pretty=%s', opts.pretty))
+    flags.push(util.format('--pretty=%s', opts.pretty));
   }
 
   if (opts.style) {
-    flags.push(util.format('--style=%s', opts.pretty))
+    flags.push(util.format('--style=%s', opts.pretty));
   }
 
   if (opts.timeout) {
-    flags.push(util.format('--timeout=%s', opts.timeout))
+    flags.push(util.format('--timeout=%s', opts.timeout));
   }
 
   // construct query params
   if (opts.queryParams) {
-    const queryStringKeys = Object.keys(source.queryObj)
+    const queryStringKeys = Object.keys(source.queryObj);
 
     queryStringKeys.forEach(function (name) {
-      const value = source.queryObj[name]
+      const value = source.queryObj[name];
 
       if (Array.isArray(value)) {
         value.forEach(function (val) {
-          code.push('%s==%s', name, shell.quote(val))
-        })
+          code.push('%s==%s', name, shell.quote(val));
+        });
       } else {
-        code.push('%s==%s', name, shell.quote(value))
+        code.push('%s==%s', name, shell.quote(value));
       }
-    })
+    });
   }
 
   // construct headers
-  Object.keys(source.allHeaders).sort().forEach(function (key) {
-    code.push('%s:%s', key, shell.quote(source.allHeaders[key]))
-  })
+  Object.keys(source.allHeaders)
+    .sort()
+    .forEach(function (key) {
+      code.push('%s:%s', key, shell.quote(source.allHeaders[key]));
+    });
 
   if (source.postData.mimeType === 'application/x-www-form-urlencoded') {
     // construct post params
     if (source.postData.params && source.postData.params.length) {
-      flags.push(opts.short ? '-f' : '--form')
+      flags.push(opts.short ? '-f' : '--form');
 
       source.postData.params.forEach(function (param) {
-        code.push('%s=%s', param.name, shell.quote(param.value))
-      })
+        code.push('%s=%s', param.name, shell.quote(param.value));
+      });
     }
   } else {
-    raw = true
+    raw = true;
   }
 
-  code.unshift('http %s%s %s', flags.length ? flags.join(' ') + ' ' : '', source.method, shell.quote(opts.queryParams ? source.url : source.fullUrl))
+  code.unshift('http %s%s %s', flags.length ? flags.join(' ') + ' ' : '', source.method, shell.quote(opts.queryParams ? source.url : source.fullUrl));
 
   if (raw && source.postData.text) {
-    code.unshift('echo %s | ', shell.quote(source.postData.text))
+    code.unshift('echo %s | ', shell.quote(source.postData.text));
   }
 
-  return code.join()
-}
+  return code.join();
+};
 
 module.exports.info = {
   key: 'httpie',
   title: 'HTTPie',
   link: 'http://httpie.org/',
-  description: 'a CLI, cURL-like tool for humans'
-}
+  description: 'a CLI, cURL-like tool for humans',
+};

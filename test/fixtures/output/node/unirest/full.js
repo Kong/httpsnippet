@@ -1,28 +1,25 @@
-const unirest = require("unirest");
+const unirest = require('unirest');
 
-const req = unirest("POST", "http://mockbin.com/har");
+const req = unirest('POST', 'http://mockbin.com/har');
 
 const CookieJar = unirest.jar();
-CookieJar.add("foo=bar","http://mockbin.com/har");
-CookieJar.add("bar=baz","http://mockbin.com/har");
+CookieJar.add('foo=bar', 'http://mockbin.com/har');
+CookieJar.add('bar=baz', 'http://mockbin.com/har');
 req.jar(CookieJar);
 
 req.query({
-  "foo": [
-    "bar",
-    "baz"
-  ],
-  "baz": "abc",
-  "key": "value"
+  foo: ['bar', 'baz'],
+  baz: 'abc',
+  key: 'value',
 });
 
 req.headers({
-  "accept": "application/json",
-  "content-type": "application/x-www-form-urlencoded"
+  accept: 'application/json',
+  'content-type': 'application/x-www-form-urlencoded',
 });
 
 req.form({
-  "foo": "bar"
+  foo: 'bar',
 });
 
 req.end(function (res) {
@@ -30,4 +27,3 @@ req.end(function (res) {
 
   console.log(res.body);
 });
-

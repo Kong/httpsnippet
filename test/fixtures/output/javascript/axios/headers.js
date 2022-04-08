@@ -1,13 +1,16 @@
-import axios from "axios";
+import axios from 'axios';
 
 const options = {
   method: 'GET',
   url: 'http://mockbin.com/har',
-  headers: {accept: 'application/json', 'x-foo': 'Bar'}
+  headers: { accept: 'application/json', 'x-foo': 'Bar' },
 };
 
-axios.request(options).then(function (response) {
-  console.log(response.data);
-}).catch(function (error) {
-  console.error(error);
-});
+axios
+  .request(options)
+  .then(function (response) {
+    console.log(response.data);
+  })
+  .catch(function (error) {
+    console.error(error);
+  });

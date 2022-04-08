@@ -7,7 +7,7 @@ module.exports = {
    * @return {string}
    */
   getHeader: (headers, name) => {
-    return headers[Object.keys(headers).find(k => k.toLowerCase() === name.toLowerCase())]
+    return headers[Object.keys(headers).find(k => k.toLowerCase() === name.toLowerCase())];
   },
 
   /**
@@ -21,9 +21,9 @@ module.exports = {
     // eslint-disable-next-line array-callback-return
     return Object.keys(headers).find(k => {
       if (k.toLowerCase() === name.toLowerCase()) {
-        return k
+        return k;
       }
-    })
+    });
   },
 
   /**
@@ -34,6 +34,6 @@ module.exports = {
    * @return {(integer|boolean)}
    */
   hasHeader: (headers, name) => {
-    return Boolean(Object.keys(headers).find(k => k.toLowerCase() === name.toLowerCase()))
-  }
-}
+    return Boolean(Object.keys(headers).find(k => k.toLowerCase() === name.toLowerCase()));
+  },
+};

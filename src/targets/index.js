@@ -16,5 +16,5 @@ module.exports = {
   r: require('./r'),
   ruby: require('./ruby'),
   shell: require('./shell'),
-  swift: require('./swift')
-}
+  swift: require('./swift'),
+};

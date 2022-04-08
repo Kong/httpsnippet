@@ -3,8 +3,8 @@ module.exports = {
     key: 'clojure',
     title: 'Clojure',
     extname: '.clj',
-    default: 'clj_http'
+    default: 'clj_http',
   },
 
-  clj_http: require('./clj_http')
-}
+  clj_http: require('./clj_http'),
+};

@@ -3,8 +3,8 @@ module.exports = {
     key: 'js-variant',
     title: 'JavaScript Variant',
     extname: '.js',
-    default: 'request'
+    default: 'request',
   },
 
-  request: require('../../src/targets/node/request')
-}
+  request: require('../../src/targets/node/request'),
+};

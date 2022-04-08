@@ -4,11 +4,7 @@
     "rootDir": "src",
     "allowJs": true,
     "resolveJsonModule": true,
-    "strict": false,
+    "strict": false
   },
-  "exclude": [
-    "dist",
-    "test",
-    "**/*.test.ts",
-  ]
+  "exclude": ["dist", "test", "**/*.test.ts"]
 }

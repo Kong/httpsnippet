@@ -3,8 +3,8 @@ module.exports = {
     key: 'kotlin',
     title: 'Kotlin',
     extname: '.kt',
-    default: 'okhttp'
+    default: 'okhttp',
   },
 
-  okhttp: require('./okhttp')
-}
+  okhttp: require('./okhttp'),
+};

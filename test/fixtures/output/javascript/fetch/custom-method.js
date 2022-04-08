@@ -1,4 +1,4 @@
-const options = {method: 'PROPFIND'};
+const options = { method: 'PROPFIND' };
 
 fetch('http://mockbin.com/har', options)
   .then(response => response.json())
