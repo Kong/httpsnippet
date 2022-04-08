@@ -40,8 +40,6 @@ export const http11: Client<Http11Options> = {
       ...options,
     };
 
-    const headerKeys = Object.keys(allHeaders);
-
     // RFC 7230 Section 3. Message Format
     // All lines have no indentation, and should be terminated with CRLF.
     const { blank, push, join } = new CodeBuilder({ indent: '', join: CRLF });
@@ -54,6 +52,7 @@ export const http11: Client<Http11Options> = {
     // RFC 7230 Section 3.1.1. Request-Line
     push(`${method} ${requestUrl} ${httpVersion}`);
 
+    const headerKeys = Object.keys(allHeaders);
     // RFC 7231 Section 5. Header Fields
     headerKeys.forEach(key => {
       // Capitalize header keys, even though it's not required by the spec.

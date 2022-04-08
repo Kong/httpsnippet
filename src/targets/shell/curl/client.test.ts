@@ -1,81 +1,75 @@
-require('should');
+import { runCustomFixtures } from '../../../fixtures/runCustomFixtures';
+import full from '../../../fixtures/requests/full.json';
+import nested from '../../../fixtures/requests/nested.json';
+import { Request } from '../../..';
 
-module.exports = function (HTTPSnippet, fixtures) {
-  it('should use short options', function () {
-    const result = new HTTPSnippet(fixtures.requests.full).convert('shell', 'curl', {
-      short: true,
-      indent: false,
-    });
-
-    result.should.be.a.String();
-    result.should.eql(
-      'curl -X POST \'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value\' -H \'accept: application/json\' -H \'content-type: application/x-www-form-urlencoded\' -b \'foo=bar; bar=baz\' -d foo=bar',
-    );
-  });
-
-  it('should use binary option', function () {
-    const result = new HTTPSnippet(fixtures.requests.full).convert('shell', 'curl', {
-      short: true,
-      indent: false,
-      binary: true,
-    });
-
-    result.should.be.a.String();
-    result.should.eql(
-      'curl -X POST \'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value\' -H \'accept: application/json\' -H \'content-type: application/x-www-form-urlencoded\' -b \'foo=bar; bar=baz\' --data-binary foo=bar',
-    );
-  });
-
-  it('should use short globoff option', function () {
-    const result = new HTTPSnippet(fixtures.requests.nested).convert('shell', 'curl', {
-      short: true,
-      indent: false,
-      globOff: true,
-    });
-
-    result.should.be.a.String();
-    result.should.eql('curl -X GET -g \'http://mockbin.com/har?foo[bar]=baz,zap&fiz=buz&key=value\'');
-  });
-
-  it('should use long globoff option', function () {
-    const result = new HTTPSnippet(fixtures.requests.nested).convert('shell', 'curl', {
-      indent: false,
-      globOff: true,
-    });
-
-    result.should.be.a.String();
-    result.should.eql('curl --request GET --globoff --url \'http://mockbin.com/har?foo[bar]=baz,zap&fiz=buz&key=value\'');
-  });
-
-  it('should not de-glob when globoff is false', function () {
-    const result = new HTTPSnippet(fixtures.requests.nested).convert('shell', 'curl', {
-      indent: false,
-      globOff: false,
-    });
-
-    result.should.be.a.String();
-    result.should.eql('curl --request GET --url \'http://mockbin.com/har?foo%5Bbar%5D=baz%2Czap&fiz=buz&key=value\'');
-  });
-
-  it('should use --http1.0 for HTTP/1.0', function () {
-    const result = new HTTPSnippet(fixtures.curl.http1).convert('shell', 'curl', {
-      indent: false,
-    });
-
-    result.should.be.a.String();
-    result.should.eql('curl --request GET --url http://mockbin.com/request --http1.0');
-  });
-
-  it('should use custom indentation', function () {
-    const result = new HTTPSnippet(fixtures.requests.full).convert('shell', 'curl', {
-      indent: '@',
-    });
-
-    result.should.be.a.String();
-    result
-      .replace(/\\\n/g, '')
-      .should.eql(
-        'curl --request POST @--url \'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value\' @--header \'accept: application/json\' @--header \'content-type: application/x-www-form-urlencoded\' @--cookie \'foo=bar; bar=baz\' @--data foo=bar',
-      );
-  });
-};
+runCustomFixtures({
+  targetId: 'shell',
+  clientId: 'curl',
+  tests: [
+    {
+      fixtureFile: 'short-options.sh',
+      options: { short: true, indent: false },
+      request: full as Request,
+      title: 'should use short options',
+    },
+    {
+      fixtureFile: 'binary-option.sh',
+      options: {
+        short: true,
+        indent: false,
+        binary: true,
+      },
+      request: full as Request,
+      title: 'should use binary option',
+    },
+    {
+      fixtureFile: 'globoff-option.sh',
+      options: {
+        short: true,
+        indent: false,
+        globOff: true,
+      },
+      request: nested as Request,
+      title: 'should use short globoff option',
+    },
+    {
+      fixtureFile: 'long-globoff-option.sh',
+      options: {
+        indent: false,
+        globOff: true,
+      },
+      request: nested as Request,
+      title: 'should use long globoff option',
+    },
+    {
+      fixtureFile: 'dont-deglob.sh',
+      options: {
+        indent: false,
+        globOff: false,
+      },
+      request: nested as Request,
+      title: 'should not de-glob when globoff is false',
+    },
+    {
+      fixtureFile: 'http10.sh',
+      options: {
+        indent: false,
+      },
+      request: {
+        method: 'GET',
+        url: 'http://mockbin.com/request',
+        httpVersion: 'HTTP/1.0',
+      } as Request,
+      title: 'should use --http1.0 for HTTP/1.0',
+    },
+    {
+      fixtureFile: 'custom-indentation.sh',
+      options: {
+        indent: '@',
+      },
+      request: full as Request,
+      title: 'should use custom indentation',
+    },
+  ],
+});

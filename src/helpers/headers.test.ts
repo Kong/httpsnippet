@@ -5,7 +5,7 @@ const headers = {
   accept: 'application/json',
 };
 
-describe('Headers', function () {
+describe('Headers', () => {
   describe('getHeader', () => {
     it('should get a header', () => {
       expect(getHeader(headers, 'content-type')).toEqual('multipart/form-data; boundary=---011000010111000001101001');

@@ -23,7 +23,7 @@ export const requests: Client<RequestsOptions> = {
     link: 'http://docs.python-requests.org/en/latest/api/#requests.request',
     description: 'Requests HTTP library',
   },
-  convert: (source, options) => {
+  convert: ({ queryObj, url, postData, allHeaders, method }, options) => {
     const opts = {
       indent: '    ',
       pretty: true,
@@ -37,13 +37,13 @@ export const requests: Client<RequestsOptions> = {
     blank();
 
     // Set URL
-    push(`url = "${source.url}"`);
+    push(`url = "${url}"`);
     blank();
 
     // Construct query string
     let qs;
-    if (Object.keys(source.queryObj).length) {
-      qs = `querystring = ${JSON.stringify(source.queryObj)}`;
+    if (Object.keys(queryObj).length) {
+      qs = `querystring = ${JSON.stringify(queryObj)}`;
 
       push(qs);
       blank();
@@ -52,17 +52,17 @@ export const requests: Client<RequestsOptions> = {
     // Construct payload
     let hasPayload = false;
     let jsonPayload = false;
-    switch (source.postData.mimeType) {
+    switch (postData.mimeType) {
       case 'application/json':
-        if (source.postData.jsonObj) {
-          push(`payload = ${literalRepresentation(source.postData.jsonObj, opts)}`);
+        if (postData.jsonObj) {
+          push(`payload = ${literalRepresentation(postData.jsonObj, opts)}`);
           jsonPayload = true;
           hasPayload = true;
         }
         break;
 
       default: {
-        const payload = JSON.stringify(source.postData.text);
+        const payload = JSON.stringify(postData.text);
         if (payload) {
           push(`payload = ${payload}`);
           hasPayload = true;
@@ -71,7 +71,7 @@ export const requests: Client<RequestsOptions> = {
     }
 
     // Construct headers
-    const headers = source.allHeaders;
+    const headers = allHeaders;
     const headerCount = Object.keys(headers).length;
 
     if (headerCount === 1) {
@@ -97,7 +97,6 @@ export const requests: Client<RequestsOptions> = {
     }
 
     // Construct request
-    const method = source.method;
     let request = `response = requests.request("${method}", url`;
 
     if (hasPayload) {

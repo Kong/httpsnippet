@@ -8,13 +8,33 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-const util = require('util');
-const shell = require('../../helpers/shell');
-const CodeBuilder = require('../../helpers/code-builder');
+import { Client } from '../..';
+import { CodeBuilder } from '../../../helpers/code-builder';
+import { quote } from '../../../helpers/shell';
 
-module.exports = function (source, options) {
-  const opts = Object.assign(
-    {
+export interface HttpieOptions {
+  body?: boolean;
+  cert?: boolean;
+  headers?: boolean;
+  pretty?: boolean;
+  print?: boolean;
+  queryParams?: boolean;
+  short?: boolean;
+  style?: boolean;
+  timeout?: boolean;
+  verbose?: boolean;
+  verify?: boolean;
+}
+
+export const httpie: Client<HttpieOptions> = {
+  info: {
+    key: 'httpie',
+    title: 'HTTPie',
+    link: 'http://httpie.org/',
+    description: 'a CLI, cURL-like tool for humans',
+  },
+  convert: ({ allHeaders, postData, queryObj, fullUrl, method, url }, options) => {
+    const opts = {
       body: false,
       cert: false,
       headers: false,
@@ -27,104 +47,95 @@ module.exports = function (source, options) {
       timeout: false,
       verbose: false,
       verify: false,
-    },
-    options,
-  );
+      ...options,
+    };
 
-  const code = new CodeBuilder({ indent: opts.indent, join: opts.indent !== false ? ' \\\n' + opts.indent : ' ' });
+    // @ts-expect-error SEEMS LEGIT
+    const { push, join, unshift } = new CodeBuilder({ indent: opts.indent, join: opts.indent !== false ? ` \\\n${opts.indent}` : ' ' });
 
-  let raw = false;
-  const flags = [];
+    let raw = false;
+    const flags = [];
 
-  if (opts.headers) {
-    flags.push(opts.short ? '-h' : '--headers');
-  }
+    if (opts.headers) {
+      flags.push(opts.short ? '-h' : '--headers');
+    }
 
-  if (opts.body) {
-    flags.push(opts.short ? '-b' : '--body');
-  }
+    if (opts.body) {
+      flags.push(opts.short ? '-b' : '--body');
+    }
 
-  if (opts.verbose) {
-    flags.push(opts.short ? '-v' : '--verbose');
-  }
+    if (opts.verbose) {
+      flags.push(opts.short ? '-v' : '--verbose');
+    }
 
-  if (opts.print) {
-    flags.push(`${opts.short ? '-p' : '--print'}=${opts.print}`);
-  }
+    if (opts.print) {
+      flags.push(`${opts.short ? '-p' : '--print'}=${opts.print}`);
+    }
 
-  if (opts.verify) {
-    flags.push(`--verify=${opts.verify}`);
-  }
+    if (opts.verify) {
+      flags.push(`--verify=${opts.verify}`);
+    }
 
-  if (opts.cert) {
-    flags.push(`--cert=${opts.cert}`);
-  }
+    if (opts.cert) {
+      flags.push(`--cert=${opts.cert}`);
+    }
 
-  if (opts.pretty) {
-    flags.push(`--pretty=${opts.pretty}`);
-  }
+    if (opts.pretty) {
+      flags.push(`--pretty=${opts.pretty}`);
+    }
 
-  if (opts.style) {
-    flags.push(`--style=${opts.pretty}`);
-  }
+    if (opts.style) {
+      flags.push(`--style=${opts.pretty}`);
+    }
 
-  if (opts.timeout) {
-    flags.push(`--timeout=${opts.timeout}`);
-  }
+    if (opts.timeout) {
+      flags.push(`--timeout=${opts.timeout}`);
+    }
 
-  // construct query params
-  if (opts.queryParams) {
-    const queryStringKeys = Object.keys(source.queryObj);
+    // construct query params
+    if (opts.queryParams) {
+      Object.keys(queryObj).forEach(name => {
+        const value = queryObj[name];
 
-    queryStringKeys.forEach(function (name) {
-      const value = source.queryObj[name];
-
-      if (Array.isArray(value)) {
-        value.forEach(function (val) {
-          code.push(`${name}==${shell.quote(val)}`);
-        });
-      } else {
-        code.push(`${name}==${shell.quote(value)}`);
-      }
-    });
-  }
-
-  // construct headers
-  Object.keys(source.allHeaders)
-    .sort()
-    .forEach(function (key) {
-      code.push(`${key}:${shell.quote(source.allHeaders[key])}`);
-    });
-
-  if (source.postData.mimeType === 'application/x-www-form-urlencoded') {
-    // construct post params
-    if (source.postData.params && source.postData.params.length) {
-      flags.push(opts.short ? '-f' : '--form');
-
-      source.postData.params.forEach(function (param) {
-        code.push(`${param.name}=${shell.quote(param.value)}`);
+        if (Array.isArray(value)) {
+          value.forEach(val => {
+            push(`${name}==${quote(val)}`);
+          });
+        } else {
+          push(`${name}==${quote(value)}`);
+        }
       });
     }
-  } else {
-    raw = true;
-  }
 
-  const cliFlags = flags.length ? flags.join(' ') + ' ' : '';
-  const method = source.method;
-  const url = shell.quote(opts.queryParams ? source.url : source.fullUrl);
-  code.unshift(`http ${flags}${method} ${url}`);
+    // construct headers
+    Object.keys(allHeaders)
+      .sort()
+      .forEach(key => {
+        push(`${key}:${quote(allHeaders[key] as string)}`);
+      });
 
-  if (raw && source.postData.text) {
-    const postDataText = shell.quote(source.postData.text);
-    code.unshift(`echo ${postDataText} | `);
-  }
+    if (postData.mimeType === 'application/x-www-form-urlencoded') {
+      // construct post params
+      if (postData.params && postData.params.length) {
+        flags.push(opts.short ? '-f' : '--form');
 
-  return code.join();
-};
+        postData.params.forEach(param => {
+          push(`${param.name}=${quote(param.value)}`);
+        });
+      }
+    } else {
+      raw = true;
+    }
 
-module.exports.info = {
-  key: 'httpie',
-  title: 'HTTPie',
-  link: 'http://httpie.org/',
-  description: 'a CLI, cURL-like tool for humans',
+    const cliFlags = flags.length ? `${flags.join(' ')} ` : '';
+    url = quote(opts.queryParams ? url : fullUrl);
+    unshift(`http ${cliFlags}${method} ${url}`);
+
+    if (raw && postData.text) {
+      const postDataText = quote(postData.text);
+      unshift(`echo ${postDataText} | `);
+    }
+
+    return join();
+  },
 };

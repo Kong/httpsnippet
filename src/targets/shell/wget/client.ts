@@ -8,47 +8,53 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-const util = require('util');
-const helpers = require('../../helpers/shell');
-const CodeBuilder = require('../../helpers/code-builder');
+import { Client } from '../..';
+import { CodeBuilder } from '../../../helpers/code-builder';
+import { escape, quote } from '../../../helpers/shell';
 
-module.exports = function (source, options) {
-  const opts = Object.assign(
-    {
+export interface WgetOptions {
+  short?: boolean;
+  verbose?: boolean;
+}
+
+export const wget: Client<WgetOptions> = {
+  info: {
+    key: 'wget',
+    title: 'Wget',
+    link: 'https://www.gnu.org/software/wget/',
+    description: 'a free software package for retrieving files using HTTP, HTTPS',
+  },
+  convert: ({ method, postData, allHeaders, fullUrl }, options) => {
+    const opts = {
       indent: '  ',
       short: false,
       verbose: false,
-    },
-    options,
-  );
+      ...options,
+    };
 
-  const code = new CodeBuilder({ indent: opts.indent, join: opts.indent !== false ? ' \\\n' + opts.indent : ' ' });
+    // @ts-expect-error SEEMS LEGIT
+    const { push, join } = new CodeBuilder({ indent: opts.indent, join: opts.indent !== false ? ` \\\n${opts.indent}` : ' ' });
 
-  if (opts.verbose) {
-    code.push(`wget ${opts.short ? '-v' : '--verbose'}`);
-  } else {
-    code.push(`wget ${opts.short ? '-q' : '--quiet'}`);
-  }
+    if (opts.verbose) {
+      push(`wget ${opts.short ? '-v' : '--verbose'}`);
+    } else {
+      push(`wget ${opts.short ? '-q' : '--quiet'}`);
+    }
 
-  code.push(`--method ${helpers.quote(source.method)}`);
+    push(`--method ${quote(method)}`);
 
-  Object.keys(source.allHeaders).forEach(function (key) {
-    const header = `${key}: ${source.allHeaders[key]}`;
-    code.push(`--header ${helpers.quote(header)}`);
-  });
+    Object.keys(allHeaders).forEach(key => {
+      const header = `${key}: ${allHeaders[key]}`;
+      push(`--header ${quote(header)}`);
+    });
 
-  if (source.postData.text) {
-    code.push('--body-data ' + helpers.escape(helpers.quote(source.postData.text)));
-  }
+    if (postData.text) {
+      push(`--body-data ${escape(quote(postData.text))}`);
+    }
 
-  code.push(opts.short ? '-O' : '--output-document').push(`- ${helpers.quote(source.fullUrl)}`);
+    push(opts.short ? '-O' : '--output-document');
+    push(`- ${quote(fullUrl)}`);
 
-  return code.join();
-};
-
-module.exports.info = {
-  key: 'wget',
-  title: 'Wget',
-  link: 'https://www.gnu.org/software/wget/',
-  description: 'a free software package for retrieving files using HTTP, HTTPS',
+    return join();
+  },
 };

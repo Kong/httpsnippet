@@ -124,17 +124,17 @@ describe('Custom targets', () => {
       const customTarget = require('../fixtures/customTarget');
 
       HTTPSnippet.addTarget(customTarget);
-      const target = HTTPSnippet.availableTargets().find(function (target) {
+      const target = HTTPSnippet.availableTargets().find(target => {
         return target.key === customTarget.info.key;
       });
-      const client = target.clients.find(function (client) {
+      const client = target.clients.find(client => {
         return client.key === customTarget.info.default;
       });
       client.should.be.an.Object();
 
       Object.keys(fixtures.requests)
         .filter(clearInfo)
-        .forEach(function (request) {
+        .forEach(request => {
           // Re-using the `request` module fixtures and framework since we copied it to create a custom client.
           itShouldGenerateOutput(request, 'node/request/', customTarget.info.key, customTarget.info.default);
         });
@@ -184,17 +184,17 @@ describe('Custom targets', () => {
     it('should add and convert for a new custom client target', () => {
       HTTPSnippet.addTargetClient('node', customClient);
 
-      const target = HTTPSnippet.availableTargets().find(function (target) {
+      const target = HTTPSnippet.availableTargets().find(target => {
         return target.key === 'node';
       });
-      const client = target.clients.find(function (client) {
+      const client = target.clients.find(client => {
         return client.key === customClient.info.key;
       });
       client.should.be.an.Object();
 
       Object.keys(fixtures.requests)
         .filter(clearInfo)
-        .forEach(function (request) {
+        .forEach(request => {
           // Re-using the `request` module fixtures and framework since we copied it to create a custom client target.
           itShouldGenerateOutput(request, 'node/request/', 'node', customClient.info.key);
         });
@@ -210,7 +210,7 @@ describe('Targets', () => {
 
       Object.keys(targets[target])
         .filter(clearInfo)
-        .forEach(function (client) {
+        .forEach(client => {
           describe(client, () => {
             itShouldHaveInfo(client, targets[target][client]);
 
@@ -223,7 +223,7 @@ describe('Targets', () => {
             describe('snippets', () => {
               Object.keys(fixtures.requests)
                 .filter(clearInfo)
-                .forEach(function (request) {
+                .forEach(request => {
                   itShouldHaveRequestTestOutputFixture(request, target, client);
 
                   itShouldGenerateOutput(request, target + '/' + client + '/', target, client);

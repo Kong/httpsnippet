@@ -288,5 +288,73 @@ Array [
     "key": "python",
     "title": "Python",
   },
+  Object {
+    "clients": Array [
+      Object {
+        "description": "httr: Tools for Working with URLs and HTTP",
+        "key": "httr",
+        "link": "https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html",
+        "title": "httr",
+      },
+    ],
+    "default": "httr",
+    "extname": ".r",
+    "key": "r",
+    "title": "R",
+  },
+  Object {
+    "clients": Array [
+      Object {
+        "description": "Ruby HTTP client",
+        "key": "native",
+        "link": "http://ruby-doc.org/stdlib-2.2.1/libdoc/net/http/rdoc/Net/HTTP.html",
+        "title": "net::http",
+      },
+    ],
+    "default": "native",
+    "extname": ".rb",
+    "key": "ruby",
+    "title": "Ruby",
+  },
+  Object {
+    "clients": Array [
+      Object {
+        "description": "cURL is a command line tool and library for transferring data with URL syntax",
+        "key": "curl",
+        "link": "http://curl.haxx.se/",
+        "title": "cURL",
+      },
+      Object {
+        "description": "a CLI, cURL-like tool for humans",
+        "key": "httpie",
+        "link": "http://httpie.org/",
+        "title": "HTTPie",
+      },
+      Object {
+        "description": "a free software package for retrieving files using HTTP, HTTPS",
+        "key": "wget",
+        "link": "https://www.gnu.org/software/wget/",
+        "title": "Wget",
+      },
+    ],
+    "default": "curl",
+    "extname": ".sh",
+    "key": "shell",
+    "title": "Shell",
+  },
+  Object {
+    "clients": Array [
+      Object {
+        "description": "Foundation's NSURLSession request",
+        "key": "nsurlsession",
+        "link": "https://developer.apple.com/library/mac/documentation/Foundation/Reference/NSURLSession_class/index.html",
+        "title": "NSURLSession",
+      },
+    ],
+    "default": "nsurlsession",
+    "extname": ".swift",
+    "key": "swift",
+    "title": "Swift",
+  },
 ]
 `;

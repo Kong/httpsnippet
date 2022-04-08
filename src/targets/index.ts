@@ -14,10 +14,10 @@ import { ocaml } from './ocaml/target';
 import { php } from './php/target';
 import { powershell } from './powershell/target';
 import { python } from './python/target';
-// import { r } from './r';
-// import { ruby } from './ruby';
-// import { shell } from './shell';
-// import { swift } from './swift';
+import { r } from './r/target';
+import { ruby } from './ruby/target';
+import { shell } from './shell/target';
+import { swift } from './swift/target';
 
 export type TargetId = keyof typeof targets;
 
@@ -66,8 +66,8 @@ export const targets = {
   php,
   powershell,
   python,
-  // r,
-  // ruby,
-  // shell,
-  // swift,
+  r,
+  ruby,
+  shell,
+  swift,
 };

@@ -105,7 +105,7 @@ export const native: Client<GoNativeOptions> = {
 
     // Add headers
     if (Object.keys(allHeaders).length) {
-      Object.keys(allHeaders).forEach(function (key) {
+      Object.keys(allHeaders).forEach(key => {
         push(`req.Header.Add("${key}", "${allHeaders[key]}")`, indent);
       });
 

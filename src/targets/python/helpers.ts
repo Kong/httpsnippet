@@ -35,7 +35,7 @@ function concatValues(concatType: 'array' | 'object', values: any, pretty: boole
  * @param {Object} opts Target options
  * @return {string}
  */
-export const literalRepresentation = (value: any, opts: Record<string, any>, indentLevel: number): any => {
+export const literalRepresentation = (value: any, opts: Record<string, any>, indentLevel?: number): any => {
   indentLevel = indentLevel === undefined ? 1 : indentLevel + 1;
 
   switch (Object.prototype.toString.call(value)) {

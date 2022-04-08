@@ -1,10 +1,14 @@
-module.exports = {
+import { Target } from '..';
+import { native } from './native/client';
+
+export const ruby: Target = {
   info: {
     key: 'ruby',
     title: 'Ruby',
     extname: '.rb',
     default: 'native',
   },
-
-  native: require('./native'),
+  clientsById: {
+    native,
+  },
 };

@@ -8,106 +8,112 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-const util = require('util');
-const helpers = require('../../helpers/shell');
-const headerHelpers = require('../../helpers/headers');
-const CodeBuilder = require('../../helpers/code-builder');
+import { Client } from '../..';
+import { CodeBuilder } from '../../../helpers/code-builder';
+import { getHeaderName } from '../../../helpers/headers';
+import { quote } from '../../../helpers/shell';
 
-module.exports = function (source, options) {
-  const opts = Object.assign(
-    {
+export interface CurlOptions {
+  short?: boolean;
+  binary?: boolean;
+  globOff?: boolean;
+}
+
+export const curl: Client<CurlOptions> = {
+  info: {
+    key: 'curl',
+    title: 'cURL',
+    link: 'http://curl.haxx.se/',
+    description: 'cURL is a command line tool and library for transferring data with URL syntax',
+  },
+  convert: ({ fullUrl, method, httpVersion, headersObj, allHeaders, postData }, options) => {
+    const opts = {
       indent: '  ',
       short: false,
       binary: false,
       globOff: false,
-      minifiyJSON: false,
-    },
-    options,
-  );
+      ...options,
+    };
 
-  const code = new CodeBuilder({ indent: opts.indent, join: opts.indent !== false ? ' \\\n' + opts.indent : ' ' });
+    // @ts-expect-error SEEMS LEGIT
+    const { push, join } = new CodeBuilder({ indent: opts.indent, join: opts.indent !== false ? ` \\\n${opts.indent}` : ' ' });
 
-  const globOption = opts.short ? '-g' : '--globoff';
-  const requestOption = opts.short ? '-X' : '--request';
-  let formattedUrl = helpers.quote(source.fullUrl);
+    const globOption = opts.short ? '-g' : '--globoff';
+    const requestOption = opts.short ? '-X' : '--request';
+    let formattedUrl = quote(fullUrl);
 
-  code.push(`curl ${requestOption} ${source.method}`);
-  if (opts.globOff) {
-    formattedUrl = unescape(formattedUrl);
-    code.push(globOption);
-  }
-  code.push(`${opts.short ? '' : '--url '}${formattedUrl}`);
-
-  if (source.httpVersion === 'HTTP/1.0') {
-    code.push(opts.short ? '-0' : '--http1.0');
-  }
-
-  // if multipart form data, we want to remove the boundary
-  if (source.postData.mimeType === 'multipart/form-data') {
-    const contentTypeHeaderName = headerHelpers.getHeaderName(source.headersObj, 'content-type');
-    const contentTypeHeader = source.headersObj[contentTypeHeaderName];
-
-    if (contentTypeHeaderName && contentTypeHeader) {
-      // remove the leading semi colon and boundary
-      // up to the next semi colon or the end of string
-      const noBoundary = contentTypeHeader.replace(/; boundary.+?(?=(;|$))/, '');
-
-      // replace the content-type header with no boundary in both headersObj and allHeaders
-      source.headersObj[contentTypeHeaderName] = noBoundary;
-      source.allHeaders[contentTypeHeaderName] = noBoundary;
+    push(`curl ${requestOption} ${method}`);
+    if (opts.globOff) {
+      formattedUrl = unescape(formattedUrl);
+      push(globOption);
     }
-  }
+    push(`${opts.short ? '' : '--url '}${formattedUrl}`);
 
-  // construct headers
-  Object.keys(source.headersObj)
-    .sort()
-    .forEach(function (key) {
-      const header = `${key}: ${source.headersObj[key]}`;
-      code.push(`${opts.short ? '-H' : '--header'} ${helpers.quote(header)}`);
-    });
+    if (httpVersion === 'HTTP/1.0') {
+      push(opts.short ? '-0' : '--http1.0');
+    }
 
-  if (source.allHeaders.cookie) {
-    code.push(`${opts.short ? '-b' : '--cookie'} ${helpers.quote(source.allHeaders.cookie)}`);
-  }
+    // if multipart form data, we want to remove the boundary
+    if (postData.mimeType === 'multipart/form-data') {
+      const contentTypeHeaderName = getHeaderName(headersObj, 'content-type');
+      const contentTypeHeader = headersObj[contentTypeHeaderName!];
 
-  // construct post params
-  switch (source.postData.mimeType) {
-    case 'multipart/form-data':
-      source.postData.params.forEach(function (param) {
-        let post = '';
-        if (param.fileName) {
-          post = `${param.name}=@${param.fileName}`;
-        } else {
-          post = `${param.name}=${param.value}`;
-        }
+      if (contentTypeHeaderName && contentTypeHeader) {
+        // remove the leading semi colon and boundary
+        // up to the next semi colon or the end of string
+        // @ts-expect-error SEEMS LEGIT
+        const noBoundary = contentTypeHeader.replace(/; boundary.+?(?=(;|$))/, '');
 
-        code.push(`${opts.short ? '-F' : '--form'} ${helpers.quote(post)}`);
+        // replace the content-type header with no boundary in both headersObj and allHeaders
+        headersObj[contentTypeHeaderName] = noBoundary;
+        allHeaders[contentTypeHeaderName] = noBoundary;
+      }
+    }
+
+    // construct headers
+    Object.keys(headersObj)
+      .sort()
+      .forEach(key => {
+        const header = `${key}: ${headersObj[key]}`;
+        push(`${opts.short ? '-H' : '--header'} ${quote(header)}`);
       });
-      break;
 
-    case 'application/x-www-form-urlencoded':
-      if (source.postData.params) {
-        source.postData.params.forEach(function (param) {
-          code.push(`${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${helpers.quote(`${param.name}=${param.value}`)}`);
+    if (allHeaders.cookie) {
+      push(`${opts.short ? '-b' : '--cookie'} ${quote(allHeaders.cookie as string)}`);
+    }
+
+    // construct post params
+    switch (postData.mimeType) {
+      case 'multipart/form-data':
+        postData.params.forEach(param => {
+          let post = '';
+          if (param.fileName) {
+            post = `${param.name}=@${param.fileName}`;
+          } else {
+            post = `${param.name}=${param.value}`;
+          }
+
+          push(`${opts.short ? '-F' : '--form'} ${quote(post)}`);
         });
-      } else {
-        code.push(`${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${helpers.quote(source.postData.text)}`);
-      }
-      break;
+        break;
 
-    default:
-      // raw request body
-      if (source.postData.text) {
-        code.push(`${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${helpers.quote(source.postData.text)}`);
-      }
-  }
+      case 'application/x-www-form-urlencoded':
+        if (postData.params) {
+          postData.params.forEach(param => {
+            push(`${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(`${param.name}=${param.value}`)}`);
+          });
+        } else {
+          push(`${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(postData.text)}`);
+        }
+        break;
 
-  return code.join();
-};
+      default:
+        // raw request body
+        if (postData.text) {
+          push(`${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(postData.text)}`);
+        }
+    }
 
-module.exports.info = {
-  key: 'curl',
-  title: 'cURL',
-  link: 'http://curl.haxx.se/',
-  description: 'cURL is a command line tool and library for transferring data with URL syntax',
+    return join();
+  },
 };

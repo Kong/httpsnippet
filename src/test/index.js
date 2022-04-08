@@ -156,7 +156,7 @@ describe('HTTPSnippet', function () {
   });
 
   it('should add "headersObj" to source object case insensitive when HTTP/1.0', function (done) {
-    const fixture = Object.assign({}, fixtures.requests.headers);
+    const fixture = { ...fixtures.requests.headers };
     fixture.httpVersion = 'HTTP/1.1';
     fixture.headers = fixture.headers.concat({
       name: 'Kong-Admin-Token',
@@ -175,7 +175,7 @@ describe('HTTPSnippet', function () {
   });
 
   it('should add "headersObj" to source object in lowercase when HTTP/2.x', function (done) {
-    const fixture = Object.assign({}, fixtures.requests.headers);
+    const fixture = { ...fixtures.requests.headers };
     fixture.httpVersion = 'HTTP/2';
     fixture.headers = fixture.headers.concat({
       name: 'Kong-Admin-Token',

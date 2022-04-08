@@ -62,7 +62,7 @@ cli.forEach(({ binary, target, clients }) => {
 
             // make an exception for multipart/form-data
             if (fixture.headers) {
-              fixture.headers.forEach(function (header, index) {
+              fixture.headers.forEach((header, index) => {
                 if (header.name.toLowerCase() === 'content-type' && header.value === 'multipart/form-data') {
                   delete fixture.headers[index];
                 }
