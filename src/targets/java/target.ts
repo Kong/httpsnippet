@@ -1,8 +1,8 @@
 import { Target } from '..';
-import { asynchttp } from './asynchttp';
-import { nethttp } from './nethttp';
-import { okhttp } from './okhttp';
-import { unirest } from './unirest';
+import { asynchttp } from './asynchttp/client';
+import { nethttp } from './nethttp/client';
+import { okhttp } from './okhttp/client';
+import { unirest } from './unirest/client';
 
 export const java: Target = {
   info: {

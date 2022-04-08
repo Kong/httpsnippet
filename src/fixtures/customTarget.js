@@ -6,5 +6,5 @@ module.exports = {
     default: 'request',
   },
 
-  request: require('../../src/targets/node/request'),
+  request: require('../targets/node/request/client'),
 };

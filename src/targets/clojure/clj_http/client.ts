@@ -45,13 +45,13 @@ const filterEmpty = (m: Record<string, any>) => {
 
 const padBlock = (padSize: number, input: string) => {
   const padding = ' '.repeat(padSize);
-  return input.replace(/\n/g, '\n' + padding);
+  return input.replace(/\n/g, `\n${padding}`);
 };
 
 const jsToEdn = (js: any) => {
   switch (jsType(js)) {
     case 'string':
-      return '"' + js.replace(/"/g, '\\"') + '"';
+      return `"${js.replace(/"/g, '\\"')}"`;
 
     case 'file':
       return js.toString();
@@ -63,7 +63,7 @@ const jsToEdn = (js: any) => {
       return 'nil';
 
     case 'regexp':
-      return '#"' + js.source + '"';
+      return `#"${js.source}"`;
 
     case 'object': {
       // simple vertical format
@@ -73,13 +73,13 @@ const jsToEdn = (js: any) => {
           return `${accumulator}:${key} ${val}\n `;
         }, '')
         .trim();
-      return '{' + padBlock(1, obj) + '}';
+      return `{${padBlock(1, obj)}}`;
     }
 
     case 'array': {
       // simple horizontal format
       const arr = js.reduce((accumulator: string, value: string) => `${accumulator} ${jsToEdn(value)}`, '').trim();
-      return '[' + padBlock(1, arr) + ']';
+      return `[${padBlock(1, arr)}]`;
     }
 
     default: // 'number' 'boolean'

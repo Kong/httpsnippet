@@ -1,9 +1,9 @@
 import { Target } from '..';
-import { native } from './native';
-import { request } from './request';
-import { unirest } from './unirest';
-import { axios } from './axios';
-import { fetch } from './fetch';
+import { native } from './native/client';
+import { request } from './request/client';
+import { unirest } from './unirest/client';
+import { axios } from './axios/client';
+import { fetch } from './fetch/client';
 
 export const node: Target = {
   info: {

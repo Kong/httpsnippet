@@ -1,5 +1,5 @@
 import { Target } from '..';
-import { clj_http } from './clj_http';
+import { clj_http } from './clj_http/client';
 
 export const clojure: Target = {
   info: {
@@ -10,5 +10,5 @@ export const clojure: Target = {
   },
   clientsById: {
     clj_http,
-  }
+  },
 };

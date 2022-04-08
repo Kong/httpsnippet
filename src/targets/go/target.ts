@@ -1,5 +1,5 @@
-import { Target } from "..";
-import { native } from './native'
+import { Target } from '..';
+import { native } from './native/client';
 
 export const go: Target = {
   info: {
@@ -10,5 +10,5 @@ export const go: Target = {
   },
   clientsById: {
     native,
-  }
+  },
 };

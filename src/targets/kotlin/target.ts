@@ -1,5 +1,5 @@
 import { Target } from '..';
-import { okhttp } from './okhttp';
+import { okhttp } from './okhttp/client';
 
 export const kotlin: Target = {
   info: {

@@ -1,5 +1,5 @@
-import { Target } from "..";
-import { http11 } from './http1.1';
+import { Target } from '..';
+import { http11 } from './http1.1/client';
 
 export const http: Target = {
   info: {
@@ -10,5 +10,5 @@ export const http: Target = {
   },
   clientsById: {
     'http1.1': http11,
-  }
+  },
 };

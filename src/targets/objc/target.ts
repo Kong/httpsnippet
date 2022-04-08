@@ -1,5 +1,5 @@
 import { Target } from '..';
-import { nsurlsession } from './nsurlsession';
+import { nsurlsession } from './nsurlsession/client';
 
 export const objc: Target = {
   info: {

@@ -1,7 +1,7 @@
 import { Target } from '..';
-import { curl } from './curl';
-import { http1 } from './http1';
-import { http2 } from './http2';
+import { curl } from './curl/client';
+import { http1 } from './http1/client';
+import { http2 } from './http2/client';
 
 export const php: Target = {
   info: {
