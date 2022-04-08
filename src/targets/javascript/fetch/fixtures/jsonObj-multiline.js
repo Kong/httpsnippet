@@ -1,7 +1,7 @@
 const options = {
   method: 'POST',
-  headers: { 'content-type': 'application/json' },
-  body: '{"foo":"bar"}',
+  headers: {'content-type': 'application/json'},
+  body: '{"foo":"bar"}'
 };
 
 fetch('http://mockbin.com/har', options)

@@ -6,8 +6,8 @@ form.append('foo', 'test/fixtures/files/hello.txt');
 const options = {
   method: 'POST',
   url: 'http://mockbin.com/har',
-  headers: { 'content-type': 'multipart/form-data; boundary=---011000010111000001101001' },
-  data: '[form]',
+  headers: {'content-type': 'multipart/form-data; boundary=---011000010111000001101001'},
+  data: '[form]'
 };
 
 axios

@@ -1,5 +1,5 @@
 const data = JSON.stringify({
-  foo: null,
+  foo: null
 });
 
 const xhr = new XMLHttpRequest();

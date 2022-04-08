@@ -3,7 +3,7 @@ import axios from 'axios';
 const options = {
   method: 'GET',
   url: 'http://mockbin.com/har',
-  params: { 'foo[bar]': 'baz,zap', fiz: 'buz', key: 'value' },
+  params: {'foo[bar]': 'baz,zap', fiz: 'buz', key: 'value'}
 };
 
 axios

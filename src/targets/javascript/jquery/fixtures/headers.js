@@ -5,8 +5,8 @@ const settings = {
   method: 'GET',
   headers: {
     accept: 'application/json',
-    'x-foo': 'Bar',
-  },
+    'x-foo': 'Bar'
+  }
 };
 
 $.ajax(settings).done(function (response) {

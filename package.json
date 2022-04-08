@@ -57,6 +57,7 @@
     "@types/event-stream": "^4.0.0",
     "@types/jest": "^27.4.1",
     "@types/node": "^16.11.26",
+    "@types/stringify-object": "^3.3.0",
     "@typescript-eslint/eslint-plugin": "5.17.0",
     "@typescript-eslint/parser": "5.17.0",
     "eslint": "^8.12.0",
@@ -75,6 +76,6 @@
     "fs-readfile-promise": "^2.0.1",
     "fs-writefile-promise": "^1.0.3",
     "har-schema": "^2.0.0",
-    "stringify-object": "^3.3.0"
+    "stringify-object": "3.3.0"
   }
 }

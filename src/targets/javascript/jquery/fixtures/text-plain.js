@@ -4,9 +4,9 @@ const settings = {
   url: 'http://mockbin.com/har',
   method: 'POST',
   headers: {
-    'content-type': 'text/plain',
+    'content-type': 'text/plain'
   },
-  data: 'Hello World',
+  data: 'Hello World'
 };
 
 $.ajax(settings).done(function (response) {

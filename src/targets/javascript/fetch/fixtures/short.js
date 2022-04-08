@@ -1,4 +1,4 @@
-const options = { method: 'GET' };
+const options = {method: 'GET'};
 
 fetch('http://mockbin.com/har', options)
   .then(response => response.json())

@@ -1,9 +1,6 @@
-const data = JSON.stringify({
-  foo: 'bar'
-});
+const data = null;
 
 const xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
 
 xhr.addEventListener('readystatechange', function () {
   if (this.readyState === this.DONE) {
@@ -11,7 +8,6 @@ xhr.addEventListener('readystatechange', function () {
   }
 });
 
-xhr.open('POST', 'http://mockbin.com/har');
-xhr.setRequestHeader('content-type', 'application/json');
+xhr.open('GET', 'http://mockbin.com/har');
 
 xhr.send(data);

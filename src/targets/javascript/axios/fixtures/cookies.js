@@ -3,7 +3,7 @@ import axios from 'axios';
 const options = {
   method: 'POST',
   url: 'http://mockbin.com/har',
-  headers: { cookie: 'foo=bar; bar=baz' },
+  headers: {cookie: 'foo=bar; bar=baz'}
 };
 
 axios

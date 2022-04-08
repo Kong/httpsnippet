@@ -3,7 +3,7 @@ const settings = {
   crossDomain: true,
   url: 'https://mockbin.com/har',
   method: 'GET',
-  headers: {},
+  headers: {}
 };
 
 $.ajax(settings).done(function (response) {

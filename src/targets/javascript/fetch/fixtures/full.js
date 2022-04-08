@@ -3,9 +3,9 @@ const options = {
   headers: {
     cookie: 'foo=bar; bar=baz',
     accept: 'application/json',
-    'content-type': 'application/x-www-form-urlencoded',
+    'content-type': 'application/x-www-form-urlencoded'
   },
-  body: new URLSearchParams({ foo: 'bar' }),
+  body: new URLSearchParams({foo: 'bar'})
 };
 
 fetch('http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value', options)

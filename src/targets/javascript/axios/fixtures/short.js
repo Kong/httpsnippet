@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const options = { method: 'GET', url: 'http://mockbin.com/har' };
+const options = {method: 'GET', url: 'http://mockbin.com/har'};
 
 axios
   .request(options)

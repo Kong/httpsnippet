@@ -19,7 +19,7 @@ const targetFilter = [
 
 /** useful for debuggin, only run a particular set of targets */
 const clientFilter = [
-  // 'http1.1',
+  // 'jquery'
 ];
 
 /** useful for debuggin, only run a particular set of fixtures */
@@ -41,7 +41,7 @@ availableTargets()
           const basePath = path.join('src', 'targets', targetId, clientId, 'fixtures', `${fixture}${extname(targetId)}`);
           const expected = readFileSync(basePath).toString();
           if (expected === '<MISSING>') {
-            console.log(`missing test for ${targetId}:${clientId} "${fixture}"`)
+            console.log(`missing test for ${targetId}:${clientId} "${fixture}"`);
             return;
           }
 

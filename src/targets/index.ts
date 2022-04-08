@@ -5,7 +5,7 @@ import { csharp } from './csharp';
 import { go } from './go';
 import { http } from './http';
 import { java } from './java';
-// import { javascript } from './javascript';
+import { javascript } from './javascript';
 // import { kotlin } from './kotlin';
 // import { node } from './node';
 // import { objc } from './objc';
@@ -48,7 +48,7 @@ export interface TargetInfo {
 export type Target = {
   info: TargetInfo;
   clientsById: Record<ClientId, Client>;
-}
+};
 
 export const targets = {
   c,
@@ -57,7 +57,7 @@ export const targets = {
   go,
   http,
   java,
-  // javascript,
+  javascript,
   // kotlin,
   // node,
   // objc,

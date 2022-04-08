@@ -4,10 +4,10 @@ const settings = {
   url: 'http://mockbin.com/har',
   method: 'POST',
   headers: {
-    'content-type': 'application/json',
+    'content-type': 'application/json'
   },
   processData: false,
-  data: '{\n  "foo": "bar"\n}',
+  data: '{\n  "foo": "bar"\n}'
 };
 
 $.ajax(settings).done(function (response) {

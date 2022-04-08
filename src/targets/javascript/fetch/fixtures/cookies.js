@@ -1,4 +1,4 @@
-const options = { method: 'POST', headers: { cookie: 'foo=bar; bar=baz' } };
+const options = {method: 'POST', headers: {cookie: 'foo=bar; bar=baz'}};
 
 fetch('http://mockbin.com/har', options)
   .then(response => response.json())

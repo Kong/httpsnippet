@@ -9,3 +9,4 @@ Breaking:
 - the `http` target changed its client ID to `http1.1` from `1.1`
 - formatter strings (i.e. "%s" substitutions) are no longer supported (now that template strings exist, you don't need them, so please just send the string you want as the line of code as-is)
 - the "dot-method-train" style API is no longer supported on the CodeBuilder.  All the same functionality exists, but just call the methods separately.  For example instead of `code.push('a').blank().push('b')`  just do `push('a'); blank(); push('b');`
+- the JavaScript target will output ES6 code

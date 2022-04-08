@@ -110,5 +110,37 @@ Array [
     "key": "java",
     "title": "Java",
   },
+  Object {
+    "clients": Array [
+      Object {
+        "description": "W3C Standard API that provides scripted client functionality",
+        "key": "xhr",
+        "link": "https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest",
+        "title": "XMLHttpRequest",
+      },
+      Object {
+        "description": "Promise based HTTP client for the browser and node.js",
+        "key": "axios",
+        "link": "https://github.com/axios/axios",
+        "title": "Axios",
+      },
+      Object {
+        "description": "Perform asynchronous HTTP requests with the Fetch API",
+        "key": "fetch",
+        "link": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch",
+        "title": "fetch",
+      },
+      Object {
+        "description": "Perform an asynchronous HTTP (Ajax) requests with jQuery",
+        "key": "jquery",
+        "link": "http://api.jquery.com/jquery.ajax/",
+        "title": "jQuery",
+      },
+    ],
+    "default": "xhr",
+    "extname": ".js",
+    "key": "javascript",
+    "title": "JavaScript",
+  },
 ]
 `;
