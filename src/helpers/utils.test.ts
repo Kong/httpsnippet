@@ -9,10 +9,10 @@ describe('availableTargets', () => {
 
 describe('extname', () => {
   it('returns the correct extension', () => {
-    expect(extname('c')).toEqual('c');
+    expect(extname('c')).toEqual('.c');
 
     // TODO: make sure to pick one that doesn't match
-    // expect(extname('clojure')).toEqual('clj');
+    // expect(extname('clojure')).toEqual('.clj');
   });
 
   it('returns empty string if the extension is not found', () => {

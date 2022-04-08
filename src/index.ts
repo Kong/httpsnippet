@@ -1,18 +1,25 @@
 import { map as eventStreamMap } from 'event-stream';
-import * as FormData from 'form-data';
+import FormData from 'form-data';
 import { stringify as queryStringify } from 'querystring';
-import { reducer } from './helpers/reducer';
+import { ReducedHelperObject, reducer } from './helpers/reducer';
 import { Client, ClientId, Target, TargetId, targets } from './targets';
 import { parse as urlParse, format as urlFormat, UrlWithParsedQuery } from 'url';
 import { getHeaderName } from './helpers/headers';
-import { formDataIterator, isBlob } from './helpers/form-data.js';
+import { formDataIterator, isBlob } from './helpers/form-data';
 import { validateHarRequest } from './helpers/har-validator';
 
-type TODO = any;
+const DEBUG_MODE = false;
+
+const debug = {
+  info: DEBUG_MODE ? console.info : () => {},
+}
 
 export interface Request {
   httpVersion: string;
-  queryString: string[];
+  queryString: {
+    name: string;
+    value: string;
+  }[];
   headers: {
     name: string;
     value: string;
@@ -24,25 +31,26 @@ export interface Request {
   postData: {
     size?: number;
     mimeType?: string;
-    jsonObj: boolean;
-    paramsObj: boolean;
+    jsonObj: ReducedHelperObject;
+    paramsObj?: ReducedHelperObject;
     text?: string;
     boundary: string;
     params: {
       name: string;
+      contentType?: string;
       value: string;
       fileName: string;
-    };
+    }[];
   };
   bodySize: number;
   headersSize: number;
   method: string;
   url: string;
   fullUrl: string;
-  queryObj: TODO;
-  headersObj: TODO;
+  queryObj: ReducedHelperObject;
+  headersObj: ReducedHelperObject;
   uriObj: UrlWithParsedQuery;
-  cookiesObj: TODO;
+  cookiesObj: ReducedHelperObject;
   allHeaders: {
     cookie?: string;
   };
@@ -109,14 +117,13 @@ export class HTTPSnippet {
     request.headersObj = {};
     request.cookiesObj = {};
     request.allHeaders = {};
-    request.postData.jsonObj = false;
-    request.postData.paramsObj = false;
 
     // construct query objects
     if (request.queryString && request.queryString.length) {
-      console.info('queryString found, constructing queryString pair map');
+      debug.info('queryString found, constructing queryString pair map');
 
-      request.queryObj = request.queryString.reduce(reducer, {});
+      const thing = request.queryString.reduce(reducer, {});
+      request.queryObj = thing;
     }
 
     // construct headers objects
@@ -171,6 +178,7 @@ export class HTTPSnippet {
           // Since the native FormData object is iterable, we easily detect what version of `form-data` we're working with here to allow `multipart/form-data` requests to be compiled under both browser and Node environments.
           //
           // This hack is pretty awful but it's the only way we can use this library in the browser as if we code this against just the native FormData object, we can't polyfill that back into Node because Blob and File objects, which something like `formdata-polyfill` requires, don't exist there.
+          // @ts-expect-error TODO
           const isNativeFormData = typeof form[Symbol.iterator] === 'function';
 
           // TODO: THIS ABSOLUTELY MUST BE REMOVED.
@@ -189,13 +197,16 @@ export class HTTPSnippet {
 
             if (isNativeFormData) {
               if (isBlob(value)) {
+                // @ts-expect-error TODO
                 form.append(name, value, filename);
               } else {
                 form.append(name, value);
               }
             } else {
               form.append(name, value, {
+                // @ts-expect-error TODO
                 filename,
+                // @ts-expect-error TODO
                 contentType: param.contentType || null,
               });
             }
@@ -207,6 +218,8 @@ export class HTTPSnippet {
             }
           } else {
             form.pipe(
+              // @ts-expect-error TODO
+
               eventStreamMap(data => {
                 request.postData.text += data;
               }),
@@ -243,7 +256,7 @@ export class HTTPSnippet {
           try {
             request.postData.jsonObj = JSON.parse(request.postData.text);
           } catch (e) {
-            console.info(e);
+            debug.info(e);
 
             // force back to `text/plain` if headers have proper content-type value, then this should also work
             request.postData.mimeType = 'text/plain';
@@ -264,7 +277,7 @@ export class HTTPSnippet {
     // merge all possible queryString values
     request.queryObj = {
       ...request.queryObj,
-      ...request.uriObj.query,
+      ...(request.uriObj.query as ReducedHelperObject),
     };
 
     // reset uriObj values for a clean url

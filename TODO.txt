@@ -1,2 +1,3 @@
 - convert to GitHub actions
 - remove chaining like `push(..).blank().push(..)
+- look into the prior usage of the 'debug' package

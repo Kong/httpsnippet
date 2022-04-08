@@ -2,11 +2,7 @@ const fixtures = require('../fixtures');
 const HTTPSnippet = require('..');
 const targets = require('../targets');
 const shell = require('child_process');
-const util = require('util');
 
-require('should');
-
-const base = './fixtures/output/';
 const requests = [
   'application-form-encoded',
   'application-json',
@@ -19,22 +15,39 @@ const requests = [
   'short',
 ];
 
-fixtures.cli.forEach(cli => {
-  describe(targets[cli.target].info.title + ' Request Validation', function () {
-    cli.clients.forEach(function (client) {
-      requests.forEach(function (request) {
-        it(`${client} request should match mock for ${request}`, function (done) {
+const cli = [
+  {
+    binary: 'node',
+    target: 'node',
+    clients: ['native'],
+  },
+  {
+    binary: 'php',
+    target: 'php',
+    clients: ['curl'],
+  },
+  {
+    binary: 'python3',
+    target: 'python',
+    clients: ['python3'],
+  },
+];
+
+cli.forEach(({ binary, target, clients }) => {
+  describe(`${targets[target].info.title} Request Validation`, () => {
+    clients.forEach(clientId => {
+      requests.forEach(request => {
+        it(`${clientId} request should match fixture for ${request}`, () => {
+          const basePath = path.join('fixtures', 'output', target, clientId, request);
+          const filePath = `${basePath}.${HTTPSnippet.extname(target)}`;
+          const childProcess = shell.exec(`${binary} ${filePath}`);
+
           let stdout = '';
-          const fixture = `${cli.target}/${client}/${request}${HTTPSnippet.extname(cli.target)}`;
-          const command = util.format(cli.run, `${base}${fixture}`);
-
-          const ls = shell.exec(command);
-
-          ls.stdout.on('data', function (data) {
+          childProcess.stdout.on('data', data => {
             stdout += data;
           });
 
-          ls.on('exit', function (code) {
+          childProcess.on('exit', () => {
             let har;
             try {
               har = JSON.parse(stdout);

@@ -26,7 +26,7 @@
  * Extracted from https://github.com/node-fetch/node-fetch/blob/64c5c296a0250b852010746c76144cb9e14698d9/src/utils/form-data.js
  */
 
-import FormData = require("form-data");
+import FormData from "form-data";
 
 const carriage = '\r\n';
 const dashes = '-'.repeat(2);
@@ -61,6 +61,7 @@ const getHeader = (boundary: string, name: string, field: { name: string; type: 
 }
 
 export const formDataIterator = function* (form: FormData, boundary: string) {
+  // @ts-expect-error not sure how this ever worked
   for (const [name, value] of form) {
     yield getHeader(boundary, name, value);
 
