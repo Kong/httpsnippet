@@ -268,5 +268,25 @@ Array [
     "key": "powershell",
     "title": "Powershell",
   },
+  Object {
+    "clients": Array [
+      Object {
+        "description": "Python3 HTTP Client",
+        "key": "python3",
+        "link": "https://docs.python.org/3/library/http.client.html",
+        "title": "http.client",
+      },
+      Object {
+        "description": "Requests HTTP library",
+        "key": "requests",
+        "link": "http://docs.python-requests.org/en/latest/api/#requests.request",
+        "title": "Requests",
+      },
+    ],
+    "default": "python3",
+    "extname": ".py",
+    "key": "python",
+    "title": "Python",
+  },
 ]
 `;
