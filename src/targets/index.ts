@@ -9,7 +9,7 @@ import { java } from './java';
 import { javascript } from './javascript';
 import { kotlin } from './kotlin';
 import { node } from './node';
-// import { objc } from './objc';
+import { objc } from './objc';
 // import { ocaml } from './ocaml';
 // import { php } from './php';
 // import { powershell } from './powershell';
@@ -61,7 +61,7 @@ export const targets = {
   javascript,
   kotlin,
   node,
-  // objc,
+  objc,
   // ocaml,
   // php,
   // powershell,

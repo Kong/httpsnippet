@@ -194,5 +194,19 @@ Array [
     "key": "node",
     "title": "Node.js",
   },
+  Object {
+    "clients": Array [
+      Object {
+        "description": "Foundation's NSURLSession request",
+        "key": "nsurlsession",
+        "link": "https://developer.apple.com/library/mac/documentation/Foundation/Reference/NSURLSession_class/index.html",
+        "title": "NSURLSession",
+      },
+    ],
+    "default": "nsurlsession",
+    "extname": ".m",
+    "key": "objc",
+    "title": "Objective-C",
+  },
 ]
 `;
