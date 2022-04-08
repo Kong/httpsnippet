@@ -112,15 +112,16 @@ export const httpclient: Client = {
         case 'application/x-www-form-urlencoded':
           push('Content = new FormUrlEncodedContent(new Dictionary<string, string>', 1);
           push('{', 1);
-          postData.params.forEach(param => {
+          postData.params?.forEach(param => {
             push(`{ "${param.name}", "${param.value}" },`, 2);
           });
           push('}),', 1);
           break;
+
         case 'multipart/form-data':
           push('Content = new MultipartFormDataContent', 1);
           push('{', 1);
-          postData.params.forEach(param => {
+          postData.params?.forEach(param => {
             push(`new StringContent(${JSON.stringify(param.value || '')})`, 2);
             push('{', 2);
             push('Headers =', 3);
@@ -141,6 +142,7 @@ export const httpclient: Client = {
 
           push('},', 1);
           break;
+
         default:
           push(`Content = new StringContent(${JSON.stringify(postData.text || '')})`, 1);
           push('{', 1);

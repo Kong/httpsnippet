@@ -64,12 +64,13 @@ export const http2: Client<Http2Options> = {
           [anything: string]: string | undefined;
         }[] = [];
         const fields: Record<string, any> = {};
-        postData.params.forEach(({ name, fileName, value, contentType }) => {
+        postData.params?.forEach(({ name, fileName, value, contentType }) => {
           if (fileName) {
             files.push({
               name: name,
               type: contentType,
               file: fileName,
+              // @ts-expect-error appears to be a genuine error
               data: value,
             });
             return;

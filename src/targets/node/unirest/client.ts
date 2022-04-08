@@ -73,7 +73,7 @@ export const unirest: Client = {
       case 'multipart/form-data': {
         const multipart: Record<string, string>[] = [];
 
-        postData.params.forEach(param => {
+        postData.params?.forEach(param => {
           const part: Record<string, string> = {};
 
           if (param.fileName && !param.value) {

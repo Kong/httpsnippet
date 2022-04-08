@@ -59,7 +59,7 @@ export const request: Client = {
       case 'multipart/form-data':
         reqOpts.formData = {};
 
-        postData.params.forEach(param => {
+        postData.params?.forEach(param => {
           if (!param.fileName && !param.fileName && !param.contentType) {
             reqOpts.formData[param.name] = param.value;
             return;

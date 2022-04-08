@@ -57,7 +57,7 @@ export const axios: Client = {
       case 'multipart/form-data':
         push('const form = new FormData();');
 
-        postData.params.forEach(param => {
+        postData.params?.forEach(param => {
           push(`form.append('${param.name}', '${param.value || param.fileName || ''}');`);
         });
 

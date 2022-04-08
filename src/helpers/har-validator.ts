@@ -1,4 +1,5 @@
-import Ajv, { ErrorObject } from "ajv";
+import Ajv, { ErrorObject } from 'ajv';
+import { Request } from 'har-format';
 import * as schema from 'har-schema';
 
 export class HARError extends Error {
@@ -8,7 +9,7 @@ export class HARError extends Error {
   constructor(errors: ErrorObject[]) {
     super();
     this.errors = errors;
-    Error.captureStackTrace(this, this.constructor)
+    Error.captureStackTrace(this, this.constructor);
   }
 }
 
@@ -17,56 +18,7 @@ const ajv = new Ajv({
 });
 ajv.addSchema(schema);
 
-interface Commentable {
-  comment?: string;
-}
-
-interface HarCookie extends Commentable {
-  name: string;
-  value: string;
-  type?: string;
-  domain?: string;
-  expires?: string | null;
-  httpOnly?: boolean;
-  secure?: boolean;
-}
-
-interface HarHeader extends Commentable {
-  name: string;
-  value: string;
-}
-
-interface HarQuery extends Commentable {
-  name: string;
-  value: string;
-}
-
-interface HarPostDataParam extends Commentable {
-  name?: string;
-  value?: string;
-  fileName?: string;
-  contentType?: string;
-}
-
-interface HarPostData extends Commentable {
-  mimeType: string;
-  text?: string;
-  params: HarPostDataParam[];
-}
-
-export interface HarRequest extends Commentable {
-  method: string;
-  url: string;
-  httpVersion: string;
-  cookies: HarCookie[];
-  headers: HarHeader[];
-  queryString: HarQuery[];
-  postData?: HarPostData;
-  headersSize: number;
-  bodySize: number;
-}
-
-export const validateHarRequest = (request: any): request is HarRequest => {
+export const validateHarRequest = (request: any): request is Request => {
   const validate = ajv.getSchema('request.json');
   if (!validate) {
     throw new Error('failed to find HAR request schema');
@@ -76,4 +28,4 @@ export const validateHarRequest = (request: any): request is HarRequest => {
     throw new HARError(validate.errors!);
   }
   return true;
-}
+};

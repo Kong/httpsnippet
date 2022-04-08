@@ -7,6 +7,7 @@ import { parse as urlParse, format as urlFormat, UrlWithParsedQuery } from 'url'
 import { getHeaderName } from './helpers/headers';
 import { formDataIterator, isBlob } from './helpers/form-data';
 import { validateHarRequest } from './helpers/har-validator';
+import { Param, PostDataCommon, PostDataParams, PostDataText, Request as HarRequestType } from 'har-format';
 
 const DEBUG_MODE = false;
 
@@ -14,38 +15,25 @@ const debug = {
   info: DEBUG_MODE ? console.info : () => {},
 };
 
-export interface Request {
-  httpVersion: string;
-  queryString: {
-    name: string;
-    value: string;
-  }[];
-  headers: {
-    name: string;
-    value: string;
-  }[];
-  cookies: {
-    name: string;
-    value: string;
-  }[];
-  postData: {
-    size?: number;
-    mimeType?: string;
-    jsonObj: ReducedHelperObject;
+/** is this wrong?  yes.  according to the spec (http://www.softwareishard.com/blog/har-12-spec/#postData) it's technically wrong since `params` and `text` are (by the spec) mutually exclusive.  However, in practice, this is not what is often the case.
+ *
+ * In general, this library takes a _descriptive_ rather than _perscriptive_ approach (see https://amyrey.web.unc.edu/classes/ling-101-online/tutorials/understanding-prescriptive-vs-descriptive-grammar/).
+ *
+ * Then, in addition to that, it really adds to complexity with TypeScript (TypeScript takes this constraint very very seriously) in a way that's not actually super useful.  So, we treat this object as though it could have both or either of `params` and/or `text`.
+ */
+type PostDataBase = PostDataCommon & {
+  text?: string;
+  params?: Param[];
+};
+
+type FixedHarRequestType = Omit<HarRequestType, 'postData'> & { postData: PostDataBase };
+
+export interface RequestExtras {
+  postData: PostDataBase & {
+    jsonObj?: ReducedHelperObject;
     paramsObj?: ReducedHelperObject;
-    text?: string;
-    boundary: string;
-    params: {
-      name: string;
-      contentType?: string;
-      value: string;
-      fileName: string;
-    }[];
+    boundary?: string;
   };
-  bodySize: number;
-  headersSize: number;
-  method: string;
-  url: string;
   fullUrl: string;
   queryObj: ReducedHelperObject;
   headersObj: ReducedHelperObject;
@@ -54,8 +42,10 @@ export interface Request {
   allHeaders: ReducedHelperObject;
 }
 
+export type Request = RequestExtras & FixedHarRequestType;
+
 interface Entry {
-  request: Request;
+  request: Partial<FixedHarRequestType>;
 }
 
 interface HarEntry {
@@ -67,12 +57,10 @@ interface HarEntry {
 const isHarEntry = (value: any): value is HarEntry =>
   typeof value === 'object' && 'log' in value && typeof value.log === 'object' && 'entries' in value.log && Array.isArray(value.log.entries);
 
-type HTTPSnippetConstructor = HarEntry | Request;
-
 export class HTTPSnippet {
   requests: Request[] = [];
 
-  constructor(input: HTTPSnippetConstructor) {
+  constructor(input: HarEntry | Request) {
     let entries: Entry[] = [];
 
     // prep the main container
@@ -89,32 +77,37 @@ export class HTTPSnippet {
       ];
     }
 
-    entries.forEach(entry => {
+    entries.forEach(({ request }) => {
       // add optional properties to make validation successful
-      entry.request.httpVersion = entry.request.httpVersion || 'HTTP/1.1';
-      entry.request.queryString = entry.request.queryString || [];
-      entry.request.headers = entry.request.headers || [];
-      entry.request.cookies = entry.request.cookies || [];
-      entry.request.postData = entry.request.postData || {};
-      entry.request.postData.mimeType = entry.request.postData.mimeType || 'application/octet-stream';
+      const req = {
+        bodySize: 0,
+        headersSize: 0,
+        headers: [],
+        cookies: [],
+        httpVersion: 'HTTP/1.1',
+        queryString: [],
+        postData: {
+          mimeType: request.postData?.mimeType || 'application/octet-stream',
+        },
+        ...request,
+      };
 
-      entry.request.bodySize = 0;
-      entry.request.headersSize = 0;
-      entry.request.postData.size = 0;
-
-      if (validateHarRequest(entry.request)) {
-        const request = this.prepare(entry.request);
-        this.requests.push(request);
+      if (validateHarRequest(req)) {
+        this.requests.push(this.prepare(req));
       }
     });
   }
 
-  prepare = (request: Request) => {
-    // construct utility properties
-    request.queryObj = {};
-    request.headersObj = {};
-    request.cookiesObj = {};
-    request.allHeaders = {};
+  prepare = (harRequest: FixedHarRequestType) => {
+    const request: Request = {
+      ...harRequest,
+      fullUrl: '',
+      uriObj: {} as UrlWithParsedQuery,
+      queryObj: {},
+      headersObj: {},
+      cookiesObj: {},
+      allHeaders: {},
+    };
 
     // construct query objects
     if (request.queryString && request.queryString.length) {
@@ -127,7 +120,7 @@ export class HTTPSnippet {
     if (request.headers && request.headers.length) {
       const http2VersionRegex = /^HTTP\/2/;
       request.headersObj = request.headers.reduce((accumulator, { name, value }) => {
-        const headerName = request.httpVersion.match(http2VersionRegex) ? name.toLocaleLowerCase() : name;
+        const headerName = request.httpVersion?.match(http2VersionRegex) ? name.toLocaleLowerCase() : name;
         return {
           ...accumulator,
           [headerName]: value,
@@ -147,9 +140,9 @@ export class HTTPSnippet {
     }
 
     // construct Cookie header
-    const cookies = request.cookies.map(({ name, value }) => `${encodeURIComponent(name)}=${encodeURIComponent(value)}`);
+    const cookies = request.cookies?.map(({ name, value }) => `${encodeURIComponent(name)}=${encodeURIComponent(value)}`);
 
-    if (cookies.length) {
+    if (cookies?.length) {
       request.allHeaders.cookie = cookies.join('; ');
     }
 
@@ -162,7 +155,7 @@ export class HTTPSnippet {
         request.postData.text = '';
         request.postData.mimeType = 'multipart/form-data';
 
-        if (request.postData.params) {
+        if (request.postData?.params) {
           const form = new FormData();
 
           // The `form-data` module returns one of two things: a native FormData object, or its own polyfill
@@ -187,7 +180,7 @@ export class HTTPSnippet {
             form._boundary = boundary;
           }
 
-          request.postData.params.forEach(param => {
+          request.postData?.params.forEach(param => {
             const name = param.name;
             const value = param.value || '';
             const filename = param.fileName || null;
@@ -227,7 +220,7 @@ export class HTTPSnippet {
           // Since headers are case-sensitive we need to see if there's an existing `Content-Type` header that we can override.
           const contentTypeHeader = getHeaderName(request.headersObj, 'content-type') || 'content-type';
 
-          request.headersObj[contentTypeHeader] = 'multipart/form-data; boundary=' + boundary;
+          request.headersObj[contentTypeHeader] = `multipart/form-data; boundary=${boundary}`;
         }
         break;
 
@@ -235,6 +228,7 @@ export class HTTPSnippet {
         if (!request.postData.params) {
           request.postData.text = '';
         } else {
+          // @ts-expect-error the `har-format` types make this challenging
           request.postData.paramsObj = request.postData.params.reduce(reducer, {});
 
           // always overwrite

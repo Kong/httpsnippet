@@ -1,9 +1,12 @@
-{
+import { Request } from "..";
+
+export const mimetypes: Record<string, Partial<Request>> = {
   "multipart/mixed": {
     "method": "POST",
     "url": "http://mockbin.com/har",
     "postData": {
-      "mimeType": "multipart/mixed"
+      "mimeType": "multipart/mixed",
+      "text": ""
     }
   },
 
@@ -11,7 +14,8 @@
     "method": "POST",
     "url": "http://mockbin.com/har",
     "postData": {
-      "mimeType": "multipart/related"
+      "mimeType": "multipart/related",
+      "text": ""
     }
   },
 
@@ -19,7 +23,8 @@
     "method": "POST",
     "url": "http://mockbin.com/har",
     "postData": {
-      "mimeType": "multipart/form-data"
+      "mimeType": "multipart/form-data",
+      "text": ""
     }
   },
 
@@ -27,7 +32,8 @@
     "method": "POST",
     "url": "http://mockbin.com/har",
     "postData": {
-      "mimeType": "multipart/alternative"
+      "mimeType": "multipart/alternative",
+      "text": ""
     }
   },
 
@@ -35,7 +41,8 @@
     "method": "POST",
     "url": "http://mockbin.com/har",
     "postData": {
-      "mimeType": "application/x-www-form-urlencoded"
+      "mimeType": "application/x-www-form-urlencoded",
+      "text": ""
     }
   },
 
@@ -43,7 +50,8 @@
     "method": "POST",
     "url": "http://mockbin.com/har",
     "postData": {
-      "mimeType": "text/json"
+      "mimeType": "text/json",
+      "text": ""
     }
   },
 
@@ -51,7 +59,8 @@
     "method": "POST",
     "url": "http://mockbin.com/har",
     "postData": {
-      "mimeType": "text/x-json"
+      "mimeType": "text/x-json",
+      "text": ""
     }
   },
 
@@ -59,7 +68,8 @@
     "method": "POST",
     "url": "http://mockbin.com/har",
     "postData": {
-      "mimeType": "application/x-json"
+      "mimeType": "application/x-json",
+      "text": ""
     }
   },
 

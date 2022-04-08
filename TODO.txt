@@ -1,5 +1,6 @@
+TODO:
 - convert to GitHub actions
-- remove chaining like `push(..).blank().push(..)
+- fix Dockerfile and docker-compose
 - look into the prior usage of the 'debug' package
 
 later:

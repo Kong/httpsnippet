@@ -55,6 +55,7 @@
   },
   "devDependencies": {
     "@types/event-stream": "^4.0.0",
+    "@types/har-format": "^1.2.8",
     "@types/jest": "^27.4.1",
     "@types/node": "^16.11.26",
     "@types/stringify-object": "^3.3.0",

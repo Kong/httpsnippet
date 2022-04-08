@@ -142,7 +142,7 @@ export const clj_http: Client = {
         break;
 
       case 'multipart/form-data': {
-        params.multipart = postData.params.map(param => {
+        params.multipart = postData.params?.map(param => {
           if (param.fileName && !param.value) {
             return {
               name: param.name,

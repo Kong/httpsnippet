@@ -19,18 +19,18 @@ const clearInfo = function (key) {
 };
 
 const itShouldHaveTests = function (target, client) {
-  it(target + ' should have tests', function (done) {
+  it(`${target} should have tests`, function (done) {
     fs.readdir(path.join(__dirname, 'targets', target), function (err, files) {
       should.not.exist(err);
       files.length.should.be.above(0);
-      files.should.containEql(client + '.js');
+      files.should.containEql(`${client}.js`);
       done();
     });
   });
 };
 
 const itShouldHaveInfo = function (name, obj) {
-  it(name + ' should have info method', () => {
+  it(`${name} should have info method`, () => {
     obj.should.have.property('info').and.be.an.Object();
     obj.info.key.should.equal(name).and.be.a.String();
     obj.info.title.should.be.a.String();
@@ -48,23 +48,23 @@ const skipMe = {
 };
 
 const itShouldHaveRequestTestOutputFixture = function (request, target, client) {
-  const fixture = target + '/' + client + '/' + request + HTTPSnippet.extname(target);
+  const fixture = `${target}/${client}/${request}${HTTPSnippet.extname(target)}`;
 
-  it('should have output test for ' + request, () => {
+  it(`should have output test for ${request}`, () => {
     if (skipMe[target] && skipMe[target][client] && skipMe[target][client].indexOf(request) > -1) {
       this.skip();
     }
 
     Object.keys(output)
       .indexOf(fixture)
-      .should.be.greaterThan(-1, 'Missing ' + fixture + ' fixture file for target: ' + target + '. Snippet tests will be skipped.');
+      .should.be.greaterThan(-1, `Missing ${fixture} fixture file for target: ${target}. Snippet tests will be skipped.`);
   });
 };
 
 const itShouldGenerateOutput = function (request, path, target, client) {
   const fixture = path + request + HTTPSnippet.extname(target);
 
-  it('should generate ' + request + ' snippet', () => {
+  it(`should generate ${request} snippet`, () => {
     if (
       Object.keys(output).indexOf(fixture) === -1 ||
       (skipMe[target] && skipMe[target][client] && skipMe[target][client].indexOf(request) > -1) ||
@@ -86,7 +86,7 @@ const itShouldGenerateOutput = function (request, path, target, client) {
 
 describe('Available Targets', () => {
   HTTPSnippet.availableTargets().forEach(target => {
-    it('available-targets.json should include ' + target.title, () => {
+    it(`available-targets.json should include ${target.title}`, () => {
       fixtures['available-targets'].should.containEql(target);
     });
   });
@@ -226,7 +226,7 @@ describe('Targets', () => {
                 .forEach(request => {
                   itShouldHaveRequestTestOutputFixture(request, target, client);
 
-                  itShouldGenerateOutput(request, target + '/' + client + '/', target, client);
+                  itShouldGenerateOutput(request, `${target}/${client}/`, target, client);
                 });
             });
           });

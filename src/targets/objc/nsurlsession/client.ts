@@ -53,16 +53,19 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
 
       switch (postData.mimeType) {
         case 'application/x-www-form-urlencoded':
-          // By appending parameters one by one in the resulting snippet,
-          // we make it easier for the user to edit it according to his or her needs after pasting.
-          // The user can just add/remove lines adding/removing body parameters.
-          blank();
-          push(
-            `NSMutableData *postData = [[NSMutableData alloc] initWithData:[@"${postData.params[0].name}=${postData.params[0].value}" dataUsingEncoding:NSUTF8StringEncoding]];`,
-          );
+          if (postData.params) {
+            // By appending parameters one by one in the resulting snippet,
+            // we make it easier for the user to edit it according to his or her needs after pasting.
+            // The user can just add/remove lines adding/removing body parameters.
+            blank();
 
-          for (let i = 1, len = postData.params.length; i < len; i++) {
-            push(`[postData appendData:[@"&${postData.params[i].name}=${postData.params[i].value}" dataUsingEncoding:NSUTF8StringEncoding]];`);
+            push(
+              `NSMutableData *postData = [[NSMutableData alloc] initWithData:[@"${postData.params[0].name}=${postData.params[0].value}" dataUsingEncoding:NSUTF8StringEncoding]];`,
+            );
+
+            for (let i = 1, len = postData.params.length; i < len; i++) {
+              push(`[postData appendData:[@"&${postData.params[i].name}=${postData.params[i].value}" dataUsingEncoding:NSUTF8StringEncoding]];`);
+            }
           }
           break;
 
@@ -78,7 +81,7 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
           // By appending multipart parameters one by one in the resulting snippet,
           // we make it easier for the user to edit it according to his or her needs after pasting.
           // The user can just edit the parameters NSDictionary or put this part of a snippet in a multipart builder method.
-          push(nsDeclaration('NSArray', 'parameters', postData.params, opts.pretty));
+          push(nsDeclaration('NSArray', 'parameters', postData.params || [], opts.pretty));
           push(`NSString *boundary = @"${postData.boundary}";`);
           blank();
           push('NSError *error;');

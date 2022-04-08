@@ -58,10 +58,11 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
           // we make it easier for the user to edit it according to his or her needs after pasting.
           // The user can just add/remove lines adding/removing body parameters.
           blank();
-
-          push(`let postData = NSMutableData(data: "${postData.params[0].name}=${postData.params[0].value}".data(using: String.Encoding.utf8)!)`);
-          for (let i = 1, len = postData.params.length; i < len; i++) {
-            push(`postData.append("&${postData.params[i].name}=${postData.params[i].value}".data(using: String.Encoding.utf8)!)`);
+          if (postData.params) {
+            push(`let postData = NSMutableData(data: "${postData.params[0].name}=${postData.params[0].value}".data(using: String.Encoding.utf8)!)`);
+            for (let i = 1, len = postData.params.length; i < len; i++) {
+              push(`postData.append("&${postData.params[i].name}=${postData.params[i].value}".data(using: String.Encoding.utf8)!)`);
+            }
           }
           break;
 

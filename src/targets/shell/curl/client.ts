@@ -85,7 +85,7 @@ export const curl: Client<CurlOptions> = {
     // construct post params
     switch (postData.mimeType) {
       case 'multipart/form-data':
-        postData.params.forEach(param => {
+        postData.params?.forEach(param => {
           let post = '';
           if (param.fileName) {
             post = `${param.name}=@${param.fileName}`;

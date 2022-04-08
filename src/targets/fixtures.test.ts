@@ -44,7 +44,7 @@ availableTargets()
           const basePath = path.join('src', 'targets', targetId, clientId, 'fixtures', `${fixture}${extname(targetId)}`);
           const expected = readFileSync(basePath).toString();
           if (expected === '<MISSING>') {
-            console.log(`missing test for ${targetId}:${clientId} "${fixture}"`);
+            console.log(`known missing test for ${targetId}:${clientId} "${fixture}"`);
             return;
           }
 

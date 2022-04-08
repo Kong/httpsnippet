@@ -44,7 +44,7 @@ export const fetch: Client = {
         push('const encodedParams = new URLSearchParams();');
         blank();
 
-        postData.params.forEach(param => {
+        postData.params?.forEach(param => {
           push(`encodedParams.set('${param.name}', '${param.value}');`);
         });
 
@@ -62,7 +62,7 @@ export const fetch: Client = {
         push('const formData = new FormData();');
         blank();
 
-        postData.params.forEach(param => {
+        postData.params?.forEach(param => {
           if (!param.fileName && !param.fileName && !param.contentType) {
             push(`formData.append('${param.name}', '${param.value}');`);
             return;
