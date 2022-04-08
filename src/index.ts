@@ -2,23 +2,52 @@ import { map as eventStreamMap } from 'event-stream';
 import * as FormData from 'form-data';
 import { stringify as queryStringify } from 'querystring';
 import { reducer } from './helpers/reducer';
-import targets from './targets';
-import { parse as urlParse, format as urlFormat } from 'url';
-import validate from 'har-validator/lib/async';
-import { getHeaderName, hasHeader } from './helpers/headers';
+import { Client, ClientId, Target, TargetId, targets } from './targets';
+import { parse as urlParse, format as urlFormat, UrlWithParsedQuery } from 'url';
+import { getHeaderName } from './helpers/headers';
 import { formDataIterator, isBlob } from './helpers/form-data.js';
+import { validateHarRequest } from './helpers/har-validator';
 
-interface Request {
+
+type TODO = any;
+
+export interface Request {
   httpVersion: string;
   queryString: string[];
-  headers: string[];
-  cookies: string[];
+  headers: {
+    name: string;
+    value: string;
+  }[];
+  cookies: {
+    name: string;
+    value: string;
+  }[];
   postData: {
     size?: number;
     mimeType?: string;
+    jsonObj: boolean;
+    paramsObj: boolean;
+    text?: string;
+    boundary: string;
+    params: {
+      name: string;
+      value: string;
+      fileName: string;
+    };
   };
   bodySize: number;
   headersSize: number;
+  method: string;
+  url: string;
+  fullUrl: string;
+  queryObj: TODO;
+  headersObj: TODO;
+  uriObj: UrlWithParsedQuery;
+  cookiesObj: TODO;
+  allHeaders: {
+    cookie?: string;
+  };
+
 }
 
 interface Entry {
@@ -37,7 +66,7 @@ const isHarEntry = (value: any): value is HarEntry =>
 type HTTPSnippetConstructor = HarEntry | Request;
 
 export class HTTPSnippet {
-  requests = [];
+  requests: Request[] = [];
 
   constructor(input: HTTPSnippetConstructor) {
     let entries: Entry[] = [];
@@ -69,17 +98,14 @@ export class HTTPSnippet {
       entry.request.headersSize = 0;
       entry.request.postData.size = 0;
 
-      validate.request(entry.request, function (err, valid) {
-        if (!valid) {
-          throw err;
-        }
-
-        this.requests.push(this.prepare(entry.request));
-      });
+      if (validateHarRequest(entry.request)) {
+        const request = this.prepare(entry.request);
+        this.requests.push(request);
+      }
     });
   }
 
-  prepare = request => {
+  prepare = (request: Request) => {
     // construct utility properties
     request.queryObj = {};
     request.headersObj = {};
@@ -98,29 +124,27 @@ export class HTTPSnippet {
     // construct headers objects
     if (request.headers && request.headers.length) {
       const http2VersionRegex = /^HTTP\/2/;
-      request.headersObj = request.headers.reduce(function (headers, header) {
-        let headerName = header.name;
-        if (request.httpVersion.match(http2VersionRegex)) {
-          headerName = headerName.toLowerCase();
-        }
-
-        headers[headerName] = header.value;
-        return headers;
+      request.headersObj = request.headers.reduce((accumulator, { name, value }) => {
+        const headerName = request.httpVersion.match(http2VersionRegex) ? name.toLocaleLowerCase() : name;
+        return {
+          ...accumulator,
+          [headerName]: value,
+        };
       }, {});
     }
 
     // construct headers objects
     if (request.cookies && request.cookies.length) {
-      request.cookiesObj = request.cookies.reduceRight(function (cookies, cookie) {
-        cookies[cookie.name] = cookie.value;
-        return cookies;
-      }, {});
+      request.cookiesObj = request.cookies.reduceRight((accumulator, { name, value }) => ({
+        ...accumulator,
+        [name]: value,
+      }), {});
     }
 
     // construct Cookie header
-    const cookies = request.cookies.map(function (cookie) {
-      return encodeURIComponent(cookie.name) + '=' + encodeURIComponent(cookie.value);
-    });
+    const cookies = request.cookies.map(({ name, value }) => (
+      `${encodeURIComponent(name)}=${encodeURIComponent(value)}`
+    ));
 
     if (cookies.length) {
       request.allHeaders.cookie = cookies.join('; ');
@@ -172,7 +196,7 @@ export class HTTPSnippet {
               }
             } else {
               form.append(name, value, {
-                filename: filename,
+                filename,
                 contentType: param.contentType || null,
               });
             }
@@ -193,9 +217,7 @@ export class HTTPSnippet {
           request.postData.boundary = boundary;
 
           // Since headers are case-sensitive we need to see if there's an existing `Content-Type` header that we can override.
-          const contentTypeHeader = hasHeader(request.headersObj, 'content-type')
-            ? getHeaderName(request.headersObj, 'content-type')
-            : 'content-type';
+          const contentTypeHeader =  getHeaderName(request.headersObj, 'content-type') || 'content-type';
 
           request.headersObj[contentTypeHeader] = 'multipart/form-data; boundary=' + boundary;
         }
@@ -247,7 +269,7 @@ export class HTTPSnippet {
     };
 
     // reset uriObj values for a clean url
-    request.uriObj.query = null;
+    request.uriObj.query = {};
     request.uriObj.search = null;
     request.uriObj.path = request.uriObj.pathname;
 
@@ -259,7 +281,7 @@ export class HTTPSnippet {
     request.uriObj.search = queryStringify(request.queryObj);
 
     if (request.uriObj.search) {
-      request.uriObj.path = request.uriObj.pathname + '?' + request.uriObj.search;
+      request.uriObj.path = `${request.uriObj.pathname}?${request.uriObj.search}`;
     }
 
     // construct a full url
@@ -268,15 +290,15 @@ export class HTTPSnippet {
     return request;
   };
 
-  convert = (target, client, opts) => {
-    if (!opts && client) {
-      opts = client;
+  convert = (targetId: TargetId, client: ClientId, options: any) => {
+    if (!options && client) {
+      options = client;
     }
 
-    const func = this._matchTarget(target, client);
+    const func = this._matchTarget(targetId, client);
     if (func) {
       const results = this.requests.map(function (request) {
-        return func(request, opts);
+        return func(request, options);
       });
 
       return results.length === 1 ? results[0] : results;
@@ -285,23 +307,26 @@ export class HTTPSnippet {
     return false;
   };
 
-  _matchTarget = (target, client) => {
+  _matchTarget = (targetId: TargetId, clientId: ClientId) => {
     // does it exist?
-    if (!targets.hasOwnProperty(target)) {
+    const target = targets[targetId];
+    if (!target) {
       return false;
     }
 
+    const { clientsById, info } = target;
+
     // shorthand
-    if (typeof client === 'string' && typeof targets[target][client] === 'function') {
-      return targets[target][client];
+    if (typeof clientId === 'string' && typeof clientsById[clientId] === 'function') {
+      return clientsById[clientId];
     }
 
     // default target
-    return targets[target][targets[target].info.default];
+    return clientsById[info.default];
   };
 }
 
-export const addTarget = target => {
+export const addTarget = (target: Target) => {
   if (!('info' in target)) {
     throw new Error('The supplied custom target must contain an `info` object.');
   } else if (!('key' in target.info) || !('title' in target.info) || !('extname' in target.info) || !('default' in target.info)) {
@@ -315,26 +340,26 @@ export const addTarget = target => {
   targets[target.info.key] = target;
 };
 
-export const addTargetClient = (target, client) => {
-  if (!targets.hasOwnProperty(target)) {
-    throw new Error(`Sorry, but no ${target} target exists to add clients to.`);
+export const addTargetClient = (targetId: TargetId, client: Client) => {
+  if (!targets.hasOwnProperty(targetId)) {
+    throw new Error(`Sorry, but no ${targetId} target exists to add clients to.`);
   } else if (!('info' in client)) {
     throw new Error('The supplied custom target client must contain an `info` object.');
   } else if (!('key' in client.info) || !('title' in client.info)) {
     throw new Error('The supplied custom target client must have an `info` object with a `key` and `title` property.');
-  } else if (targets[target].hasOwnProperty(client.info.key)) {
+  } else if (targets[targetId].hasOwnProperty(client.info.key)) {
     throw new Error('The supplied custom target client already exists, please use a different key');
   }
 
-  targets[target][client.info.key] = client;
+  targets[targetId][client.info.key] = client;
 };
 
 export const availableTargets = () =>
-  Object.keys(targets).map(key => {
-    const target = { ...targets[key].info };
-    const clients = Object.keys(targets[key])
+  Object.keys(targets).map(targetId => {
+    const target = { ...targets[targetId as TargetId].info };
+    const clients = Object.keys(targets[targetId as TargetId])
       .filter(key => !~['info', 'index'].indexOf(key))
-      .map(client => targets[key][client].info);
+      .map(client => targets[targetId as TargetId][client].info);
 
     if (clients.length) {
       target.clients = clients;
@@ -343,4 +368,4 @@ export const availableTargets = () =>
     return target;
   });
 
-export const extname = target => (targets[target] ? targets[target].info.extname : '');
+export const extname = (targetId: TargetId) => (targets[targetId] ? targets[targetId].info.extname : '');

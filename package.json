@@ -57,8 +57,8 @@
     "@types/event-stream": "^4.0.0",
     "@types/jest": "^27.4.1",
     "@types/node": "^16.11.26",
-    "@typescript-eslint/parser": "5.17.0",
     "@typescript-eslint/eslint-plugin": "5.17.0",
+    "@typescript-eslint/parser": "5.17.0",
     "eslint": "^8.12.0",
     "eslint-config-helpers": "^1.1.0",
     "glob": "^6.0.1",
@@ -69,13 +69,13 @@
     "typescript": "^4.6.3"
   },
   "dependencies": {
-    "chalk": "^1.1.1",
+    "chalk": "^5.0.1",
     "commander": "^2.9.0",
     "event-stream": "4.0.1",
     "form-data": "4.0.0",
     "fs-readfile-promise": "^2.0.1",
     "fs-writefile-promise": "^1.0.3",
-    "har-validator": "^5.1.5",
+    "har-schema": "^2.0.0",
     "stringify-object": "^3.3.0"
   }
 }

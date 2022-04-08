@@ -1,13 +1,16 @@
 #!/usr/bin/env node
 
-const chalk = require('chalk')
-const cmd = require('commander')
-const fs = require('fs')
-const readFile = require('fs-readfile-promise')
-const writeFile = require('fs-writefile-promise')
-const HTTPSnippet = require('..')
-const path = require('path')
-const pkg = require('../package.json')
+const { red, cyan, magenta, green, yellow } = require('chalk');
+const cmd = require('commander');
+const fs = require('fs');
+const readFile = require('fs-readfile-promise');
+const writeFile = require('fs-writefile-promise');
+const HTTPSnippet = require('..');
+const path = require('path');
+const pkg = require('../package.json');
+
+const bad = message => console.error(`${red('✖')} ${message}`);
+const good = message => console.log(`${green('✓')} ${message}`);
 
 cmd
   .version(pkg.version)
@@ -16,80 +19,77 @@ cmd
   .option('-c, --client [client]', 'target client library')
   .option('-o, --output <directory>', 'write output to directory')
   .option('-x, --extra [{"optionKey": "optionValue"}]', 'provide extra options for the target/client')
-  .parse(process.argv)
+  .parse(process.argv);
 
 if (!cmd.args.length || !cmd.target) {
-  cmd.help()
+  cmd.help();
 }
 
-let extraOptions
+let extraOptions;
 if (cmd.extra) {
   try {
-    extraOptions = JSON.parse(cmd.extra)
+    extraOptions = JSON.parse(cmd.extra);
   } catch (e) {
-    console.error('%s failed to parse options %s (should be JSON)', chalk.red('✖'), chalk.cyan.bold(cmd.extra))
-    process.exit()
+    bad(`failed to parse options ${cyan.bold(cmd.extra)} (should be JSON)`);
+    process.exit();
   }
 }
 
-let dir
+let dir;
 if (cmd.output) {
-  dir = path.resolve(cmd.output)
+  dir = path.resolve(cmd.output);
 
   if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir)
+    fs.mkdirSync(dir);
   }
 }
 
-cmd.args.forEach(function (fileName) {
-  const file = path.basename(fileName)
+cmd.args.forEach(fileName => {
+  const file = path.basename(fileName);
 
   readFile(fileName)
     .then(JSON.parse)
 
-    .catch(function (e) {
-      console.error('%s %s failed to read JSON: %s', chalk.red('✖'), chalk.cyan.bold(file), chalk.red(e.message))
+    .catch(e => {
+      bad(`${cyan.bold(file)} failed to read JSON: ${red(e.message)}`);
     })
 
-    .then(function (data) {
-      return new HTTPSnippet(data)
+    .then(data => new HTTPSnippet(data))
+
+    .catch(e => {
+      e.errors.forEach(({ field, value, message }) => {
+        bad(`${cyan.bold(file)} failed validation: (${cyan.italic(field)}: ${magenta.italic(value)}) ${red(message)}`);
+      });
     })
 
-    .catch(function (e) {
-      e.errors.forEach(function (err) {
-        console.error('%s %s failed validation: (%s: %s) %s', chalk.red('✖'), chalk.cyan.bold(file), chalk.cyan.italic(err.field), chalk.magenta.italic(err.value), chalk.red(err.message))
-      })
-    })
-
-    .then(function (snippet) {
-      return snippet.convert(cmd.target, cmd.client, extraOptions)
-    })
-
-    .then(function (output) {
+    .then(snippet => snippet.convert(cmd.target, cmd.client, extraOptions))
+    .then(output => {
       if (!output) {
-        const targetNames = HTTPSnippet.availableTargets().map(function (t) { return t.key }).join(', ')
-        return console.error('%s %s is not a valid target. Valid targets: %s', chalk.red('✖'), chalk.red(cmd.target), chalk.cyan(targetNames))
+        const targetNames = HTTPSnippet.availableTargets()
+          .map(target => target.key)
+          .join(', ');
+        return bad(`${red(cmd.target)} is not a valid target. Valid targets: ${cyan(targetNames)}`);
       }
 
       // print
       if (!cmd.output) {
-        return console.log('%s %s > %s [%s] :\n%s', chalk.green('✓'), chalk.cyan.bold(file), chalk.yellow(cmd.target), chalk.yellow(cmd.client ? cmd.client : 'default'), output)
+        return good(`${cyan.bold(file)} > ${yellow(cmd.target)} [${yellow(cmd.client ? cmd.client : 'default')}] :\n${output}`);
       }
 
       // write to file
-      const name = path.basename(file, path.extname(file))
+      const name = path.basename(file, path.extname(file));
 
       const filename = path.format({
-        dir: dir,
-        base: name + HTTPSnippet.extname(cmd.target)
-      })
+        dir,
+        base: `${name}${HTTPSnippet.extname(cmd.target)}`,
+      });
 
-      return writeFile(filename, output + '\n', function () {
-        console.log('%s %s > %s', chalk.green('✓'), chalk.cyan.bold(file), filename)
-      })
+      return writeFile(filename, `${output}\n`, () => {
+        good(`${cyan.bold(file)} > ${filename}`);
+      });
     })
 
-    .catch(function (e) {
-      console.error('%s %s fail: %s', chalk.red('✖'), chalk.cyan.bold(file), chalk.red(e.message))
-    })
-})
+    .catch(e => {
+      bad(`${cyan.bold(file)} fail: ${red(e.message)}`);
+    });
+});

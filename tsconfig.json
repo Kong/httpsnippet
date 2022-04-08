@@ -4,5 +4,5 @@
     "rootDir": ".",
     "types": ["node", "jest"]
   },
-  "include": ["jest.config.js", ".prettierrc.js", ".eslintrc.js", "src"]
+  "include": ["bin", "jest.config.js", ".prettierrc.js", ".eslintrc.js", "src"]
 }

@@ -5,7 +5,9 @@
     "allowJs": true,
     "resolveJsonModule": true,
     "strict": true,
+    "esModuleInterop": true,
     "downlevelIteration": true,
   },
+  "include": ["src"],
   "exclude": ["dist", "test", "**/*.test.ts"]
 }
