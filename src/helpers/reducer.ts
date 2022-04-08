@@ -1,4 +1,4 @@
-module.exports = function (obj, pair) {
+export const reducer = (obj, pair) => {
   if (obj[pair.name] === undefined) {
     obj[pair.name] = pair.value;
     return obj;

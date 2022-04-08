@@ -65,14 +65,14 @@ module.exports = function (source, options) {
     client = 'client';
     code
       .push(indent, 'client := http.Client{')
-      .push(indent + 1, 'Timeout: time.Duration(%s * time.Second),', opts.timeout)
+      .push(indent + 1, `Timeout: time.Duration(${opts.timeout} * time.Second),`)
       .push(indent, '}')
       .blank();
   } else {
     client = 'http.DefaultClient';
   }
 
-  code.push(indent, 'url := "%s"', source.fullUrl).blank();
+  code.push(indent, `url := "${source.fullUrl}"`).blank();
 
   // If we have body content or not create the var and reader or nil
   if (source.postData.text) {

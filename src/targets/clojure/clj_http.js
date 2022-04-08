@@ -146,13 +146,13 @@ module.exports = function (source, options) {
   code.push("(require '[clj-http.client :as client])\n");
 
   if (objEmpty(filterEmpty(params))) {
-    code.push('(client/%s "%s")', source.method.toLowerCase(), source.url);
+    code.push(`(client/${source.method.toLowerCase()} "${source.url}")`);
   } else {
     code.push(
-      '(client/%s "%s" %s)',
-      source.method.toLowerCase(),
-      source.url,
-      padBlock(11 + source.method.length + source.url.length, jsToEdn(filterEmpty(params))),
+      `(client/${source.method.toLowerCase()} "${source.url}" ${padBlock(
+        11 + source.method.length + source.url.length,
+        jsToEdn(filterEmpty(params)),
+      )})`,
     );
   }
 

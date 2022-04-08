@@ -35,7 +35,6 @@ const convert = function (obj, indent, lastIndent) {
     case '[object Object]':
       result = [];
       for (i in obj) {
-        // eslint-disable-next-line no-prototype-builtins
         if (obj.hasOwnProperty(i)) {
           result.push(convert(i, indent) + ' => ' + convert(obj[i], indent + indent, indent));
         }

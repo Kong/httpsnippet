@@ -51,48 +51,27 @@
     "prebuild": "yarn clean",
     "lint": "yarn prettier --write .",
     "build": "tsc --build tsconfig.build.json",
-    "quick": "mocha --no-timeouts --fgrep 'Request Validation' --invert",
-    "pretest": "standard && echint",
-    "test": "mocha --no-timeouts",
-    "posttest": "exit 0 && npm run coverage",
-    "coverage": "istanbul cover --dir coverage _mocha -- --fgrep 'Request Validation' --invert -R dot",
-    "codeclimate": "codeclimate < coverage/lcov.info"
-  },
-  "standard": {
-    "env": "mocha",
-    "ignore": [
-      "**/test/fixtures/**"
-    ]
-  },
-  "echint": {
-    "ignore": [
-      "coverage/**",
-      "**/node_modules/**",
-      "**/fixtures/**"
-    ]
+    "test": "jest"
   },
   "devDependencies": {
+    "@types/event-stream": "^4.0.0",
+    "@types/jest": "^27.4.1",
     "@types/node": "^16.11.26",
-    "codeclimate-test-reporter": "^0.5.1",
-    "echint": "^4.0.2",
     "glob": "^6.0.1",
-    "istanbul": "^0.4.0",
-    "mocha": "^8.2.1",
+    "jest": "^27.5.1",
     "prettier": "^2.6.1",
     "require-directory": "^2.1.1",
-    "should": "^13.2.3",
-    "standard": "^16.0.3",
+    "ts-jest": "^27.1.4",
     "typescript": "^4.6.3"
   },
   "dependencies": {
     "chalk": "^1.1.1",
     "commander": "^2.9.0",
-    "debug": "^2.2.0",
-    "event-stream": "3.3.4",
+    "event-stream": "4.0.1",
     "form-data": "4.0.0",
     "fs-readfile-promise": "^2.0.1",
     "fs-writefile-promise": "^1.0.3",
-    "har-validator": "^5.0.0",
+    "har-validator": "^5.1.5",
     "stringify-object": "^3.3.0"
   }
 }

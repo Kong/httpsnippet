@@ -1,7 +1,8 @@
 {
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
-    "rootDir": "."
+    "rootDir": ".",
+    "types": ["node", "jest"]
   },
-  "include": ["**/*.test.ts", ".prettierrc.js", "src"]
+  "include": ["jest.config.js", ".prettierrc.js", "src"]
 }

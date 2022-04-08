@@ -109,10 +109,14 @@ module.exports = function (source, options) {
     raw = true;
   }
 
-  code.unshift('http %s%s %s', flags.length ? flags.join(' ') + ' ' : '', source.method, shell.quote(opts.queryParams ? source.url : source.fullUrl));
+  const cliFlags = flags.length ? flags.join(' ') + ' ' : '';
+  const method = source.method;
+  const url = shell.quote(opts.queryParams ? source.url : source.fullUrl);
+  code.unshift(`http ${flags}${method} ${url}`);
 
   if (raw && source.postData.text) {
-    code.unshift('echo %s | ', shell.quote(source.postData.text));
+    const postDataText = shell.quote(source.postData.text);
+    code.unshift(`echo ${postDataText} | `);
   }
 
   return code.join();

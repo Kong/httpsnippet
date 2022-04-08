@@ -15,7 +15,6 @@ describe('HTTPSnippet', function () {
   it('should fail validation', function (done) {
     let snippet;
 
-      /* eslint-disable no-extra-parens */
     (function () {
       snippet = new HTTPSnippet({ yolo: 'foo' });
     }.should.throw(Error));

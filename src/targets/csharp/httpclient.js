@@ -48,12 +48,12 @@ module.exports = function (source, options) {
     }
     if (decompressionMethods.length) {
       // enable decompression for supported methods
-      code.push(1, 'AutomaticDecompression = %s,', decompressionMethods.join(' | '));
+      code.push(1, `AutomaticDecompression = ${decompressionMethods.join(' | ')},`);
     }
     code.push('};');
   }
 
-  code.push('var client = new HttpClient(%s);', clienthandler);
+  code.push(`var client = new HttpClient(${clienthandler});`);
 
   code.push('var request = new HttpRequestMessage');
   code.push('{');
@@ -67,9 +67,9 @@ module.exports = function (source, options) {
     // custom method
     method = `new HttpMethod("${method}")`;
   }
-  code.push(1, 'Method = %s,', method);
+  code.push(1, `Method = ${method},`);
 
-  code.push(1, 'RequestUri = new Uri("%s"),', source.fullUrl);
+  code.push(1, `RequestUri = new Uri("${source.fullUrl}"),`);
 
   const headers = Object.keys(source.allHeaders).filter(function (header) {
     switch (header.toLowerCase()) {
@@ -86,7 +86,7 @@ module.exports = function (source, options) {
     code.push(1, 'Headers =');
     code.push(1, '{');
     headers.forEach(function (key) {
-      code.push(2, '{ "%s", "%s" },', key, source.allHeaders[key]);
+      code.push(2, `{ "${key}", "${source.allHeaders[key]}" },`);
     });
     code.push(1, '},');
   }
@@ -98,7 +98,7 @@ module.exports = function (source, options) {
         code.push(1, 'Content = new FormUrlEncodedContent(new Dictionary<string, string>');
         code.push(1, '{');
         source.postData.params.forEach(function (param) {
-          code.push(2, '{ "%s", "%s" },', param.name, param.value);
+          code.push(2, `{ "${param.name}", "${param.value}" },`);
         });
         code.push(1, '}),');
         break;
@@ -106,18 +106,18 @@ module.exports = function (source, options) {
         code.push(1, 'Content = new MultipartFormDataContent');
         code.push(1, '{');
         source.postData.params.forEach(function (param) {
-          code.push(2, 'new StringContent(%s)', JSON.stringify(param.value || ''));
+          code.push(2, `new StringContent(${JSON.stringify(param.value || '')})`);
           code.push(2, '{');
           code.push(3, 'Headers =');
           code.push(3, '{');
           if (param.contentType) {
-            code.push(4, 'ContentType = new MediaTypeHeaderValue("%s"),', param.contentType);
+            code.push(4, `ContentType = new MediaTypeHeaderValue("${param.contentType}"),`);
           }
           code.push(4, 'ContentDisposition = new ContentDispositionHeaderValue("form-data")');
           code.push(4, '{');
-          code.push(5, 'Name = "%s",', param.name);
+          code.push(5, `Name = "${param.name}",`);
           if (param.fileName) {
-            code.push(5, 'FileName = "%s",', param.fileName);
+            code.push(5, `FileName = "${param.fileName}",`);
           }
           code.push(4, '}');
           code.push(3, '}');
@@ -127,11 +127,11 @@ module.exports = function (source, options) {
         code.push(1, '},');
         break;
       default:
-        code.push(1, 'Content = new StringContent(%s)', JSON.stringify(source.postData.text || ''));
+        code.push(1, `Content = new StringContent(${JSON.stringify(source.postData.text || '')})`);
         code.push(1, '{');
         code.push(2, 'Headers =');
         code.push(2, '{');
-        code.push(3, 'ContentType = new MediaTypeHeaderValue("%s")', contentType);
+        code.push(3, `ContentType = new MediaTypeHeaderValue("${contentType}")`);
         code.push(2, '}');
         code.push(1, '}');
         break;
