@@ -19,12 +19,12 @@ const targetFilter = [
 
 /** useful for debuggin, only run a particular set of targets */
 const clientFilter = [
-  // 'restsharp',
+  // 'http1.1',
 ];
 
 /** useful for debuggin, only run a particular set of fixtures */
 const fixtureFilter = [
-  // 'full',
+  // 'multipart-file',
 ];
 
 const testFilter =
@@ -40,7 +40,7 @@ availableTargets()
         fixtures.filter(testFilter(0, fixtureFilter)).forEach(([fixture, request]) => {
           const basePath = path.join('src', 'targets', targetId, clientId, 'fixtures', `${fixture}${extname(targetId)}`);
           const expected = readFileSync(basePath).toString();
-          if (expected === '<MISSING>\n') {
+          if (expected === '<MISSING>') {
             console.log(`missing test for ${targetId}:${clientId} "${fixture}"`)
             return;
           }
@@ -48,8 +48,7 @@ availableTargets()
           it(`${clientId} request should match fixture for "${fixture}.json"`, () => {
             const { convert } = new HTTPSnippet(request);
             const result = convert(targetId, clientId); //?
-            const plusNewline = `${result}\n`; //?
-            expect(plusNewline).toEqual(expected);
+            expect(result).toEqual(expected);
           });
         });
       });

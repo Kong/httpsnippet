@@ -87,7 +87,9 @@ const jsToEdn = (js: any) => {
   }
 };
 
-export const clj_http: Client = {
+export type ClojureCljhttpOptions = ConstructorParameters<typeof CodeBuilder>[0];
+
+export const clj_http: Client<ClojureCljhttpOptions> = {
   info: {
     key: 'clj_http',
     title: 'clj-http',

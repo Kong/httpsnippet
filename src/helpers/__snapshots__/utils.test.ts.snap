@@ -64,5 +64,19 @@ Array [
     "key": "go",
     "title": "Go",
   },
+  Object {
+    "clients": Array [
+      Object {
+        "description": "HTTP/1.1 request string in accordance with RFC 7230",
+        "key": "http1.1",
+        "link": "https://tools.ietf.org/html/rfc7230",
+        "title": "HTTP/1.1",
+      },
+    ],
+    "default": "1.1",
+    "extname": null,
+    "key": "http",
+    "title": "HTTP",
+  },
 ]
 `;

@@ -41,7 +41,7 @@ describe('go', () => {
       const filePath = path.join(__dirname, 'fixtures', fixtureFile);
       const buffer = await readFile(filePath);
       const fixture = String(buffer);
-      expect(`${result}\n`).toEqual(fixture);
+      expect(result).toEqual(fixture);
     });
   });
 });

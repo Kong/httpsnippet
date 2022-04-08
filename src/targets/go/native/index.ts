@@ -11,7 +11,14 @@
 import { Client } from '../..';
 import { CodeBuilder } from '../../../helpers/code-builder';
 
-export const native: Client = {
+export interface GoNativeOptions {
+  showBoilerplate?: boolean,
+  checkErrors?: boolean,
+  printBody?: boolean,
+  timeout?: number,
+}
+
+export const native: Client<GoNativeOptions> = {
   info: {
     key: 'native',
     title: 'NewRequest',

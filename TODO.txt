@@ -1,3 +1,9 @@
 - convert to GitHub actions
 - remove chaining like `push(..).blank().push(..)
 - look into the prior usage of the 'debug' package
+
+changelog:
+
+Breaking:
+- dropps support for node versions less than 16.13
+- the `http` target changed its client ID to `http1.1` from `1.1`

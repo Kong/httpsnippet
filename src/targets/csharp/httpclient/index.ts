@@ -33,7 +33,11 @@ const getDecompressionMethods = (allHeaders: Request['allHeaders']) => {
   return methods;
 };
 
-export const httpclient: Client = {
+export interface CSharpHttpclientOptions {
+  indent: string;
+}
+
+export const httpclient: Client<CSharpHttpclientOptions> = {
   info: {
     key: 'httpclient',
     title: 'HttpClient',

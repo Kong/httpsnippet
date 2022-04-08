@@ -1,0 +1,3 @@
+{
+  "files.insertFinalNewline": false, // controlled by the .editorconfig at root since we can't map vscode settings directly to files (see: https://github.com/microsoft/vscode/issues/35350)
+}

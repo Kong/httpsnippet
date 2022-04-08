@@ -3,7 +3,7 @@ import { c } from './c';
 import { clojure } from './clojure';
 import { csharp } from './csharp';
 import { go } from './go';
-// import { http } from './http';
+import { http } from './http';
 // import { java } from './java';
 // import { javascript } from './javascript';
 // import { kotlin } from './kotlin';
@@ -29,14 +29,14 @@ export interface ClientInfo {
   description: string;
 }
 
-export type Converter = (request: Request, options?: any) => string;
+export type Converter<T extends unknown> = (request: Request, options?: T) => string;
 
-export interface Client {
+export interface Client<T extends unknown = {}> {
   info: ClientInfo;
-  convert: Converter;
+  convert: Converter<T>;
 }
 
-export type Extension = `.${string}`;
+export type Extension = `.${string}` | null;
 
 export interface TargetInfo {
   key: TargetId;
@@ -55,7 +55,7 @@ export const targets = {
   clojure,
   csharp,
   go,
-  // http,
+  http,
   // java,
   // javascript,
   // kotlin,

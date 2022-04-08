@@ -216,7 +216,6 @@ export class HTTPSnippet {
           } else {
             form.pipe(
               // @ts-expect-error TODO
-
               eventStreamMap(data => {
                 request.postData.text += data;
               }),
@@ -268,34 +267,33 @@ export class HTTPSnippet {
       ...request.headersObj,
     };
 
-    const parsedUrl = urlParse(request.url, true, true); //?
+    const urlWithParsedQuery = urlParse(request.url, true, true); //?
 
     // query string key/value pairs in with literal querystrings containd within the url
     request.queryObj = {
       ...request.queryObj,
-      ...(parsedUrl.query as ReducedHelperObject),
+      ...(urlWithParsedQuery.query as ReducedHelperObject),
     }; //?
 
     // reset uriObj values for a clean url
-    const uriObj = {
-      query: request.queryObj,
-      search: queryStringify(request.queryObj),
-      path: parsedUrl.pathname,
-    };
+    const search = queryStringify(request.queryObj);
 
-    if (uriObj.search) {
-      uriObj.path = `${uriObj.path}?${uriObj.search}`;
-    }
+    const uriObj = {
+      ...urlWithParsedQuery,
+      query: request.queryObj,
+      search,
+      path: search ? `${urlWithParsedQuery.pathname}?${search}` : urlWithParsedQuery.pathname,
+    };
 
     // keep the base url clean of queryString
     const url = urlFormat({
-      ...parsedUrl,
+      ...urlWithParsedQuery,
       query: null,
       search: null,
     }); //?
 
     const fullUrl = urlFormat({
-      ...parsedUrl,
+      ...urlWithParsedQuery,
       ...uriObj,
     }); //?
 
@@ -304,6 +302,7 @@ export class HTTPSnippet {
       allHeaders,
       fullUrl,
       url,
+      uriObj,
     };
   };
 
