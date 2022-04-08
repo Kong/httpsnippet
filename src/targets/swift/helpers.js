@@ -8,7 +8,7 @@ const util = require('util');
  * @return {string}
  */
 function buildString(length, str) {
-  return Array.apply(null, new Array(length)).map(String.prototype.valueOf, str).join('');
+  return str.repeat(length);
 }
 
 /**

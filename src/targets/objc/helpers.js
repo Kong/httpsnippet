@@ -7,9 +7,7 @@ module.exports = {
    * @param {number} length Length of the array to return
    * @return {string}
    */
-  blankString: function (length) {
-    return Array.apply(null, new Array(length)).map(String.prototype.valueOf, ' ').join('');
-  },
+  blankString: length => ' '.repeat(length),
 
   /**
    * Create a string corresponding to a valid declaration and initialization of an Objective-C object literal.

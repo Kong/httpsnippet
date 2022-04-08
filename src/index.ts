@@ -122,8 +122,7 @@ export class HTTPSnippet {
     if (request.queryString && request.queryString.length) {
       debug.info('queryString found, constructing queryString pair map');
 
-      const thing = request.queryString.reduce(reducer, {});
-      request.queryObj = thing;
+      request.queryObj = request.queryString.reduce(reducer, {});
     }
 
     // construct headers objects
@@ -272,13 +271,13 @@ export class HTTPSnippet {
     };
 
     // deconstruct the uri
-    request.uriObj = urlParse(request.url, true, true);
+    request.uriObj = urlParse(request.url, true, true); //? $.query
 
-    // merge all possible queryString values
+    // query string key/value pairs in with literal querystrings containd within the url
     request.queryObj = {
       ...request.queryObj,
       ...(request.uriObj.query as ReducedHelperObject),
-    };
+    }; //?
 
     // reset uriObj values for a clean url
     request.uriObj.query = {};
@@ -298,7 +297,6 @@ export class HTTPSnippet {
 
     // construct a full url
     request.fullUrl = urlFormat(request.uriObj);
-
     return request;
   };
 

@@ -1,22 +1,22 @@
 import { Request } from '..';
 import { c } from './c';
-// import * as clojure from './clojure';
-// import * as csharp from './csharp';
-// import * as go from './go';
-// import * as http from './http';
-// import * as java from './java';
-// import * as javascript from './javascript';
-// import * as kotlin from './kotlin';
-// import * as node from './node';
-// import * as objc from './objc';
-// import * as ocaml from './ocaml';
-// import * as php from './php';
-// import * as powershell from './powershell';
-// import * as python from './python';
-// import * as r from './r';
-// import * as ruby from './ruby';
-// import * as shell from './shell';
-// import * as swift from './swift';
+import { clojure } from './clojure';
+// import { csharp } from './csharp';
+// import { go } from './go';
+// import { http } from './http';
+// import { java } from './java';
+// import { javascript } from './javascript';
+// import { kotlin } from './kotlin';
+// import { node } from './node';
+// import { objc } from './objc';
+// import { ocaml } from './ocaml';
+// import { php } from './php';
+// import { powershell } from './powershell';
+// import { python } from './python';
+// import { r } from './r';
+// import { ruby } from './ruby';
+// import { shell } from './shell';
+// import { swift } from './swift';
 
 export type TargetId = keyof typeof targets;
 
@@ -52,7 +52,7 @@ export type Target = {
 
 export const targets = {
   c,
-  // clojure,
+  clojure,
   // csharp,
   // go,
   // http,

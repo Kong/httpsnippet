@@ -8,19 +8,19 @@
       {
         "key": "curl",
         "title": "cURL",
-        "link": "http: //curl.haxx.se/",
+        "link": "http://curl.haxx.se/",
         "description": "cURL is a command line tool and library for transferring data with URL syntax"
       },
       {
         "key": "httpie",
         "title": "HTTPie",
-        "link": "http: //httpie.org/",
+        "link": "http://httpie.org/",
         "description": "a CLI, cURL-like tool for humans"
       },
       {
         "key": "wget",
         "title": "Wget",
-        "link": "https: //www.gnu.org/software/wget/",
+        "link": "https://www.gnu.org/software/wget/",
         "description": "a free software package for retrieving files using HTTP, HTTPS"
       }
     ]
@@ -34,31 +34,31 @@
       {
         "key": "native",
         "title": "HTTP",
-        "link": "http: //nodejs.org/api/http.html#http_http_request_options_callback",
+        "link": "http://nodejs.org/api/http.html#http_http_request_options_callback",
         "description": "Node.js native HTTP interface"
       },
       {
         "key": "request",
         "title": "Request",
-        "link": "https: //github.com/request/request",
+        "link": "https://github.com/request/request",
         "description": "Simplified HTTP request client"
       },
       {
         "key": "unirest",
         "title": "Unirest",
-        "link": "http: //unirest.io/nodejs.html",
+        "link": "http://unirest.io/nodejs.html",
         "description": "Lightweight HTTP Request Client Library"
       },
       {
         "key": "axios",
         "title": "Axios",
-        "link": "https: //github.com/axios/axios",
+        "link": "https://github.com/axios/axios",
         "description": "Promise based HTTP client for the browser and node.js"
       },
       {
         "key": "fetch",
         "title": "Fetch",
-        "link": "https: //github.com/bitinn/node-fetch",
+        "link": "https://github.com/bitinn/node-fetch",
         "description": "Simplified HTTP node-fetch client"
       }
     ]
@@ -72,25 +72,25 @@
       {
         "key": "jquery",
         "title": "jQuery",
-        "link": "http: //api.jquery.com/jquery.ajax/",
+        "link": "http://api.jquery.com/jquery.ajax/",
         "description": "Perform an asynchronous HTTP (Ajax) requests with jQuery"
       },
       {
         "key": "fetch",
         "title": "fetch",
-        "link": "https: //developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch",
+        "link": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch",
         "description": "Perform asynchronous HTTP requests with the Fetch API"
       },
       {
         "key": "xhr",
         "title": "XMLHttpRequest",
-        "link": "https: //developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest",
+        "link": "https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest",
         "description": "W3C Standard API that provides scripted client functionality"
       },
       {
         "key": "axios",
         "title": "Axios",
-        "link": "https: //github.com/axios/axios",
+        "link": "https://github.com/axios/axios",
         "description": "Promise based HTTP client for the browser and node.js"
       }
     ]
@@ -104,7 +104,7 @@
       {
         "key": "cohttp",
         "title": "CoHTTP",
-        "link": "https: //github.com/mirage/ocaml-cohttp",
+        "link": "https://github.com/mirage/ocaml-cohttp",
         "description": "Cohttp is a very lightweight HTTP server using Lwt or Async for OCaml"
       }
     ]
@@ -118,19 +118,19 @@
       {
         "key": "curl",
         "title": "cURL",
-        "link": "http: //php.net/manual/en/book.curl.php",
+        "link": "http://php.net/manual/en/book.curl.php",
         "description": "PHP with ext-curl"
       },
       {
         "key": "http1",
         "title": "HTTP v1",
-        "link": "http: //php.net/manual/en/book.http.php",
+        "link": "http://php.net/manual/en/book.http.php",
         "description": "PHP with pecl/http v1"
       },
       {
         "key": "http2",
         "title": "HTTP v2",
-        "link": "http: //devel-m6w6.rhcloud.com/mdref/http",
+        "link": "http://devel-m6w6.rhcloud.com/mdref/http",
         "description": "PHP with pecl/http v2"
       }
     ]
@@ -144,13 +144,13 @@
       {
         "key": "python3",
         "title": "http.client",
-        "link": "https: //docs.python.org/3/library/http.client.html",
+        "link": "https://docs.python.org/3/library/http.client.html",
         "description": "Python3 HTTP Client"
       },
       {
         "key": "requests",
         "title": "Requests",
-        "link": "http: //docs.python-requests.org/en/latest/api/#requests.request",
+        "link": "http://docs.python-requests.org/en/latest/api/#requests.request",
         "description": "Requests HTTP library"
       }
     ]
@@ -164,7 +164,7 @@
       {
         "key": "nsurlsession",
         "title": "NSURLSession",
-        "link": "https: //developer.apple.com/library/mac/documentation/Foundation/Reference/NSURLSession_class/index.html",
+        "link": "https://developer.apple.com/library/mac/documentation/Foundation/Reference/NSURLSession_class/index.html",
         "description": "Foundation's NSURLSession request"
       }
     ]
@@ -178,7 +178,7 @@
       {
         "key": "nsurlsession",
         "title": "NSURLSession",
-        "link": "https: //developer.apple.com/library/mac/documentation/Foundation/Reference/NSURLSession_class/index.html",
+        "link": "https://developer.apple.com/library/mac/documentation/Foundation/Reference/NSURLSession_class/index.html",
         "description": "Foundation's NSURLSession request"
       }
     ]
@@ -192,7 +192,7 @@
       {
         "key": "native",
         "title": "NewRequest",
-        "link": "http: //golang.org/pkg/net/http/#NewRequest",
+        "link": "http://golang.org/pkg/net/http/#NewRequest",
         "description": "Golang HTTP client request"
       }
     ]
@@ -206,25 +206,25 @@
       {
         "key": "okhttp",
         "title": "OkHttp",
-        "link": "http: //square.github.io/okhttp/",
+        "link": "http://square.github.io/okhttp/",
         "description": "An HTTP Request Client Library"
       },
       {
         "key": "unirest",
         "title": "Unirest",
-        "link": "http: //unirest.io/java.html",
+        "link": "http://unirest.io/java.html",
         "description": "Lightweight HTTP Request Client Library"
       },
       {
         "key": "asynchttp",
         "title": "AsyncHttp",
-        "link": "https: //github.com/AsyncHttpClient/async-http-client",
+        "link": "https://github.com/AsyncHttpClient/async-http-client",
         "description": "Asynchronous Http and WebSocket Client library for Java"
       },
       {
         "key": "nethttp",
         "title": "java.net.http",
-        "link": "https: //openjdk.java.net/groups/net/httpclient/intro.html",
+        "link": "https://openjdk.java.net/groups/net/httpclient/intro.html",
         "description": "Java Standardized HTTP Client API"
       }
     ]
@@ -238,7 +238,7 @@
       {
         "key": "native",
         "title": "net: :http",
-        "link": "http: //ruby-doc.org/stdlib-2.2.1/libdoc/net/http/rdoc/Net/HTTP.html",
+        "link": "http://ruby-doc.org/stdlib-2.2.1/libdoc/net/http/rdoc/Net/HTTP.html",
         "description": "Ruby HTTP client"
       }
     ]
@@ -252,42 +252,14 @@
       {
         "key": "restsharp",
         "title": "RestSharp",
-        "link": "http: //restsharp.org/",
+        "link": "http://restsharp.org/",
         "description": "Simple REST and HTTP API Client for .NET"
       },
       {
         "key": "httpclient",
         "title": "HttpClient",
-        "link": "https: //docs.microsoft.com/en-us/dotnet/api/system.net.http.httpclient",
+        "link": "https://docs.microsoft.com/en-us/dotnet/api/system.net.http.httpclient",
         "description": ".NET Standard HTTP Client"
-      }
-    ]
-  },
-  {
-    "key": "clojure",
-    "title": "Clojure",
-    "extname": ".clj",
-    "default": "clj_http",
-    "clients": [
-      {
-        "key": "clj_http",
-        "title": "clj-http",
-        "link": "https: //github.com/dakrone/clj-http",
-        "description": "An idiomatic clojure http client wrapping the apache client."
-      }
-    ]
-  },
-  {
-    "key": "c",
-    "title": "C",
-    "extname": ".c",
-    "default": "libcurl",
-    "clients": [
-      {
-        "key": "libcurl",
-        "title": "Libcurl",
-        "link": "http: //curl.haxx.se/libcurl/",
-        "description": "Simple REST and HTTP API Client for C"
       }
     ]
   },
@@ -300,7 +272,7 @@
       {
         "key": "httr",
         "title": "httr",
-        "link": "https: //cran.r-project.org/web/packages/httr/vignettes/quickstart.html",
+        "link": "https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html",
         "description": "httr: Tools for Working with URLs and HTTP"
       }
     ]
@@ -314,13 +286,13 @@
       {
         "description": "Powershell Invoke-WebRequest client",
         "key": "webrequest",
-        "link": "https: //docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Invoke-WebRequest",
+        "link": "https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Invoke-WebRequest",
         "title": "Invoke-WebRequest"
       },
       {
         "description": "Powershell Invoke-RestMethod client",
         "key": "restmethod",
-        "link": "https: //docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Invoke-RestMethod",
+        "link": "https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Utility/Invoke-RestMethod",
         "title": "Invoke-RestMethod"
       }
     ]
@@ -334,7 +306,7 @@
       {
         "description": "HTTP/1.1 request string in accordance with RFC 7230",
         "key": "1.1",
-        "link": "https: //tools.ietf.org/html/rfc7230",
+        "link": "https://tools.ietf.org/html/rfc7230",
         "title": "HTTP/1.1"
       }
     ]
@@ -348,7 +320,7 @@
       {
         "key": "okhttp",
         "title": "OkHttp",
-        "link": "http: //square.github.io/okhttp/",
+        "link": "http://square.github.io/okhttp/",
         "description": "An HTTP Request Client Library"
       }
     ]

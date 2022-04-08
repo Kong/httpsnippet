@@ -7,24 +7,51 @@ const expectedBasePath = ['src', 'fixtures', 'requests'];
 
 const inputFileNames = readdirSync(path.join(...expectedBasePath), 'utf-8');
 
-const requests: [string, Request][] = inputFileNames.map(inputFileName => [
+const fixtures: [string, Request][] = inputFileNames.map(inputFileName => [
   inputFileName.replace('.json', ''),
   JSON.parse(readFileSync(path.join(...expectedBasePath, inputFileName)).toString()),
 ]);
 
-availableTargets().forEach(({ key: targetId, title, clients }) => {
-  describe(`${title} Request Validation`, () => {
-    clients.forEach(({ key: clientId }) => {
-      requests.forEach(([requestName, request]) => {
-        it(`${clientId} request should match fixture for ${requestName}`, () => {
-          const basePath = path.join('src', 'targets', targetId, clientId, 'fixtures', `${requestName}${extname(targetId)}`);
-          const expected = readFileSync(basePath);
-          const { convert } = new HTTPSnippet(request);
-          const result = convert(targetId, clientId);
-          const plusNewline = `${String(result)}\n`;
-          expect(expected.toString()).toEqual(plusNewline);
+/** useful for debuggin, only run a particular set of targets */
+const targetFilter = [
+  'clojure',
+];
+
+/** useful for debuggin, only run a particular set of targets */
+const clientFilter = [
+  // 'clj_http',
+];
+
+/** useful for debuggin, only run a particular set of fixtures */
+const fixtureFilter = [
+  // 'full',
+];
+
+const testFilter =
+  <T extends {}>(property: keyof T, list: T[keyof T][]) =>
+  (item: T) =>
+    list.length > 0 ? list.includes(item[property]) : true;
+
+availableTargets()
+  .filter(testFilter('key', targetFilter))
+  .forEach(({ key: targetId, title, clients }) => {
+    describe(`${title} Request Validation`, () => {
+      clients.filter(testFilter('key', clientFilter)).forEach(({ key: clientId }) => {
+        fixtures.filter(testFilter(0, fixtureFilter)).forEach(([fixture, request]) => {
+          const basePath = path.join('src', 'targets', targetId, clientId, 'fixtures', `${fixture}${extname(targetId)}`);
+          const expected = readFileSync(basePath).toString();
+          if (expected === '<MISSING>\n') {
+            console.log(`missing test for ${targetId}:${clientId} "${fixture}"`)
+            return;
+          }
+
+          it(`${clientId} request should match fixture for "${fixture}.json"`, () => {
+            const { convert } = new HTTPSnippet(request);
+            const result = convert(targetId, clientId); //?
+            const plusNewline = `${result}\n`; //?
+            expect(plusNewline).toEqual(expected);
+          });
         });
       });
     });
   });
-});
