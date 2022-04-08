@@ -8,8 +8,6 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-'use strict'
-
 const helpers = require('./helpers')
 const headerHelpers = require('../../helpers/headers')
 const CodeBuilder = require('../../helpers/code-builder')

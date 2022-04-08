@@ -1,5 +1,3 @@
-'use strict'
-
 const fixtures = require('./fixtures')
 const fs = require('fs')
 const glob = require('glob')

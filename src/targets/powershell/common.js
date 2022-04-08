@@ -1,5 +1,3 @@
-'use strict'
-
 const CodeBuilder = require('../../helpers/code-builder')
 const helpers = require('../../helpers/headers')
 

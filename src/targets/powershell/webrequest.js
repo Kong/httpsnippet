@@ -1,5 +1,3 @@
-'use strict'
-
 module.exports = require('./common')('Invoke-WebRequest')
 
 module.exports.info = {

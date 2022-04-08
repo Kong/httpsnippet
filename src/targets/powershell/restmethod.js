@@ -1,5 +1,3 @@
-'use strict'
-
 module.exports = require('./common')('Invoke-RestMethod')
 
 module.exports.info = {

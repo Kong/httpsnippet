@@ -1,5 +1,3 @@
-'use strict'
-
 const reducer = require('../src/helpers/reducer')
 
 require('should')

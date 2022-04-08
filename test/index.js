@@ -1,5 +1,3 @@
-'use strict'
-
 const fixtures = require('./fixtures')
 const HTTPSnippet = require('../src')
 

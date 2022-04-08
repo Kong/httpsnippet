@@ -9,8 +9,6 @@
  * For any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-'use strict'
-
 const CRLF = '\r\n'
 const CodeBuilder = require('../../helpers/code-builder')
 const util = require('util')

@@ -7,8 +7,6 @@
  *
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
-'use strict'
-
 const util = require('util')
 const stringifyObject = require('stringify-object')
 const CodeBuilder = require('../../helpers/code-builder')

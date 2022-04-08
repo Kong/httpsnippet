@@ -1,7 +1,5 @@
 /* eslint-env browser */
 
-'use strict'
-
 const debug = require('debug')('httpsnippet')
 const es = require('event-stream')
 const MultiPartForm = require('form-data')

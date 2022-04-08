@@ -1,5 +1,3 @@
-'use strict'
-
 const convert = function (obj, indent, lastIndent) {
   let i, result
 

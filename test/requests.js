@@ -1,7 +1,5 @@
 /* global describe, it */
 
-'use strict'
-
 const fixtures = require('./fixtures')
 const HTTPSnippet = require('../src')
 const targets = require('../src/targets')

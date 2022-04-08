@@ -1,5 +1,3 @@
-'use strict'
-
 const helpers = require('../src/helpers/headers')
 const should = require('should')
 

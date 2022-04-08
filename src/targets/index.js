@@ -1,5 +1,3 @@
-'use strict'
-
 module.exports = {
   c: require('./c'),
   clojure: require('./clojure'),
