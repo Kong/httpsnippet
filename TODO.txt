@@ -3,19 +3,18 @@ TODO:
 - fix Dockerfile and docker-compose
 - look into the prior usage of the 'debug' package
 - look into CLI and CLI tests
-  - also, move to yargs from commander
 - completely redo the README
 
 later:
-- use prettier for js languages (and more?)
+- use prettier for js languages (and more?) but as a devDependency only to not increase bundle size
 - add option to curl for minifying json
 
 changelog:
 
 ## Breaking
-- drops support for node versions less than 16.13
+- drops support for node versions less than 14.19 (the current LTS)
 - the `http` target changed its client ID to `http1.1` from `1.1`
 - formatter strings (i.e. "%s" substitutions) are no longer supported (now that template strings exist, you don't need them, so please just send the string you want as the line of code as-is)
-- the "dot-method-train" style API is no longer supported on the CodeBuilder.  All the same functionality exists, but just call the methods separately.  For example instead of `push('a').blank().push('b')`  just do `push('a'); blank(); push('b');`
+- the "dot-method-train" style API is no longer supported on the CodeBuilder.  All the same functionality exists, but just call the methods separately.  For example instead of `code.push('a').blank().push('b')`  just do `push('a'); blank(); push('b');`
 - the JavaScript target will output ES6 code
 - HTTPSnippet is no longer the default export (now a named export)
