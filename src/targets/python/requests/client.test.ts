@@ -11,7 +11,7 @@ runCustomFixtures({
         showBoilerplate: false,
       },
       request: { method: 'GET', url: 'http://mockbin.com/har?param=value' } as Request,
-      title: "should support query parameters provided in HAR's url",
+      it: "should support query parameters provided in HAR's url",
     },
   ],
 });

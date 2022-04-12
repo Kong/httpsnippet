@@ -7,7 +7,7 @@ runCustomFixtures({
   clientId: 'native',
   tests: [
     {
-      title: 'should support false boilerplate option',
+      it: 'should support false boilerplate option',
       fixtureFile: 'boilerplate-option.go',
       options: {
         showBoilerplate: false,
@@ -15,7 +15,7 @@ runCustomFixtures({
       request: request as Request,
     },
     {
-      title: 'should support checkErrors option',
+      it: 'should support checkErrors option',
       fixtureFile: 'check-errors-option.go',
       options: {
         checkErrors: true,
@@ -23,7 +23,7 @@ runCustomFixtures({
       request: request as Request,
     },
     {
-      title: 'should support printBody option',
+      it: 'should support printBody option',
       fixtureFile: 'print-body-option.go',
       options: {
         printBody: false,
@@ -31,7 +31,7 @@ runCustomFixtures({
       request: request as Request,
     },
     {
-      title: 'should support timeout option',
+      it: 'should support timeout option',
       fixtureFile: 'timeout-option.go',
       options: {
         timeout: 30,

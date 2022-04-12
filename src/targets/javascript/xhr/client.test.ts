@@ -7,7 +7,7 @@ runCustomFixtures({
   clientId: 'xhr',
   tests: [
     {
-      title: 'should not use cors',
+      it: 'should not use cors',
       fixtureFile: 'cors.js',
       options: {
         cors: false,

@@ -11,7 +11,7 @@ runCustomFixtures({
       fixtureFile: 'short-options.sh',
       options: { short: true, indent: false },
       request: full as Request,
-      title: 'should use short options',
+      it: 'should use short options',
     },
     {
       fixtureFile: 'binary-option.sh',
@@ -21,7 +21,7 @@ runCustomFixtures({
         binary: true,
       },
       request: full as Request,
-      title: 'should use binary option',
+      it: 'should use binary option',
     },
     {
       fixtureFile: 'globoff-option.sh',
@@ -31,7 +31,7 @@ runCustomFixtures({
         globOff: true,
       },
       request: nested as Request,
-      title: 'should use short globoff option',
+      it: 'should use short globoff option',
     },
     {
       fixtureFile: 'long-globoff-option.sh',
@@ -40,7 +40,7 @@ runCustomFixtures({
         globOff: true,
       },
       request: nested as Request,
-      title: 'should use long globoff option',
+      it: 'should use long globoff option',
     },
     {
       fixtureFile: 'dont-deglob.sh',
@@ -49,7 +49,7 @@ runCustomFixtures({
         globOff: false,
       },
       request: nested as Request,
-      title: 'should not de-glob when globoff is false',
+      it: 'should not de-glob when globoff is false',
     },
     {
       fixtureFile: 'http10.sh',
@@ -61,7 +61,7 @@ runCustomFixtures({
         url: 'http://mockbin.com/request',
         httpVersion: 'HTTP/1.0',
       } as Request,
-      title: 'should use --http1.0 for HTTP/1.0',
+      it: 'should use --http1.0 for HTTP/1.0',
     },
     {
       fixtureFile: 'custom-indentation.sh',
@@ -69,7 +69,7 @@ runCustomFixtures({
         indent: '@',
       },
       request: full as Request,
-      title: 'should use custom indentation',
+      it: 'should use custom indentation',
     },
   ],
 });

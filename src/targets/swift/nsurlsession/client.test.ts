@@ -9,7 +9,7 @@ runCustomFixtures({
   clientId: 'nsurlsession',
   tests: [
     {
-      title: 'should support an indent option',
+      it: 'should support an indent option',
       request: short as Request,
       fixtureFile: 'indent-option.swift',
       options: {
@@ -17,7 +17,7 @@ runCustomFixtures({
       },
     },
     {
-      title: 'should support a timeout option',
+      it: 'should support a timeout option',
       request: short as Request,
       fixtureFile: 'timeout-option.swift',
       options: {
@@ -25,7 +25,7 @@ runCustomFixtures({
       },
     },
     {
-      title: 'should support pretty option',
+      it: 'should support pretty option',
       request: full as Request,
       fixtureFile: 'pretty-option.swift',
       options: {
@@ -33,7 +33,7 @@ runCustomFixtures({
       },
     },
     {
-      title: 'should support json object with null value',
+      it: 'should support json object with null value',
       request: jsonNullValue as unknown as Request,
       fixtureFile: 'json-null-value.swift',
       options: {

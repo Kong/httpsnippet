@@ -10,13 +10,13 @@ runCustomFixtures({
   clientId: 'httpie',
   tests: [
     {
-      title: 'should ask for verbose output',
+      it: 'should ask for verbose output',
       fixtureFile: 'verbose-output.sh',
       options: { indent: false, verbose: true },
       request: short as Request,
     },
     {
-      title: 'should use short flags',
+      it: 'should use short flags',
       fixtureFile: 'short-flags.sh',
       options: {
         body: true,
@@ -34,7 +34,7 @@ runCustomFixtures({
       request: short as Request,
     },
     {
-      title: 'should use long flags',
+      it: 'should use long flags',
       fixtureFile: 'long-flags.sh',
       options: {
         body: true,
@@ -51,19 +51,19 @@ runCustomFixtures({
       request: short as Request,
     },
     {
-      title: 'should use custom indentation',
+      it: 'should use custom indentation',
       fixtureFile: 'custom-indentation.sh',
       options: { indent: '@' },
       request: full as Request,
     },
     {
-      title: 'should use queryString parameters',
+      it: 'should use queryString parameters',
       fixtureFile: 'querystring-parameters.sh',
       options: { indent: false, queryParams: true },
       request: query as unknown as Request,
     },
     {
-      title: 'should build parameterized output of post data',
+      it: 'should build parameterized output of post data',
       fixtureFile: 'build-parameters.sh',
       options: { short: true, indent: false, queryParams: true },
       request: applicationFormEncoded as Request,
