@@ -50,9 +50,7 @@ export const http2: Client<Http2Options> = {
     switch (postData.mimeType) {
       case 'application/x-www-form-urlencoded':
         push('$body = new http\\Message\\Body;');
-        push(
-          `$body->append(new http\\QueryString(${convertType(postData.paramsObj, opts.indent)}));`,
-        );
+        push(`$body->append(new http\\QueryString(${convertType(postData.paramsObj, opts.indent)}));`);
         blank();
         hasBody = true;
         break;
@@ -62,7 +60,7 @@ export const http2: Client<Http2Options> = {
           name: string;
           type: string | undefined;
           file: string;
-          data: string;
+          data: string | undefined;
           [anything: string]: string | undefined;
         }[] = [];
         const fields: Record<string, any> = {};
@@ -72,7 +70,6 @@ export const http2: Client<Http2Options> = {
               name,
               type: contentType,
               file: fileName,
-              // @ts-expect-error appears to be a genuine error
               data: value,
             });
             return;
