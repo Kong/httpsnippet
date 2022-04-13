@@ -63,7 +63,7 @@ export const curl: Client<CurlOptions> = {
         if (contentTypeHeaderName && contentTypeHeader) {
           // remove the leading semi colon and boundary
           // up to the next semi colon or the end of string
-          // @ts-expect-error SEEMS LEGIT
+          // @ts-expect-error it is a reality that the headersObj can have values which are string arrays.  This is a genuine bug that this case isn't handled or tested.  It is, however tested in `reducer.test.ts`.  Go check that out to see more.
           const noBoundary = contentTypeHeader.replace(/; boundary.+?(?=(;|$))/, '');
 
           // replace the content-type header with no boundary in both headersObj and allHeaders
