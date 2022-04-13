@@ -39,7 +39,7 @@
     "xmlhttprequest"
   ],
   "engines": {
-    "node": ">=16",
+    "node": "^14.19.0 || ^16.14.0",
     "yarn": "1.22.15"
   },
   "repository": "Kong/httpsnippet",
