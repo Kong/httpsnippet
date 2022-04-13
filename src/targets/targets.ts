@@ -1,3 +1,5 @@
+import { Merge } from 'type-fest';
+
 import { CodeBuilderOptions } from '../helpers/code-builder';
 import { Request } from '../httpsnippet';
 import { c } from './c/target';
@@ -30,7 +32,7 @@ export interface ClientInfo {
   description: string;
 }
 
-export type Converter<T extends Record<string, any>> = (request: Request, options?: CodeBuilderOptions & T) => string;
+export type Converter<T extends Record<string, any>> = (request: Request, options?: Merge<CodeBuilderOptions, T>) => string;
 
 export interface Client<T extends Record<string, any> = Record<string, any>> {
   info: ClientInfo;

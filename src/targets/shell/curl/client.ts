@@ -17,6 +17,7 @@ export interface CurlOptions {
   short?: boolean;
   binary?: boolean;
   globOff?: boolean;
+  indent?: string | false;
 }
 
 export const curl: Client<CurlOptions> = {
@@ -35,8 +36,7 @@ export const curl: Client<CurlOptions> = {
       ...options,
     };
     const { push, join } = new CodeBuilder({
-      indent: opts.indent,
-      // @ts-expect-error SEEMS LEGIT
+      ...(typeof opts.indent === 'string' ? { indent: opts.indent } : {}),
       join: opts.indent !== false ? ` \\\n${opts.indent}` : ' ',
     });
 
@@ -103,29 +103,17 @@ export const curl: Client<CurlOptions> = {
       case 'application/x-www-form-urlencoded':
         if (postData.params) {
           postData.params.forEach(param => {
-            push(
-              `${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(
-                `${param.name}=${param.value}`,
-              )}`,
-            );
+            push(`${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(`${param.name}=${param.value}`)}`);
           });
         } else {
-          push(
-            `${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(
-              postData.text,
-            )}`,
-          );
+          push(`${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(postData.text)}`);
         }
         break;
 
       default:
         // raw request body
         if (postData.text) {
-          push(
-            `${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(
-              postData.text,
-            )}`,
-          );
+          push(`${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(postData.text)}`);
         }
     }
 
