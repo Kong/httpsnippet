@@ -9,27 +9,27 @@ runCustomFixtures({
   tests: [
     {
       it: 'should use short options',
-      fixtureFile: 'short-options.sh',
+      input: full as Request,
       options: { short: true, indent: false },
-      request: full as Request,
+      expected: 'short-options.sh',
     },
     {
       it: 'should ask for -v output',
-      fixtureFile: 'v-output.sh',
+      input: short as Request,
       options: { short: true, indent: false, verbose: true },
-      request: short as Request,
+      expected: 'v-output.sh',
     },
     {
       it: 'should ask for --verbose output',
-      fixtureFile: 'verbose-output.sh',
+      input: short as Request,
       options: { short: false, indent: false, verbose: true },
-      request: short as Request,
+      expected: 'verbose-output.sh',
     },
     {
       it: 'should use custom indentation',
-      fixtureFile: 'custom-indentation.sh',
+      input: full as Request,
       options: { indent: '@' },
-      request: full as Request,
+      expected: 'custom-indentation.sh',
     },
   ],
 });

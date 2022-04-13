@@ -10,15 +10,17 @@ export interface CustomFixture {
   clientId: ClientId;
   tests: {
     it: string;
-    fixtureFile: string;
+    input: Request;
     options: any;
-    request: Request;
+
+    /** a file path pointing to the expected custom fixture result */
+    expected: string;
   }[];
 }
 
 export const runCustomFixtures = ({ targetId, clientId, tests }: CustomFixture) => {
   describe(`custom fixtures for ${targetId}:${clientId}`, () => {
-    tests.forEach(({ it: title, fixtureFile, options, request }) => {
+    tests.forEach(({ it: title, expected: fixtureFile, options, input: request }) => {
       it(title, async () => {
         const result = new HTTPSnippet(request).convert(targetId, clientId, options);
         const filePath = path.join(__dirname, '..', 'targets', targetId, clientId, 'fixtures', fixtureFile);

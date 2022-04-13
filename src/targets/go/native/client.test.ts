@@ -8,35 +8,35 @@ runCustomFixtures({
   tests: [
     {
       it: 'should support false boilerplate option',
-      fixtureFile: 'boilerplate-option.go',
+      input: request as Request,
       options: {
         showBoilerplate: false,
       },
-      request: request as Request,
+      expected: 'boilerplate-option.go',
     },
     {
       it: 'should support checkErrors option',
-      fixtureFile: 'check-errors-option.go',
+      input: request as Request,
       options: {
         checkErrors: true,
       },
-      request: request as Request,
+      expected: 'check-errors-option.go',
     },
     {
       it: 'should support printBody option',
-      fixtureFile: 'print-body-option.go',
+      input: request as Request,
       options: {
         printBody: false,
       },
-      request: request as Request,
+      expected: 'print-body-option.go',
     },
     {
       it: 'should support timeout option',
-      fixtureFile: 'timeout-option.go',
+      input: request as Request,
       options: {
         timeout: 30,
       },
-      request: request as Request,
+      expected: 'timeout-option.go',
     },
   ],
 });

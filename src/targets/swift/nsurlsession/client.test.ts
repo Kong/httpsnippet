@@ -10,35 +10,35 @@ runCustomFixtures({
   tests: [
     {
       it: 'should support an indent option',
-      request: short as Request,
-      fixtureFile: 'indent-option.swift',
+      input: short as Request,
       options: {
         indent: '    ',
       },
+      expected: 'indent-option.swift',
     },
     {
       it: 'should support a timeout option',
-      request: short as Request,
-      fixtureFile: 'timeout-option.swift',
+      input: short as Request,
       options: {
         timeout: 5,
       },
+      expected: 'timeout-option.swift',
     },
     {
       it: 'should support pretty option',
-      request: full as Request,
-      fixtureFile: 'pretty-option.swift',
+      input: full as Request,
       options: {
         pretty: false,
       },
+      expected: 'pretty-option.swift',
     },
     {
       it: 'should support json object with null value',
-      request: jsonNullValue as unknown as Request,
-      fixtureFile: 'json-null-value.swift',
+      input: jsonNullValue as unknown as Request,
       options: {
         pretty: false,
       },
+      expected: 'json-null-value.swift',
     },
   ],
 });

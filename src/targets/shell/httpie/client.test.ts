@@ -11,13 +11,13 @@ runCustomFixtures({
   tests: [
     {
       it: 'should ask for verbose output',
-      fixtureFile: 'verbose-output.sh',
+      input: short as Request,
       options: { indent: false, verbose: true },
-      request: short as Request,
+      expected: 'verbose-output.sh',
     },
     {
       it: 'should use short flags',
-      fixtureFile: 'short-flags.sh',
+      input: short as Request,
       options: {
         body: true,
         cert: 'foo',
@@ -31,11 +31,11 @@ runCustomFixtures({
         verbose: true,
         verify: 'x',
       },
-      request: short as Request,
+      expected: 'short-flags.sh',
     },
     {
       it: 'should use long flags',
-      fixtureFile: 'long-flags.sh',
+      input: short as Request,
       options: {
         body: true,
         cert: 'foo',
@@ -48,25 +48,25 @@ runCustomFixtures({
         verbose: true,
         verify: 'x',
       },
-      request: short as Request,
+      expected: 'long-flags.sh',
     },
     {
       it: 'should use custom indentation',
-      fixtureFile: 'custom-indentation.sh',
+      input: full as Request,
       options: { indent: '@' },
-      request: full as Request,
+      expected: 'custom-indentation.sh',
     },
     {
       it: 'should use queryString parameters',
-      fixtureFile: 'querystring-parameters.sh',
+      input: query as unknown as Request,
       options: { indent: false, queryParams: true },
-      request: query as unknown as Request,
+      expected: 'querystring-parameters.sh',
     },
     {
       it: 'should build parameterized output of post data',
-      fixtureFile: 'build-parameters.sh',
+      input: applicationFormEncoded as Request,
       options: { short: true, indent: false, queryParams: true },
-      request: applicationFormEncoded as Request,
+      expected: 'build-parameters.sh',
     },
   ],
 });

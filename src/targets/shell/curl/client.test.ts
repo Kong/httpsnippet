@@ -8,68 +8,68 @@ runCustomFixtures({
   clientId: 'curl',
   tests: [
     {
-      fixtureFile: 'short-options.sh',
-      options: { short: true, indent: false },
-      request: full as Request,
       it: 'should use short options',
+      input: full as Request,
+      options: { short: true, indent: false },
+      expected: 'short-options.sh',
     },
     {
-      fixtureFile: 'binary-option.sh',
+      it: 'should use binary option',
+      input: full as Request,
       options: {
         short: true,
         indent: false,
         binary: true,
       },
-      request: full as Request,
-      it: 'should use binary option',
+      expected: 'binary-option.sh',
     },
     {
-      fixtureFile: 'globoff-option.sh',
+      it: 'should use short globoff option',
+      input: nested as Request,
       options: {
         short: true,
         indent: false,
         globOff: true,
       },
-      request: nested as Request,
-      it: 'should use short globoff option',
+      expected: 'globoff-option.sh',
     },
     {
-      fixtureFile: 'long-globoff-option.sh',
+      it: 'should use long globoff option',
+      input: nested as Request,
       options: {
         indent: false,
         globOff: true,
       },
-      request: nested as Request,
-      it: 'should use long globoff option',
+      expected: 'long-globoff-option.sh',
     },
     {
-      fixtureFile: 'dont-deglob.sh',
+      it: 'should not de-glob when globoff is false',
+      input: nested as Request,
       options: {
         indent: false,
         globOff: false,
       },
-      request: nested as Request,
-      it: 'should not de-glob when globoff is false',
+      expected: 'dont-deglob.sh',
     },
     {
-      fixtureFile: 'http10.sh',
-      options: {
-        indent: false,
-      },
-      request: {
+      it: 'should use --http1.0 for HTTP/1.0',
+      input: {
         method: 'GET',
         url: 'http://mockbin.com/request',
         httpVersion: 'HTTP/1.0',
       } as Request,
-      it: 'should use --http1.0 for HTTP/1.0',
+      options: {
+        indent: false,
+      },
+      expected: 'http10.sh',
     },
     {
-      fixtureFile: 'custom-indentation.sh',
+      it: 'should use custom indentation',
+      input: full as Request,
       options: {
         indent: '@',
       },
-      request: full as Request,
-      it: 'should use custom indentation',
+      expected: 'custom-indentation.sh',
     },
   ],
 });

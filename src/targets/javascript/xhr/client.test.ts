@@ -8,11 +8,11 @@ runCustomFixtures({
   tests: [
     {
       it: 'should not use cors',
-      fixtureFile: 'cors.js',
+      input: request as Request,
       options: {
         cors: false,
       },
-      request: request as Request,
+      expected: 'cors.js',
     },
   ],
 });
