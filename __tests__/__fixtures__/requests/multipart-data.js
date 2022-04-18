@@ -22,8 +22,12 @@ module.exports = {
               {
                 name: 'foo',
                 value: 'Hello World',
-                fileName: 'hello.txt',
+                fileName: '__tests__/__fixtures__/files/hello.txt',
                 contentType: 'text/plain',
+              },
+              {
+                name: 'bar',
+                value: 'Bonjour le monde',
               },
             ],
           },
@@ -45,9 +49,11 @@ module.exports = {
               args: {},
               data: '',
               files: {
-                foo: 'Hello World\n',
+                foo: 'Hello World',
               },
-              form: {},
+              form: {
+                bar: 'Bonjour le monde',
+              },
               headers: {
                 'Content-Type': 'multipart/form-data; boundary=------------------------6e4b42ed3719ed70',
               },

@@ -2,9 +2,9 @@ import requests
 
 url = "https://httpbin.org/anything"
 
-payload = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"foo\"; filename=\"hello.txt\"\r\nContent-Type: text/plain\r\n\r\nHello World\r\n-----011000010111000001101001--\r\n"
-headers = {"content-type": "multipart/form-data; boundary=---011000010111000001101001"}
+files = {"foo": open("__tests__/__fixtures__/files/hello.txt", "rb")}
+payload = {"bar": "Bonjour le monde"}
 
-response = requests.request("POST", url, data=payload, headers=headers)
+response = requests.request("POST", url, data=payload, files=files)
 
 print(response.text)

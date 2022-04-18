@@ -23,7 +23,7 @@ const IGNORED_TARGETS = {
   local: {
     node: ['axios', 'fetch', 'request', 'unirest'], // Only testing `native` locally.
     php: ['guzzle', 'http1', 'http2'], // Only testing `curl` locally.
-    python: ['requests'], // Only testing `python3` locally.
+    python: [],
     shell: ['httpie', 'wget'], // Only testing `curl`.
   },
 };
@@ -49,9 +49,17 @@ const snippets = Object.keys(fixtures.requests)
       'http-insecure',
       'jsonObj-multiline',
       'jsonObj-null-value',
-      // 'multipart-data', // Disabling because there's some quirks with cURL.
+      'multipart-data',
+      // Some targets don't support native file handling without supplying a raw boundary header and
+      // because the HAR for `multipart-file` doesn't include the files contents, just its filename
+      // running one of these generated snippets doesn't send anything for the file because the
+      // FormData API rewrites the incoming full path of `__tests__/__fixtures__/files/hello.txt`
+      // to just `hello.txt`. Instead of monkeypatching these targets to have the full file path at
+      // time of this execution suite we're just ignoring this test case as file uploading is well
+      // covered by the other cases we have.
+      // 'multipart-file'
       'multipart-form-data',
-      // 'multipart-file', // Disabling because there's some quirks with newlines.
+      'multipart-form-data-no-params',
       'nested',
       'query-encoded',
       'query',
@@ -183,7 +191,18 @@ describe.each(clients)('%s', (_, client) => {
       }
 
       expect(response.args).toStrictEqual(expected.args);
-      expect(response.files).toStrictEqual(expected.files);
+
+      // Some targets send files that have a new line at the end of them without that new line so
+      // we need to make our assertion universal across all targets.
+      let files = {};
+      if (Object.keys(response.files).length) {
+        files = Object.entries(response.files)
+          .map(([k, v]) => ({ [k]: v.trim() }))
+          .reduce((prev, next) => Object.assign(prev, next));
+      }
+
+      expect(files).toStrictEqual(expected.files);
+
       expect(response.form).toStrictEqual(expected.form);
       expect(response.method).toStrictEqual(expected.method);
       expect(response.url).toStrictEqual(expected.url);
@@ -221,7 +240,7 @@ describe.each(clients)('%s', (_, client) => {
         } else {
           // It doesn't matter that the /right/ boundary is set up because some targets may add their own, we just
           // need to make sure that **a** boundary is present.
-          const contentTypes = expected.headers['Content-Type'].split(';').map(p => p.trim());
+          const contentTypes = response.headers['Content-Type'].split(';').map(p => p.trim());
           expect(contentTypes).toHaveLength(2);
           expect(contentTypes.map(type => type.includes('boundary=')).filter(Boolean)).toHaveLength(1);
         }

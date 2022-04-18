@@ -44,7 +44,7 @@ module.exports = {
               args: {},
               data: '',
               files: {
-                foo: 'Hello World\n',
+                foo: 'Hello World',
               },
               form: {},
               headers: {

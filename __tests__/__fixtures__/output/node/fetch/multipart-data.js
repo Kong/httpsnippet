@@ -3,7 +3,8 @@ const FormData = require('form-data');
 const fetch = require('node-fetch');
 const formData = new FormData();
 
-formData.append('foo', fs.createReadStream('hello.txt'));
+formData.append('foo', fs.createReadStream('__tests__/__fixtures__/files/hello.txt'));
+formData.append('bar', 'Bonjour le monde');
 
 const url = 'https://httpbin.org/anything';
 const options = {method: 'POST'};

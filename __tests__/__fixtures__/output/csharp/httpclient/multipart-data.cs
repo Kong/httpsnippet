@@ -13,7 +13,17 @@ var request = new HttpRequestMessage
                 ContentDisposition = new ContentDispositionHeaderValue("form-data")
                 {
                     Name = "foo",
-                    FileName = "hello.txt",
+                    FileName = "__tests__/__fixtures__/files/hello.txt",
+                }
+            }
+        },
+        new StringContent("Bonjour le monde")
+        {
+            Headers =
+            {
+                ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                {
+                    Name = "bar",
                 }
             }
         },

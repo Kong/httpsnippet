@@ -3,10 +3,9 @@ module.exports = {
     key: 'python',
     title: 'Python',
     extname: '.py',
-    default: 'python3',
+    default: 'requests',
     cli: 'python3 %s',
   },
 
-  python3: require('./python3'),
   requests: require('./requests'),
 };
