@@ -2,6 +2,6 @@ import requests
 
 url = "https://httpbin.org/anything"
 
-response = requests.request("GET", url)
+response = requests.get(url)
 
 print(response.text)

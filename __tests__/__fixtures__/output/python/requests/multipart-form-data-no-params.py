@@ -4,6 +4,6 @@ url = "https://httpbin.org/anything"
 
 headers = {"Content-Type": "multipart/form-data"}
 
-response = requests.request("POST", url, headers=headers)
+response = requests.post(url, headers=headers)
 
 print(response.text)

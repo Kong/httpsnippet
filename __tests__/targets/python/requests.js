@@ -11,7 +11,7 @@ module.exports = function (HTTPSnippet) {
 
 url = "https://httpbin.org/anything?param=value"
 
-response = requests.request("GET", url)
+response = requests.get(url)
 
 print(response.text)`);
   });
