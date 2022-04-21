@@ -50,7 +50,9 @@ export const http2: Client<Http2Options> = {
     switch (postData.mimeType) {
       case 'application/x-www-form-urlencoded':
         push('$body = new http\\Message\\Body;');
-        push(`$body->append(new http\\QueryString(${convertType(postData.paramsObj, opts.indent)}));`);
+        push(
+          `$body->append(new http\\QueryString(${convertType(postData.paramsObj, opts.indent)}));`,
+        );
         blank();
         hasBody = true;
         break;

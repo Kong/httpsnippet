@@ -65,7 +65,11 @@ interface HarEntry {
 }
 
 const isHarEntry = (value: any): value is HarEntry =>
-  typeof value === 'object' && 'log' in value && typeof value.log === 'object' && 'entries' in value.log && Array.isArray(value.log.entries);
+  typeof value === 'object' &&
+  'log' in value &&
+  typeof value.log === 'object' &&
+  'entries' in value.log &&
+  Array.isArray(value.log.entries);
 
 export class HTTPSnippet {
   requests: Request[] = [];
@@ -130,7 +134,9 @@ export class HTTPSnippet {
     if (request.headers && request.headers.length) {
       const http2VersionRegex = /^HTTP\/2/;
       request.headersObj = request.headers.reduce((accumulator, { name, value }) => {
-        const headerName = http2VersionRegex.exec(request.httpVersion) ? name.toLocaleLowerCase() : name;
+        const headerName = http2VersionRegex.exec(request.httpVersion)
+          ? name.toLocaleLowerCase()
+          : name;
         return {
           ...accumulator,
           [headerName]: value,
@@ -150,7 +156,9 @@ export class HTTPSnippet {
     }
 
     // construct Cookie header
-    const cookies = request.cookies?.map(({ name, value }) => `${encodeURIComponent(name)}=${encodeURIComponent(value)}`);
+    const cookies = request.cookies?.map(
+      ({ name, value }) => `${encodeURIComponent(name)}=${encodeURIComponent(value)}`,
+    );
 
     if (cookies?.length) {
       request.allHeaders.cookie = cookies.join('; ');
@@ -228,7 +236,8 @@ export class HTTPSnippet {
           request.postData.boundary = boundary;
 
           // Since headers are case-sensitive we need to see if there's an existing `Content-Type` header that we can override.
-          const contentTypeHeader = getHeaderName(request.headersObj, 'content-type') || 'content-type';
+          const contentTypeHeader =
+            getHeaderName(request.headersObj, 'content-type') || 'content-type';
 
           request.headersObj[contentTypeHeader] = `multipart/form-data; boundary=${boundary}`;
         }

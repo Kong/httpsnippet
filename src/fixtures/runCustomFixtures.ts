@@ -23,7 +23,15 @@ export const runCustomFixtures = ({ targetId, clientId, tests }: CustomFixture) 
     tests.forEach(({ it: title, expected: fixtureFile, options, input: request }) => {
       it(title, async () => {
         const result = new HTTPSnippet(request).convert(targetId, clientId, options);
-        const filePath = path.join(__dirname, '..', 'targets', targetId, clientId, 'fixtures', fixtureFile);
+        const filePath = path.join(
+          __dirname,
+          '..',
+          'targets',
+          targetId,
+          clientId,
+          'fixtures',
+          fixtureFile,
+        );
         const buffer = await readFile(filePath);
         const fixture = String(buffer);
 

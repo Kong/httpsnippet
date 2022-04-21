@@ -32,7 +32,10 @@ export interface ClientInfo {
   description: string;
 }
 
-export type Converter<T extends Record<string, any>> = (request: Request, options?: Merge<CodeBuilderOptions, T>) => string;
+export type Converter<T extends Record<string, any>> = (
+  request: Request,
+  options?: Merge<CodeBuilderOptions, T>,
+) => string;
 
 export interface Client<T extends Record<string, any> = Record<string, any>> {
   info: ClientInfo;
@@ -108,8 +111,14 @@ export const isTarget = (target: Target): target is Target => {
     throw new Error('targets must have an `info` object with the property `extname`');
   }
 
-  if (!Object.hasOwn(target, 'clientsById') || !target.clientsById || Object.keys(target.clientsById).length === 0) {
-    throw new Error(`No clients provided in target ${target.info.key}.  You must provide the property \`clientsById\` containg your clients.`);
+  if (
+    !Object.hasOwn(target, 'clientsById') ||
+    !target.clientsById ||
+    Object.keys(target.clientsById).length === 0
+  ) {
+    throw new Error(
+      `No clients provided in target ${target.info.key}.  You must provide the property \`clientsById\` containg your clients.`,
+    );
   }
 
   if (!Object.hasOwn(target.info, 'default')) {
@@ -120,7 +129,9 @@ export const isTarget = (target: Target): target is Target => {
     throw new Error(
       `target ${target.info.key} is configured with a default client ${
         target.info.default
-      }, but no such client was found in the property \`clientsById\` (found ${JSON.stringify(Object.keys(target.clientsById))})`,
+      }, but no such client was found in the property \`clientsById\` (found ${JSON.stringify(
+        Object.keys(target.clientsById),
+      )})`,
     );
   }
 
@@ -166,7 +177,9 @@ export const isClient = (client: Client): client is Client => {
   }
 
   if (!Object.hasOwn(client, 'convert') || typeof client.convert !== 'function') {
-    throw new Error('targets client must have a `convert` property containing a conversion function');
+    throw new Error(
+      'targets client must have a `convert` property containing a conversion function',
+    );
   }
 
   return true;
@@ -182,7 +195,9 @@ export const addTargetClient = (targetId: TargetId, client: Client) => {
   }
 
   if (Object.hasOwn(targets[targetId], client.info.key)) {
-    throw new Error(`the target ${targetId} already has a client with the key ${client.info.key}, please use a different key`);
+    throw new Error(
+      `the target ${targetId} already has a client with the key ${client.info.key}, please use a different key`,
+    );
   }
 
   targets[targetId].clientsById[client.info.key] = client;

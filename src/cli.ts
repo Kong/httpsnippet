@@ -89,7 +89,11 @@ export const go = () =>
         writeFileSync(writeFilePath, String(result));
         const target = targets[targetId];
         const clientId = target.clientsById[client || target.info.default].info.key;
-        good(`converted ${cyan.bold(harFilePath)} with ${yellow(targetId)}[${yellow(clientId)}] at ${cyan(writeFilePath)}\n\n${result}`);
+        good(
+          `converted ${cyan.bold(harFilePath)} with ${yellow(targetId)}[${yellow(
+            clientId,
+          )}] at ${cyan(writeFilePath)}\n\n${result}`,
+        );
       },
     )
     .example('$0 my_har.json', '--target rust --client actix --output my_src_directory').argv;

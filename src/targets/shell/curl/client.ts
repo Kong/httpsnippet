@@ -103,17 +103,29 @@ export const curl: Client<CurlOptions> = {
       case 'application/x-www-form-urlencoded':
         if (postData.params) {
           postData.params.forEach(param => {
-            push(`${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(`${param.name}=${param.value}`)}`);
+            push(
+              `${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(
+                `${param.name}=${param.value}`,
+              )}`,
+            );
           });
         } else {
-          push(`${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(postData.text)}`);
+          push(
+            `${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(
+              postData.text,
+            )}`,
+          );
         }
         break;
 
       default:
         // raw request body
         if (postData.text) {
-          push(`${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(postData.text)}`);
+          push(
+            `${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(
+              postData.text,
+            )}`,
+          );
         }
     }
 
