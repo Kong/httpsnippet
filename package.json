@@ -39,8 +39,7 @@
     "xmlhttprequest"
   ],
   "engines": {
-    "node": "^14.19.0 || ^16.14.0",
-    "yarn": "1.22.15"
+    "node": "^14.19.0 || ^16.14.0"
   },
   "repository": "Kong/httpsnippet",
   "bugs": {
@@ -48,8 +47,8 @@
   },
   "scripts": {
     "clean": "tsc --build tsconfig.build.json --clean",
-    "prebuild": "yarn clean",
-    "lint": "prettier --write . && yarn eslint . --ext ts,d.ts,test.ts --fix",
+    "prebuild": "npm run clean",
+    "lint": "prettier --write . && eslint . --ext ts,d.ts,test.ts --fix",
     "build": "tsc --build tsconfig.build.json",
     "build:cli": "tsc --build tsconfig.cli.json",
     "test": "jest"
