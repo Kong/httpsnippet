@@ -39,7 +39,7 @@
     "xmlhttprequest"
   ],
   "engines": {
-    "node": "^14.19.0 || ^16.14.0"
+    "node": "^14.19.1 || ^16.14.2 || ^18.0.0"
   },
   "repository": "Kong/httpsnippet",
   "bugs": {
