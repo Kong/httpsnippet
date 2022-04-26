@@ -1,0 +1,5 @@
+build
+node_modules
+src/targets/**/fixtures
+dist
+bin

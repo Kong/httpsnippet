@@ -1,13 +1,12 @@
 # HTTP Snippet [![version][npm-version]][npm-url] [![License][npm-license]][license-url]
 
-> HTTP Request snippet generator for *many* languages & tools including: `cURL`, `HTTPie`, `Javascript`, `Node`, `C`, `Java`, `PHP`, `Objective-C`, `Swift`, `Python`, `Ruby`, `C#`, `Go`, `OCaml` and [more](https://github.com/Mashape/httpsnippet/wiki/Targets)!
+> HTTP Request snippet generator for _many_ languages & tools including: `cURL`, `HTTPie`, `Javascript`, `Node`, `C`, `Java`, `PHP`, `Objective-C`, `Swift`, `Python`, `Ruby`, `C#`, `Go`, `OCaml` and [more](https://github.com/Kong/httpsnippet/wiki/Targets)!
 
 Relies on the popular [HAR](http://www.softwareishard.com/blog/har-12-spec/#request) format to import data and describe HTTP calls.
 
 See it in action on companion service: [APIembed](https://apiembed.com/)
 
-[![Build Status][travis-image]][travis-url]
-[![Downloads][npm-downloads]][npm-url]
+[![Build Status][travis-image]][travis-url] [![Downloads][npm-downloads]][npm-url]
 
 ## Install
 
@@ -21,8 +20,7 @@ npm install --save httpsnippet
 
 ## Usage
 
-```
-
+```text
   Usage: httpsnippet [options] <files ...>
 
   Options:
@@ -33,7 +31,6 @@ npm install --save httpsnippet
     -c, --client [client]     target client library
     -o, --output <directory>  write output to directory
     -x, --extra [{"optionKey": "optionValue"}]  provide extra options for the target/client
-
 ```
 
 ###### Example
@@ -70,24 +67,22 @@ provide extra options:
 httpsnippet example.json --target http --output ./snippets -x '{"autoHost": false, "autoContentLength": false}'
 ```
 
-
 ## API
 
 ### HTTPSnippet(source)
 
 #### source
 
-*Required*
-Type: `object`
+_Required_ Type: `object`
 
-Name of [conversion target](https://github.com/Mashape/httpsnippet/wiki/Targets)
+Name of [conversion target](https://github.com/Kong/httpsnippet/wiki/Targets)
 
-```js
-var HTTPSnippet = require('httpsnippet');
+```ts
+import { HTTPSnippet } from 'httpsnippet';
 
-var snippet = new HTTPSnippet({
+const snippet = new HTTPSnippet({
   method: 'GET',
-  url: 'http://mockbin.com/request'
+  url: 'http://mockbin.com/request',
 });
 ```
 
@@ -95,102 +90,103 @@ var snippet = new HTTPSnippet({
 
 #### target
 
-*Required*
-Type: `string`
+_Required_ Type: `string`
 
-Name of [conversion target](https://github.com/Mashape/httpsnippet/wiki/Targets)
+Name of [conversion target](https://github.com/Kong/httpsnippet/wiki/Targets)
 
 #### options
 
 Type: `object`
 
-Target options, *see [wiki](https://github.com/Mashape/httpsnippet/wiki/Targets) for details*
+Target options, _see [wiki](https://github.com/Kong/httpsnippet/wiki/Targets) for details_
 
-```js
-var HTTPSnippet = require('httpsnippet');
+```ts
+import { HTTPSnippet } from 'httpsnippet';
 
-var snippet = new HTTPSnippet({
+const snippet = new HTTPSnippet({
   method: 'GET',
-  url: 'http://mockbin.com/request'
+  url: 'http://mockbin.com/request',
 });
 
 // generate Node.js: Native output
 console.log(snippet.convert('node'));
 
 // generate Node.js: Native output, indent with tabs
-console.log(snippet.convert('node', {
-  indent: '\t'
-}));
+console.log(
+  snippet.convert('node', {
+    indent: '\t',
+  }),
+);
 ```
 
 ### convert(target [, client, options])
 
-#### target
+#### Target
 
-*Required*
+_Required_ Type: `string`
+
+Name of [conversion target](https://github.com/Kong/httpsnippet/wiki/Targets)
+
+#### Client
+
 Type: `string`
 
-Name of [conversion target](https://github.com/Mashape/httpsnippet/wiki/Targets)
+Name of conversion target [client library](https://github.com/Kong/httpsnippet/wiki/Targets)
 
-#### client
-
-Type: `string`
-
-Name of conversion target [client library](https://github.com/Mashape/httpsnippet/wiki/Targets)
-
-#### options
+#### Options
 
 Type: `object`
 
-Target options, *see [wiki](https://github.com/Mashape/httpsnippet/wiki/Targets) for details*
+Target options, _see [wiki](https://github.com/Kong/httpsnippet/wiki/Targets) for details_
 
-```js
-var HTTPSnippet = require('httpsnippet');
+```ts
+import { HTTPSnippet } from 'httpsnippet';
 
-var snippet = new HTTPSnippet({
+const snippet = new HTTPSnippet({
   method: 'GET',
-  url: 'http://mockbin.com/request'
+  url: 'http://mockbin.com/request',
 });
 
 // generate Shell: cURL output
-console.log(snippet.convert('shell', 'curl', {
-  indent: '\t'
-}));
+console.log(
+  snippet.convert('shell', 'curl', {
+    indent: '\t',
+  }),
+);
 
 // generate Node.js: Unirest output
 console.log(snippet.convert('node', 'unirest'));
 ```
 
 ### addTarget(target)
+
 #### target
 
-*Required*
-Type: `object`
+_Required_ Type: `object`
 
 Representation of a [conversion target](https://github.com/Kong/httpsnippet/wiki/Creating-Targets). Can use this to use targets that are not officially supported.
 
-```js
-const customLanguageTarget = require('httpsnippet-for-my-lang');
+```ts
+import { customLanguageTarget } from 'httpsnippet-for-my-lang';
 HTTPSnippet.addTarget(customLanguageTarget);
 ```
 
 ### addTargetClient(target, client)
-### target
 
-*Required*
-Type: `string`
+### Target
 
-Name of [conversion target](https://github.com/Mashape/httpsnippet/wiki/Targets)
+_Required_ Type: `string`
 
-### client
+Name of [conversion target](https://github.com/Kong/httpsnippet/wiki/Targets)
 
-*Required*
-Type: `object`
+### Client
+
+_Required_ Type: `object`
 
 Representation of a [conversion target client](https://github.com/Kong/httpsnippet/wiki/Creating-Targets). Can use this to use target clients that are not officially supported.
 
-```js
-const customClient = require('httpsnippet-for-my-node-http-client');
+```ts
+import { customClient } from 'httpsnippet-for-my-node-http-client';
 HTTPSnippet.addTargetClient('node', customClient);
 ```
 
@@ -198,7 +194,7 @@ HTTPSnippet.addTargetClient('node', customClient);
 
 At the heart of this module is the [HAR Format](http://www.softwareishard.com/blog/har-12-spec/#request) as the HTTP request description format, please review some of the sample JSON HAR Request objects in [test fixtures](/test/fixtures/requests), or read the [HAR Docs](http://www.softwareishard.com/blog/har-12-spec/#request) for more details.
 
-For detailed information on each target, please review the [wiki](https://github.com/Mashape/httpsnippet/wiki).
+For detailed information on each target, please review the [wiki](https://github.com/Kong/httpsnippet/wiki).
 
 ## Bugs and feature requests
 
@@ -208,37 +204,15 @@ Have a bug or a feature request? Please first read the [issue guidelines](CONTRI
 
 Please read through our [contributing guidelines](CONTRIBUTING.md). Included are directions for opening issues, coding standards, and notes on development.
 
-For info on creating new conversion targets, please review this [guideline](https://github.com/Mashape/httpsnippet/wiki/Creating-Targets)
+For info on creating new conversion targets, please review this [guideline](https://github.com/Kong/httpsnippet/wiki/Creating-Targets)
 
 Moreover, if your pull request contains JavaScript patches or features, you must include relevant unit tests.
 
 Editor preferences are available in the [editor config](.editorconfig) for easy use in common text editors. Read more and download plugins at <http://editorconfig.org>.
 
-## Versioning
-
-For transparency into our release cycle and in striving to maintain backward compatibility, this project is maintained under the Semantic Versioning guidelines. Sometimes we screw up, but we'll adhere to these rules whenever possible.
-
-Releases will be numbered with the following format:
-
-`<major>.<minor>.<patch>`
-
-And constructed with the following guidelines:
-
-- Breaking backward compatibility **bumps the major** while resetting minor and patch
-- New additions without breaking backward compatibility **bumps the minor** while resetting the patch
-- Bug fixes and misc changes **bumps only the patch**
-
-For more information on SemVer, please visit <http://semver.org/>.
-
-## License
-
-[MIT](LICENSE) &copy; [Kong](https://konghq.com)
-
 [license-url]: https://github.com/Kong/httpsnippet/blob/master/LICENSE
-
 [travis-url]: https://travis-ci.org/Kong/httpsnippet
 [travis-image]: https://api.travis-ci.org/Kong/httpsnippet.svg?branch=master
-
 [npm-url]: https://www.npmjs.com/package/httpsnippet
 [npm-license]: https://img.shields.io/npm/l/httpsnippet.svg?style=flat-square
 [npm-version]: https://img.shields.io/npm/v/httpsnippet.svg?style=flat-square

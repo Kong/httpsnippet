@@ -1,0 +1,3 @@
+src/targets/**/fixtures
+dist
+bin

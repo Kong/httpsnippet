@@ -1,0 +1,4 @@
+POST /har HTTP/1.1
+Cookie: foo=bar; bar=baz
+Host: mockbin.com
+
