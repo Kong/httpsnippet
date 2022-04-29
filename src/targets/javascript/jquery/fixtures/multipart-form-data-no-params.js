@@ -1,7 +1,7 @@
 const settings = {
   async: true,
   crossDomain: true,
-  url: 'https://httpbin.org/anything',
+  url: 'http://mockbin.com/har',
   method: 'POST',
   headers: {
     'Content-Type': 'multipart/form-data'

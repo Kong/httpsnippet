@@ -1,5 +1,5 @@
 HttpRequest request = HttpRequest.newBuilder()
-    .uri(URI.create("https://httpbin.org/anything"))
+    .uri(URI.create("http://mockbin.com/har"))
     .header("Content-Type", "multipart/form-data")
     .method("POST", HttpRequest.BodyPublishers.noBody())
     .build();

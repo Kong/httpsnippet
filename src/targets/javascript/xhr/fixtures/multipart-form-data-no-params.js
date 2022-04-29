@@ -7,7 +7,7 @@ xhr.addEventListener('readystatechange', function () {
   }
 });
 
-xhr.open('POST', 'https://httpbin.org/anything');
+xhr.open('POST', 'http://mockbin.com/har');
 xhr.setRequestHeader('Content-Type', 'multipart/form-data');
 
 xhr.send(data);

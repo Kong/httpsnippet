@@ -1,6 +1,6 @@
 const unirest = require('unirest');
 
-const req = unirest('POST', 'https://httpbin.org/anything');
+const req = unirest('POST', 'http://mockbin.com/har');
 
 req.headers({
   'Content-Type': 'multipart/form-data'

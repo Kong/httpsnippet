@@ -1,6 +1,6 @@
 import requests
 
-url = "https://httpbin.org/anything"
+url = "http://mockbin.com/har"
 
 payload = ""
 headers = {"Content-Type": "multipart/form-data"}

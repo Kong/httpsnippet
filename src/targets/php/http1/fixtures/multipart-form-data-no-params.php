@@ -1,7 +1,7 @@
 <?php
 
 $request = new HttpRequest();
-$request->setUrl('https://httpbin.org/anything');
+$request->setUrl('http://mockbin.com/har');
 $request->setMethod(HTTP_METH_POST);
 
 $request->setHeaders([

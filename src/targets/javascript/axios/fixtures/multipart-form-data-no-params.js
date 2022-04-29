@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const options = {
   method: 'POST',
-  url: 'https://httpbin.org/anything',
+  url: 'http://mockbin.com/har',
   headers: {'Content-Type': 'multipart/form-data'}
 };
 

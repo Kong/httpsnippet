@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 
-let url = 'https://httpbin.org/anything';
+let url = 'http://mockbin.com/har';
 
 let options = {method: 'POST', headers: {'Content-Type': 'multipart/form-data'}};
 

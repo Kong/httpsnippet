@@ -1,5 +1,5 @@
 AsyncHttpClient client = new DefaultAsyncHttpClient();
-client.prepare("POST", "https://httpbin.org/anything")
+client.prepare("POST", "http://mockbin.com/har")
   .setHeader("Content-Type", "multipart/form-data")
   .execute()
   .toCompletableFuture()

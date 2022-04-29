@@ -1,4 +1,4 @@
-POST /anything HTTP/1.1
+POST /har HTTP/1.1
 Content-Type: multipart/form-data
-Host: httpbin.org
+Host: mockbin.com
 

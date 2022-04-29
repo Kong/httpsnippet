@@ -1,3 +1,3 @@
 curl --request POST \
-  --url https://httpbin.org/anything \
+  --url http://mockbin.com/har \
   --header 'Content-Type: multipart/form-data'

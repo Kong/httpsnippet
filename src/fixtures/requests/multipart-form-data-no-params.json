@@ -9,7 +9,7 @@
       {
         "request": {
           "method": "POST",
-          "url": "https://httpbin.org/anything",
+          "url": "http://mockbin.com/har",
           "headers": [
             {
               "name": "Content-Type",
