@@ -46,7 +46,17 @@ export const axios: Client = {
 
     switch (postData.mimeType) {
       case 'application/x-www-form-urlencoded':
-        requestOptions.data = postData.paramsObj;
+        if (postData.params) {
+          push('const encodedParams = new URLSearchParams();');
+          postData.params.forEach(param => {
+            push(`encodedParams.set('${param.name}', '${param.value}');`);
+          });
+
+          blank();
+
+          requestOptions.data = 'encodedParams,';
+        }
+
         break;
 
       case 'application/json':
@@ -93,6 +103,6 @@ export const axios: Client = {
     push('console.error(error);', 2);
     push('});', 1);
 
-    return join();
+    return join().replace(/'encodedParams,'/, 'encodedParams,');
   },
 };
