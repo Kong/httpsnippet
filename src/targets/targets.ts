@@ -83,11 +83,11 @@ export const isTarget = (target: Target): target is Target => {
     throw new Error(`you tried to add a target which is not an object, got type: "${got}"`);
   }
 
-  if (!Object.hasOwn(target, 'info')) {
+  if (!Object.prototype.hasOwnProperty.call(target, 'info')) {
     throw new Error('targets must contain an `info` object');
   }
 
-  if (!Object.hasOwn(target.info, 'key')) {
+  if (!Object.prototype.hasOwnProperty.call(target.info, 'key')) {
     throw new Error('targets must have an `info` object with the property `key`');
   }
 
@@ -95,11 +95,11 @@ export const isTarget = (target: Target): target is Target => {
     throw new Error('target key must be a unique string');
   }
 
-  if (Object.hasOwn(targets, target.info.key)) {
+  if (Object.prototype.hasOwnProperty.call(targets, target.info.key)) {
     throw new Error(`a target already exists with this key, \`${target.info.key}\``);
   }
 
-  if (!Object.hasOwn(target.info, 'title')) {
+  if (!Object.prototype.hasOwnProperty.call(target.info, 'title')) {
     throw new Error('targets must have an `info` object with the property `title`');
   }
 
@@ -107,12 +107,12 @@ export const isTarget = (target: Target): target is Target => {
     throw new Error('target title must be a non-zero-length string');
   }
 
-  if (!Object.hasOwn(target.info, 'extname')) {
+  if (!Object.prototype.hasOwnProperty.call(target.info, 'extname')) {
     throw new Error('targets must have an `info` object with the property `extname`');
   }
 
   if (
-    !Object.hasOwn(target, 'clientsById') ||
+    !Object.prototype.hasOwnProperty.call(target, 'clientsById') ||
     !target.clientsById ||
     Object.keys(target.clientsById).length === 0
   ) {
@@ -121,11 +121,11 @@ export const isTarget = (target: Target): target is Target => {
     );
   }
 
-  if (!Object.hasOwn(target.info, 'default')) {
+  if (!Object.prototype.hasOwnProperty.call(target.info, 'default')) {
     throw new Error('targets must have an `info` object with the property `default`');
   }
 
-  if (!Object.hasOwn(target.clientsById, target.info.default)) {
+  if (!Object.prototype.hasOwnProperty.call(target.clientsById, target.info.default)) {
     throw new Error(
       `target ${target.info.key} is configured with a default client ${
         target.info.default
@@ -152,11 +152,11 @@ export const isClient = (client: Client): client is Client => {
     throw new Error('clients must be objects');
   }
 
-  if (!Object.hasOwn(client, 'info')) {
+  if (!Object.prototype.hasOwnProperty.call(client, 'info')) {
     throw new Error('targets client must contain an `info` object');
   }
 
-  if (!Object.hasOwn(client.info, 'key')) {
+  if (!Object.prototype.hasOwnProperty.call(client.info, 'key')) {
     throw new Error('targets client must have an `info` object with property `key`');
   }
 
@@ -164,19 +164,19 @@ export const isClient = (client: Client): client is Client => {
     throw new Error('client.info.key must contain an identifier unique to this target');
   }
 
-  if (!Object.hasOwn(client.info, 'title')) {
+  if (!Object.prototype.hasOwnProperty.call(client.info, 'title')) {
     throw new Error('targets client must have an `info` object with property `title`');
   }
 
-  if (!Object.hasOwn(client.info, 'description')) {
+  if (!Object.prototype.hasOwnProperty.call(client.info, 'description')) {
     throw new Error('targets client must have an `info` object with property `description`');
   }
 
-  if (!Object.hasOwn(client.info, 'link')) {
+  if (!Object.prototype.hasOwnProperty.call(client.info, 'link')) {
     throw new Error('targets client must have an `info` object with property `link`');
   }
 
-  if (!Object.hasOwn(client, 'convert') || typeof client.convert !== 'function') {
+  if (!Object.prototype.hasOwnProperty.call(client, 'convert') || typeof client.convert !== 'function') {
     throw new Error(
       'targets client must have a `convert` property containing a conversion function',
     );
@@ -190,11 +190,11 @@ export const addTargetClient = (targetId: TargetId, client: Client) => {
     return;
   }
 
-  if (!Object.hasOwn(targets, targetId)) {
+  if (!Object.prototype.hasOwnProperty.call(targets, targetId)) {
     throw new Error(`Sorry, but no ${targetId} target exists to add clients to`);
   }
 
-  if (Object.hasOwn(targets[targetId], client.info.key)) {
+  if (Object.prototype.hasOwnProperty.call(targets[targetId], client.info.key)) {
     throw new Error(
       `the target ${targetId} already has a client with the key ${client.info.key}, please use a different key`,
     );
