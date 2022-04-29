@@ -11,6 +11,7 @@
 import stringifyObject from 'stringify-object';
 
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { getHeaderName } from '../../../helpers/headers';
 import { Client } from '../../targets';
 
 export const fetch: Client = {
@@ -34,6 +35,15 @@ export const fetch: Client = {
     const reqOpts: Record<string, any> = {
       method,
     };
+
+    // The `form-data` module automatically adds a `Content-Type` header for `multipart/form-data`
+    // content and if we add our own here data won't be correctly transmitted.
+    if (postData.mimeType === 'multipart/form-data') {
+      const contentTypeHeader = getHeaderName(headersObj, 'content-type');
+      if (contentTypeHeader) {
+        delete headersObj[contentTypeHeader];
+      }
+    }
 
     if (Object.keys(headersObj).length) {
       reqOpts.headers = headersObj;

@@ -11,6 +11,7 @@
 import stringifyObject from 'stringify-object';
 
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { getHeaderName } from '../../../helpers/headers';
 import { Client } from '../../targets';
 
 interface FetchOptions {
@@ -36,6 +37,15 @@ export const fetch: Client<FetchOptions> = {
     const options: Record<string, any> = {
       method,
     };
+
+    // The FormData API automatically adds a `Content-Type` header for `multipart/form-data`
+    // content and if we add our own here data won't be correctly transmitted.
+    if (postData.mimeType === 'multipart/form-data') {
+      const contentTypeHeader = getHeaderName(allHeaders, 'content-type');
+      if (contentTypeHeader) {
+        delete allHeaders[contentTypeHeader];
+      }
+    }
 
     if (Object.keys(allHeaders).length) {
       options.headers = allHeaders;
