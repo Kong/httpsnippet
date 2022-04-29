@@ -36,7 +36,14 @@ module.exports = function (source, options) {
 
   switch (source.postData.mimeType) {
     case 'application/x-www-form-urlencoded':
-      reqOpts.data = source.postData.paramsObj;
+      code.push('const encodedParams = new URLSearchParams();');
+      source.postData.params.forEach(function (param) {
+        code.push(`encodedParams.set('${param.name}', '${param.value}');`);
+      });
+
+      code.blank();
+
+      reqOpts.data = 'encodedParams';
       break;
 
     case 'application/json':
@@ -83,7 +90,7 @@ module.exports = function (source, options) {
     .push(1, 'console.error(error);')
     .push('});');
 
-  return code.join();
+  return code.join().replace(/'encodedParams'/, 'encodedParams,');
 };
 
 module.exports.info = {

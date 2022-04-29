@@ -1,7 +1,7 @@
 const axios = require("axios").default;
 const { URLSearchParams } = require('url');
-const encodedParams = new URLSearchParams();
 
+const encodedParams = new URLSearchParams();
 encodedParams.set('foo', 'bar');
 encodedParams.set('hello', 'world');
 
@@ -9,7 +9,7 @@ const options = {
   method: 'POST',
   url: 'https://httpbin.org/anything',
   headers: {'content-type': 'application/x-www-form-urlencoded'},
-  data: encodedParams
+  data: encodedParams,
 };
 
 axios.request(options).then(function (response) {

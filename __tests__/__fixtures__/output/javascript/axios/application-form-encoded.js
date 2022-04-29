@@ -1,10 +1,14 @@
 import axios from "axios";
 
+const encodedParams = new URLSearchParams();
+encodedParams.set('foo', 'bar');
+encodedParams.set('hello', 'world');
+
 const options = {
   method: 'POST',
   url: 'https://httpbin.org/anything',
   headers: {'content-type': 'application/x-www-form-urlencoded'},
-  data: {foo: 'bar', hello: 'world'}
+  data: encodedParams,
 };
 
 axios.request(options).then(function (response) {
