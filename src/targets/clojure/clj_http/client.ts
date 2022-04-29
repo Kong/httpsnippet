@@ -144,22 +144,24 @@ export const clj_http: Client = {
         break;
 
       case 'multipart/form-data': {
-        params.multipart = postData.params?.map(param => {
-          if (param.fileName && !param.value) {
+        if (postData.params) {
+          params.multipart = postData.params.map(param => {
+            if (param.fileName && !param.value) {
+              return {
+                name: param.name,
+                content: new File(param.fileName),
+              };
+            }
             return {
               name: param.name,
-              content: new File(param.fileName),
+              content: param.value,
             };
-          }
-          return {
-            name: param.name,
-            content: param.value,
-          };
-        });
+          });
 
-        const header = getHeaderName(params.headers, 'content-type');
-        if (header) {
-          delete params.headers[header];
+          const header = getHeaderName(params.headers, 'content-type');
+          if (header) {
+            delete params.headers[header];
+          }
         }
         break;
       }

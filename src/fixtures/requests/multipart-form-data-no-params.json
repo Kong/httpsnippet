@@ -1,0 +1,26 @@
+{
+  "log": {
+    "version": "1.2",
+    "creator": {
+      "name": "HTTPSnippet",
+      "version": "1.0.0"
+    },
+    "entries": [
+      {
+        "request": {
+          "method": "POST",
+          "url": "https://httpbin.org/anything",
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "multipart/form-data"
+            }
+          ],
+          "postData": {
+            "mimeType": "multipart/form-data"
+          }
+        }
+      }
+    ]
+  }
+}
