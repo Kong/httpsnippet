@@ -22,3 +22,12 @@ export const getHeader = <T>(headers: Headers<T>, name: string) => {
  */
 export const hasHeader = <T>(headers: Headers<T>, name: string) =>
   Boolean(getHeaderName(headers, name));
+
+/**
+ * Determines if a given mimetype is JSON, or a variant of such.
+ */
+export const isMimeTypeJSON = (mimeType: string) => {
+  return ['application/json', 'application/x-json', 'text/json', 'text/x-json', '+json'].some(
+    type => mimeType.includes(type),
+  );
+};

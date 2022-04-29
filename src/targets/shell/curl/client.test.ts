@@ -87,5 +87,43 @@ runCustomFixtures({
       options: {},
       expected: 'urlencode.sh',
     },
+    {
+      it: 'should send JSON-encoded data with single quotes within a HEREDOC',
+      input: {
+        method: 'POST',
+        url: 'http://mockbin.com/har',
+        headers: [
+          {
+            name: 'content-type',
+            value: 'application/json',
+          },
+        ],
+        postData: {
+          mimeType: 'application/json',
+          text: '{"number":1,"string":"f\'oo"}',
+        },
+      } as Request,
+      options: {},
+      expected: 'jsonObj-with-singlequotes.sh',
+    },
+    {
+      it: 'should keep JSON payloads that are smaller than 20 characters on one line',
+      input: {
+        url: 'http://mockbin.com/har',
+        method: 'POST',
+        headers: [
+          {
+            name: 'content-type',
+            value: 'application/json',
+          },
+        ],
+        postData: {
+          text: '{"foo": "bar"}',
+          mimeType: 'application/json',
+        },
+      } as Request,
+      options: {},
+      expected: 'jsonObj-short.sh',
+    },
   ],
 });
