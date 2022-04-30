@@ -9,6 +9,7 @@
  */
 
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { getHeaderName } from '../../../helpers/headers';
 import { Client } from '../../targets';
 import { literalRepresentation } from '../helpers';
 
@@ -49,7 +50,13 @@ export const requests: Client<RequestsOptions> = {
       blank();
     }
 
+    const headers = allHeaders;
+
     // Construct payload
+    let payload: Record<string, any> = {};
+    const files: Record<string, string> = {};
+
+    let hasFiles = false;
     let hasPayload = false;
     let jsonPayload = false;
     switch (postData.mimeType) {
@@ -58,6 +65,45 @@ export const requests: Client<RequestsOptions> = {
           push(`payload = ${literalRepresentation(postData.jsonObj, opts)}`);
           jsonPayload = true;
           hasPayload = true;
+        }
+        break;
+
+      case 'multipart/form-data':
+        if (!postData.params) {
+          break;
+        }
+
+        payload = {};
+        postData.params.forEach(p => {
+          if (p.fileName) {
+            files[p.name] = `open('${p.fileName}', 'rb')`;
+            hasFiles = true;
+          } else {
+            payload[p.name] = p.value;
+            hasPayload = true;
+          }
+        });
+
+        if (hasFiles) {
+          push(`files = ${literalRepresentation(files, opts)}`);
+
+          if (hasPayload) {
+            push(`payload = ${literalRepresentation(payload, opts)}`);
+          }
+
+          // The requests library will only automatically add a `multipart/form-data` header if
+          // there are files being sent. If we're **only** sending form data we still need to send
+          // the boundary ourselves.
+          const headerName = getHeaderName(headers, 'content-type');
+          if (headerName) {
+            delete headers[headerName];
+          }
+        } else {
+          const nonFilePayload = JSON.stringify(postData.text);
+          if (nonFilePayload) {
+            push(`payload = ${nonFilePayload}`);
+            hasPayload = true;
+          }
         }
         break;
 
@@ -71,10 +117,13 @@ export const requests: Client<RequestsOptions> = {
     }
 
     // Construct headers
-    const headers = allHeaders;
     const headerCount = Object.keys(headers).length;
 
-    if (headerCount === 1) {
+    if (!headerCount && (hasPayload || hasFiles)) {
+      // If we don't have any heads but we do have a payload we should put a blank line here between
+      // that payload consturction and our execution of the requests library.
+      blank();
+    } else if (headerCount === 1) {
       for (const header in headers) {
         push(`headers = {"${header}": "${headers[header]}"}`);
         blank();
@@ -105,6 +154,10 @@ export const requests: Client<RequestsOptions> = {
       } else {
         request += ', data=payload';
       }
+    }
+
+    if (hasFiles) {
+      request += ', files=files';
     }
 
     if (headerCount > 0) {

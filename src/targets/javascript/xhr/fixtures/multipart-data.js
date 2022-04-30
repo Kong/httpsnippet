@@ -1,5 +1,6 @@
 const data = new FormData();
 data.append('foo', 'Hello World');
+data.append('bar', 'Bonjour le monde');
 
 const xhr = new XMLHttpRequest();
 xhr.withCredentials = true;

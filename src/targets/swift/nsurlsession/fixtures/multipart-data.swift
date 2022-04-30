@@ -7,6 +7,10 @@ let parameters = [
     "value": "Hello World",
     "fileName": "hello.txt",
     "contentType": "text/plain"
+  ],
+  [
+    "name": "bar",
+    "value": "Bonjour le monde"
   ]
 ]
 

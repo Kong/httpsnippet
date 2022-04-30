@@ -10,6 +10,9 @@ req.multipart([
   {
     body: 'Hello World',
     'content-type': 'text/plain'
+  },
+  {
+    body: 'Bonjour le monde'
   }
 ]);
 

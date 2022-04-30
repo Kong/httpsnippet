@@ -1,5 +1,6 @@
 const form = new FormData();
 form.append('foo', 'Hello World');
+form.append('bar', 'Bonjour le monde');
 
 const options = {
   method: 'POST',
