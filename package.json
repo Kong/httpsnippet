@@ -55,7 +55,7 @@
   "devDependencies": {
     "@readme/eslint-config": "^8.0.2",
     "eslint": "^8.3.0",
-    "glob": "^7.1.7",
+    "glob": "^8.0.1",
     "jest": "^28.0.3",
     "prettier": "^2.5.0",
     "require-directory": "^2.1.1"
