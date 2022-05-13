@@ -58,6 +58,10 @@ export const http2: Client<Http2Options> = {
         break;
 
       case 'multipart/form-data': {
+        if (!postData.params) {
+          break;
+        }
+
         const files: {
           name: string;
           type: string | undefined;
@@ -66,7 +70,7 @@ export const http2: Client<Http2Options> = {
           [anything: string]: string | undefined;
         }[] = [];
         const fields: Record<string, any> = {};
-        postData.params?.forEach(({ name, fileName, value, contentType }) => {
+        postData.params.forEach(({ name, fileName, value, contentType }) => {
           if (fileName) {
             files.push({
               name,
