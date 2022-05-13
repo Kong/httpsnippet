@@ -25,7 +25,7 @@ export const guzzle: Client<GuzzleOptions> = {
     key: 'guzzle',
     title: 'Guzzle v7',
     link: 'http://docs.guzzlephp.org/en/stable/',
-    description: 'PHP with guzzle v7'
+    description: 'PHP with guzzle v7',
   },
   convert: ({ postData, fullUrl, method, cookies, headersObj }, options) => {
     const opts = {
@@ -37,7 +37,11 @@ export const guzzle: Client<GuzzleOptions> = {
     };
 
     const { push, blank, join } = new CodeBuilder({ indent: opts.indent });
-    const { code: requestCode, push: requestPush, join: requestJoin  } = new CodeBuilder({ indent: opts.indent });
+    const {
+      code: requestCode,
+      push: requestPush,
+      join: requestJoin,
+    } = new CodeBuilder({ indent: opts.indent });
 
     if (!opts.noTags) {
       push(opts.shortTags ? '<?' : '<?php');
@@ -47,10 +51,14 @@ export const guzzle: Client<GuzzleOptions> = {
     switch (postData.mimeType) {
       case 'application/x-www-form-urlencoded':
         requestPush(
-          `'form_params' => ${convertType(postData.paramsObj, opts.indent + opts.indent, opts.indent)},`,
+          `'form_params' => ${convertType(
+            postData.paramsObj,
+            opts.indent + opts.indent,
+            opts.indent,
+          )},`,
           1,
-        )
-        break
+        );
+        break;
 
       case 'multipart/form-data': {
         type MultipartField = {
@@ -60,7 +68,7 @@ export const guzzle: Client<GuzzleOptions> = {
           headers?: Record<string, string>;
         };
 
-        const fields: MultipartField[] = []
+        const fields: MultipartField[] = [];
 
         if (postData.params) {
           postData.params.forEach(function (param) {
@@ -68,28 +76,28 @@ export const guzzle: Client<GuzzleOptions> = {
               const field: MultipartField = {
                 name: param.name,
                 filename: param.fileName,
-                contents: param.value
-              }
+                contents: param.value,
+              };
 
               if (param.contentType) {
-                field.headers = { 'Content-Type': param.contentType }
+                field.headers = { 'Content-Type': param.contentType };
               }
 
-              fields.push(field)
+              fields.push(field);
             } else if (param.value) {
               fields.push({
                 name: param.name,
-                contents: param.value
-              })
+                contents: param.value,
+              });
             }
-          })
+          });
         }
 
         if (fields.length) {
           requestPush(
             `'multipart' => ${convertType(fields, opts.indent + opts.indent, opts.indent)}`,
             1,
-          )
+          );
         }
 
         // Guzzle adds its own boundary for multipart requests.
@@ -101,22 +109,26 @@ export const guzzle: Client<GuzzleOptions> = {
             }
           }
         }
-        break
+        break;
       }
 
       default:
         if (postData.text) {
-          requestPush(`'body' => ${convertType(postData.text)},`, 1)
+          requestPush(`'body' => ${convertType(postData.text)},`, 1);
         }
     }
 
     // construct headers
-    const headers = Object.keys(headersObj).sort().map(function (key) {
-      return `${opts.indent}${opts.indent}'${key}' => '${headersObj[key]}',`;
-    })
+    const headers = Object.keys(headersObj)
+      .sort()
+      .map(function (key) {
+        return `${opts.indent}${opts.indent}'${key}' => '${headersObj[key]}',`;
+      });
 
     // construct cookies
-    const cookieString = cookies.map(cookie => `${encodeURIComponent(cookie.name)}=${encodeURIComponent(cookie.value)}`).join('; ')
+    const cookieString = cookies
+      .map(cookie => `${encodeURIComponent(cookie.name)}=${encodeURIComponent(cookie.value)}`)
+      .join('; ');
     if (cookieString.length) {
       headers.push(`${opts.indent}${opts.indent}'cookie' => '${cookieString}',`);
     }
