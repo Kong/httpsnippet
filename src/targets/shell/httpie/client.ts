@@ -88,7 +88,7 @@ export const httpie: Client<HttpieOptions> = {
     }
 
     if (opts.style) {
-      flags.push(`--style=${opts.pretty}`);
+      flags.push(`--style=${opts.style}`);
     }
 
     if (opts.timeout) {

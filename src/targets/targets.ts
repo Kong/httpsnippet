@@ -176,7 +176,10 @@ export const isClient = (client: Client): client is Client => {
     throw new Error('targets client must have an `info` object with property `link`');
   }
 
-  if (!Object.prototype.hasOwnProperty.call(client, 'convert') || typeof client.convert !== 'function') {
+  if (
+    !Object.prototype.hasOwnProperty.call(client, 'convert') ||
+    typeof client.convert !== 'function'
+  ) {
     throw new Error(
       'targets client must have a `convert` property containing a conversion function',
     );
