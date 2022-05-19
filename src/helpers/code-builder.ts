@@ -1,6 +1,8 @@
 const DEFAULT_INDENTATION_CHARACTER = '';
 const DEFAULT_LINE_JOIN = '\n';
 
+export type PostProcessor = (unreplacedCode: string) => string;
+
 export interface CodeBuilderOptions {
   /**
    * Desired indentation character for aggregated lines of code
@@ -16,6 +18,7 @@ export interface CodeBuilderOptions {
 }
 
 export class CodeBuilder {
+  postProcessors: PostProcessor[] = [];
   code: string[] = [];
   indentationCharacter: string = DEFAULT_INDENTATION_CHARACTER;
   lineJoin = DEFAULT_LINE_JOIN;
@@ -61,7 +64,22 @@ export class CodeBuilder {
   };
 
   /**
-   * Concatenate all current lines using the given lineJoin
+   * Concatenate all current lines using the given lineJoin, then apply any replacers that may have been added
    */
-  join = () => this.code.join(this.lineJoin);
+  join = () => {
+    const unreplacedCode = this.code.join(this.lineJoin);
+    const replacedOutput = this.postProcessors.reduce(
+      (accumulator, replacer) => replacer(accumulator),
+      unreplacedCode,
+    );
+    return replacedOutput;
+  };
+
+  /**
+   * Often when writing modules you may wish to add a literal tag or bit of metadata that you wish to transform after other processing as a final step.
+   * To do so, you can provide a PostProcessor function and it will be run automatically for you when you call `join()` later on.
+   */
+  addPostProcessor = (postProcessor: PostProcessor) => {
+    this.postProcessors = [...this.postProcessors, postProcessor];
+  };
 }

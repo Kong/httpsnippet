@@ -26,7 +26,7 @@ export const axios: Client = {
       ...options,
     };
 
-    const { blank, push, join } = new CodeBuilder({ indent: opts.indent });
+    const { blank, push, join, addPostProcessor } = new CodeBuilder({ indent: opts.indent });
 
     push("import axios from 'axios';");
     blank();
@@ -46,7 +46,18 @@ export const axios: Client = {
 
     switch (postData.mimeType) {
       case 'application/x-www-form-urlencoded':
-        requestOptions.data = postData.paramsObj;
+        if (postData.params) {
+          push('const encodedParams = new URLSearchParams();');
+          postData.params.forEach(param => {
+            push(`encodedParams.set('${param.name}', '${param.value}');`);
+          });
+
+          blank();
+
+          requestOptions.data = 'encodedParams,';
+          addPostProcessor(code => code.replace(/'encodedParams,'/, 'encodedParams,'));
+        }
+
         break;
 
       case 'application/json':

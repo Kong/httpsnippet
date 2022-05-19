@@ -25,11 +25,9 @@ export const axios: Client = {
       indent: '  ',
       ...options,
     };
+    const { blank, join, push, addPostProcessor } = new CodeBuilder({ indent: opts.indent });
 
-    const { blank, join, push } = new CodeBuilder({ indent: opts.indent });
-
-    push("var axios = require('axios').default;");
-    blank();
+    push("const axios = require('axios').default;");
 
     const reqOpts: Record<string, any> = {
       method,
@@ -46,23 +44,39 @@ export const axios: Client = {
 
     switch (postData.mimeType) {
       case 'application/x-www-form-urlencoded':
-        reqOpts.data = postData.paramsObj;
+        if (postData.params) {
+          push("const { URLSearchParams } = require('url');");
+          blank();
+
+          push('const encodedParams = new URLSearchParams();');
+          postData.params.forEach(param => {
+            push(`encodedParams.set('${param.name}', '${param.value}');`);
+          });
+
+          blank();
+
+          reqOpts.data = 'encodedParams,';
+          addPostProcessor(code => code.replace(/'encodedParams,'/, 'encodedParams,'));
+        }
+
         break;
 
       case 'application/json':
+        blank();
         if (postData.jsonObj) {
           reqOpts.data = postData.jsonObj;
         }
         break;
 
       default:
+        blank();
         if (postData.text) {
           reqOpts.data = postData.text;
         }
     }
 
     const stringifiedOptions = stringifyObject(reqOpts, { indent: '  ', inlineCharacterLimit: 80 });
-    push(`var options = ${stringifiedOptions};`);
+    push(`const options = ${stringifiedOptions};`);
     blank();
 
     push('axios');
