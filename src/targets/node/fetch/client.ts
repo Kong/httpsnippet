@@ -36,15 +36,6 @@ export const fetch: Client = {
       method,
     };
 
-    // The `form-data` module automatically adds a `Content-Type` header for `multipart/form-data`
-    // content and if we add our own here data won't be correctly transmitted.
-    if (postData.mimeType === 'multipart/form-data') {
-      const contentTypeHeader = getHeaderName(headersObj, 'content-type');
-      if (contentTypeHeader) {
-        delete headersObj[contentTypeHeader];
-      }
-    }
-
     if (Object.keys(headersObj).length) {
       reqOpts.headers = headersObj;
     }
@@ -71,6 +62,15 @@ export const fetch: Client = {
       case 'multipart/form-data':
         if (!postData.params) {
           break;
+        }
+
+        // The `form-data` module automatically adds a `Content-Type` header for
+        // `multipart/form-data` content and if we add our own here data won't be correctly
+        // transmitted.
+        // eslint-disable-next-line no-case-declarations -- We're only using `contentTypeHeader` within this block.
+        const contentTypeHeader = getHeaderName(headersObj, 'content-type');
+        if (contentTypeHeader) {
+          delete headersObj[contentTypeHeader];
         }
 
         unshift("const FormData = require('form-data');");
@@ -111,6 +111,12 @@ export const fetch: Client = {
     blank();
     push(`let url = '${url}';`);
     blank();
+
+    // If we ultimately don't have any headers to send then we shouldn't add an empty object into
+    // the request options.
+    if (reqOpts.headers && !Object.keys(reqOpts.headers).length) {
+      delete reqOpts.headers;
+    }
 
     const stringifiedOptions = stringifyObject(reqOpts, { indent: '  ', inlineCharacterLimit: 80 });
     push(`let options = ${stringifiedOptions};`);

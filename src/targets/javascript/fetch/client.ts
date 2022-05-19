@@ -38,15 +38,6 @@ export const fetch: Client<FetchOptions> = {
       method,
     };
 
-    // The FormData API automatically adds a `Content-Type` header for `multipart/form-data`
-    // content and if we add our own here data won't be correctly transmitted.
-    if (postData.mimeType === 'multipart/form-data') {
-      const contentTypeHeader = getHeaderName(allHeaders, 'content-type');
-      if (contentTypeHeader) {
-        delete allHeaders[contentTypeHeader];
-      }
-    }
-
     if (Object.keys(allHeaders).length) {
       options.headers = allHeaders;
     }
@@ -69,6 +60,14 @@ export const fetch: Client<FetchOptions> = {
           break;
         }
 
+        // The FormData API automatically adds a `Content-Type` header for `multipart/form-data`
+        // content and if we add our own here data won't be correctly transmitted.
+        // eslint-disable-next-line no-case-declarations -- We're only using `contentTypeHeader` within this block.
+        const contentTypeHeader = getHeaderName(allHeaders, 'content-type');
+        if (contentTypeHeader) {
+          delete allHeaders[contentTypeHeader];
+        }
+
         push('const form = new FormData();');
 
         postData.params.forEach(param => {
@@ -82,6 +81,12 @@ export const fetch: Client<FetchOptions> = {
         if (postData.text) {
           options.body = postData.text;
         }
+    }
+
+    // If we ultimately don't have any headers to send then we shouldn't add an empty object into
+    // the request options.
+    if (options.headers && !Object.keys(options.headers).length) {
+      delete options.headers;
     }
 
     push(
