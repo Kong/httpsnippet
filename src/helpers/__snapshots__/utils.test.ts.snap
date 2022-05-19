@@ -231,10 +231,10 @@ Array [
         "title": "cURL",
       },
       Object {
-        "description": "PHP with guzzle v7",
+        "description": "PHP with Guzzle",
         "key": "guzzle",
         "link": "http://docs.guzzlephp.org/en/stable/",
-        "title": "Guzzle v7",
+        "title": "Guzzle",
       },
       Object {
         "description": "PHP with pecl/http v1",

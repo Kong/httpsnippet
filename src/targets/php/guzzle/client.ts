@@ -23,9 +23,9 @@ export interface GuzzleOptions {
 export const guzzle: Client<GuzzleOptions> = {
   info: {
     key: 'guzzle',
-    title: 'Guzzle v7',
+    title: 'Guzzle',
     link: 'http://docs.guzzlephp.org/en/stable/',
-    description: 'PHP with guzzle v7',
+    description: 'PHP with Guzzle',
   },
   convert: ({ postData, fullUrl, method, cookies, headersObj }, options) => {
     const opts = {
@@ -98,14 +98,14 @@ export const guzzle: Client<GuzzleOptions> = {
             `'multipart' => ${convertType(fields, opts.indent + opts.indent, opts.indent)}`,
             1,
           );
-        }
 
-        // Guzzle adds its own boundary for multipart requests.
-        if (hasHeader(headersObj, 'content-type')) {
-          if (getHeader(headersObj, 'content-type')?.indexOf('boundary')) {
-            const headerName = getHeaderName(headersObj, 'content-type');
-            if (headerName) {
-              delete headersObj[headerName];
+          // Guzzle adds its own boundary for multipart requests.
+          if (hasHeader(headersObj, 'content-type')) {
+            if (getHeader(headersObj, 'content-type')?.indexOf('boundary')) {
+              const headerName = getHeaderName(headersObj, 'content-type');
+              if (headerName) {
+                delete headersObj[headerName];
+              }
             }
           }
         }
