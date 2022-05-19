@@ -10,6 +10,7 @@
 
 const stringifyObject = require('stringify-object');
 const CodeBuilder = require('../../helpers/code-builder');
+const { getHeaderName } = require('../../helpers/headers');
 
 module.exports = function (source, options) {
   const opts = {
@@ -45,6 +46,15 @@ module.exports = function (source, options) {
 
     case 'multipart/form-data':
       if (source.postData.params) {
+        // The FormData API automatically adds a `Content-Type` header for `multipart/form-data`
+        // content and if we add our own here data won't be correctly transmitted.
+        if (reqOptions.headers) {
+          const contentTypeHeader = getHeaderName(reqOptions.headers, 'content-type');
+          if (contentTypeHeader) {
+            delete reqOptions.headers[contentTypeHeader];
+          }
+        }
+
         code.push('const form = new FormData();');
 
         source.postData.params.forEach(function (param) {
@@ -63,6 +73,12 @@ module.exports = function (source, options) {
       if (source.postData.text) {
         reqOptions.body = source.postData.text;
       }
+  }
+
+  // If we ultimately don't have any headers to send then we shouldn't add an empty object into the
+  // request options.
+  if (reqOptions.headers && !Object.keys(reqOptions.headers).length) {
+    delete reqOptions.headers;
   }
 
   code

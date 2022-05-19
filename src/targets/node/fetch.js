@@ -27,18 +27,6 @@ module.exports = function (source, options) {
     method: source.method,
   };
 
-  // The `form-data` library automatically adds a `Content-Type` header for `multipart/form-data` content and if we
-  // add our own here, data won't be correctly transferred.
-  if (source.postData.mimeType === 'multipart/form-data') {
-    if (source.postData.params) {
-      const contentTypeHeader = headerHelpers.getHeaderName(source.allHeaders, 'content-type');
-      if (contentTypeHeader) {
-        // eslint-disable-next-line no-param-reassign
-        delete source.allHeaders[contentTypeHeader];
-      }
-    }
-  }
-
   if (Object.keys(source.allHeaders).length) {
     reqOpts.headers = source.allHeaders;
   }
@@ -64,6 +52,16 @@ module.exports = function (source, options) {
 
     case 'multipart/form-data':
       if (source.postData.params) {
+        // The `form-data` library automatically adds a `Content-Type` header for
+        // `multipart/form-data` content and if we add our own here, data won't be correctly
+        // transferred.
+        if (reqOpts.headers) {
+          const contentTypeHeader = headerHelpers.getHeaderName(reqOpts.headers, 'content-type');
+          if (contentTypeHeader) {
+            delete reqOpts.headers[contentTypeHeader];
+          }
+        }
+
         code.unshift("const FormData = require('form-data');");
         code.push('const formData = new FormData();');
         code.blank();
@@ -86,6 +84,12 @@ module.exports = function (source, options) {
       if (source.postData.text) {
         reqOpts.body = source.postData.text;
       }
+  }
+
+  // If we ultimately don't have any headers to send then we shouldn't add an empty object into
+  // the request options.
+  if (reqOpts.headers && !Object.keys(reqOpts.headers).length) {
+    delete reqOpts.headers;
   }
 
   code.blank();
