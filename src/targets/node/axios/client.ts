@@ -25,8 +25,7 @@ export const axios: Client = {
       indent: '  ',
       ...options,
     };
-
-    const { blank, join, push } = new CodeBuilder({ indent: opts.indent });
+    const { blank, join, push, addPostProcessor } = new CodeBuilder({ indent: opts.indent });
 
     push("const axios = require('axios').default;");
 
@@ -57,6 +56,7 @@ export const axios: Client = {
           blank();
 
           reqOpts.data = 'encodedParams,';
+          addPostProcessor(code => code.replace(/'encodedParams,'/, 'encodedParams,'));
         }
 
         break;
@@ -88,6 +88,6 @@ export const axios: Client = {
     push('console.error(error);', 2);
     push('});', 1);
 
-    return join().replace(/'encodedParams,'/, 'encodedParams,');
+    return join();
   },
 };
