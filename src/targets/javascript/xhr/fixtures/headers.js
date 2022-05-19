@@ -12,5 +12,6 @@ xhr.addEventListener('readystatechange', function () {
 xhr.open('GET', 'http://mockbin.com/har');
 xhr.setRequestHeader('accept', 'application/json');
 xhr.setRequestHeader('x-foo', 'Bar');
+xhr.setRequestHeader('x-bar', 'Foo');
 
 xhr.send(data);

@@ -1,5 +1,6 @@
 GET /har HTTP/1.1
 Accept: application/json
 X-Foo: Bar
+X-Bar: Foo
 Host: mockbin.com
 

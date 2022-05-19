@@ -89,27 +89,20 @@ export const httr: Client = {
     }
 
     // Construct headers
-    const headers = allHeaders;
-    let headerCount = Object.keys(headers).length;
-    let header = '';
+    const headers = [];
     let cookies;
     let accept;
 
-    for (const head in headers) {
+    for (const head in allHeaders) {
       if (head.toLowerCase() === 'accept') {
-        accept = `, accept("${headers[head]}")`;
-        headerCount -= 1;
+        accept = `, accept("${allHeaders[head]}")`;
       } else if (head.toLowerCase() === 'cookie') {
-        cookies = `, set_cookies(\`${String(headers[head])
+        cookies = `, set_cookies(\`${String(allHeaders[head])
           .replace(/;/g, '", `')
           .replace(/` /g, '`')
           .replace(/[=]/g, '` = "')}")`;
-        headerCount -= 1;
       } else if (head.toLowerCase() !== 'content-type') {
-        header = `${header + head.replace('-', '_')} = '${headers[head]}`;
-        if (headerCount > 1) {
-          header = `${header}', `;
-        }
+        headers.push(`'${head}' = '${allHeaders[head]}'`);
       }
     }
 
@@ -120,8 +113,8 @@ export const httr: Client = {
       request += ', body = payload';
     }
 
-    if (header !== '') {
-      request += `, add_headers(${header}')`;
+    if (headers.length) {
+      request += `, add_headers(${headers.join(', ')})`;
     }
 
     if (queryString.length) {

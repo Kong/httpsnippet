@@ -7,7 +7,8 @@ const options = {
   path: '/har',
   headers: {
     accept: 'application/json',
-    'x-foo': 'Bar'
+    'x-foo': 'Bar',
+    'x-bar': 'Foo'
   }
 };
 

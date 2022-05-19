@@ -1,7 +1,8 @@
 #import <Foundation/Foundation.h>
 
 NSDictionary *headers = @{ @"accept": @"application/json",
-                           @"x-foo": @"Bar" };
+                           @"x-foo": @"Bar",
+                           @"x-bar": @"Foo" };
 
 NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://mockbin.com/har"]
                                                        cachePolicy:NSURLRequestUseProtocolCachePolicy

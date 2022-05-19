@@ -9,6 +9,10 @@
     {
       "name": "x-foo",
       "value": "Bar"
+    },
+    {
+      "name": "x-bar",
+      "value": "Foo"
     }
   ]
 }
