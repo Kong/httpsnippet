@@ -19,6 +19,10 @@ module.exports = {
               name: 'x-foo',
               value: 'Bar',
             },
+            {
+              name: 'x-bar',
+              value: 'Foo',
+            },
           ],
         },
         response: {
@@ -37,6 +41,7 @@ module.exports = {
             text: JSON.stringify({
               headers: {
                 Accept: 'text/json',
+                'X-Bar': 'Foo',
                 'X-Foo': 'Bar',
               },
             }),

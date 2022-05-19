@@ -7,7 +7,8 @@ $request->setRequestUrl('https://httpbin.org/headers');
 $request->setRequestMethod('GET');
 $request->setHeaders([
   'accept' => 'text/json',
-  'x-foo' => 'Bar'
+  'x-foo' => 'Bar',
+  'x-bar' => 'Foo'
 ]);
 
 $client->enqueue($request)->send();

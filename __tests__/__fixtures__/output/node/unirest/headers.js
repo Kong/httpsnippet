@@ -4,7 +4,8 @@ const req = unirest("GET", "https://httpbin.org/headers");
 
 req.headers({
   "accept": "text/json",
-  "x-foo": "Bar"
+  "x-foo": "Bar",
+  "x-bar": "Foo"
 });
 
 req.end(function (res) {

@@ -109,6 +109,7 @@ describe('HTTPSnippet', () => {
 
     expect(req.headersObj).toStrictEqual({
       accept: 'text/json',
+      'x-bar': 'Foo',
       'x-foo': 'Bar',
     });
   });
@@ -125,6 +126,7 @@ describe('HTTPSnippet', () => {
     expect(req.headersObj).toStrictEqual({
       'Kong-Admin-Token': 'Hunter1',
       accept: 'text/json',
+      'x-bar': 'Foo',
       'x-foo': 'Bar',
     });
   });
@@ -144,6 +146,7 @@ describe('HTTPSnippet', () => {
     expect(req.headersObj).toStrictEqual({
       'kong-admin-token': 'Hunter1',
       accept: 'text/json',
+      'x-bar': 'Foo',
       'x-foo': 'Bar',
     });
   });

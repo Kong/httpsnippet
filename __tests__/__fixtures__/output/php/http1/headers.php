@@ -6,7 +6,8 @@ $request->setMethod(HTTP_METH_GET);
 
 $request->setHeaders([
   'accept' => 'text/json',
-  'x-foo' => 'Bar'
+  'x-foo' => 'Bar',
+  'x-bar' => 'Foo'
 ]);
 
 try {

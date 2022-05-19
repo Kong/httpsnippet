@@ -14,6 +14,7 @@ func main() {
 
 	req.Header.Add("accept", "text/json")
 	req.Header.Add("x-foo", "Bar")
+	req.Header.Add("x-bar", "Foo")
 
 	res, _ := http.DefaultClient.Do(req)
 

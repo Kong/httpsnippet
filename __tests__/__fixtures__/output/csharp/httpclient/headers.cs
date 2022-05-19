@@ -7,6 +7,7 @@ var request = new HttpRequestMessage
     {
         { "accept", "text/json" },
         { "x-foo", "Bar" },
+        { "x-bar", "Foo" },
     },
 };
 using (var response = await client.SendAsync(request))

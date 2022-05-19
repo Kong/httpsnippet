@@ -2,7 +2,8 @@ import Foundation
 
 let headers = [
   "accept": "text/json",
-  "x-foo": "Bar"
+  "x-foo": "Bar",
+  "x-bar": "Foo"
 ]
 
 let request = NSMutableURLRequest(url: NSURL(string: "https://httpbin.org/headers")! as URL,

@@ -1,7 +1,8 @@
 #import <Foundation/Foundation.h>
 
 NSDictionary *headers = @{ @"accept": @"text/json",
-                           @"x-foo": @"Bar" };
+                           @"x-foo": @"Bar",
+                           @"x-bar": @"Foo" };
 
 NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://httpbin.org/headers"]
                                                        cachePolicy:NSURLRequestUseProtocolCachePolicy

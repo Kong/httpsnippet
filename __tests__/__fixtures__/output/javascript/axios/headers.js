@@ -3,7 +3,7 @@ import axios from "axios";
 const options = {
   method: 'GET',
   url: 'https://httpbin.org/headers',
-  headers: {accept: 'text/json', 'x-foo': 'Bar'}
+  headers: {accept: 'text/json', 'x-foo': 'Bar', 'x-bar': 'Foo'}
 };
 
 axios.request(options).then(function (response) {

@@ -7,7 +7,8 @@ const options = {
   "path": "/headers",
   "headers": {
     "accept": "text/json",
-    "x-foo": "Bar"
+    "x-foo": "Bar",
+    "x-bar": "Foo"
   }
 };
 

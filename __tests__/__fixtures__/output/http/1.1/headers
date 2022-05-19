@@ -1,6 +1,7 @@
 GET /headers HTTP/1.1
 Accept: text/json
 X-Foo: Bar
+X-Bar: Foo
 Host: httpbin.org
 
 

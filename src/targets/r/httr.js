@@ -75,24 +75,20 @@ module.exports = function (source) {
   }
 
   // Construct headers
-  const headers = source.allHeaders;
-  let headerCount = 0;
-  let header = '';
+  const headers = [];
   let cookies;
   let accept;
 
-  Object.keys(headers).forEach(head => {
-    if (head.toLowerCase() === 'accept') {
-      accept = `, accept("${headers[head]}")`;
-      headerCount += 1;
-    } else if (head.toLowerCase() === 'cookie') {
-      cookies = `, set_cookies(\`${headers[head].replace(/;/g, '", `').replace(/` /g, '`').replace(/=/g, '` = "')}")`;
-      headerCount += 1;
-    } else if (head.toLowerCase() !== 'content-type') {
-      header = `${header + head.replace('-', '_')} = '${headers[head]}`;
-      if (headerCount > 1) {
-        header += "', ";
-      }
+  Object.keys(source.allHeaders).forEach(header => {
+    if (header.toLowerCase() === 'accept') {
+      accept = `, accept("${source.allHeaders[header]}")`;
+    } else if (header.toLowerCase() === 'cookie') {
+      cookies = `, set_cookies(\`${source.allHeaders[header]
+        .replace(/;/g, '", `')
+        .replace(/` /g, '`')
+        .replace(/=/g, '` = "')}")`;
+    } else if (header.toLowerCase() !== 'content-type') {
+      headers.push(`'${header}' = '${source.allHeaders[header]}'`);
     }
   });
 
@@ -104,8 +100,8 @@ module.exports = function (source) {
     request += ', body = payload';
   }
 
-  if (header !== '') {
-    request += `, add_headers(${header}')`;
+  if (headers.length) {
+    request += `, add_headers(${headers.join(', ')})`;
   }
 
   if (source.queryString.length) {

@@ -5,6 +5,7 @@ val request = Request.Builder()
   .get()
   .addHeader("accept", "text/json")
   .addHeader("x-foo", "Bar")
+  .addHeader("x-bar", "Foo")
   .build()
 
 val response = client.newCall(request).execute()

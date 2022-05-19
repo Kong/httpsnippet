@@ -12,5 +12,6 @@ xhr.addEventListener("readystatechange", function () {
 xhr.open("GET", "https://httpbin.org/headers");
 xhr.setRequestHeader("accept", "text/json");
 xhr.setRequestHeader("x-foo", "Bar");
+xhr.setRequestHeader("x-bar", "Foo");
 
 xhr.send(data);
