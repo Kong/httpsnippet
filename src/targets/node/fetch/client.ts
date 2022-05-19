@@ -64,9 +64,7 @@ export const fetch: Client = {
           break;
         }
 
-        // The `form-data` module automatically adds a `Content-Type` header for
-        // `multipart/form-data` content and if we add our own here data won't be correctly
-        // transmitted.
+        // The `form-data` module automatically adds a `Content-Type` header for `multipart/form-data` content and if we add our own here data won't be correctly transmitted.
         // eslint-disable-next-line no-case-declarations -- We're only using `contentTypeHeader` within this block.
         const contentTypeHeader = getHeaderName(headersObj, 'content-type');
         if (contentTypeHeader) {
@@ -112,8 +110,7 @@ export const fetch: Client = {
     push(`let url = '${url}';`);
     blank();
 
-    // If we ultimately don't have any headers to send then we shouldn't add an empty object into
-    // the request options.
+    // If we ultimately don't have any headers to send then we shouldn't add an empty object into the request options.
     if (reqOpts.headers && !Object.keys(reqOpts.headers).length) {
       delete reqOpts.headers;
     }
