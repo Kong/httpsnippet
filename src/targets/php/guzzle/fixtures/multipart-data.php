@@ -11,6 +11,10 @@ $response = $client->request('POST', 'http://mockbin.com/har', [
         'headers' => [
                 'Content-Type' => 'text/plain'
         ]
+    ],
+    [
+        'name' => 'bar',
+        'contents' => 'Bonjour le monde'
     ]
   ]
 ]);

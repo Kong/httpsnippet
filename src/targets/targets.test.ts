@@ -62,12 +62,7 @@ availableTargets()
               const { convert } = new HTTPSnippet(request);
               const result = convert(targetId, clientId); //?
 
-              // Some `multipart/form-data` tests construct their payload with `\r\n` line breaks,
-              // which can be problematic to save and debug within an editor so let's convert them
-              // to a standard line break instead for the sake of this assertion.
-              expect((result as string).replace(/\r\n/g, '\n').trim()).toStrictEqual(
-                expected.replace(/\r\n/g, '\n').trim(),
-              );
+              expect(result).toStrictEqual(expected);
             });
           } catch (error) {
             throw new Error(
