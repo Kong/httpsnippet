@@ -62,7 +62,7 @@ availableTargets()
               const { convert } = new HTTPSnippet(request);
               const result = convert(targetId, clientId); //?
 
-              expect((result as string).trim()).toStrictEqual(expected.trim());
+              expect(result).toStrictEqual(expected);
             });
           } catch (error) {
             throw new Error(
