@@ -27,7 +27,9 @@ export const unirest: Client = {
     };
 
     let includeFS = false;
-    const { blank, join, push, unshift } = new CodeBuilder({ indent: opts.indent });
+    const { addPostProcessor, blank, join, push, unshift } = new CodeBuilder({
+      indent: opts.indent,
+    });
 
     push("const unirest = require('unirest');");
     blank();
@@ -76,15 +78,22 @@ export const unirest: Client = {
         break;
 
       case 'multipart/form-data': {
+        if (!postData.params) {
+          break;
+        }
+
         const multipart: Record<string, string>[] = [];
 
-        postData.params?.forEach(param => {
+        postData.params.forEach(param => {
           const part: Record<string, string> = {};
 
           if (param.fileName && !param.value) {
             includeFS = true;
 
             part.body = `fs.createReadStream('${param.fileName}')`;
+            addPostProcessor(code =>
+              code.replace(/'fs\.createReadStream\(\\'(.+)\\'\)'/, "fs.createReadStream('$1')"),
+            );
           } else if (param.value) {
             part.body = param.value;
           }
@@ -121,6 +130,6 @@ export const unirest: Client = {
     push('console.log(res.body);', 1);
     push('});');
 
-    return join().replace(/'fs\.createReadStream\(\\'(.+)\\'\)'/, "fs.createReadStream('$1')");
+    return join();
   },
 };

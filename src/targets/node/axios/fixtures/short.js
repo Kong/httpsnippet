@@ -1,6 +1,6 @@
-var axios = require('axios').default;
+const axios = require('axios').default;
 
-var options = {method: 'GET', url: 'http://mockbin.com/har'};
+const options = {method: 'GET', url: 'http://mockbin.com/har'};
 
 axios
   .request(options)

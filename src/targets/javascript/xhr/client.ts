@@ -45,9 +45,13 @@ export const xhr: Client = {
         break;
 
       case 'multipart/form-data':
+        if (!postData.params) {
+          break;
+        }
+
         push('const data = new FormData();');
 
-        postData.params?.forEach(param => {
+        postData.params.forEach(param => {
           push(`data.append('${param.name}', '${param.value || param.fileName || ''}');`);
         });
 

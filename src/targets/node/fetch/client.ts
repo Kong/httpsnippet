@@ -59,11 +59,15 @@ export const fetch: Client = {
         break;
 
       case 'multipart/form-data':
+        if (!postData.params) {
+          break;
+        }
+
         unshift("const FormData = require('form-data');");
         push('const formData = new FormData();');
         blank();
 
-        postData.params?.forEach(param => {
+        postData.params.forEach(param => {
           if (!param.fileName && !param.fileName && !param.contentType) {
             push(`formData.append('${param.name}', '${param.value}');`);
             return;
@@ -105,7 +109,7 @@ export const fetch: Client = {
     if (includeFS) {
       unshift("const fs = require('fs');");
     }
-    if (postData.mimeType === 'multipart/form-data') {
+    if (postData.params && postData.mimeType === 'multipart/form-data') {
       push('options.body = formData;');
       blank();
     }

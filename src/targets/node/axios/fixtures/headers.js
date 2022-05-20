@@ -1,6 +1,6 @@
-var axios = require('axios').default;
+const axios = require('axios').default;
 
-var options = {
+const options = {
   method: 'GET',
   url: 'http://mockbin.com/har',
   headers: {accept: 'application/json', 'x-foo': 'Bar'}
