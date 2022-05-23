@@ -5,6 +5,7 @@ Request request = new Request.Builder()
   .get()
   .addHeader("accept", "application/json")
   .addHeader("x-foo", "Bar")
+  .addHeader("x-bar", "Foo")
   .build();
 
 Response response = client.newCall(request).execute();

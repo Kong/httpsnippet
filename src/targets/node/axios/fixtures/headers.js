@@ -3,7 +3,7 @@ const axios = require('axios').default;
 const options = {
   method: 'GET',
   url: 'http://mockbin.com/har',
-  headers: {accept: 'application/json', 'x-foo': 'Bar'}
+  headers: {accept: 'application/json', 'x-foo': 'Bar', 'x-bar': 'Foo'}
 };
 
 axios
