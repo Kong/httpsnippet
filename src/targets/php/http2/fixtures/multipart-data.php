@@ -4,7 +4,9 @@ $client = new http\Client;
 $request = new http\Client\Request;
 
 $body = new http\Message\Body;
-$body->addForm(null, [
+$body->addForm([
+  'bar' => 'Bonjour le monde'
+], [
   [
     'name' => 'foo',
     'type' => 'text/plain',

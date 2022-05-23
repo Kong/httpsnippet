@@ -9,7 +9,8 @@ const options = {
     foo: {
       value: fs.createReadStream('hello.txt'),
       options: {filename: 'hello.txt', contentType: 'text/plain'}
-    }
+    },
+    bar: 'Bonjour le monde'
   }
 };
 

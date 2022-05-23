@@ -4,6 +4,7 @@ const fetch = require('node-fetch');
 const formData = new FormData();
 
 formData.append('foo', fs.createReadStream('hello.txt'));
+formData.append('bar', 'Bonjour le monde');
 
 let url = 'http://mockbin.com/har';
 
