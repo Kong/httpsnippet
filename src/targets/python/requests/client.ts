@@ -91,9 +91,7 @@ export const requests: Client<RequestsOptions> = {
             push(`payload = ${literalRepresentation(payload, opts)}`);
           }
 
-          // The requests library will only automatically add a `multipart/form-data` header if
-          // there are files being sent. If we're **only** sending form data we still need to send
-          // the boundary ourselves.
+          // The requests library will only automatically add a `multipart/form-data` header if there are files being sent. If we're **only** sending form data we still need to send the boundary ourselves.
           const headerName = getHeaderName(headers, 'content-type');
           if (headerName) {
             delete headers[headerName];
@@ -119,9 +117,8 @@ export const requests: Client<RequestsOptions> = {
     // Construct headers
     const headerCount = Object.keys(headers).length;
 
-    if (!headerCount && (hasPayload || hasFiles)) {
-      // If we don't have any heads but we do have a payload we should put a blank line here between
-      // that payload consturction and our execution of the requests library.
+    if (headerCount === 0 && (hasPayload || hasFiles)) {
+      // If we don't have any heads but we do have a payload we should put a blank line here between that payload consturction and our execution of the requests library.
       blank();
     } else if (headerCount === 1) {
       for (const header in headers) {
@@ -134,11 +131,12 @@ export const requests: Client<RequestsOptions> = {
       push('headers = {');
 
       for (const header in headers) {
-        if (count++ !== headerCount) {
+        if (count !== headerCount) {
           push(`"${header}": "${headers[header]}",`, 1);
         } else {
           push(`"${header}": "${headers[header]}"`, 1);
         }
+        count += 1;
       }
 
       push('}');
