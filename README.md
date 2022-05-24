@@ -6,7 +6,7 @@ Relies on the popular [HAR](http://www.softwareishard.com/blog/har-12-spec/#requ
 
 See it in action on companion service: [APIembed](https://apiembed.com/)
 
-[![Build Status][travis-image]][travis-url] [![Downloads][npm-downloads]][npm-url]
+[![Downloads][npm-downloads]][npm-url]
 
 ## Install
 
@@ -211,8 +211,6 @@ Moreover, if your pull request contains JavaScript patches or features, you must
 Editor preferences are available in the [editor config](.editorconfig) for easy use in common text editors. Read more and download plugins at <http://editorconfig.org>.
 
 [license-url]: https://github.com/Kong/httpsnippet/blob/master/LICENSE
-[travis-url]: https://travis-ci.org/Kong/httpsnippet
-[travis-image]: https://api.travis-ci.org/Kong/httpsnippet.svg?branch=master
 [npm-url]: https://www.npmjs.com/package/httpsnippet
 [npm-license]: https://img.shields.io/npm/l/httpsnippet.svg?style=flat-square
 [npm-version]: https://img.shields.io/npm/v/httpsnippet.svg?style=flat-square
