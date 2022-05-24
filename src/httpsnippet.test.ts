@@ -162,7 +162,7 @@ describe('hTTPSnippet', () => {
             ...headers.headers,
             {
               name: 'Kong-Admin-Token',
-              value: 'Ziltoid The Omniscient',
+              value: 'Gandalf the Grey',
             },
           ],
         } as Request);
@@ -170,7 +170,7 @@ describe('hTTPSnippet', () => {
         const request = snippet.requests[0];
 
         expect(request.headersObj).toMatchObject({
-          'Kong-Admin-Token': 'Ziltoid The Omniscient',
+          'Kong-Admin-Token': 'Gandalf the Grey',
           accept: 'application/json',
           'x-foo': 'Bar',
         });
@@ -184,7 +184,7 @@ describe('hTTPSnippet', () => {
             ...headers.headers,
             {
               name: 'Kong-Admin-Token',
-              value: 'Ziltoid The Omniscient',
+              value: 'Gandalf the Grey',
             },
           ],
         } as Request);
@@ -192,7 +192,7 @@ describe('hTTPSnippet', () => {
         const request = snippet.requests[0];
 
         expect(request.headersObj).toMatchObject({
-          'kong-admin-token': 'Ziltoid The Omniscient',
+          'kong-admin-token': 'Gandalf the Grey',
           accept: 'application/json',
           'x-foo': 'Bar',
         });
