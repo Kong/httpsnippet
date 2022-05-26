@@ -6,7 +6,7 @@ Relies on the popular [HAR](http://www.softwareishard.com/blog/har-12-spec/#requ
 
 See it in action on companion service: [APIembed](https://apiembed.com/)
 
-[![Downloads][npm-downloads]][npm-url]
+[![Build](https://github.com/Kong/httpsnippet/actions/workflows/build.yml/badge.svg)](https://github.com/Kong/httpsnippet/actions/workflows/build.yml) [![Downloads][npm-downloads]][npm-url]
 
 ## Install
 
