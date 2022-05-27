@@ -32,24 +32,22 @@ export const httr: Client = {
 
     // Construct query string
     const qs = queryObj;
-    const queryCount = Object.keys(qs).length;
     delete queryObj.key;
 
-    if (queryString.length === 1) {
+    const queryCount = Object.keys(qs).length;
+    if (queryCount === 1) {
       push(`queryString <- list(${Object.keys(qs)} = "${Object.values(qs).toString()}")`);
       blank();
-    } else if (queryString.length > 1) {
-      let count = 1;
-
+    } else if (queryCount > 1) {
       push('queryString <- list(');
 
-      for (const query in qs) {
-        if (count++ !== queryCount - 1) {
+      Object.keys(qs).forEach((query, i) => {
+        if (i !== queryCount - 1) {
           push(`  ${query} = "${qs[query].toString()}",`);
         } else {
           push(`  ${query} = "${qs[query].toString()}"`);
         }
-      }
+      });
 
       push(')');
       blank();
