@@ -1,0 +1,18 @@
+{
+  "method": "GET",
+  "url": "http://mockbin.com/har",
+  "headers": [
+    {
+      "name": "accept",
+      "value": "application/json"
+    },
+    {
+      "name": "x-foo",
+      "value": "Bar"
+    },
+    {
+      "name": "x-bar",
+      "value": "Foo"
+    }
+  ]
+}

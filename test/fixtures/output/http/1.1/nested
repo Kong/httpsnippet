@@ -1,4 +1,0 @@
-GET /har?foo%5Bbar%5D=baz%2Czap&fiz=buz&key=value HTTP/1.1
-Host: mockbin.com
-
-

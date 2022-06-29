@@ -1,6 +1,0 @@
-POST /har HTTP/1.1
-Content-Type: application/json
-Host: mockbin.com
-Content-Length: 12
-
-{"foo":null}

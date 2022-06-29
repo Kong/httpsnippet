@@ -1,6 +1,0 @@
-POST /har HTTP/1.1
-Content-Type: text/plain
-Host: mockbin.com
-Content-Length: 11
-
-Hello World
