@@ -9,7 +9,7 @@ runCustomFixtures({
       it: "should properly concatenate query strings that aren't nested",
       input: {
         method: 'GET',
-        url: "http://mockbin.com/har",
+        url: 'http://mockbin.com/har',
         httpVersion: 'HTTP/1.1',
         queryString: [
           {
@@ -22,7 +22,7 @@ runCustomFixtures({
           },
         ],
       } as Request,
-      options: { short: true, indent: false },
+      options: {},
       expected: 'query-two-params.r',
     },
   ],
