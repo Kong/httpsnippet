@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 var clientHandler = new HttpClientHandler
 {
     UseCookies = false,
