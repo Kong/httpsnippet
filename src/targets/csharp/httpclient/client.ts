@@ -48,6 +48,7 @@ export const httpclient: Client = {
 
     const { push, join } = new CodeBuilder({ indent: opts.indent });
 
+    push('using System.Net.Http.Headers;');
     let clienthandler = '';
     const cookies = Boolean(allHeaders.cookie);
     const decompressionMethods = getDecompressionMethods(allHeaders);
