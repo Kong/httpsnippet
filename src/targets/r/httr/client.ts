@@ -8,6 +8,11 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
+export interface HttrOptions {
+  /** @default '  ' */
+  indent?: string;
+}
+
 import { CodeBuilder } from '../../../helpers/code-builder';
 import { Client } from '../../targets';
 
@@ -18,9 +23,11 @@ export const httr: Client = {
     link: 'https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html',
     description: 'httr: Tools for Working with URLs and HTTP',
   },
-  convert: ({ url, queryObj, queryString, postData, allHeaders, method }) => {
+  convert: ({ url, queryObj, queryString, postData, allHeaders, method }, options = {}) => {
     // Start snippet
-    const { push, blank, join } = new CodeBuilder();
+    const { push, blank, join } = new CodeBuilder({
+      indent: options.indent ?? '  ',
+    });
 
     // Import httr
     push('library(httr)');
@@ -32,24 +39,23 @@ export const httr: Client = {
 
     // Construct query string
     const qs = queryObj;
-    const queryCount = Object.keys(qs).length;
     delete queryObj.key;
 
-    if (queryString.length === 1) {
-      push(`queryString <- list(${Object.keys(qs)} = "${Object.values(qs).toString()}")`);
-      blank();
-    } else if (queryString.length > 1) {
-      let count = 1;
+    const entries = Object.entries(qs);
+    const entriesCount = entries.length;
 
+    if (entriesCount === 1) {
+      const entry = entries[0];
+      push(`queryString <- list(${entry[0]} = "${entry[1]}")`);
+      blank();
+    } else if (entriesCount > 1) {
       push('queryString <- list(');
 
-      for (const query in qs) {
-        if (count++ !== queryCount - 1) {
-          push(`  ${query} = "${qs[query].toString()}",`);
-        } else {
-          push(`  ${query} = "${qs[query].toString()}"`);
-        }
-      }
+      entries.forEach(([key, value], i) => {
+        const isLastItem = i !== entriesCount - 1;
+        const maybeComma = isLastItem ? ',' : '';
+        push(`${key} = "${value}"${maybeComma}`, 1);
+      });
 
       push(')');
       blank();
