@@ -21,7 +21,7 @@ for param in parameters {
     let contentType = param["content-type"]!
     let fileContent = String(contentsOfFile: filename, encoding: String.Encoding.utf8)
     if (error != nil) {
-      print(error)
+      print(error as Any)
     }
     body += "; filename=\"\(filename)\"\r\n"
     body += "Content-Type: \(contentType)\r\n\r\n"
@@ -41,7 +41,7 @@ request.httpBody = postData as Data
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
   if (error != nil) {
-    print(error)
+    print(error as Any)
   } else {
     let httpResponse = response as? HTTPURLResponse
     print(httpResponse)
