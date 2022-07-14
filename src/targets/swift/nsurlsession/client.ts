@@ -103,7 +103,7 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
             2,
           );
           push('if (error != nil) {', 2);
-          push('print(error)', 3);
+          push('print(error as Any)', 3);
           push('}', 2);
           push('body += "; filename=\\"\\(filename)\\"\\r\\n"', 2);
           push('body += "Content-Type: \\(contentType)\\r\\n\\r\\n"', 2);
@@ -151,7 +151,7 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
       'let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in',
     );
     push('if (error != nil) {', 1);
-    push('print(error)', 2);
+    push('print(error as Any)', 2);
     push('} else {', 1); // Casting the NSURLResponse to NSHTTPURLResponse so the user can see the status     .
     push('let httpResponse = response as? HTTPURLResponse', 2);
     push('print(httpResponse)', 2);
