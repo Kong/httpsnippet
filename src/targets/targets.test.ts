@@ -61,11 +61,6 @@ availableTargets()
           );
           try {
             const expected = readFileSync(expectedPath).toString();
-            if (expected === '<MISSING>') {
-              console.log(`known missing test for ${targetId}:${clientId} "${fixture}"`);
-              return;
-            }
-
             const { convert } = new HTTPSnippet(request);
             const result = convert(targetId, clientId); //?
 
