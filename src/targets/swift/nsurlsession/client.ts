@@ -59,14 +59,15 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
           // The user can just add/remove lines adding/removing body parameters.
           blank();
           if (postData.params) {
+            const [head, ...tail] = postData.params;
             push(
-              `let postData = NSMutableData(data: "${postData.params[0].name}=${postData.params[0].value}".data(using: String.Encoding.utf8)!)`,
+              `let postData = NSMutableData(data: "${head.name}=${head.value}".data(using: String.Encoding.utf8)!)`,
             );
-            for (let i = 1, len = postData.params.length; i < len; i++) {
-              push(
-                `postData.append("&${postData.params[i].name}=${postData.params[i].value}".data(using: String.Encoding.utf8)!)`,
-              );
-            }
+            tail.forEach(({ name, value }) => {
+              push(`postData.append("&${name}=${value}".data(using: String.Encoding.utf8)!)`);
+            });
+          } else {
+            req.hasBody = false;
           }
           break;
 
