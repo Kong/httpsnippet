@@ -27,32 +27,27 @@ export const curl: Client<CurlOptions> = {
     link: 'http://curl.haxx.se/',
     description: 'cURL is a command line tool and library for transferring data with URL syntax',
   },
-  convert: ({ fullUrl, method, httpVersion, headersObj, allHeaders, postData }, options) => {
-    const opts = {
-      indent: '  ',
-      short: false,
-      binary: false,
-      globOff: false,
-      ...options,
-    };
+  convert: ({ fullUrl, method, httpVersion, headersObj, allHeaders, postData }, options = {}) => {
+    const { indent = '  ', short = false, binary = false, globOff = false } = options;
+
     const { push, join } = new CodeBuilder({
-      ...(typeof opts.indent === 'string' ? { indent: opts.indent } : {}),
-      join: opts.indent !== false ? ` \\\n${opts.indent}` : ' ',
+      ...(typeof indent === 'string' ? { indent: indent } : {}),
+      join: indent !== false ? ` \\\n${indent}` : ' ',
     });
 
-    const globOption = opts.short ? '-g' : '--globoff';
-    const requestOption = opts.short ? '-X' : '--request';
+    const globOption = short ? '-g' : '--globoff';
+    const requestOption = short ? '-X' : '--request';
     let formattedUrl = quote(fullUrl);
 
     push(`curl ${requestOption} ${method}`);
-    if (opts.globOff) {
+    if (globOff) {
       formattedUrl = unescape(formattedUrl);
       push(globOption);
     }
-    push(`${opts.short ? '' : '--url '}${formattedUrl}`);
+    push(`${short ? '' : '--url '}${formattedUrl}`);
 
     if (httpVersion === 'HTTP/1.0') {
-      push(opts.short ? '-0' : '--http1.0');
+      push(short ? '-0' : '--http1.0');
     }
 
     // if multipart form data, we want to remove the boundary
@@ -78,11 +73,11 @@ export const curl: Client<CurlOptions> = {
       .sort()
       .forEach(key => {
         const header = `${key}: ${headersObj[key]}`;
-        push(`${opts.short ? '-H' : '--header'} ${quote(header)}`);
+        push(`${short ? '-H' : '--header'} ${quote(header)}`);
       });
 
     if (allHeaders.cookie) {
-      push(`${opts.short ? '-b' : '--cookie'} ${quote(allHeaders.cookie as string)}`);
+      push(`${short ? '-b' : '--cookie'} ${quote(allHeaders.cookie as string)}`);
     }
 
     // construct post params
@@ -96,7 +91,7 @@ export const curl: Client<CurlOptions> = {
             post = `${param.name}=${param.value}`;
           }
 
-          push(`${opts.short ? '-F' : '--form'} ${quote(post)}`);
+          push(`${short ? '-F' : '--form'} ${quote(post)}`);
         });
         break;
 
@@ -104,28 +99,20 @@ export const curl: Client<CurlOptions> = {
         if (postData.params) {
           postData.params.forEach(param => {
             push(
-              `${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(
+              `${binary ? '--data-binary' : short ? '-d' : '--data'} ${quote(
                 `${param.name}=${param.value}`,
               )}`,
             );
           });
         } else {
-          push(
-            `${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(
-              postData.text,
-            )}`,
-          );
+          push(`${binary ? '--data-binary' : short ? '-d' : '--data'} ${quote(postData.text)}`);
         }
         break;
 
       default:
         // raw request body
         if (postData.text) {
-          push(
-            `${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(
-              postData.text,
-            )}`,
-          );
+          push(`${binary ? '--data-binary' : short ? '-d' : '--data'} ${quote(postData.text)}`);
         }
     }
 
