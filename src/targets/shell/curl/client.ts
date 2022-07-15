@@ -124,11 +124,12 @@ export const curl: Client<CurlOptions> = {
       case 'application/x-www-form-urlencoded':
         if (postData.params) {
           postData.params.forEach(param => {
-            push(
-              `${binary ? '--data-binary' : '--data-urlencode'} ${quote(
-                `${encodeURIComponent(param.name)}=${param.value}`,
-              )}`,
-            );
+            const unencoded = param.name;
+            const encoded = encodeURIComponent(param.name);
+            const needsEncoding = encoded !== unencoded;
+            const name = needsEncoding ? encoded : unencoded;
+            const flag = binary ? '--data-binary' : `--data${needsEncoding ? '-urlencode' : ''}`;
+            push(`${flag} ${quote(`${name}=${param.value}`)}`);
           });
         } else {
           push(`${binary ? '--data-binary' : arg('data')} ${quote(postData.text)}`);
