@@ -30,17 +30,32 @@ class File {
   toString = () => `(clojure.java.io/file "${this.path}")`;
 }
 
-const jsType = (x?: any) => (typeof x !== 'undefined' ? x.constructor.name.toLowerCase() : null);
+const jsType = (input?: any) => {
+  if (input === undefined) {
+    return null;
+  }
 
-const objEmpty = (x?: any) => (jsType(x) === 'object' ? Object.keys(x).length === 0 : false);
+  if (input === null) {
+    return 'null';
+  }
 
-const filterEmpty = (m: Record<string, any>) => {
-  Object.keys(m)
-    .filter(x => objEmpty(m[x]))
+  return input.constructor.name.toLowerCase();
+};
+
+const objEmpty = (input?: any) => {
+  if (jsType(input) === 'object') {
+    return Object.keys(input).length === 0;
+  }
+  return false;
+};
+
+const filterEmpty = (input: Record<string, any>) => {
+  Object.keys(input)
+    .filter(x => objEmpty(input[x]))
     .forEach(x => {
-      delete m[x];
+      delete input[x];
     });
-  return m;
+  return input;
 };
 
 const padBlock = (padSize: number, input: string) => {
