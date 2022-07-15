@@ -125,7 +125,9 @@ export const curl: Client<CurlOptions> = {
         if (postData.params) {
           postData.params.forEach(param => {
             push(
-              `${binary ? '--data-binary' : arg('data')} ${quote(`${param.name}=${param.value}`)}`,
+              `${binary ? '--data-binary' : '--data-urlencode'} ${quote(
+                `${encodeURIComponent(param.name)}=${param.value}`,
+              )}`,
             );
           });
         } else {

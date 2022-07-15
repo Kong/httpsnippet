@@ -1,3 +1,4 @@
+import applicationFormEncoded from '../../../fixtures/requests/application-form-encoded.json';
 import full from '../../../fixtures/requests/full.json';
 import nested from '../../../fixtures/requests/nested.json';
 import { runCustomFixtures } from '../../../fixtures/runCustomFixtures';
@@ -70,6 +71,21 @@ runCustomFixtures({
         indent: '@',
       },
       expected: 'custom-indentation.sh',
+    },
+    {
+      it: 'should url encode the params key',
+      input: {
+        ...applicationFormEncoded,
+        postData: {
+          mimeType: 'application/x-www-form-urlencoded',
+          params: [
+            { name: 'user name', value: 'John Doe' },
+            { name: '$filter', value: 'by id' },
+          ],
+        },
+      } as Request,
+      options: {},
+      expected: 'urlencode.sh',
     },
   ],
 });
