@@ -1,5 +1,6 @@
 /**
  * @description
+ *
  * HTTP code snippet generator for the Shell using cURL.
  *
  * @author
@@ -20,6 +21,31 @@ export interface CurlOptions {
   indent?: string | false;
 }
 
+/**
+ * This is a const record with keys that correspond to the long names and values that correspond to the short names for cURL arguments.
+ */
+const params = {
+  globoff: 'g',
+  request: 'X',
+  'url ': '',
+  'http1.0': '0',
+  header: 'H',
+  cookie: 'b',
+  form: 'F',
+  data: 'd',
+} as const;
+
+const getArg = (short: boolean) => (longName: keyof typeof params) => {
+  if (short) {
+    const shortName = params[longName];
+    if (!shortName) {
+      return '';
+    }
+    return `-${shortName}`;
+  }
+  return `--${longName}`;
+};
+
 export const curl: Client<CurlOptions> = {
   info: {
     key: 'curl',
@@ -35,19 +61,19 @@ export const curl: Client<CurlOptions> = {
       join: indent !== false ? ` \\\n${indent}` : ' ',
     });
 
-    const globOption = short ? '-g' : '--globoff';
-    const requestOption = short ? '-X' : '--request';
+    const arg = getArg(short);
+
     let formattedUrl = quote(fullUrl);
 
-    push(`curl ${requestOption} ${method}`);
+    push(`curl ${arg('request')} ${method}`);
     if (globOff) {
       formattedUrl = unescape(formattedUrl);
-      push(globOption);
+      push(arg('globoff'));
     }
-    push(`${short ? '' : '--url '}${formattedUrl}`);
+    push(`${arg('url ')}${formattedUrl}`);
 
     if (httpVersion === 'HTTP/1.0') {
-      push(short ? '-0' : '--http1.0');
+      push(arg('http1.0'));
     }
 
     // if multipart form data, we want to remove the boundary
@@ -73,11 +99,11 @@ export const curl: Client<CurlOptions> = {
       .sort()
       .forEach(key => {
         const header = `${key}: ${headersObj[key]}`;
-        push(`${short ? '-H' : '--header'} ${quote(header)}`);
+        push(`${arg('header')} ${quote(header)}`);
       });
 
     if (allHeaders.cookie) {
-      push(`${short ? '-b' : '--cookie'} ${quote(allHeaders.cookie as string)}`);
+      push(`${arg('cookie')} ${quote(allHeaders.cookie as string)}`);
     }
 
     // construct post params
@@ -91,7 +117,7 @@ export const curl: Client<CurlOptions> = {
             post = `${param.name}=${param.value}`;
           }
 
-          push(`${short ? '-F' : '--form'} ${quote(post)}`);
+          push(`${arg('form')} ${quote(post)}`);
         });
         break;
 
@@ -99,20 +125,18 @@ export const curl: Client<CurlOptions> = {
         if (postData.params) {
           postData.params.forEach(param => {
             push(
-              `${binary ? '--data-binary' : short ? '-d' : '--data'} ${quote(
-                `${param.name}=${param.value}`,
-              )}`,
+              `${binary ? '--data-binary' : arg('data')} ${quote(`${param.name}=${param.value}`)}`,
             );
           });
         } else {
-          push(`${binary ? '--data-binary' : short ? '-d' : '--data'} ${quote(postData.text)}`);
+          push(`${binary ? '--data-binary' : arg('data')} ${quote(postData.text)}`);
         }
         break;
 
       default:
         // raw request body
         if (postData.text) {
-          push(`${binary ? '--data-binary' : short ? '-d' : '--data'} ${quote(postData.text)}`);
+          push(`${binary ? '--data-binary' : arg('data')} ${quote(postData.text)}`);
         }
     }
 
