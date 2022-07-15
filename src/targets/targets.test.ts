@@ -38,7 +38,7 @@ const fixtureFilter: string[] = [
  *
  * Switch to `true` in debug mode to put into effect.
  */
-const OVERWRITE_EVERYTHING = false;
+const OVERWRITE_EVERYTHING = Boolean(process.env.OVERWRITE_EVERYTHING) || false;
 
 const testFilter =
   <T>(property: keyof T, list: T[keyof T][]) =>
