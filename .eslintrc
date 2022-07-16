@@ -1,13 +1,24 @@
 {
-  "extends": "@readme/eslint-config",
+  "extends": [
+    "@readme/eslint-config",
+    "@readme/eslint-config/typescript",
+    "@readme/eslint-config/testing"
+  ],
   "root": true,
   "parserOptions": {
     "ecmaVersion": 2020
   },
   "rules": {
-    "global-require": "off",
-    "no-underscore-dangle": "off",
-    "object-shorthand": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+
+    "camelcase": "off",
+    "class-methods-use-this": "off",
+    "default-case": "off",
+    "max-classes-per-file": "off",
+    "no-param-reassign": "off",
+    "no-underscore-dangle": ["error", { "allow": ["_boundary"] }],
+    "spaced-comment": "off"
   },
   "env": {
     "browser": true

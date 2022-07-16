@@ -1,10 +1,10 @@
 # HTTP Snippet [![version][npm-version]][npm-url] [![License][npm-license]][license-url]
 
-> HTTP Request snippet generator for *many* languages & tools including: `cURL`, `HTTPie`, `Javascript`, `Node`, `C`, `Java`, `PHP`, `Objective-C`, `Swift`, `Python`, `Ruby`, `C#`, `Go`, `OCaml` and [more](https://github.com/kong/httpsnippet/wiki/Targets)!
+> HTTP Request snippet generator for _many_ languages & tools including: `cURL`, `HTTPie`, `Javascript`, `Node`, `C`, `Java`, `PHP`, `Objective-C`, `Swift`, `Python`, `Ruby`, `C#`, `Go`, `OCaml` and [more](https://github.com/Kong/httpsnippet/wiki/Targets)!
 
 Relies on the popular [HAR](http://www.softwareishard.com/blog/har-12-spec/#request) format to import data and describe HTTP calls.
 
-See it in action on companion service: [APIembed](https://apiembed.com/)
+See it in action on [ReadMe](https://docs.readme.com/reference/getopenroles).
 
 [![Build](https://github.com/readmeio/httpsnippet/workflows/CI/badge.svg)](https://github.com/readmeio/httpsnippet)
 
@@ -20,17 +20,16 @@ npm install --save @readme/httpsnippet
 
 #### source
 
-*Required*
-Type: `object`
+_Required_ Type: `object`
 
-Name of [conversion target](https://github.com/kong/httpsnippet/wiki/Targets)
+Name of [conversion target](https://github.com/Kong/httpsnippet/wiki/Targets)
 
-```js
-const HTTPSnippet = require('httpsnippet');
+```ts
+import { HTTPSnippet } from 'httpsnippet';
 
 const snippet = new HTTPSnippet({
   method: 'GET',
-  url: 'https://httpbin.com/anything'
+  url: 'https://httpbin.org/anything',
 });
 ```
 
@@ -46,110 +45,111 @@ Available options:
 
 #### target
 
-*Required*
-Type: `string`
+_Required_ Type: `string`
 
-Name of [conversion target](https://github.com/kong/httpsnippet/wiki/Targets)
+Name of [conversion target](https://github.com/Kong/httpsnippet/wiki/Targets)
 
 #### options
 
 Type: `object`
 
-Target options, *see [wiki](https://github.com/kong/httpsnippet/wiki/Targets) for details*
+Target options, _see [wiki](https://github.com/Kong/httpsnippet/wiki/Targets) for details_
 
-```js
-const HTTPSnippet = require('httpsnippet');
+```ts
+import { HTTPSnippet } from 'httpsnippet';
 
 const snippet = new HTTPSnippet({
   method: 'GET',
-  url: 'https://httpbin.com/anything'
+  url: 'httsp://httpbin.org/anything',
 });
 
 // generate Node.js: Native output
 console.log(snippet.convert('node'));
 
 // generate Node.js: Native output, indent with tabs
-console.log(snippet.convert('node', {
-  indent: '\t'
-}));
+console.log(
+  snippet.convert('node', {
+    indent: '\t',
+  }),
+);
 ```
 
 ### convert(target [, client, options])
 
-#### target
+#### Target
 
-*Required*
+_Required_ Type: `string`
+
+Name of [conversion target](https://github.com/Kong/httpsnippet/wiki/Targets)
+
+#### Client
+
 Type: `string`
 
-Name of [conversion target](https://github.com/kong/httpsnippet/wiki/Targets)
+Name of conversion target [client library](https://github.com/Kong/httpsnippet/wiki/Targets)
 
-#### client
-
-Type: `string`
-
-Name of conversion target [client library](https://github.com/kong/httpsnippet/wiki/Targets)
-
-#### options
+#### Options
 
 Type: `object`
 
-Target options, *see [wiki](https://github.com/kong/httpsnippet/wiki/Targets) for details*
+Target options, _see [wiki](https://github.com/Kong/httpsnippet/wiki/Targets) for details_
 
-```js
-const HTTPSnippet = require('httpsnippet');
+```ts
+import { HTTPSnippet } from 'httpsnippet';
 
 const snippet = new HTTPSnippet({
   method: 'GET',
-  url: 'https://httpbin.com/anything'
+  url: 'https://httpbin.org/anything',
 });
 
 // generate Shell: cURL output
-console.log(snippet.convert('shell', 'curl', {
-  indent: '\t'
-}));
+console.log(
+  snippet.convert('shell', 'curl', {
+    indent: '\t',
+  }),
+);
 
 // generate Node.js: Unirest output
 console.log(snippet.convert('node', 'unirest'));
 ```
 
 ### addTarget(target)
+
 #### target
 
-*Required*
-Type: `object`
+_Required_ Type: `object`
 
 Representation of a [conversion target](https://github.com/Kong/httpsnippet/wiki/Creating-Targets). Can use this to use targets that are not officially supported.
 
-```js
-const customLanguageTarget = require('httpsnippet-for-my-lang');
+```ts
+import { customLanguageTarget } from 'httpsnippet-for-my-lang';
 HTTPSnippet.addTarget(customLanguageTarget);
 ```
 
 ### addTargetClient(target, client)
-### target
 
-*Required*
-Type: `string`
+### Target
 
-Name of [conversion target](https://github.com/kong/httpsnippet/wiki/Targets)
+_Required_ Type: `string`
 
-### client
+Name of [conversion target](https://github.com/Kong/httpsnippet/wiki/Targets)
 
-*Required*
-Type: `object`
+### Client
+
+_Required_ Type: `object`
 
 Representation of a [conversion target client](https://github.com/Kong/httpsnippet/wiki/Creating-Targets). Can use this to use target clients that are not officially supported.
 
-```js
-const customClient = require('httpsnippet-for-my-node-http-client');
+```ts
+import { customClient } from 'httpsnippet-for-my-node-http-client';
 HTTPSnippet.addTargetClient('node', customClient);
 ```
 
 ## Documentation
 
-At the heart of this module is the [HAR Format](http://www.softwareishard.com/blog/har-12-spec/#request) as the HTTP request description format, please review some of the sample JSON HAR Request objects in [test fixtures](/__tests__/__fixtures__/requests), or read the [HAR Docs](http://www.softwareishard.com/blog/har-12-spec/#request) for more details.
+At the heart of this module is the [HAR Format](http://www.softwareishard.com/blog/har-12-spec/#request) as the HTTP request description format, please review some of the sample JSON HAR Request objects in [test fixtures](/test/fixtures/requests), or read the [HAR Docs](http://www.softwareishard.com/blog/har-12-spec/#request) for more details.
 
-For detailed information on each target, please review the [wiki](https://github.com/kong/httpsnippet/wiki).
+For detailed information on each target, please review the [wiki](https://github.com/Kong/httpsnippet/wiki).
 
 ## Differences from `kong/httpsnippet`
 
@@ -161,6 +161,8 @@ The main difference between this library and the upstream [httpsnippet](https://
 * PHP Guzzle snippets come with `require_once('vendor/autoload.php');` at the top of them.
 * A full integration suite for testing out snippets the library creates.
 * This library does not ship a Python client for [http.client](https://docs.python.org/3/library/http.client.html) due to its limitations in supporting file uploads.
+* The Python client for [Requests](http://docs.python-requests.org/en/latest/api/#requests.request) does not provide query string parameters in a `params` argument due to complexities with query encoding.
+* The Node `request` client does not specify query parameters in the `qs` option due to query encoding complexities.
 
 ### Running the integration suite
 

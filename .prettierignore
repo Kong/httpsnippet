@@ -1,2 +1,5 @@
-__tests__/__fixtures__/output
+build/
 coverage/
+dist/
+node_modules/
+src/targets/**/fixtures/

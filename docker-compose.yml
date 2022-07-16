@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: integrations/node.Dockerfile
-    command: "npx jest __tests__/integration.test.js"
+    command: "npx jest src/integration.test.ts"
     environment:
       - HTTPBIN=true
       - INTEGRATION_CLIENT=node
@@ -13,7 +13,7 @@ services:
     build:
       context: .
       dockerfile: integrations/php.Dockerfile
-    command: "npx jest __tests__/integration.test.js"
+    command: "npx jest src/integration.test.ts"
     environment:
       - HTTPBIN=true
       - INTEGRATION_CLIENT=php
@@ -22,7 +22,7 @@ services:
     build:
       context: .
       dockerfile: integrations/python.Dockerfile
-    command: "npx jest __tests__/integration.test.js"
+    command: "npx jest src/integration.test.ts"
     environment:
       - HTTPBIN=true
       - INTEGRATION_CLIENT=python
@@ -31,7 +31,7 @@ services:
     build:
       context: .
       dockerfile: integrations/shell.Dockerfile
-    command: "npx jest __tests__/integration.test.js"
+    command: "npx jest src/integration.test.ts"
     environment:
       - HTTPBIN=true
       - INTEGRATION_CLIENT=shell

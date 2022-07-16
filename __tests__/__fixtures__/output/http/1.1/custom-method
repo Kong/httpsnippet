@@ -1,4 +1,0 @@
-PROPFIND /anything HTTP/1.1
-Host: httpbin.org
-
-

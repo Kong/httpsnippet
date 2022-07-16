@@ -1,0 +1,1 @@
+http --verbose GET https://httpbin.org/anything

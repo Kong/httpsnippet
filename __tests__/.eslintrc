@@ -1,6 +1,0 @@
-{
-  "extends": "@readme/eslint-config/testing",
-  "rules": {
-    "jest/no-export": "off"
-  }
-}

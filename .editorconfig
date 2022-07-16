@@ -9,5 +9,15 @@ charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
 
+[targets/**/fixtures/*]
+insert_final_newline = false
+
+[**/http1.1/fixtures/*]
+end_of_line = crlf
+insert_final_newline = false
+
+[**/http1.1/fixtures/jsonObj-multiline]
+end_of_line = unset
+
 [*.md]
 trim_trailing_whitespace = false

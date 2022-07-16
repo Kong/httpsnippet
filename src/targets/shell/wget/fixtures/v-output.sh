@@ -1,0 +1,1 @@
+wget -v --method GET -O - https://httpbin.org/anything

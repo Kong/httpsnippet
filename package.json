@@ -4,7 +4,8 @@
   "description": "HTTP Request snippet generator for *most* languages",
   "homepage": "https://github.com/readmeio/httpsnippet",
   "license": "MIT",
-  "main": "src/index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "keywords": [
     "api",
     "clojure",
@@ -36,7 +37,7 @@
     "xmlhttprequest"
   ],
   "engines": {
-    "node": ">=10"
+    "node": ">=14"
   },
   "files": [
     "bin",
@@ -47,18 +48,31 @@
     "url": "https://github.com/readmeio/httpsnippet.git"
   },
   "scripts": {
+    "build": "tsc --build tsconfig.build.json",
+    "clean": "tsc --build tsconfig.build.json --clean",
     "lint": "eslint .",
+    "prebuild": "npm run clean",
     "pretest": "npm run lint",
     "prettier": "prettier --list-different --write \"./**/**.js\"",
     "test": "jest --coverage"
   },
   "devDependencies": {
     "@readme/eslint-config": "^8.0.2",
-    "eslint": "^8.3.0",
+    "@types/eslint": "^8.4.1",
+    "@types/event-stream": "^4.0.0",
+    "@types/har-format": "^1.2.8",
+    "@types/jest": "^27.4.1",
+    "@types/node": "^16.11.26",
+    "@types/qs": "^6.9.7",
+    "@types/stringify-object": "^4.0.1",
+    "eslint": "^8.19.0",
     "glob": "^8.0.1",
     "jest": "^28.0.3",
-    "prettier": "^2.5.0",
-    "require-directory": "^2.1.1"
+    "prettier": "^2.7.1",
+    "require-directory": "^2.1.1",
+    "ts-jest": "^28.0.5",
+    "type-fest": "^2.12.2",
+    "typescript": "^4.6.3"
   },
   "dependencies": {
     "event-stream": "4.0.1",
@@ -67,15 +81,5 @@
     "qs": "^6.10.1",
     "stringify-object": "^3.3.0"
   },
-  "prettier": "@readme/eslint-config/prettier",
-  "jest": {
-    "coveragePathIgnorePatterns": [
-      "<rootDir>/__tests__/(.*)/__fixtures__/",
-      "<rootDir>/node_modules"
-    ],
-    "testPathIgnorePatterns": [
-      "<rootDir>/__tests__/__fixtures__/",
-      "<rootDir>/__tests__/targets/"
-    ]
-  }
+  "prettier": "@readme/eslint-config/prettier"
 }
