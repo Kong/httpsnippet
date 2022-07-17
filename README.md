@@ -153,25 +153,24 @@ For detailed information on each target, please review the [wiki](https://github
 
 ## Differences from `kong/httpsnippet`
 
-The main difference between this library and the upstream [httpsnippet](https://github.com/Kong/httpsnippet) library are:
+There are some major differences between this library and the [httpsnippet](https://github.com/Kong/httpsnippet) upstream:
 
+* Includes a full integration test suite for a handful of clients and targets.
 * Does not ship with a CLI component.
-* The `fetch` target for Node and JS both treat body payloads as an object literal and wrap it within `JSON.stringify()`. We do this to keep those targets looking nicer with those kinds of payloads.
-* Contains a `harIsAlreadyEncoded` option on the core library to disable [escaping](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) of cookies and query strings in URLs. Helpful if the HAR being supplied already has them escaped.
-* PHP Guzzle snippets come with `require_once('vendor/autoload.php');` at the top of them.
-* A full integration suite for testing out snippets the library creates.
-* This library does not ship a Python client for [http.client](https://docs.python.org/3/library/http.client.html) due to its limitations in supporting file uploads.
-* The Python client for [Requests](http://docs.python-requests.org/en/latest/api/#requests.request) does not provide query string parameters in a `params` argument due to complexities with query encoding.
-* The Node `request` client does not specify query parameters in the `qs` option due to query encoding complexities.
-
-### Running the integration suite
-
-```
-docker-compose run integration_node
-docker-compose run integration_php
-docker-compose run integration_python
-docker-compose run integration_shell
-```
+* The main `HTTPSnippet` export contains an `options` argument for an `harIsAlreadyEncoded` option for disabling [escaping](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) of cookies and query strings in URLs.
+  * We added this because all HARs that we interact with already have this data escaped and this option prevents them from being double encoded, thus corrupting the data.
+* Node
+  * `fetch`
+    * Body payloads are treated as an object literal and wrapped within `JSON.stringify()`. We do this to keep those targets looking nicer with those kinds of payloads. This also applies to the JS `fetch` target as wel.
+  * `request`
+    * Does not provide query string parameters in a `params` argument due to complexities with query encoding.
+* PHP → `guzzle`
+  * Snippets have `require_once('vendor/autoload.php');` prefixed at the top.
+* Python
+  * `python3`
+    * Does not ship this client due to its incompatibility with being able to support file uploads.
+  * `requests`
+    * Does not provide query string parameters in a `params` argument due to complexities with query encoding.
 
 ## License
 
