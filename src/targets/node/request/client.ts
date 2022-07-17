@@ -27,7 +27,7 @@ export const request: Client = {
     };
 
     let includeFS = false;
-    const { push, blank, join, unshift } = new CodeBuilder({ indent: opts.indent });
+    const { push, blank, join, unshift, addPostProcessor } = new CodeBuilder({ indent: opts.indent });
 
     push("const request = require('request');");
     blank();
@@ -89,6 +89,8 @@ export const request: Client = {
 
           reqOpts.formData[param.name] = attachment;
         });
+
+        addPostProcessor(code => code.replace(/'fs\.createReadStream\((.*)\)'/, "fs.createReadStream('$1')"));
         break;
 
       default:
@@ -107,6 +109,7 @@ export const request: Client = {
         push(`jar.setCookie(request.cookie('${encodeURIComponent(name)}=${encodeURIComponent(value)}'), '${url}');`);
       });
       blank();
+      addPostProcessor(code => code.replace(/'JAR'/, 'jar'));
     }
 
     if (includeFS) {
@@ -122,8 +125,6 @@ export const request: Client = {
     push('console.log(body);', 1);
     push('});');
 
-    return join()
-      .replace("'JAR'", 'jar')
-      .replace(/'fs\.createReadStream\((.*)\)'/, "fs.createReadStream('$1')");
+    return join();
   },
 };

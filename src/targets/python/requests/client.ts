@@ -31,7 +31,7 @@ export const requests: Client<RequestsOptions> = {
       ...options,
     };
     // Start snippet
-    const { push, blank, join } = new CodeBuilder({ indent: opts.indent });
+    const { push, blank, join, addPostProcessor } = new CodeBuilder({ indent: opts.indent });
 
     // Import requests
     push('import requests');
@@ -94,6 +94,9 @@ export const requests: Client<RequestsOptions> = {
             hasPayload = true;
           }
         }
+
+        // The `open()` call must be a literal in the code snippet.
+        addPostProcessor(code => code.replace(/"open\('(.+)', 'rb'\)"/g, 'open("$1", "rb")'));
         break;
 
       default: {
@@ -167,10 +170,6 @@ export const requests: Client<RequestsOptions> = {
     // Print response
     push('print(response.text)');
 
-    return (
-      join()
-        // The `open()` call must be a literal in the code snippet.
-        .replace(/"open\('(.+)', 'rb'\)"/g, 'open("$1", "rb")')
-    );
+    return join();
   },
 };
