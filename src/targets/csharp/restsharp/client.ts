@@ -1,5 +1,4 @@
 import type { Client } from '../../targets';
-import type { Cookie } from 'har-format';
 import { CodeBuilder } from '../../../helpers/code-builder';
 import { getHeader } from '../../../helpers/headers';
 
@@ -29,7 +28,7 @@ export const restsharp: Client = {
       push(`request.AddHeader("${key}", "${headersObj[key]}");`);
     });
 
-    cookies.forEach(({ name, value }: Cookie) => {
+    cookies.forEach(({ name, value }) => {
       push(`request.AddCookie("${name}", "${value}");`);
     });
 

@@ -9,7 +9,6 @@
  */
 
 import type { Client } from '../../targets';
-import type { Param } from 'har-format';
 import stringifyObject from 'stringify-object';
 
 import { CodeBuilder } from '../../../helpers/code-builder';
@@ -46,7 +45,7 @@ export const axios: Client = {
           blank();
 
           push('const encodedParams = new URLSearchParams();');
-          postData.params.forEach((param: Param) => {
+          postData.params.forEach(param => {
             push(`encodedParams.set('${param.name}', '${param.value}');`);
           });
 

@@ -9,7 +9,6 @@
  */
 
 import type { Client } from '../../targets';
-import type { Cookie } from 'har-format';
 import { CodeBuilder } from '../../../helpers/code-builder';
 
 export interface CurlOptions {
@@ -109,9 +108,7 @@ export const curl: Client<CurlOptions> = {
     });
 
     // construct cookies
-    const curlCookies = cookies.map(
-      (cookie: Cookie) => `${encodeURIComponent(cookie.name)}=${encodeURIComponent(cookie.value)}`
-    );
+    const curlCookies = cookies.map(cookie => `${encodeURIComponent(cookie.name)}=${encodeURIComponent(cookie.value)}`);
     if (curlCookies.length) {
       curlopts.push(`CURLOPT_COOKIE => "${curlCookies.join('; ')}",`);
     }

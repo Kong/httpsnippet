@@ -9,7 +9,6 @@
  */
 
 import type { Client } from '../../targets';
-import type { Param } from 'har-format';
 import { CodeBuilder } from '../../../helpers/code-builder';
 import { quote } from '../../../helpers/shell';
 
@@ -123,7 +122,7 @@ export const httpie: Client<HttpieOptions> = {
       if (postData.params && postData.params.length) {
         flags.push(opts.short ? '-f' : '--form');
 
-        postData.params.forEach((param: Param) => {
+        postData.params.forEach(param => {
           push(`${param.name}=${quote(param.value)}`);
         });
       }

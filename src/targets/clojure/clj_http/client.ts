@@ -9,7 +9,6 @@
  */
 
 import type { Client } from '../../targets';
-import type { Param } from 'har-format';
 import { CodeBuilder } from '../../../helpers/code-builder';
 import { getHeader, getHeaderName } from '../../../helpers/headers';
 
@@ -33,17 +32,32 @@ class File {
   toString = () => `(clojure.java.io/file "${this.path}")`;
 }
 
-const jsType = (x?: any) => (typeof x !== 'undefined' ? x.constructor.name.toLowerCase() : null);
+const jsType = (input?: any) => {
+  if (input === undefined) {
+    return null;
+  }
 
-const objEmpty = (x?: any) => (jsType(x) === 'object' ? Object.keys(x).length === 0 : false);
+  if (input === null) {
+    return 'null';
+  }
 
-const filterEmpty = (m: Record<string, any>) => {
-  Object.keys(m)
-    .filter(x => objEmpty(m[x]))
+  return input.constructor.name.toLowerCase();
+};
+
+const objEmpty = (input?: any) => {
+  if (jsType(input) === 'object') {
+    return Object.keys(input).length === 0;
+  }
+  return false;
+};
+
+const filterEmpty = (input: Record<string, any>) => {
+  Object.keys(input)
+    .filter(x => objEmpty(input[x]))
     .forEach(x => {
-      delete m[x];
+      delete input[x];
     });
-  return m;
+  return input;
 };
 
 const padBlock = (padSize: number, input: string) => {
@@ -146,7 +160,7 @@ export const clj_http: Client = {
 
       case 'multipart/form-data': {
         if (postData.params) {
-          params.multipart = postData.params.map((param: Param) => {
+          params.multipart = postData.params.map(param => {
             if (param.fileName && !param.value) {
               return {
                 name: param.name,

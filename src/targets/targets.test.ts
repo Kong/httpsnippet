@@ -1,6 +1,6 @@
 import type { HTTPSnippetOptions, Request } from '..';
 import type { Client, ClientId, Target, TargetId } from './targets';
-import { readdirSync, readFileSync } from 'fs';
+import { readdirSync, readFileSync, writeFileSync } from 'fs';
 import path from 'path';
 
 import { availableTargets, extname } from '../helpers/utils';
@@ -37,6 +37,14 @@ const fixtureFilter: string[] = [
   // 'multipart-file',
 ];
 
+/**
+ * This is useful when you want to make a change and overwrite it for every fixture.
+ * Basically a snapshot reset.
+ *
+ * Switch to `true` in debug mode to put into effect.
+ */
+const OVERWRITE_EVERYTHING = Boolean(process.env.OVERWRITE_EVERYTHING) || false;
+
 const testFilter =
   <T>(property: keyof T, list: T[keyof T][]) =>
   (item: T) =>
@@ -48,7 +56,7 @@ availableTargets()
     describe(`${title} Request Validation`, () => {
       clients.filter(testFilter('key', clientFilter)).forEach(({ key: clientId }) => {
         fixtures.filter(testFilter(0, fixtureFilter)).forEach(([fixture, request]) => {
-          const basePath = path.join(
+          const expectedPath = path.join(
             'src',
             'targets',
             targetId,
@@ -57,24 +65,23 @@ availableTargets()
             `${fixture}${extname(targetId)}`
           );
           try {
-            const expected = readFileSync(basePath).toString();
-            if (expected === '<MISSING>') {
-              console.log(`known missing test for ${targetId}:${clientId} "${fixture}"`);
+            const options: HTTPSnippetOptions = {};
+
+            if (fixture === 'query-encoded') {
+              // Query strings in this HAR are already escaped.
+              options.harIsAlreadyEncoded = true;
+            }
+
+            const expected = readFileSync(expectedPath).toString();
+            const { convert } = new HTTPSnippet(request, options);
+            const result = convert(targetId, clientId); //?
+
+            if (OVERWRITE_EVERYTHING && result) {
+              writeFileSync(expectedPath, String(result));
               return;
             }
 
             it(`${clientId} request should match fixture for "${fixture}.js"`, () => {
-              const options: HTTPSnippetOptions = {};
-
-              // eslint-disable-next-line jest/no-if
-              if (fixture === 'query-encoded') {
-                // Query strings in this HAR are already escaped.
-                options.harIsAlreadyEncoded = true;
-              }
-
-              const { convert } = new HTTPSnippet(request, options);
-              const result = convert(targetId, clientId);
-
               expect(result).toStrictEqual(expected);
             });
           } catch (error) {

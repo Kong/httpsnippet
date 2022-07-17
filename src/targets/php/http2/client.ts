@@ -9,7 +9,6 @@
  */
 
 import type { Client } from '../../targets';
-import type { Param } from 'har-format';
 import { CodeBuilder } from '../../../helpers/code-builder';
 import { getHeader, getHeaderName, hasHeader } from '../../../helpers/headers';
 import { convertType } from '../helpers';
@@ -69,7 +68,7 @@ export const http2: Client<Http2Options> = {
           [anything: string]: string | undefined;
         }[] = [];
         const fields: Record<string, any> = {};
-        postData.params.forEach(({ name, fileName, value, contentType }: Param) => {
+        postData.params.forEach(({ name, fileName, value, contentType }) => {
           if (fileName) {
             files.push({
               name,

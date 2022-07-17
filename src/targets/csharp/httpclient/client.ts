@@ -1,6 +1,5 @@
 import type { Request } from '../../..';
 import type { Client } from '../../targets';
-import type { Param } from 'har-format';
 import { CodeBuilder } from '../../../helpers/code-builder';
 import { getHeader } from '../../../helpers/headers';
 
@@ -49,6 +48,7 @@ export const httpclient: Client = {
 
     const { push, join } = new CodeBuilder({ indent: opts.indent });
 
+    push('using System.Net.Http.Headers;');
     let clienthandler = '';
     const cookies = Boolean(allHeaders.cookie);
     const decompressionMethods = getDecompressionMethods(allHeaders);
@@ -113,7 +113,7 @@ export const httpclient: Client = {
         case 'application/x-www-form-urlencoded':
           push('Content = new FormUrlEncodedContent(new Dictionary<string, string>', 1);
           push('{', 1);
-          postData.params?.forEach((param: Param) => {
+          postData.params?.forEach(param => {
             push(`{ "${param.name}", "${param.value}" },`, 2);
           });
           push('}),', 1);
@@ -122,7 +122,7 @@ export const httpclient: Client = {
         case 'multipart/form-data':
           push('Content = new MultipartFormDataContent', 1);
           push('{', 1);
-          postData.params?.forEach((param: Param) => {
+          postData.params?.forEach(param => {
             push(`new StringContent(${JSON.stringify(param.value || '')})`, 2);
             push('{', 2);
             push('Headers =', 3);

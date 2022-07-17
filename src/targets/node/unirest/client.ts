@@ -9,7 +9,6 @@
  */
 
 import type { Client } from '../../targets';
-import type { Cookie, Param } from 'har-format';
 import stringifyObject from 'stringify-object';
 
 import { CodeBuilder } from '../../../helpers/code-builder';
@@ -40,7 +39,7 @@ export const unirest: Client = {
     if (cookies.length) {
       push('const CookieJar = unirest.jar();');
 
-      cookies.forEach((cookie: Cookie) => {
+      cookies.forEach(cookie => {
         push(`CookieJar.add('${encodeURIComponent(cookie.name)}=${encodeURIComponent(cookie.value)}', '${url}');`);
       });
 
@@ -81,7 +80,7 @@ export const unirest: Client = {
 
         const multipart: Record<string, string>[] = [];
 
-        postData.params.forEach((param: Param) => {
+        postData.params.forEach(param => {
           const part: Record<string, string> = {};
 
           if (param.fileName && !param.value) {

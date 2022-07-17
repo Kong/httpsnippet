@@ -32,7 +32,7 @@ export class CodeBuilder {
    */
   constructor({ indent, join }: CodeBuilderOptions = {}) {
     this.indentationCharacter = indent || DEFAULT_INDENTATION_CHARACTER;
-    this.lineJoin = join || DEFAULT_LINE_JOIN;
+    this.lineJoin = join ?? DEFAULT_LINE_JOIN;
   }
 
   /**

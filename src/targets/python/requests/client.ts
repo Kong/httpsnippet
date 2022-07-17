@@ -9,7 +9,6 @@
  */
 
 import type { Client } from '../../targets';
-import type { Param } from 'har-format';
 import { CodeBuilder } from '../../../helpers/code-builder';
 import { getHeaderName } from '../../../helpers/headers';
 import { literalRepresentation } from '../helpers';
@@ -66,7 +65,7 @@ export const requests: Client<RequestsOptions> = {
         }
 
         payload = {};
-        postData.params.forEach((p: Param) => {
+        postData.params.forEach(p => {
           if (p.fileName) {
             files[p.name] = `open('${p.fileName}', 'rb')`;
             hasFiles = true;

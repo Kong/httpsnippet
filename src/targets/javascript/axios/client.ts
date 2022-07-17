@@ -9,7 +9,6 @@
  */
 
 import type { Client } from '../../targets';
-import type { Param } from 'har-format';
 import stringifyObject from 'stringify-object';
 
 import { CodeBuilder } from '../../../helpers/code-builder';
@@ -49,7 +48,7 @@ export const axios: Client = {
       case 'application/x-www-form-urlencoded':
         if (postData.params) {
           push('const encodedParams = new URLSearchParams();');
-          postData.params.forEach((param: Param) => {
+          postData.params.forEach(param => {
             push(`encodedParams.set('${param.name}', '${param.value}');`);
           });
 
@@ -74,7 +73,7 @@ export const axios: Client = {
 
         push('const form = new FormData();');
 
-        postData.params.forEach((param: Param) => {
+        postData.params.forEach(param => {
           push(`form.append('${param.name}', '${param.value || param.fileName || ''}');`);
         });
 

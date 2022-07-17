@@ -1,5 +1,4 @@
 import type { Converter } from '../targets';
-import type { Cookie } from 'har-format';
 import { CodeBuilder } from '../../helpers/code-builder';
 import { getHeader } from '../../helpers/headers';
 
@@ -35,7 +34,7 @@ export const generatePowershellConvert = (command: PowershellCommand) => {
     if (cookies.length) {
       push('$session = New-Object Microsoft.PowerShell.Commands.WebRequestSession');
 
-      cookies.forEach((cookie: Cookie) => {
+      cookies.forEach(cookie => {
         push('$cookie = New-Object System.Net.Cookie');
 
         push(`$cookie.Name = '${cookie.name}'`);

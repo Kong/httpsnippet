@@ -1,5 +1,6 @@
 /**
  * @description
+ *
  * HTTP code snippet generator for the Shell using cURL.
  *
  * @author
@@ -9,7 +10,6 @@
  */
 
 import type { Client } from '../../targets';
-import type { Param } from 'har-format';
 import { CodeBuilder } from '../../../helpers/code-builder';
 import { getHeaderName, isMimeTypeJSON } from '../../../helpers/headers';
 import { quote } from '../../../helpers/shell';
@@ -19,7 +19,33 @@ export interface CurlOptions {
   binary?: boolean;
   globOff?: boolean;
   indent?: string | false;
+  escapeBrackets?: boolean;
 }
+
+/**
+ * This is a const record with keys that correspond to the long names and values that correspond to the short names for cURL arguments.
+ */
+const params = {
+  globoff: 'g',
+  request: 'X',
+  'url ': '',
+  'http1.0': '0',
+  header: 'H',
+  cookie: 'b',
+  form: 'F',
+  data: 'd',
+} as const;
+
+const getArg = (short: boolean) => (longName: keyof typeof params) => {
+  if (short) {
+    const shortName = params[longName];
+    if (!shortName) {
+      return '';
+    }
+    return `-${shortName}`;
+  }
+  return `--${longName}`;
+};
 
 export const curl: Client<CurlOptions> = {
   info: {
@@ -28,37 +54,30 @@ export const curl: Client<CurlOptions> = {
     link: 'http://curl.haxx.se/',
     description: 'cURL is a command line tool and library for transferring data with URL syntax',
   },
-  convert: ({ fullUrl, method, httpVersion, headersObj, allHeaders, postData }, options) => {
-    const opts = {
-      indent: '  ',
-      short: false,
-      binary: false,
-      globOff: false,
-      escapeBrackets: false,
-      ...options,
-    };
+  convert: ({ fullUrl, method, httpVersion, headersObj, allHeaders, postData }, options = {}) => {
+    const { indent = '  ', short = false, binary = false, globOff = false, escapeBrackets = false } = options;
+
     const { push, join } = new CodeBuilder({
-      ...(typeof opts.indent === 'string' ? { indent: opts.indent } : {}),
-      join: opts.indent !== false ? ` \\\n${opts.indent}` : ' ',
+      ...(typeof indent === 'string' ? { indent } : {}),
+      join: indent !== false ? ` \\\n${indent}` : ' ',
     });
 
-    const globOption = opts.short ? '-g' : '--globoff';
-    const requestOption = opts.short ? '-X' : '--request';
-    let formattedUrl = quote(fullUrl);
+    const arg = getArg(short);
 
-    if (opts.escapeBrackets) {
+    let formattedUrl = quote(fullUrl);
+    if (escapeBrackets) {
       formattedUrl = formattedUrl.replace(/\[/g, '\\[').replace(/\]/g, '\\]');
     }
 
-    push(`curl ${requestOption} ${method}`);
-    if (opts.globOff) {
+    push(`curl ${arg('request')} ${method}`);
+    if (globOff) {
       formattedUrl = unescape(formattedUrl);
-      push(globOption);
+      push(arg('globoff'));
     }
-    push(`${opts.short ? '' : '--url '}${formattedUrl}`);
+    push(`${arg('url ')}${formattedUrl}`);
 
     if (httpVersion === 'HTTP/1.0') {
-      push(opts.short ? '-0' : '--http1.0');
+      push(arg('http1.0'));
     }
 
     // if multipart form data, we want to remove the boundary
@@ -83,17 +102,17 @@ export const curl: Client<CurlOptions> = {
       .sort()
       .forEach(key => {
         const header = `${key}: ${headersObj[key]}`;
-        push(`${opts.short ? '-H' : '--header'} ${quote(header)}`);
+        push(`${arg('header')} ${quote(header)}`);
       });
 
     if (allHeaders.cookie) {
-      push(`${opts.short ? '-b' : '--cookie'} ${quote(allHeaders.cookie as string)}`);
+      push(`${arg('cookie')} ${quote(allHeaders.cookie as string)}`);
     }
 
     // construct post params
     switch (postData.mimeType) {
       case 'multipart/form-data':
-        postData.params?.forEach((param: Param) => {
+        postData.params?.forEach(param => {
           let post = '';
           if (param.fileName) {
             post = `${param.name}=@${param.fileName}`;
@@ -101,19 +120,22 @@ export const curl: Client<CurlOptions> = {
             post = `${param.name}=${param.value}`;
           }
 
-          push(`${opts.short ? '-F' : '--form'} ${quote(post)}`);
+          push(`${arg('form')} ${quote(post)}`);
         });
         break;
 
       case 'application/x-www-form-urlencoded':
         if (postData.params) {
-          postData.params.forEach((param: Param) => {
-            push(
-              `${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(`${param.name}=${param.value}`)}`
-            );
+          postData.params.forEach(param => {
+            const unencoded = param.name;
+            const encoded = encodeURIComponent(param.name);
+            const needsEncoding = encoded !== unencoded;
+            const name = needsEncoding ? encoded : unencoded;
+            const flag = binary ? '--data-binary' : `--data${needsEncoding ? '-urlencode' : ''}`;
+            push(`${flag} ${quote(`${name}=${param.value}`)}`);
           });
         } else {
-          push(`${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(postData.text)}`);
+          push(`${binary ? '--data-binary' : arg('data')} ${quote(postData.text)}`);
         }
         break;
 
@@ -144,19 +166,15 @@ export const curl: Client<CurlOptions> = {
 
               if (postData.text.indexOf("'") > 0) {
                 push(
-                  `${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} @- <<EOF\n${JSON.stringify(
+                  `${binary ? '--data-binary' : arg('data')} @- <<EOF\n${JSON.stringify(
                     jsonPayload,
                     null,
-                    opts.indent ? opts.indent : ' '
+                    indent || ' '
                   )}\nEOF`
                 );
               } else {
                 push(
-                  `${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} '\n${JSON.stringify(
-                    jsonPayload,
-                    null,
-                    opts.indent ? opts.indent : ' '
-                  )}\n'`
+                  `${binary ? '--data-binary' : arg('data')} '\n${JSON.stringify(jsonPayload, null, indent || ' ')}\n'`
                 );
               }
             } catch (err) {
@@ -166,7 +184,7 @@ export const curl: Client<CurlOptions> = {
         }
 
         if (!builtPayload) {
-          push(`${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(postData.text)}`);
+          push(`${binary ? '--data-binary' : arg('data')} ${quote(postData.text)}`);
         }
     }
 

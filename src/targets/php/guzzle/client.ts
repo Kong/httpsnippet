@@ -9,7 +9,6 @@
  */
 
 import type { Client } from '../../targets';
-import type { Cookie, Param } from 'har-format';
 import { CodeBuilder } from '../../../helpers/code-builder';
 import { getHeader, getHeaderName, hasHeader } from '../../../helpers/headers';
 import { convertType } from '../helpers';
@@ -63,7 +62,7 @@ export const guzzle: Client<GuzzleOptions> = {
         const fields: MultipartField[] = [];
 
         if (postData.params) {
-          postData.params.forEach((param: Param) => {
+          postData.params.forEach(param => {
             if (param.fileName) {
               const field: MultipartField = {
                 name: param.name,
@@ -116,7 +115,7 @@ export const guzzle: Client<GuzzleOptions> = {
 
     // construct cookies
     const cookieString = cookies
-      .map((cookie: Cookie) => `${encodeURIComponent(cookie.name)}=${encodeURIComponent(cookie.value)}`)
+      .map(cookie => `${encodeURIComponent(cookie.name)}=${encodeURIComponent(cookie.value)}`)
       .join('; ');
     if (cookieString.length) {
       headers.push(`${opts.indent}${opts.indent}'cookie' => '${cookieString}',`);

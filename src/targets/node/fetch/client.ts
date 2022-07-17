@@ -9,7 +9,6 @@
  */
 
 import type { Client } from '../../targets';
-import type { Cookie, Param } from 'har-format';
 import stringifyObject from 'stringify-object';
 
 import { CodeBuilder } from '../../../helpers/code-builder';
@@ -47,7 +46,7 @@ export const fetch: Client = {
         push('const encodedParams = new URLSearchParams();');
         blank();
 
-        postData.params?.forEach((param: Param) => {
+        postData.params?.forEach(param => {
           push(`encodedParams.set('${param.name}', '${param.value}');`);
         });
 
@@ -78,7 +77,7 @@ export const fetch: Client = {
         push('const formData = new FormData();');
         blank();
 
-        postData.params.forEach((param: Param) => {
+        postData.params.forEach(param => {
           if (!param.fileName && !param.fileName && !param.contentType) {
             push(`formData.append('${param.name}', '${param.value}');`);
             return;
@@ -100,7 +99,7 @@ export const fetch: Client = {
     // construct cookies argument
     if (cookies.length) {
       const cookiesString = cookies
-        .map(({ name, value }: Cookie) => `${encodeURIComponent(name)}=${encodeURIComponent(value)}`)
+        .map(({ name, value }) => `${encodeURIComponent(name)}=${encodeURIComponent(value)}`)
         .join('; ');
       if (reqOpts.headers) {
         reqOpts.headers.cookie = cookiesString;

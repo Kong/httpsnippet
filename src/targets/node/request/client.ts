@@ -8,7 +8,6 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-import type { Cookie, Param } from 'har-format';
 import type { Client } from '../../targets';
 import stringifyObject from 'stringify-object';
 
@@ -61,7 +60,7 @@ export const request: Client = {
 
         reqOpts.formData = {};
 
-        postData.params.forEach((param: Param) => {
+        postData.params.forEach(param => {
           if (!param.fileName && !param.fileName && !param.contentType) {
             reqOpts.formData[param.name] = param.value;
             return;
@@ -104,7 +103,7 @@ export const request: Client = {
 
       push('const jar = request.jar();');
 
-      cookies.forEach(({ name, value }: Cookie) => {
+      cookies.forEach(({ name, value }) => {
         push(`jar.setCookie(request.cookie('${encodeURIComponent(name)}=${encodeURIComponent(value)}'), '${url}');`);
       });
       blank();
