@@ -19,6 +19,7 @@ export interface CurlOptions {
   binary?: boolean;
   globOff?: boolean;
   indent?: string | false;
+  prettifyJson?: boolean;
 }
 
 /**
@@ -54,7 +55,13 @@ export const curl: Client<CurlOptions> = {
     description: 'cURL is a command line tool and library for transferring data with URL syntax',
   },
   convert: ({ fullUrl, method, httpVersion, headersObj, allHeaders, postData }, options = {}) => {
-    const { indent = '  ', short = false, binary = false, globOff = false } = options;
+    const {
+      indent = '  ',
+      short = false,
+      binary = false,
+      globOff = false,
+      prettifyJson = false,
+    } = options;
 
     const { push, join } = new CodeBuilder({
       ...(typeof indent === 'string' ? { indent: indent } : {}),
@@ -148,7 +155,8 @@ export const curl: Client<CurlOptions> = {
         // If we're dealing with a JSON variant, and our payload is JSON let's make it look a little nicer.
         if (isMimeTypeJSON(postData.mimeType)) {
           // If our postData is less than 20 characters, let's keep it all on one line so as to not make the snippet overly lengthy.
-          if (postData.text.length > 20) {
+          const couldBeJSON = postData.text.length > 2;
+          if (couldBeJSON && prettifyJson) {
             try {
               const jsonPayload = JSON.parse(postData.text);
 

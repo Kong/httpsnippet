@@ -1,4 +1,5 @@
 import applicationFormEncoded from '../../../fixtures/requests/application-form-encoded.json';
+import applicationJson from '../../../fixtures/requests/application-json.json';
 import full from '../../../fixtures/requests/full.json';
 import nested from '../../../fixtures/requests/nested.json';
 import { runCustomFixtures } from '../../../fixtures/runCustomFixtures';
@@ -103,11 +104,13 @@ runCustomFixtures({
           text: '{"number":1,"string":"f\'oo"}',
         },
       } as Request,
-      options: {},
+      options: {
+        prettifyJson: true,
+      },
       expected: 'jsonObj-with-singlequotes.sh',
     },
     {
-      it: 'should keep JSON payloads that are smaller than 20 characters on one line',
+      it: 'should prettify simple/short JSON if prettifyJson is true',
       input: {
         url: 'http://mockbin.com/har',
         method: 'POST',
@@ -122,8 +125,18 @@ runCustomFixtures({
           mimeType: 'application/json',
         },
       } as Request,
-      options: {},
-      expected: 'jsonObj-short.sh',
+      options: {
+        prettifyJson: true,
+      },
+      expected: 'prettify-short-json.sh',
+    },
+    {
+      it: 'should prettify complex json if prettifyJson is true',
+      input: applicationJson as Request,
+      options: {
+        prettifyJson: true,
+      },
+      expected: 'application-json-prettified.sh',
     },
   ],
 });
