@@ -4,14 +4,13 @@ const encodedParams = new URLSearchParams();
 
 encodedParams.set('foo', 'bar');
 
-let url = 'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value';
-
-let options = {
+const url = 'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value';
+const options = {
   method: 'POST',
   headers: {
     accept: 'application/json',
     'content-type': 'application/x-www-form-urlencoded',
-    cookie: 'foo=bar; bar=baz; '
+    cookie: 'foo=bar; bar=baz'
   },
   body: encodedParams
 };

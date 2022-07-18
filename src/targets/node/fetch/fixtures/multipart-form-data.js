@@ -4,9 +4,8 @@ const formData = new FormData();
 
 formData.append('foo', 'bar');
 
-let url = 'http://mockbin.com/har';
-
-let options = {method: 'POST'};
+const url = 'http://mockbin.com/har';
+const options = {method: 'POST'};
 
 options.body = formData;
 

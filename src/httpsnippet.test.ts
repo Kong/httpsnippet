@@ -126,7 +126,7 @@ describe('hTTPSnippet', () => {
         });
       });
 
-      it('should fix the `path` propety of uriObj to match queryString', () => {
+      it('should fix the `path` property of uriObj to match queryString', () => {
         const snippet = new HTTPSnippet(query as Request);
         const request = snippet.requests[0];
 
@@ -200,7 +200,7 @@ describe('hTTPSnippet', () => {
     });
 
     describe('url', () => {
-      it('shoudl modify the original url to strip query string', () => {
+      it('should modify the original url to strip query string', () => {
         const snippet = new HTTPSnippet(query as Request);
         const request = snippet.requests[0];
 

@@ -6,9 +6,8 @@ const formData = new FormData();
 formData.append('foo', fs.createReadStream('hello.txt'));
 formData.append('bar', 'Bonjour le monde');
 
-let url = 'http://mockbin.com/har';
-
-let options = {method: 'POST'};
+const url = 'http://mockbin.com/har';
+const options = {method: 'POST'};
 
 options.body = formData;
 
