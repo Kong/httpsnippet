@@ -1,4 +1,5 @@
 import applicationFormEncoded from '../../../fixtures/requests/application-form-encoded.json';
+import applicationJson from '../../../fixtures/requests/application-json.json';
 import full from '../../../fixtures/requests/full.json';
 import https from '../../../fixtures/requests/https.json';
 import nested from '../../../fixtures/requests/nested.json';
@@ -95,6 +96,56 @@ runCustomFixtures({
         insecureSkipVerify: true,
       },
       expected: 'insecure-skip-verify.sh',
+    },
+    {
+      it: 'should send JSON-encoded data with single quotes within a HEREDOC',
+      input: {
+        method: 'POST',
+        url: 'http://mockbin.com/har',
+        headers: [
+          {
+            name: 'content-type',
+            value: 'application/json',
+          },
+        ],
+        postData: {
+          mimeType: 'application/json',
+          text: '{"number":1,"string":"f\'oo"}',
+        },
+      } as Request,
+      options: {
+        prettifyJson: true,
+      },
+      expected: 'jsonObj-with-singlequotes.sh',
+    },
+    {
+      it: 'should prettify simple/short JSON if prettifyJson is true',
+      input: {
+        url: 'http://mockbin.com/har',
+        method: 'POST',
+        headers: [
+          {
+            name: 'content-type',
+            value: 'application/json',
+          },
+        ],
+        postData: {
+          text: '{"foo": "bar"}',
+          mimeType: 'application/json',
+        },
+      } as Request,
+      options: {
+        prettifyJson: true,
+      },
+      expected: 'prettify-short-json.sh',
+    },
+    {
+      it: 'should prettify complex json if prettifyJson is true',
+      input: applicationJson as Request,
+      options: {
+        prettifyJson: true,
+      },
+      expected: 'application-json-prettified.sh',
     },
   ],
 });

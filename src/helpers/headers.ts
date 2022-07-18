@@ -1,3 +1,5 @@
+import { ValueOf } from 'type-fest';
+
 type Headers<T> = Record<string, T>;
 
 /**
@@ -22,3 +24,19 @@ export const getHeader = <T>(headers: Headers<T>, name: string) => {
  */
 export const hasHeader = <T>(headers: Headers<T>, name: string) =>
   Boolean(getHeaderName(headers, name));
+
+const mimeTypeJson = [
+  'application/json',
+  'application/x-json',
+  'text/json',
+  'text/x-json',
+  '+json',
+] as const;
+
+type MimeTypeJson = `${string}${typeof mimeTypeJson[number]}${string}`;
+
+/**
+ * Determines if a given mimetype is JSON, or a variant of such.
+ */
+export const isMimeTypeJSON = (mimeType: string): mimeType is MimeTypeJson =>
+  mimeTypeJson.some(type => mimeType.includes(type));

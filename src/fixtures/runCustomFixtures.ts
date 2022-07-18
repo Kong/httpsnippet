@@ -1,5 +1,5 @@
 import { writeFileSync } from 'fs';
-import { readFile, writeFile } from 'fs/promises';
+import { readFile } from 'fs/promises';
 import path from 'path';
 
 import { HTTPSnippet, Request } from '../httpsnippet';

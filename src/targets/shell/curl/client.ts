@@ -10,7 +10,7 @@
  */
 
 import { CodeBuilder } from '../../../helpers/code-builder';
-import { getHeaderName } from '../../../helpers/headers';
+import { getHeaderName, isMimeTypeJSON } from '../../../helpers/headers';
 import { quote } from '../../../helpers/shell';
 import { Client } from '../../targets';
 
@@ -19,6 +19,7 @@ export interface CurlOptions {
   globOff?: boolean;
   indent?: string | false;
   insecureSkipVerify?: boolean;
+  prettifyJson?: boolean;
   short?: boolean;
 }
 
@@ -61,6 +62,7 @@ export const curl: Client<CurlOptions> = {
       globOff = false,
       indent = '  ',
       insecureSkipVerify = false,
+      prettifyJson = false,
       short = false,
     } = options;
 
@@ -148,11 +150,44 @@ export const curl: Client<CurlOptions> = {
         }
         break;
 
-      default:
+      default: {
         // raw request body
-        if (postData.text) {
-          push(`${binary ? '--data-binary' : arg('data')} ${quote(postData.text)}`);
+        if (!postData.text) {
+          break;
         }
+
+        const flag = binary ? '--data-binary' : arg('data');
+
+        let builtPayload = false;
+        // If we're dealing with a JSON variant, and our payload is JSON let's make it look a little nicer.
+        if (isMimeTypeJSON(postData.mimeType)) {
+          // If our postData is less than 20 characters, let's keep it all on one line so as to not make the snippet overly lengthy.
+          const couldBeJSON = postData.text.length > 2;
+          if (couldBeJSON && prettifyJson) {
+            try {
+              const jsonPayload = JSON.parse(postData.text);
+
+              // If the JSON object has a single quote we should prepare it inside of a HEREDOC because the single quote in something like `string's` can't be escaped when used with `--data`.
+              //
+              // Basically this boils down to `--data @- <<EOF...EOF` vs `--data '...'`.
+              builtPayload = true;
+
+              const payload = JSON.stringify(jsonPayload, undefined, indent as string);
+              if (postData.text.indexOf("'") > 0) {
+                push(`${flag} @- <<EOF\n${payload}\nEOF`);
+              } else {
+                push(`${flag} '\n${payload}\n'`);
+              }
+            } catch (err) {
+              // no-op
+            }
+          }
+        }
+
+        if (!builtPayload) {
+          push(`${flag} ${quote(postData.text)}`);
+        }
+      }
     }
 
     return join();
