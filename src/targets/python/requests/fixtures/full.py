@@ -4,7 +4,7 @@ url = "http://mockbin.com/har"
 
 querystring = {"foo":["bar","baz"],"baz":"abc","key":"value"}
 
-payload = "foo=bar"
+payload = {"foo": "bar"}
 headers = {
     "cookie": "foo=bar; bar=baz",
     "accept": "application/json",

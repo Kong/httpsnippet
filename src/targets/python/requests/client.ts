@@ -106,6 +106,12 @@ export const requests: Client<RequestsOptions> = {
         break;
 
       default: {
+        if (postData.mimeType === 'application/x-www-form-urlencoded' && postData.paramsObj) {
+          push(`payload = ${literalRepresentation(postData.paramsObj, opts)}`);
+          hasPayload = true;
+          break;
+        }
+
         const payload = JSON.stringify(postData.text);
         if (payload) {
           push(`payload = ${payload}`);
