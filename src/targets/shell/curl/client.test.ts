@@ -147,5 +147,20 @@ runCustomFixtures({
       },
       expected: 'application-json-prettified.sh',
     },
+    {
+      it: 'should use --compressed for requests that accept encodings',
+      input: {
+        method: 'GET',
+        url: 'http://mockbin.com/har',
+        headers: [
+          {
+            name: 'accept-encoding',
+            value: 'deflate, gzip, br',
+          },
+        ],
+      } as Request,
+      options: {},
+      expected: 'accept-encoding-compressed.sh',
+    },
   ],
 });

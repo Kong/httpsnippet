@@ -10,7 +10,7 @@
  */
 
 import { CodeBuilder } from '../../../helpers/code-builder';
-import { getHeaderName, isMimeTypeJSON } from '../../../helpers/headers';
+import { getHeader, getHeaderName, isMimeTypeJSON } from '../../../helpers/headers';
 import { quote } from '../../../helpers/shell';
 import { Client } from '../../targets';
 
@@ -88,6 +88,11 @@ export const curl: Client<CurlOptions> = {
 
     if (httpVersion === 'HTTP/1.0') {
       push(arg('http1.0'));
+    }
+
+    if (getHeader(allHeaders, 'accept-encoding')) {
+      // note: there is no shorthand for this cURL option
+      push('--compressed');
     }
 
     // if multipart form data, we want to remove the boundary
