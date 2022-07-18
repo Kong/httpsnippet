@@ -138,45 +138,39 @@ export const curl: Client<CurlOptions> = {
 
       default:
         // raw request body
-        if (postData.text) {
-          let builtPayload = false;
+        if (!postData.text) {
+          break;
+        }
 
-          // If we're dealing with a JSON variant, and our payload is JSON let's make it look a
-          // little nicer.
-          if (isMimeTypeJSON(postData.mimeType)) {
-            // If our postData is less than 20 characters, let's keep it all on one line so as to
-            // not make the snippet overly lengthy.
-            if (postData.text.length > 20) {
-              try {
-                const jsonPayload = JSON.parse(postData.text);
+        const flag = binary ? '--data-binary' : arg('data');
 
-                // If the JSON object has a single quote we should prepare it inside of a HEREDOC
-                // because the single quote in something like `string's` can't be escaped when used
-                // with `--data`.
-                //
-                // Basically this boils down to `--data @- <<EOF...EOF` vs `--data '...'`.
-                builtPayload = true;
+        let builtPayload = false;
+        // If we're dealing with a JSON variant, and our payload is JSON let's make it look a little nicer.
+        if (isMimeTypeJSON(postData.mimeType)) {
+          // If our postData is less than 20 characters, let's keep it all on one line so as to not make the snippet overly lengthy.
+          if (postData.text.length > 20) {
+            try {
+              const jsonPayload = JSON.parse(postData.text);
 
-                const opt = opts.binary ? '--data-binary' : opts.short ? '-d' : '--data';
-                const payload = JSON.stringify(jsonPayload, undefined, opts.indent as string);
-                if (postData.text.indexOf("'") > 0) {
-                  push(`${opt} @- <<EOF\n${payload}\nEOF`);
-                } else {
-                  push(`${opt} '\n${payload}\n'`);
-                }
-              } catch (err) {
-                // no-op
+              // If the JSON object has a single quote we should prepare it inside of a HEREDOC because the single quote in something like `string's` can't be escaped when used with `--data`.
+              //
+              // Basically this boils down to `--data @- <<EOF...EOF` vs `--data '...'`.
+              builtPayload = true;
+
+              const payload = JSON.stringify(jsonPayload, undefined, indent as string);
+              if (postData.text.indexOf("'") > 0) {
+                push(`${flag} @- <<EOF\n${payload}\nEOF`);
+              } else {
+                push(`${flag} '\n${payload}\n'`);
               }
+            } catch (err) {
+              // no-op
             }
           }
+        }
 
-          if (!builtPayload) {
-            push(
-              `${opts.binary ? '--data-binary' : opts.short ? '-d' : '--data'} ${quote(
-                postData.text,
-              )}`,
-            );
-          }
+        if (!builtPayload) {
+          push(`${flag} ${quote(postData.text)}`);
         }
     }
 
