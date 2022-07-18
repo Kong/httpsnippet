@@ -136,7 +136,7 @@ export const curl: Client<CurlOptions> = {
         }
         break;
 
-      default:
+      default: {
         // raw request body
         if (!postData.text) {
           break;
@@ -172,6 +172,7 @@ export const curl: Client<CurlOptions> = {
         if (!builtPayload) {
           push(`${flag} ${quote(postData.text)}`);
         }
+      }
     }
 
     return join();
