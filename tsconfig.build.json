@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": ".",
     "allowJs": true,
-    "resolveJsonModule": true,
-    "strict": true,
-    "esModuleInterop": true,
+    "declaration": true,
     "downlevelIteration": true,
-    "lib": ["ESNext"]
+    "esModuleInterop": true,
+    "lib": ["ESNext"],
+    "outDir": "dist",
+    "resolveJsonModule": true,
+    "strict": true
   },
-  "include": ["src", "package.json"],
-  "exclude": ["dist", "**/*.test.ts"]
+  "include": ["./src/**/*"],
+  "exclude": ["dist", "./src/fixtures/", "**/*.test.ts"]
 }
