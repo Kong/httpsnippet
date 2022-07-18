@@ -217,4 +217,62 @@ describe('hTTPSnippet', () => {
       });
     });
   });
+
+  describe('options', () => {
+    describe('decodeUri', () => {
+      const input = {
+        method: 'GET',
+        url: 'http://mockbin.com/request/{id}',
+        httpVersion: 'HTTP/1.1',
+      } as Request;
+
+      describe('decodeUri=false', () => {
+        const { fullUrl, url, uriObj } = new HTTPSnippet(input, { decodeUri: false }).requests[0];
+
+        it('should encode fullUrl', () => {
+          expect(fullUrl).toBe('http://mockbin.com/request/%7Bid%7D');
+        });
+
+        it('should encode url', () => {
+          expect(url).toBe('http://mockbin.com/request/%7Bid%7D');
+        });
+
+        it('should encode uriObj.path', () => {
+          expect(uriObj.path).toBe('/request/%7Bid%7D');
+        });
+
+        it('should encode uriObj.pathname', () => {
+          expect(uriObj.pathname).toBe('/request/%7Bid%7D');
+        });
+
+        it('should encode uriObj.href', () => {
+          expect(uriObj.href).toBe('http://mockbin.com/request/%7Bid%7D');
+        });
+      });
+
+      describe('decodeUri=true', () => {
+        const { fullUrl, url, uriObj } = new HTTPSnippet(input, { decodeUri: true }).requests[0];
+
+        it('should decode fullUrl', () => {
+          expect(fullUrl).toBe('http://mockbin.com/request/{id}');
+        });
+
+        it('should decode url', () => {
+          expect(url).toBe('http://mockbin.com/request/{id}');
+        });
+
+        it('should decode uriObj.path', () => {
+          expect(uriObj.path).toBe('/request/{id}');
+        });
+
+        it('should decode uriObj.pathname', () => {
+          expect(uriObj.pathname).toBe('/request/{id}');
+        });
+
+        it('should decode uriObj.href', () => {
+          expect(uriObj.href).toBe('http://mockbin.com/request/{id}');
+        });
+      });
+    });
+  });
 });

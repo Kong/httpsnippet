@@ -71,10 +71,27 @@ const isHarEntry = (value: any): value is HarEntry =>
   'entries' in value.log &&
   Array.isArray(value.log.entries);
 
+interface HTTPSnippetOptions {
+  /** Say I have a url like `http://mockbin.com/request/{id}`
+   *
+   * The `{id}` portion is a placeholder for another tool which will do later processing.
+   *
+   * If `decodeUri` is set to true: the generated output would be `http://mockbin.com/request/{id}`.
+   *
+   * If set to false, you'd get an output like `http://mockbin.com/request/%7Bid%7D`.
+   *
+   * Specifically, this field will affect `fullUrl`, `url`, `uriObj.path`, `uriObj.pathname`, and `uriObj.href`.
+   */
+  decodeUri?: boolean;
+}
+
 export class HTTPSnippet {
   requests: Request[] = [];
+  decodeUri = false;
 
-  constructor(input: HarEntry | HarRequest) {
+  constructor(input: HarEntry | HarRequest, options: HTTPSnippetOptions = {}) {
+    this.decodeUri = Boolean(options.decodeUri);
+
     let entries: Entry[] = [];
 
     // prep the main container
@@ -299,23 +316,37 @@ export class HTTPSnippet {
     };
 
     // keep the base url clean of queryString
-    const url = urlFormat({
+    let url = urlFormat({
       ...urlWithParsedQuery,
       query: null,
       search: null,
     }); //?
 
-    const fullUrl = urlFormat({
+    let fullUrl = urlFormat({
       ...urlWithParsedQuery,
       ...uriObj,
     }); //?
+
+    if (this.decodeUri) {
+      fullUrl = decodeURI(fullUrl);
+      if (uriObj.path) {
+        uriObj.path = decodeURI(uriObj.path);
+      }
+      if (uriObj.pathname) {
+        uriObj.pathname = decodeURI(uriObj.pathname);
+      }
+      if (uriObj.href) {
+        uriObj.href = decodeURI(uriObj.href);
+      }
+      url = decodeURI(url);
+    }
 
     return {
       ...request,
       allHeaders,
       fullUrl,
-      url,
       uriObj,
+      url,
     };
   };
 
