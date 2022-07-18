@@ -97,8 +97,8 @@ export const fetch: Client = {
     // construct cookies argument
     if (cookies.length) {
       const cookiesString = cookies
-        .map(cookie => `${encodeURIComponent(cookie.name)}=${encodeURIComponent(cookie.value)}; `)
-        .join('');
+        .map(cookie => `${encodeURIComponent(cookie.name)}=${encodeURIComponent(cookie.value)}`)
+        .join('; ');
       if (reqOpts.headers) {
         reqOpts.headers.cookie = cookiesString;
       } else {
@@ -107,8 +107,7 @@ export const fetch: Client = {
       }
     }
     blank();
-    push(`let url = '${url}';`);
-    blank();
+    push(`const url = '${url}';`);
 
     // If we ultimately don't have any headers to send then we shouldn't add an empty object into the request options.
     if (reqOpts.headers && !Object.keys(reqOpts.headers).length) {
@@ -116,7 +115,7 @@ export const fetch: Client = {
     }
 
     const stringifiedOptions = stringifyObject(reqOpts, { indent: '  ', inlineCharacterLimit: 80 });
-    push(`let options = ${stringifiedOptions};`);
+    push(`const options = ${stringifiedOptions};`);
     blank();
 
     if (includeFS) {

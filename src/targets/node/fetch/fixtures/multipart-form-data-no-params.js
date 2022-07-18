@@ -1,8 +1,7 @@
 const fetch = require('node-fetch');
 
-let url = 'http://mockbin.com/har';
-
-let options = {method: 'POST', headers: {'Content-Type': 'multipart/form-data'}};
+const url = 'http://mockbin.com/har';
+const options = {method: 'POST', headers: {'Content-Type': 'multipart/form-data'}};
 
 fetch(url, options)
   .then(res => res.json())

@@ -1,8 +1,7 @@
 const fetch = require('node-fetch');
 
-let url = 'http://mockbin.com/har?foo%5Bbar%5D=baz%2Czap&fiz=buz&key=value';
-
-let options = {method: 'GET'};
+const url = 'http://mockbin.com/har?foo%5Bbar%5D=baz%2Czap&fiz=buz&key=value';
+const options = {method: 'GET'};
 
 fetch(url, options)
   .then(res => res.json())
