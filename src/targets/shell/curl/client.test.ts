@@ -1,6 +1,7 @@
 import applicationFormEncoded from '../../../fixtures/requests/application-form-encoded.json';
 import applicationJson from '../../../fixtures/requests/application-json.json';
 import full from '../../../fixtures/requests/full.json';
+import https from '../../../fixtures/requests/https.json';
 import nested from '../../../fixtures/requests/nested.json';
 import { runCustomFixtures } from '../../../fixtures/runCustomFixtures';
 import { Request } from '../../../httpsnippet';
@@ -87,6 +88,14 @@ runCustomFixtures({
       } as Request,
       options: {},
       expected: 'urlencode.sh',
+    },
+    {
+      it: 'should support insecureSkipVerify',
+      input: https as Request,
+      options: {
+        insecureSkipVerify: true,
+      },
+      expected: 'insecure-skip-verify.sh',
     },
     {
       it: 'should send JSON-encoded data with single quotes within a HEREDOC',

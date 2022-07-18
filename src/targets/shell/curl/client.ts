@@ -15,25 +15,27 @@ import { quote } from '../../../helpers/shell';
 import { Client } from '../../targets';
 
 export interface CurlOptions {
-  short?: boolean;
   binary?: boolean;
   globOff?: boolean;
   indent?: string | false;
+  insecureSkipVerify?: boolean;
   prettifyJson?: boolean;
+  short?: boolean;
 }
 
 /**
  * This is a const record with keys that correspond to the long names and values that correspond to the short names for cURL arguments.
  */
 const params = {
-  globoff: 'g',
-  request: 'X',
-  'url ': '',
   'http1.0': '0',
-  header: 'H',
+  'url ': '',
   cookie: 'b',
-  form: 'F',
   data: 'd',
+  form: 'F',
+  globoff: 'g',
+  header: 'H',
+  insecure: 'k',
+  request: 'X',
 } as const;
 
 const getArg = (short: boolean) => (longName: keyof typeof params) => {
@@ -56,11 +58,12 @@ export const curl: Client<CurlOptions> = {
   },
   convert: ({ fullUrl, method, httpVersion, headersObj, allHeaders, postData }, options = {}) => {
     const {
-      indent = '  ',
-      short = false,
       binary = false,
       globOff = false,
+      indent = '  ',
+      insecureSkipVerify = false,
       prettifyJson = false,
+      short = false,
     } = options;
 
     const { push, join } = new CodeBuilder({
@@ -78,6 +81,10 @@ export const curl: Client<CurlOptions> = {
       push(arg('globoff'));
     }
     push(`${arg('url ')}${formattedUrl}`);
+
+    if (insecureSkipVerify) {
+      push(arg('insecure'));
+    }
 
     if (httpVersion === 'HTTP/1.0') {
       push(arg('http1.0'));

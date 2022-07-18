@@ -1,4 +1,4 @@
-import request from '../../../fixtures/requests/full.json';
+import full from '../../../fixtures/requests/full.json';
 import { runCustomFixtures } from '../../../fixtures/runCustomFixtures';
 import { Request } from '../../../httpsnippet';
 
@@ -8,7 +8,7 @@ runCustomFixtures({
   tests: [
     {
       it: 'should support false boilerplate option',
-      input: request as Request,
+      input: full as Request,
       options: {
         showBoilerplate: false,
       },
@@ -16,7 +16,7 @@ runCustomFixtures({
     },
     {
       it: 'should support checkErrors option',
-      input: request as Request,
+      input: full as Request,
       options: {
         checkErrors: true,
       },
@@ -24,7 +24,7 @@ runCustomFixtures({
     },
     {
       it: 'should support printBody option',
-      input: request as Request,
+      input: full as Request,
       options: {
         printBody: false,
       },
@@ -32,11 +32,19 @@ runCustomFixtures({
     },
     {
       it: 'should support timeout option',
-      input: request as Request,
+      input: full as Request,
       options: {
         timeout: 30,
       },
       expected: 'timeout-option.go',
+    },
+    {
+      it: 'should support insecureSkipVerify option',
+      input: full as Request,
+      options: {
+        insecureSkipVerify: true,
+      },
+      expected: 'insecure-skip-verify.go',
     },
   ],
 });
