@@ -52,6 +52,7 @@
     "clean": "tsc --build tsconfig.build.json --clean",
     "lint": "eslint .",
     "prebuild": "npm run clean",
+    "prepack": "npm run build",
     "pretest": "npm run lint",
     "prettier": "prettier --list-different --write \"./**/**.js\"",
     "test": "jest --coverage"
