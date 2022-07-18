@@ -13,6 +13,8 @@ import { getHeaderName } from '../../../helpers/headers';
 import { Client } from '../../targets';
 import { literalRepresentation } from '../helpers';
 
+const builtInMethods = ['HEAD', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'];
+
 export interface RequestsOptions {
   pretty?: true;
 }
@@ -106,6 +108,12 @@ export const requests: Client<RequestsOptions> = {
         break;
 
       default: {
+        if (postData.mimeType === 'application/x-www-form-urlencoded' && postData.paramsObj) {
+          push(`payload = ${literalRepresentation(postData.paramsObj, opts)}`);
+          hasPayload = true;
+          break;
+        }
+
         const payload = JSON.stringify(postData.text);
         if (payload) {
           push(`payload = ${payload}`);
@@ -144,7 +152,9 @@ export const requests: Client<RequestsOptions> = {
     }
 
     // Construct request
-    let request = `response = requests.request("${method}", url`;
+    let request = builtInMethods.includes(method)
+      ? `response = requests.${method.toLowerCase()}(url`
+      : `response = requests.request("${method}", url`;
 
     if (hasPayload) {
       if (jsonPayload) {
