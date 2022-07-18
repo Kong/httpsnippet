@@ -13,19 +13,20 @@ import stringifyObject from 'stringify-object';
 import { CodeBuilder } from '../../../helpers/code-builder';
 import { Client } from '../../targets';
 
-export const native: Client = {
+export interface NodeNativeOptions {
+  insecureSkipVerify?: boolean;
+}
+
+export const native: Client<NodeNativeOptions> = {
   info: {
     key: 'native',
     title: 'HTTP',
     link: 'http://nodejs.org/api/http.html#http_http_request_options_callback',
     description: 'Node.js native HTTP interface',
   },
-  convert: ({ uriObj, method, allHeaders, postData }, options) => {
-    const opts = {
-      indent: '  ',
-      ...options,
-    };
-    const { blank, join, push, unshift } = new CodeBuilder({ indent: opts.indent });
+  convert: ({ uriObj, method, allHeaders, postData }, options = {}) => {
+    const { indent = '  ', insecureSkipVerify = false } = options;
+    const { blank, join, push, unshift } = new CodeBuilder({ indent });
 
     const reqOpts = {
       method,
@@ -33,13 +34,14 @@ export const native: Client = {
       port: uriObj.port,
       path: uriObj.path,
       headers: allHeaders,
+      ...(insecureSkipVerify ? { rejectUnauthorized: false } : {}),
     };
 
     // @ts-expect-error TODO seems like a legit error
     push(`const http = require('${uriObj.protocol.replace(':', '')}');`);
 
     blank();
-    push(`const options = ${stringifyObject(reqOpts, { indent: opts.indent })};`);
+    push(`const options = ${stringifyObject(reqOpts, { indent })};`);
     blank();
     push('const req = http.request(options, function (res) {');
     push('const chunks = [];', 1);
@@ -81,7 +83,7 @@ export const native: Client = {
 
       default:
         if (postData.text) {
-          push(`req.write(${stringifyObject(postData.text, { indent: opts.indent })});`);
+          push(`req.write(${stringifyObject(postData.text, { indent })});`);
         }
     }
 
