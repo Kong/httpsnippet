@@ -6,4 +6,4 @@ files = { "foo": "open('test/fixtures/files/hello.txt', 'rb')" }
 
 response = requests.post(url, files=files)
 
-print(response.text)
+print(response.json())

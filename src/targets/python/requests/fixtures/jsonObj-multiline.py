@@ -7,4 +7,4 @@ headers = {"content-type": "application/json"}
 
 response = requests.post(url, json=payload, headers=headers)
 
-print(response.text)
+print(response.json())

@@ -6,4 +6,4 @@ querystring = {"param":"value"}
 
 response = requests.get(url, params=querystring)
 
-print(response.text)
+print(response.json())
