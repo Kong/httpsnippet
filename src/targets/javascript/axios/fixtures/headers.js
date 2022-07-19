@@ -6,11 +6,9 @@ const options = {
   headers: {accept: 'application/json', 'x-foo': 'Bar', 'x-bar': 'Foo'}
 };
 
-axios
-  .request(options)
-  .then(function (response) {
-    console.log(response.data);
-  })
-  .catch(function (error) {
-    console.error(error);
-  });
+try {
+  const { data } = await axios.request(options);
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}

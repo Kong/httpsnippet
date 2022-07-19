@@ -3,7 +3,10 @@ const fetch = require('node-fetch');
 const url = 'http://mockbin.com/har';
 const options = {method: 'POST', headers: {cookie: 'foo=bar; bar=baz'}};
 
-fetch(url, options)
-  .then(res => res.json())
-  .then(json => console.log(json))
-  .catch(err => console.error('error:' + err));
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
