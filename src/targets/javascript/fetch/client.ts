@@ -46,6 +46,8 @@ export const fetch: Client<FetchOptions> = {
       options.credentials = opts.credentials;
     }
 
+    push(`const url = '${fullUrl}';`);
+
     switch (postData.mimeType) {
       case 'application/x-www-form-urlencoded':
         options.body = postData.paramsObj ? postData.paramsObj : postData.text;
@@ -106,10 +108,13 @@ export const fetch: Client<FetchOptions> = {
       blank();
     }
 
-    push(`fetch('${fullUrl}', options)`);
-    push('.then(response => response.json())', 1);
-    push('.then(response => console.log(response))', 1);
-    push('.catch(err => console.error(err));', 1);
+    push('try {');
+    push(`const response = await fetch(url, options);`, 1);
+    push('const data = await response.json();', 1);
+    push('console.log(data);', 1);
+    push('} catch (error) {');
+    push('console.error(error);', 1);
+    push('}');
 
     return join();
   },
