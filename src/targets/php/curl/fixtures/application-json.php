@@ -10,7 +10,28 @@ curl_setopt_array($curl, [
   CURLOPT_TIMEOUT => 30,
   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
   CURLOPT_CUSTOMREQUEST => "POST",
-  CURLOPT_POSTFIELDS => "{\"number\":1,\"string\":\"f\\\"oo\",\"arr\":[1,2,3],\"nested\":{\"a\":\"b\"},\"arr_mix\":[1,\"a\",{\"arr_mix_nested\":{}}],\"boolean\":false}",
+  CURLOPT_POSTFIELDS => json_encode([
+    'number' => 1,
+    'string' => 'f"oo',
+    'arr' => [
+        1,
+        2,
+        3
+    ],
+    'nested' => [
+        'a' => 'b'
+    ],
+    'arr_mix' => [
+        1,
+        'a',
+        [
+                'arr_mix_nested' => [
+                                
+                ]
+        ]
+    ],
+    'boolean' => null
+  ]),
   CURLOPT_HTTPHEADER => [
     "content-type: application/json"
   ],

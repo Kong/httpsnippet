@@ -10,7 +10,9 @@ curl_setopt_array($curl, [
   CURLOPT_TIMEOUT => 30,
   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
   CURLOPT_CUSTOMREQUEST => "POST",
-  CURLOPT_POSTFIELDS => "{\"foo\":null}",
+  CURLOPT_POSTFIELDS => json_encode([
+    'foo' => null
+  ]),
   CURLOPT_HTTPHEADER => [
     "content-type: application/json"
   ],
