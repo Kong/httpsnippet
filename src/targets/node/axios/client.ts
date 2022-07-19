@@ -79,14 +79,12 @@ export const axios: Client = {
     push(`const options = ${stringifiedOptions};`);
     blank();
 
-    push('axios');
-    push('.request(options)', 1);
-    push('.then(function (response) {', 1);
-    push('console.log(response.data);', 2);
-    push('})', 1);
-    push('.catch(function (error) {', 1);
-    push('console.error(error);', 2);
-    push('});', 1);
+    push('try {');
+    push('const { data } = await axios.request(options);', 1);
+    push('console.log(data);', 1);
+    push('} catch (error) {');
+    push('console.error(error);', 1);
+    push('}');
 
     return join();
   },
