@@ -31,7 +31,8 @@ export const fetch: Client = {
     const { blank, push, join, unshift } = new CodeBuilder({ indent: opts.indent });
 
     push("const fetch = require('node-fetch');");
-    const url = fullUrl;
+    blank();
+
     const reqOpts: Record<string, any> = {
       method,
     };
@@ -44,11 +45,10 @@ export const fetch: Client = {
       case 'application/x-www-form-urlencoded':
         unshift("const { URLSearchParams } = require('url');");
         push('const encodedParams = new URLSearchParams();');
-        blank();
-
         postData.params?.forEach(param => {
           push(`encodedParams.set('${param.name}', '${param.value}');`);
         });
+        blank();
 
         reqOpts.body = 'encodedParams';
         break;
@@ -73,8 +73,6 @@ export const fetch: Client = {
 
         unshift("const FormData = require('form-data');");
         push('const formData = new FormData();');
-        blank();
-
         postData.params.forEach(param => {
           if (!param.fileName && !param.fileName && !param.contentType) {
             push(`formData.append('${param.name}', '${param.value}');`);
@@ -86,6 +84,7 @@ export const fetch: Client = {
             push(`formData.append('${param.name}', fs.createReadStream('${param.fileName}'));`);
           }
         });
+        blank();
         break;
 
       default:
@@ -106,8 +105,8 @@ export const fetch: Client = {
         reqOpts.headers.cookie = cookiesString;
       }
     }
-    blank();
-    push(`const url = '${url}';`);
+
+    push(`const url = '${fullUrl}';`);
 
     // If we ultimately don't have any headers to send then we shouldn't add an empty object into the request options.
     if (reqOpts.headers && !Object.keys(reqOpts.headers).length) {
@@ -116,19 +115,22 @@ export const fetch: Client = {
 
     const stringifiedOptions = stringifyObject(reqOpts, { indent: '  ', inlineCharacterLimit: 80 });
     push(`const options = ${stringifiedOptions};`);
-    blank();
 
     if (includeFS) {
       unshift("const fs = require('fs');");
     }
     if (postData.params && postData.mimeType === 'multipart/form-data') {
       push('options.body = formData;');
-      blank();
     }
-    push('fetch(url, options)');
-    push('.then(res => res.json())', 1);
-    push('.then(json => console.log(json))', 1);
-    push(".catch(err => console.error('error:' + err));", 1);
+    blank();
+
+    push('try {');
+    push(`const response = await fetch(url, options);`, 1);
+    push('const data = await response.json();', 1);
+    push('console.log(data);', 1);
+    push('} catch (error) {');
+    push('console.error(error);', 1);
+    push('}');
 
     return join()
       .replace(/'encodedParams'/, 'encodedParams')
