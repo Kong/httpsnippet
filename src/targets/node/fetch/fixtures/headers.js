@@ -6,7 +6,10 @@ const options = {
   headers: {accept: 'application/json', 'x-foo': 'Bar', 'x-bar': 'Foo'}
 };
 
-fetch(url, options)
-  .then(res => res.json())
-  .then(json => console.log(json))
-  .catch(err => console.error('error:' + err));
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
