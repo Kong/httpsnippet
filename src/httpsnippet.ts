@@ -1,8 +1,6 @@
 import { map as eventStreamMap } from 'event-stream';
 import FormData from 'form-data';
 import { Param, PostDataCommon, Request as NpmHarRequest } from 'har-format';
-import { stringify as queryStringify } from 'querystring';
-import { format as urlFormat, parse as urlParse, UrlWithParsedQuery } from 'url';
 
 import { formDataIterator, isBlob } from './helpers/form-data';
 import { validateHarRequest } from './helpers/har-validator';
@@ -19,6 +17,23 @@ const debug = {
   // eslint-disable-next-line @typescript-eslint/no-empty-function -- intentional noop
   info: DEBUG_MODE ? console.info : () => {},
 };
+
+function queryStringify(obj: ReducedHelperObject | undefined) {
+  const params = new URLSearchParams();
+  if (obj) {
+    Object.keys(obj).forEach(key => {
+      const val = obj[key];
+      if (typeof val === 'string') {
+        params.append(key, val);
+      } else {
+        val.forEach(v => {
+          params.append(key, v);
+        });
+      }
+    });
+  }
+  return params.toString();
+}
 
 /** is this wrong?  yes.  according to the spec (http://www.softwareishard.com/blog/har-12-spec/#postData) it's technically wrong since `params` and `text` are (by the spec) mutually exclusive.  However, in practice, this is not what is often the case.
  *
@@ -42,7 +57,7 @@ export interface RequestExtras {
   fullUrl: string;
   queryObj: ReducedHelperObject;
   headersObj: ReducedHelperObject;
-  uriObj: UrlWithParsedQuery;
+  uriObj: URL;
   cookiesObj: ReducedHelperObject;
   allHeaders: ReducedHelperObject;
 }
@@ -116,7 +131,7 @@ export class HTTPSnippet {
     const request: Request = {
       ...harRequest,
       fullUrl: '',
-      uriObj: {} as UrlWithParsedQuery,
+      uriObj: {} as URL,
       queryObj: {},
       headersObj: {},
       cookiesObj: {},
@@ -280,35 +295,29 @@ export class HTTPSnippet {
       ...request.headersObj,
     };
 
-    const urlWithParsedQuery = urlParse(request.url, true, true); //?
+    const parsedUrl = new URL(request.url);
 
     // query string key/value pairs in with literal querystrings containd within the url
+    const queryObj: ReducedHelperObject = {};
+    parsedUrl.searchParams.forEach((value, key) => {
+      queryObj[key] = value;
+    });
     request.queryObj = {
       ...request.queryObj,
-      ...(urlWithParsedQuery.query as ReducedHelperObject),
+      ...queryObj,
     }; //?
 
     // reset uriObj values for a clean url
-    const search = queryStringify(request.queryObj);
-
-    const uriObj = {
-      ...urlWithParsedQuery,
-      query: request.queryObj,
-      search,
-      path: search ? `${urlWithParsedQuery.pathname}?${search}` : urlWithParsedQuery.pathname,
-    };
+    const uriObj: URL = new URL(parsedUrl.toString());
+    uriObj.search = queryStringify(request.queryObj);
 
     // keep the base url clean of queryString
-    const url = urlFormat({
-      ...urlWithParsedQuery,
-      query: null,
-      search: null,
-    }); //?
+    const tempUrl = new URL(parsedUrl.toString());
+    tempUrl.search = '';
 
-    const fullUrl = urlFormat({
-      ...urlWithParsedQuery,
-      ...uriObj,
-    }); //?
+    const url = tempUrl.toString();
+
+    const fullUrl = uriObj.toString();
 
     return {
       ...request,

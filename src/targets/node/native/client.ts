@@ -31,13 +31,12 @@ export const native: Client<NodeNativeOptions> = {
     const reqOpts = {
       method,
       hostname: uriObj.hostname,
-      port: uriObj.port,
-      path: uriObj.path,
+      port: uriObj.port === '' ? null : uriObj.port,
+      path: uriObj.search ? `${uriObj.pathname}${url.search}` : uriObj.pathname,
       headers: allHeaders,
       ...(insecureSkipVerify ? { rejectUnauthorized: false } : {}),
     };
 
-    // @ts-expect-error TODO seems like a legit error
     push(`const http = require('${uriObj.protocol.replace(':', '')}');`);
 
     blank();

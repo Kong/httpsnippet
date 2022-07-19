@@ -47,7 +47,11 @@ export const http11: Client<Http11Options> = {
     // RFC 7230 Section 5.3. Request Target
     // Determines if the Request-Line should use 'absolute-form' or 'origin-form'.
     // Basically it means whether the "http://domain.com" will prepend the full url.
-    const requestUrl = opts.absoluteURI ? fullUrl : uriObj.path;
+    const requestUrl = opts.absoluteURI
+      ? fullUrl
+      : uriObj.search
+      ? `${uriObj.pathname}${url.search}`
+      : uriObj.pathname;
 
     // RFC 7230 Section 3.1.1. Request-Line
     push(`${method} ${requestUrl} ${httpVersion}`);

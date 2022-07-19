@@ -56,7 +56,7 @@ export const curl: Client<CurlOptions> = {
       {
         escape: true,
         name: 'CURLOPT_PORT',
-        value: uriObj.port,
+        value: uriObj.port === '' ? undefined : uriObj.port,
       },
       {
         escape: true,

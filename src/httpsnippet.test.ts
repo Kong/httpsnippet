@@ -106,31 +106,27 @@ describe('hTTPSnippet', () => {
         const snippet = new HTTPSnippet(query as Request);
         const request = snippet.requests[0];
 
-        expect(request.uriObj).toMatchObject({
-          auth: null,
-          hash: null,
-          host: 'mockbin.com',
-          hostname: 'mockbin.com',
-          href: 'http://mockbin.com/har?key=value',
-          path: '/har?foo=bar&foo=baz&baz=abc&key=value',
-          pathname: '/har',
-          port: null,
-          protocol: 'http:',
-          query: {
-            baz: 'abc',
-            key: 'value',
-            foo: ['bar', 'baz'],
-          },
-          search: 'foo=bar&foo=baz&baz=abc&key=value',
-          slashes: true,
-        });
+        expect(request.uriObj.host).toBe('mockbin.com');
+        expect(request.uriObj.hostname).toBe('mockbin.com');
+        expect(request.uriObj.hash).toBe('');
+        expect(request.uriObj.href).toBe(
+          'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value',
+        );
+        expect(request.uriObj.pathname).toBe('/har');
+        expect(request.uriObj.port).toBe('');
+        expect(request.uriObj.protocol).toBe('http:');
+        expect(request.uriObj.search).toBe('?foo=bar&foo=baz&baz=abc&key=value');
+        expect(request.uriObj.searchParams.get('baz')).toBe('abc');
+        expect(request.uriObj.searchParams.get('key')).toBe('value');
+        expect(request.uriObj.searchParams.get('foo')).toBe('bar');
       });
 
       it('should fix the `path` property of uriObj to match queryString', () => {
         const snippet = new HTTPSnippet(query as Request);
         const request = snippet.requests[0];
 
-        expect(request.uriObj.path).toBe('/har?foo=bar&foo=baz&baz=abc&key=value');
+        expect(request.uriObj.pathname).toBe('/har');
+        expect(request.uriObj.search).toBe('?foo=bar&foo=baz&baz=abc&key=value');
       });
     });
 

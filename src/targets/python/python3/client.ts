@@ -22,7 +22,12 @@ export const python3: Client<Python3Options> = {
     link: 'https://docs.python.org/3/library/http.client.html',
     description: 'Python3 HTTP Client',
   },
-  convert: ({ uriObj: { path, protocol, host }, postData, allHeaders, method }, options = {}) => {
+  convert: (
+    { uriObj: { pathname, search, protocol, host }, postData, allHeaders, method },
+    options = {},
+  ) => {
+    const path = search ? `${pathname}${search}` : pathname;
+
     const { insecureSkipVerify = false } = options;
 
     const { push, blank, join } = new CodeBuilder();
