@@ -6,4 +6,4 @@ headers = {"cookie": "foo=bar; bar=baz"}
 
 response = requests.post(url, headers=headers)
 
-print(response.text)
+print(response.json())

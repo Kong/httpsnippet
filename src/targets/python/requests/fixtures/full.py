@@ -13,4 +13,4 @@ headers = {
 
 response = requests.post(url, data=payload, headers=headers, params=querystring)
 
-print(response.text)
+print(response.json())

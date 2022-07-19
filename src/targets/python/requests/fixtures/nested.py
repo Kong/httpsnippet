@@ -6,4 +6,4 @@ querystring = {"foo[bar]":"baz,zap","fiz":"buz","key":"value"}
 
 response = requests.get(url, params=querystring)
 
-print(response.text)
+print(response.json())
