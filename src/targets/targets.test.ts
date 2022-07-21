@@ -84,9 +84,15 @@ availableTargets()
             it(`${clientId} request should match fixture for "${fixture}.js"`, () => {
               expect(result).toStrictEqual(expected);
             });
-          } catch (error) {
+          } catch (err) {
+            if (err.constructor.name === 'HARError') {
+              throw err;
+            }
+
             throw new Error(
-              `Missing a test file for ${targetId}:${clientId} for the ${fixture} fixture.\nExpected to find the output fixture: \`/src/targets/${targetId}/${clientId}/fixtures/${fixture}${fixtureExtension}\``
+              `Missing a test file for ${targetId}:${clientId} for the ${fixture} fixture.\nExpected to find the output fixture: \`/src/targets/${targetId}/${clientId}/fixtures/${fixture}${
+                fixtureExtension ?? ''
+              }\``
             );
           }
         });

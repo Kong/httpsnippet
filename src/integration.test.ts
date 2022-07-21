@@ -232,9 +232,17 @@ availableTargets()
               // check target agnostic we need to parse and re-stringify our expectations so that
               // this test can universally match them all.
               if (expected.headers?.['Content-Type']?.includes('application/json')) {
-                expect(JSON.stringify(JSON.parse(response.data))).toStrictEqual(
-                  JSON.stringify(JSON.parse(expected.data))
-                );
+                // In our postdata-malformed fixture we're sending a POST payload without any
+                // content so what HTTPBin sends back to us is a `json: null` and `data: ''`, which
+                // we need to specially assert here as running `JSON.parse()` on an empty string
+                // will throw an exception.
+                if (fixture === 'postdata-malformed' && response.data === '') {
+                  expect(expected.data).toBe('');
+                } else {
+                  expect(JSON.stringify(JSON.parse(response.data))).toStrictEqual(
+                    JSON.stringify(JSON.parse(expected.data))
+                  );
+                }
               } else {
                 expect(response.data).toStrictEqual(expected.data);
               }

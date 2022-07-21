@@ -27,9 +27,25 @@ export const validateHarRequest = (request: any): request is Request => {
   if (!validate) {
     throw new Error('failed to find HAR request schema');
   }
+
   const valid = validate(request);
   if (!valid && validate.errors) {
+    if (validate.errors.length === 1) {
+      // While not ideal, or compliant with the HAR spec, if we have an empty `postData` object in
+      // our HAR and no other errors we should let this through because it's fine and our client
+      // targets are able to handle it okay.
+      const error = validate.errors[0];
+      if (
+        error.dataPath === '.postData' &&
+        error.message === "should have required property 'mimeType'" &&
+        JSON.stringify(request.postData) === '{}'
+      ) {
+        return true;
+      }
+    }
+
     throw new HARError(validate.errors);
   }
+
   return true;
 };
