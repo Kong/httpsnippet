@@ -4,7 +4,9 @@ import path from 'path';
 import { hideBin } from 'yargs/helpers';
 import yargs from 'yargs/yargs';
 
-import packageJson from '../package.json';
+// eslint-disable-next-line @typescript-eslint/no-var-requires -- require() to avoid package.json being included in build output.
+const packageJson = require('../package.json');
+
 import { extname, HarRequest, HTTPSnippet } from './httpsnippet';
 import { ClientId, TargetId, targets } from './targets/targets';
 
