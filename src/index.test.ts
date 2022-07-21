@@ -23,6 +23,54 @@ describe('HTTPSnippet', () => {
     expect(attempt).toThrow('validation failed');
   });
 
+  describe('repair malformed `postData`', () => {
+    it('should repair a HAR with an empty `postData` object', () => {
+      const snippet = new HTTPSnippet({
+        method: 'POST',
+        url: 'https://httpbin.org/anything',
+        postData: {},
+      } as Request);
+
+      const request = snippet.requests[0];
+      expect(request.postData).toStrictEqual({
+        mimeType: 'application/octet-stream',
+      });
+    });
+
+    it('should repair a HAR with a `postData` params object missing `mimeType`', () => {
+      // @ts-expect-error Testing a malformed HAR case.
+      const snippet = new HTTPSnippet({
+        method: 'POST',
+        url: 'https://httpbin.org/anything',
+        postData: {
+          params: [],
+        },
+      } as Request);
+
+      const request = snippet.requests[0];
+      expect(request.postData).toStrictEqual({
+        mimeType: 'application/octet-stream',
+        params: [],
+      });
+    });
+
+    it('should repair a HAR with a `postData` text object missing `mimeType`', () => {
+      const snippet = new HTTPSnippet({
+        method: 'POST',
+        url: 'https://httpbin.org/anything',
+        postData: {
+          text: '',
+        },
+      } as Request);
+
+      const request = snippet.requests[0];
+      expect(request.postData).toStrictEqual({
+        mimeType: 'application/octet-stream',
+        text: '',
+      });
+    });
+  });
+
   it('should parse HAR file with multiple entries', () => {
     const snippet = new HTTPSnippet({
       log: {

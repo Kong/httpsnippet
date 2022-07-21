@@ -119,6 +119,11 @@ export class HTTPSnippet {
         ...request,
       };
 
+      // Per the HAR spec `mimeType` needs to always be present if we have a `postData` object.
+      if (req.postData && !req.postData.mimeType) {
+        req.postData.mimeType = 'application/octet-stream';
+      }
+
       if (validateHarRequest(req)) {
         this.requests.push(this.prepare(req, options));
       }
