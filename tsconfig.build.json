@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": ".",
+    "rootDir": "src",
     "allowJs": true,
     "resolveJsonModule": true,
     "strict": true,
@@ -9,6 +9,6 @@
     "downlevelIteration": true,
     "lib": ["ESNext"]
   },
-  "include": ["src", "package.json"],
+  "include": ["src"],
   "exclude": ["dist", "**/*.test.ts"]
 }
