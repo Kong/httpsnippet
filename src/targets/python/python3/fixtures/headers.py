@@ -6,7 +6,7 @@ headers = {
     'accept': "application/json",
     'x-foo': "Bar",
     'quoted-value': "\"quoted\" 'string'"
-    }
+}
 
 conn.request("GET", "/har", headers=headers)
 

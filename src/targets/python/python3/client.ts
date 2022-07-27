@@ -72,7 +72,7 @@ export const python3: Client<Python3Options> = {
         }
       }
 
-      push('    }');
+      push('}');
       blank();
     }
 
