@@ -6,7 +6,7 @@ let uri = Uri.of_string "http://mockbin.com/har" in
 let headers = Header.add_list (Header.init ()) [
   ("accept", "application/json");
   ("x-foo", "Bar");
-  ("x-bar", "Foo");
+  ("quoted-value", "\"quoted\" 'string'");
 ] in
 
 Client.call ~headers `GET uri

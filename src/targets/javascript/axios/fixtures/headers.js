@@ -3,7 +3,11 @@ import axios from 'axios';
 const options = {
   method: 'GET',
   url: 'http://mockbin.com/har',
-  headers: {accept: 'application/json', 'x-foo': 'Bar', 'x-bar': 'Foo'}
+  headers: {
+    accept: 'application/json',
+    'x-foo': 'Bar',
+    'quoted-value': '"quoted" \'string\''
+  }
 };
 
 try {

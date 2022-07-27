@@ -9,6 +9,7 @@
  */
 
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { escapeForDoubleQuotes } from '../../../helpers/escape';
 import { Client } from '../../targets';
 
 export interface Python3Options {
@@ -55,7 +56,7 @@ export const python3: Client<Python3Options> = {
     const headerCount = Object.keys(headers).length;
     if (headerCount === 1) {
       for (const header in headers) {
-        push(`headers = { '${header}': "${headers[header]}" }`);
+        push(`headers = { '${header}': "${escapeForDoubleQuotes(headers[header])}" }`);
         blank();
       }
     } else if (headerCount > 1) {
@@ -65,9 +66,9 @@ export const python3: Client<Python3Options> = {
 
       for (const header in headers) {
         if (count++ !== headerCount) {
-          push(`    '${header}': "${headers[header]}",`);
+          push(`    '${header}': "${escapeForDoubleQuotes(headers[header])}",`);
         } else {
-          push(`    '${header}': "${headers[header]}"`);
+          push(`    '${header}': "${escapeForDoubleQuotes(headers[header])}"`);
         }
       }
 

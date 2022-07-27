@@ -9,6 +9,7 @@
  */
 
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { escapeForDoubleQuotes } from '../../../helpers/escape';
 import { Client } from '../../targets';
 
 export interface GoNativeOptions {
@@ -125,7 +126,7 @@ export const native: Client<GoNativeOptions> = {
     // Add headers
     if (Object.keys(allHeaders).length) {
       Object.keys(allHeaders).forEach(key => {
-        push(`req.Header.Add("${key}", "${allHeaders[key]}")`, indent);
+        push(`req.Header.Add("${key}", "${escapeForDoubleQuotes(allHeaders[key])}")`, indent);
       });
 
       blank();

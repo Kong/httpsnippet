@@ -9,6 +9,7 @@
  */
 
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { escapeForDoubleQuotes } from '../../../helpers/escape';
 import { Client } from '../../targets';
 
 export const okhttp: Client = {
@@ -63,7 +64,7 @@ export const okhttp: Client = {
 
     // Add headers, including the cookies
     Object.keys(allHeaders).forEach(key => {
-      push(`.addHeader("${key}", "${allHeaders[key]}")`, 1);
+      push(`.addHeader("${key}", "${escapeForDoubleQuotes(allHeaders[key])}")`, 1);
     });
 
     push('.build()', 1);

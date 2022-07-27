@@ -11,6 +11,7 @@
 import stringifyObject from 'stringify-object';
 
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { escapeForSingleQuotes } from '../../../helpers/escape';
 import { getHeader, getHeaderName, hasHeader } from '../../../helpers/headers';
 import { Client } from '../../targets';
 
@@ -89,7 +90,7 @@ export const xhr: Client = {
     push(`xhr.open('${method}', '${fullUrl}');`);
 
     Object.keys(allHeaders).forEach(key => {
-      push(`xhr.setRequestHeader('${key}', '${allHeaders[key]}');`);
+      push(`xhr.setRequestHeader('${key}', '${escapeForSingleQuotes(allHeaders[key])}');`);
     });
 
     blank();

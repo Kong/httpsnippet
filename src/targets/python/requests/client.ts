@@ -9,6 +9,7 @@
  */
 
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { escapeForDoubleQuotes } from '../../../helpers/escape';
 import { getHeaderName } from '../../../helpers/headers';
 import { Client } from '../../targets';
 import { literalRepresentation } from '../helpers';
@@ -130,7 +131,7 @@ export const requests: Client<RequestsOptions> = {
       blank();
     } else if (headerCount === 1) {
       for (const header in headers) {
-        push(`headers = {"${header}": "${headers[header]}"}`);
+        push(`headers = {"${header}": "${escapeForDoubleQuotes(headers[header])}"}`);
         blank();
       }
     } else if (headerCount > 1) {
@@ -140,9 +141,9 @@ export const requests: Client<RequestsOptions> = {
 
       for (const header in headers) {
         if (count !== headerCount) {
-          push(`"${header}": "${headers[header]}",`, 1);
+          push(`"${header}": "${escapeForDoubleQuotes(headers[header])}",`, 1);
         } else {
-          push(`"${header}": "${headers[header]}"`, 1);
+          push(`"${header}": "${escapeForDoubleQuotes(headers[header])}"`, 1);
         }
         count += 1;
       }

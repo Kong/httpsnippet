@@ -1,4 +1,5 @@
 import { CodeBuilder } from '../../helpers/code-builder';
+import { escapeString } from '../../helpers/escape';
 import { getHeader } from '../../helpers/headers';
 import { Converter } from '../targets';
 
@@ -32,7 +33,7 @@ export const generatePowershellConvert = (command: PowershellCommand) => {
       headers.forEach(key => {
         if (key !== 'connection') {
           // Not allowed
-          push(`$headers.Add("${key}", "${headersObj[key]}")`);
+          push(`$headers.Add("${key}", "${escapeString(headersObj[key], { escapeChar: '`' })}")`);
         }
       });
       commandOptions.push('-Headers $headers');
@@ -55,7 +56,9 @@ export const generatePowershellConvert = (command: PowershellCommand) => {
     }
 
     if (postData.text) {
-      commandOptions.push(`-ContentType '${getHeader(allHeaders, 'content-type')}'`);
+      commandOptions.push(`-ContentType '${
+        escapeString(getHeader(allHeaders, 'content-type'), { delimiter: "'", escapeChar: '`' })
+      }'`);
       commandOptions.push(`-Body '${postData.text}'`);
     }
 
