@@ -19,11 +19,6 @@ export const native: Client<RubyNativeOptions> = {
 
     push("require 'uri'");
     push("require 'net/http'");
-
-    if (uriObj.protocol === 'https:') {
-      push("require 'openssl'");
-    }
-
     blank();
 
     // To support custom methods we check for the supported methods
