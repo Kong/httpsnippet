@@ -5,8 +5,8 @@ conn = http.client.HTTPConnection("mockbin.com")
 headers = {
     'accept': "application/json",
     'x-foo': "Bar",
-    'x-bar': "Foo"
-    }
+    'quoted-value': "\"quoted\" 'string'"
+}
 
 conn.request("GET", "/har", headers=headers)
 

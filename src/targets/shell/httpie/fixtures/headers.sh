@@ -1,4 +1,4 @@
 http GET http://mockbin.com/har \
   accept:application/json \
-  x-bar:Foo \
+  quoted-value:'"quoted" '\''string'\''' \
   x-foo:Bar

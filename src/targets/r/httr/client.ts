@@ -14,6 +14,8 @@ export interface HttrOptions {
 }
 
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { escapeForDoubleQuotes, escapeForSingleQuotes } from '../../../helpers/escape';
+import { getHeader } from '../../../helpers/headers';
 import { Client } from '../../targets';
 
 export const httr: Client = {
@@ -95,22 +97,32 @@ export const httr: Client = {
     }
 
     // Construct headers
-    const headers = [];
-    let cookies;
-    let accept;
+    const cookieHeader = getHeader(allHeaders, 'cookie');
+    let acceptHeader = getHeader(allHeaders, 'accept');
 
-    for (const head in allHeaders) {
-      if (head.toLowerCase() === 'accept') {
-        accept = `, accept("${allHeaders[head]}")`;
-      } else if (head.toLowerCase() === 'cookie') {
-        cookies = `, set_cookies(\`${String(allHeaders[head])
+    const setCookies = cookieHeader
+      ? `set_cookies(\`${String(cookieHeader)
           .replace(/;/g, '", `')
           .replace(/` /g, '`')
-          .replace(/[=]/g, '` = "')}")`;
-      } else if (head.toLowerCase() !== 'content-type') {
-        headers.push(`'${head}' = '${allHeaders[head]}'`);
-      }
-    }
+          .replace(/[=]/g, '` = "')
+        }")`
+      : undefined
+
+    const setAccept = acceptHeader
+      ? `accept("${escapeForDoubleQuotes(acceptHeader)}")`
+      : undefined
+
+    const setContentType = `content_type("${escapeForDoubleQuotes(postData.mimeType)}")`
+
+    const otherHeaders = Object.entries(allHeaders)
+      // These headers are all handled separately:
+      .filter(([key]) => !['cookie', 'accept', 'content-type'].includes(key.toLowerCase()))
+      .map(([key, value]) => `'${key}' = '${escapeForSingleQuotes(value)}'`)
+      .join(', ')
+
+    const setHeaders = otherHeaders
+      ? `add_headers(${otherHeaders})`
+      : undefined
 
     // Construct request
     let request = `response <- VERB("${method}", url`;
@@ -119,22 +131,14 @@ export const httr: Client = {
       request += ', body = payload';
     }
 
-    if (headers.length) {
-      request += `, add_headers(${headers.join(', ')})`;
-    }
-
     if (queryString.length) {
       request += ', query = queryString';
     }
 
-    request += `, content_type("${postData.mimeType}")`;
+    const headerAdditions = [setHeaders, setContentType, setAccept, setCookies].filter(x => !!x).join(', ');
 
-    if (typeof accept !== 'undefined') {
-      request += accept;
-    }
-
-    if (typeof cookies !== 'undefined') {
-      request += cookies;
+    if (headerAdditions) {
+      request += ', ' + headerAdditions
     }
 
     if (postData.text || postData.jsonObj || postData.params) {

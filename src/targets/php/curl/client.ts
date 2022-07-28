@@ -9,6 +9,7 @@
  */
 
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { escapeForDoubleQuotes } from '../../../helpers/escape';
 import { Client } from '../../targets';
 import { convertType } from '../helpers';
 
@@ -125,7 +126,7 @@ export const curl: Client<CurlOptions> = {
     // construct cookies
     const headers = Object.keys(headersObj)
       .sort()
-      .map(key => `"${key}: ${headersObj[key]}"`);
+      .map(key => `"${key}: ${escapeForDoubleQuotes(headersObj[key])}"`);
 
     if (headers.length) {
       curlopts.push('CURLOPT_HTTPHEADER => [');

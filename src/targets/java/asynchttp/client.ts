@@ -9,6 +9,7 @@
  */
 
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { escapeForDoubleQuotes } from '../../../helpers/escape';
 import { Client } from '../../targets';
 
 export const asynchttp: Client = {
@@ -31,7 +32,7 @@ export const asynchttp: Client = {
 
     // Add headers, including the cookies
     Object.keys(allHeaders).forEach(key => {
-      push(`.setHeader("${key}", "${allHeaders[key]}")`, 1);
+      push(`.setHeader("${key}", "${escapeForDoubleQuotes(allHeaders[key])}")`, 1);
     });
 
     if (postData.text) {

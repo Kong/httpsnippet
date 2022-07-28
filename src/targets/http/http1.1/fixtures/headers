@@ -1,6 +1,6 @@
 GET /har HTTP/1.1
 Accept: application/json
 X-Foo: Bar
-X-Bar: Foo
+Quoted-Value: "quoted" 'string'
 Host: mockbin.com
 

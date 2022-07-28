@@ -1,4 +1,5 @@
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { escapeForSingleQuotes } from '../../../helpers/escape';
 import { Client } from '../../targets';
 
 export interface RubyNativeOptions {
@@ -65,7 +66,7 @@ export const native: Client<RubyNativeOptions> = {
     const headers = Object.keys(allHeaders);
     if (headers.length) {
       headers.forEach(key => {
-        push(`request["${key}"] = '${allHeaders[key]}'`);
+        push(`request["${key}"] = '${escapeForSingleQuotes(allHeaders[key])}'`);
       });
     }
 

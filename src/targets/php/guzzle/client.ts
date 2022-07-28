@@ -9,6 +9,7 @@
  */
 
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { escapeForSingleQuotes } from '../../../helpers/escape';
 import { getHeader, getHeaderName, hasHeader } from '../../../helpers/headers';
 import { Client } from '../../targets';
 import { convertType } from '../helpers';
@@ -122,7 +123,7 @@ export const guzzle: Client<GuzzleOptions> = {
     const headers = Object.keys(headersObj)
       .sort()
       .map(function (key) {
-        return `${opts.indent}${opts.indent}'${key}' => '${headersObj[key]}',`;
+        return `${opts.indent}${opts.indent}'${key}' => '${escapeForSingleQuotes(headersObj[key])}',`;
       });
 
     // construct cookies
@@ -130,7 +131,7 @@ export const guzzle: Client<GuzzleOptions> = {
       .map(cookie => `${encodeURIComponent(cookie.name)}=${encodeURIComponent(cookie.value)}`)
       .join('; ');
     if (cookieString.length) {
-      headers.push(`${opts.indent}${opts.indent}'cookie' => '${cookieString}',`);
+      headers.push(`${opts.indent}${opts.indent}'cookie' => '${escapeForSingleQuotes(cookieString)}',`);
     }
 
     if (headers.length) {

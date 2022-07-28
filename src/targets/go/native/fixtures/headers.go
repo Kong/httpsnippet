@@ -14,7 +14,7 @@ func main() {
 
 	req.Header.Add("accept", "application/json")
 	req.Header.Add("x-foo", "Bar")
-	req.Header.Add("x-bar", "Foo")
+	req.Header.Add("quoted-value", "\"quoted\" 'string'")
 
 	res, _ := http.DefaultClient.Do(req)
 
