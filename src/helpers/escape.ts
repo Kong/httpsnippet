@@ -74,8 +74,22 @@ export function escapeString(value: any, options: EscapeOptions = {}) {
   }).join('');
 }
 
+/**
+ * Make a string value safe to insert literally into a snippet within single quotes,
+ * by escaping problematic characters, including single quotes inside the string,
+ * backslashes, newlines, and other special characters.
+ *
+ * If value is not a string, it will be stringified with .toString() first.
+ */
 export const escapeForSingleQuotes = (value: any) =>
   escapeString(value, { delimiter: "'" });
 
+/**
+ * Make a string value safe to insert literally into a snippet within double quotes,
+ * by escaping problematic characters, including double quotes inside the string,
+ * backslashes, newlines, and other special characters.
+ *
+ * If value is not a string, it will be stringified with .toString() first.
+ */
 export const escapeForDoubleQuotes = (value: any) =>
   escapeString(value, { delimiter: '"' });
