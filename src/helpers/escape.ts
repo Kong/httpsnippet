@@ -30,16 +30,16 @@ export interface EscapeOptions {
  * See https://tc39.es/ecma262/multipage/structured-data.html#sec-quotejsonstring
  * for the complete original algorithm.
  */
-export function escapeString(value: any, options: EscapeOptions = {}) {
+export function escapeString(rawValue: any, options: EscapeOptions = {}) {
   const {
     delimiter = '"',
     escapeChar = '\\',
     escapeNewlines = true
   } = options;
 
-  value = value.toString();
+  const stringValue = rawValue.toString();
 
-  return [...value].map((c) => {
+  return [...stringValue].map((c) => {
     if (c === '\b') {
       return escapeChar + 'b';
     } else if (c === '\t') {
