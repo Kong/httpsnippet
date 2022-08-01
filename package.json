@@ -61,7 +61,7 @@
     "@types/eslint": "^8.4.1",
     "@types/event-stream": "^4.0.0",
     "@types/har-format": "^1.2.8",
-    "@types/jest": "^27.4.1",
+    "@types/jest": "^28.1.6",
     "@types/node": "^16.11.26",
     "@types/qs": "^6.9.7",
     "@types/stringify-object": "^4.0.1",
