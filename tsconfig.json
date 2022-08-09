@@ -2,8 +2,8 @@
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
     "rootDir": ".",
-    "types": ["node", "jest"]
+    "types": ["node", "vitest/globals"]
   },
   "exclude": ["dist"],
-  "include": ["jest.config.js", ".prettierrc.js", ".eslintrc.js", "src"]
+  "include": ["vite.config.ts", ".prettierrc.js", ".eslintrc.js", "src"]
 }

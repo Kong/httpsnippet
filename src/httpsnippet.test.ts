@@ -19,7 +19,7 @@ describe('hTTPSnippet', () => {
     // @ts-expect-error intentionally incorrect
     const attempt = () => new HTTPSnippet({ ziltoid: 'the omniscient' });
 
-    expect(attempt).toThrow('validation failed');
+    expect(attempt).toThrow('Validation Failed');
   });
 
   it('should parse HAR file with multiple entries', () => {

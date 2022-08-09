@@ -10,5 +10,5 @@
     "lib": ["ESNext"]
   },
   "include": ["src"],
-  "exclude": ["dist", "**/*.test.ts"]
+  "exclude": ["dist", "**/*.test.ts", "src/fixtures/**"]
 }
