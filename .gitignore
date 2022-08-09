@@ -2,3 +2,5 @@
 node_modules
 coverage*
 dist
+.idea
+scripts/schema.json
