@@ -48,7 +48,7 @@
   "scripts": {
     "clean": "tsc --build tsconfig.build.json --clean",
     "prebuild": "npm run clean",
-    "lint": "lint:prettify && lint:code && lint:markdown",
+    "lint": "npm run lint:prettify && npm run lint:code && npm run lint:markdown",
     "lint:prettify": "prettier --write .",
     "lint:code": "eslint . --ext ts,d.ts,test.ts --fix",
     "lint:markdown": "markdownlint-cli2 \"**/*.md\" \"#**/node_modules\"",
