@@ -20,9 +20,9 @@ Guidelines for bug reports:
 
 1. **Use the GitHub issue search** &mdash; check if the issue has already been reported.
 
-2. **Check if the issue has been fixed** &mdash; try to reproduce it using the latest `master` or development branch in the repository.
+1. **Check if the issue has been fixed** &mdash; try to reproduce it using the latest `master` or development branch in the repository.
 
-3. **Isolate the problem** &mdash; create a [reduced test case](http://css-tricks.com/6263-reduced-test-cases/) and a live example.
+1. **Isolate the problem** &mdash; create a [reduced test case](http://css-tricks.com/6263-reduced-test-cases/) and a live example.
 
 A good bug report shouldn't leave others needing to chase you up for more information. Please try to be as detailed as possible in your report. What is your environment? What steps will reproduce the issue? What browser(s) and OS experience the problem? What would you expect to be the outcome? All these details will help people to fix any potential bugs.
 
@@ -33,8 +33,8 @@ Example:
 > A summary of the issue and the browser/OS environment in which it occurs. If suitable, include the steps required to reproduce the bug.
 >
 > 1. This is the first step
-> 2. This is the second step
-> 3. Further steps, etc.
+> 1. This is the second step
+> 1. Further steps, etc.
 >
 > `<url>` - a link to the reduced test case
 >
@@ -65,34 +65,34 @@ Follow this process if you'd like your work considered for inclusion in the proj
    git remote add upstream https://github.com/Kong/httpsnippet.git
    ```
 
-2. If you cloned a while ago, get the latest changes from upstream:
+1. If you cloned a while ago, get the latest changes from upstream:
 
    ```bash
    git checkout <dev-branch>
    git pull upstream <dev-branch>
    ```
 
-3. Create a new topic branch (off the main project development branch) to contain your feature, change, or fix:
+1. Create a new topic branch (off the main project development branch) to contain your feature, change, or fix:
 
    ```bash
    git checkout -b <topic-branch-name>
    ```
 
-4. Commit your changes in logical chunks. Please adhere to these [git commit message guidelines](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html) or your code is unlikely be merged into the main project. Use Git's [interactive rebase](https://help.github.com/articles/interactive-rebase) feature to tidy up your commits before making them public.
+1. Commit your changes in logical chunks. Please adhere to these [git commit message guidelines](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html) or your code is unlikely be merged into the main project. Use Git's [interactive rebase](https://help.github.com/articles/interactive-rebase) feature to tidy up your commits before making them public.
 
-5. Locally merge (or rebase) the upstream development branch into your topic branch:
+1. Locally merge (or rebase) the upstream development branch into your topic branch:
 
    ```bash
    git pull [--rebase] upstream <dev-branch>
    ```
 
-6. Push your topic branch up to your fork:
+1. Push your topic branch up to your fork:
 
    ```bash
    git push origin <topic-branch-name>
    ```
 
-7. [Open a Pull Request](https://help.github.com/articles/using-pull-requests/) with a clear title and description.
+1. [Open a Pull Request](https://help.github.com/articles/using-pull-requests/) with a clear title and description.
 
 **IMPORTANT**: By submitting a patch, you agree to allow the project owner to license your work under the same license as that used by the project.
 
