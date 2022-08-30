@@ -20,7 +20,7 @@ interface CliOptions {
   client?: ClientId;
   output?: string;
   harFilePath: string;
-  extra?: any;
+  options?: any;
 }
 
 export const go = () =>
@@ -48,7 +48,7 @@ export const go = () =>
             type: 'string',
             description: 'write output to directory',
           })
-          .option('extra', {
+          .option('options', {
             alias: 'x',
             type: 'string',
             description: 'provide extra options for the target/client',
@@ -59,14 +59,13 @@ export const go = () =>
           .showHelpOnFail(true)
           .help();
       },
-      ({ target: targetId, client, output, extra, harFilePath }) => {
+      ({ target: targetId, client, output, options, harFilePath }) => {
         const har = JSON.parse(readFileSync(harFilePath).toString()) as HarRequest;
         const httpsnippet = new HTTPSnippet(har);
 
-        let options: Record<string, any> = {};
         try {
-          if (extra) {
-            options = JSON.parse(extra);
+          if (options) {
+            options = JSON.parse(options);
           }
         } catch (error) {
           if (error instanceof Error) {
