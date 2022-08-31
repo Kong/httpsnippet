@@ -5,8 +5,8 @@
   "author": "Kong <office@konghq.com>",
   "homepage": "https://github.com/Kong/httpsnippet",
   "license": "MIT",
-  "main": "dist/httpsnippet.js",
-  "types": "dist/httpsnippet.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "bin": "bin/httpsnippet",
   "keywords": [
     "api",
