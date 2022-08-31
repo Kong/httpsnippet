@@ -123,7 +123,9 @@ export const guzzle: Client<GuzzleOptions> = {
     const headers = Object.keys(headersObj)
       .sort()
       .map(function (key) {
-        return `${opts.indent}${opts.indent}'${key}' => '${escapeForSingleQuotes(headersObj[key])}',`;
+        return `${
+          opts.indent
+        }${opts.indent}'${key}' => '${escapeForSingleQuotes(headersObj[key])}',`;
       });
 
     // construct cookies
@@ -131,7 +133,9 @@ export const guzzle: Client<GuzzleOptions> = {
       .map(cookie => `${encodeURIComponent(cookie.name)}=${encodeURIComponent(cookie.value)}`)
       .join('; ');
     if (cookieString.length) {
-      headers.push(`${opts.indent}${opts.indent}'cookie' => '${escapeForSingleQuotes(cookieString)}',`);
+      headers.push(
+        `${opts.indent}${opts.indent}'cookie' => '${escapeForSingleQuotes(cookieString)}',`,
+      );
     }
 
     if (headers.length) {
