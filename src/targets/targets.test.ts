@@ -1,13 +1,14 @@
 import type { HTTPSnippetOptions, Request } from '..';
 import type { Client, ClientId, Target, TargetId } from './targets';
+
 import { readdirSync, readFileSync, writeFileSync } from 'fs';
 import path from 'path';
 
-import { availableTargets, extname } from '../helpers/utils';
 import { HTTPSnippet } from '..';
-import { isClient, isTarget, addTarget, addTargetClient, targets } from './targets';
-
 import short from '../fixtures/requests/short';
+import { availableTargets, extname } from '../helpers/utils';
+
+import { isClient, isTarget, addTarget, addTargetClient, targets } from './targets';
 
 const expectedBasePath = ['src', 'fixtures', 'requests'];
 

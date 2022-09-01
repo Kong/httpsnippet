@@ -1,4 +1,5 @@
 import type { Request } from '../../..';
+
 import full from '../../../fixtures/requests/full';
 import nested from '../../../fixtures/requests/nested';
 import { runCustomFixtures } from '../../../fixtures/runCustomFixtures';

@@ -1,12 +1,14 @@
-import type { Param, PostDataCommon, Request as NpmHarRequest } from 'har-format';
-import type { UrlWithParsedQuery } from 'url';
 import type { ReducedHelperObject } from './helpers/reducer';
 import type { ClientId, TargetId } from './targets/targets';
+import type { Param, PostDataCommon, Request as NpmHarRequest } from 'har-format';
+import type { UrlWithParsedQuery } from 'url';
+
+// eslint-disable-next-line node/no-deprecated-api
+import { format as urlFormat, parse as urlParse } from 'url';
+
 import { map as eventStreamMap } from 'event-stream';
 import FormData from 'form-data';
 import { stringify as queryStringify } from 'qs';
-// eslint-disable-next-line node/no-deprecated-api
-import { format as urlFormat, parse as urlParse } from 'url';
 
 import { formDataIterator, isBlob } from './helpers/form-data';
 import { validateHarRequest } from './helpers/har-validator';
@@ -20,7 +22,7 @@ export { addTarget, addTargetClient } from './targets/targets';
 const DEBUG_MODE = false;
 
 const debug = {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function -- intentional noop
+  // eslint-disable-next-line @typescript-eslint/no-empty-function, no-console
   info: DEBUG_MODE ? console.info : () => {},
 };
 

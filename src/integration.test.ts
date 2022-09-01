@@ -4,9 +4,9 @@ import type { TargetId } from './targets/targets';
 import type { Response } from 'har-format';
 
 import shell from 'child_process';
-import { format } from 'util';
 import { readdirSync } from 'fs';
 import path from 'path';
+import { format } from 'util';
 
 import { availableTargets, extname } from './helpers/utils';
 

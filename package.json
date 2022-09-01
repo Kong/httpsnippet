@@ -57,7 +57,7 @@
     "test": "jest --coverage"
   },
   "devDependencies": {
-    "@readme/eslint-config": "^9.0.0",
+    "@readme/eslint-config": "^10.1.0",
     "@types/eslint": "^8.4.1",
     "@types/event-stream": "^4.0.0",
     "@types/har-format": "^1.2.8",

@@ -8,8 +8,8 @@
  *
  * For any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
-
 import type { Client } from '../../targets';
+
 import { CodeBuilder } from '../../../helpers/code-builder';
 
 const CRLF = '\r\n';

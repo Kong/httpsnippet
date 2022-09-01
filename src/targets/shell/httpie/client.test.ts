@@ -1,4 +1,5 @@
 import type { Request } from '../../..';
+
 import applicationFormEncoded from '../../../fixtures/requests/application-form-encoded';
 import full from '../../../fixtures/requests/full';
 import query from '../../../fixtures/requests/query';

@@ -1,5 +1,6 @@
 import type { ErrorObject } from 'ajv';
 import type { Request } from 'har-format';
+
 import Ajv from 'ajv';
 import * as schema from 'har-schema';
 

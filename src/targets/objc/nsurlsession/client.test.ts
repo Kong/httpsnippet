@@ -1,4 +1,5 @@
 import type { Request } from '../../..';
+
 import full from '../../../fixtures/requests/full';
 import jsonNullValue from '../../../fixtures/requests/jsonObj-null-value';
 import short from '../../../fixtures/requests/short';

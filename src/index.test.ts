@@ -1,8 +1,10 @@
 import type { Request } from '.';
+
 import { mimetypes } from './fixtures/mimetypes';
 import headers from './fixtures/requests/headers';
 import query from './fixtures/requests/query';
 import short from './fixtures/requests/short';
+
 import { HTTPSnippet } from '.';
 
 describe('HTTPSnippet', () => {
