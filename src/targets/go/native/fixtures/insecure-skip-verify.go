@@ -5,7 +5,7 @@ import (
 	"crypto/tls"
 	"strings"
 	"net/http"
-	"io/ioutil"
+	"io"
 )
 
 func main() {
@@ -29,7 +29,7 @@ func main() {
 	res, _ := client.Do(req)
 
 	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
+	body, _ := io.ReadAll(res.Body)
 
 	fmt.Println(res)
 	fmt.Println(string(body))
