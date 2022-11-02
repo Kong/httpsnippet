@@ -1,4 +1,4 @@
-const axios = require('axios').default;
+const axios = require('axios');
 
 const options = {method: 'PROPFIND', url: 'https://httpbin.org/anything'};
 
