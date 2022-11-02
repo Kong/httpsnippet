@@ -72,7 +72,7 @@ export const native: Client<GoNativeOptions> = {
       push('"net/http"', indent);
 
       if (printBody) {
-        push('"io/ioutil"', indent);
+        push('"io"', indent);
       }
 
       push(')');
@@ -140,7 +140,7 @@ export const native: Client<GoNativeOptions> = {
     if (printBody) {
       blank();
       push('defer res.Body.Close()', indent);
-      push(`body, ${errorPlaceholder} := ioutil.ReadAll(res.Body)`, indent);
+      push(`body, ${errorPlaceholder} := io.ReadAll(res.Body)`, indent);
       errorCheck();
     }
 
