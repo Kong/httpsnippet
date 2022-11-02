@@ -1,6 +1,10 @@
 name: CI
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
 
 jobs:
   build:
@@ -9,7 +13,11 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version:
+          - 14
+          - 16
+          - 18
+          - 19
 
     steps:
     - uses: actions/checkout@v3
@@ -19,8 +27,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Install dependencies
-      run: npm ci
-
-    - name: Run tests
-      run: npm test
+    - run: npm ci
+    - run: npm run build
+    - run: npm test
