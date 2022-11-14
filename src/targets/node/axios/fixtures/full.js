@@ -1,4 +1,4 @@
-const axios = require('axios').default;
+const axios = require('axios');
 const { URLSearchParams } = require('url');
 
 const encodedParams = new URLSearchParams();

@@ -1,4 +1,4 @@
-const axios = require('axios').default;
+const axios = require('axios');
 
 const options = {method: 'GET', url: 'https://mockbin.com/har'};
 
