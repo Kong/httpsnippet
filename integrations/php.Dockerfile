@@ -4,7 +4,7 @@ WORKDIR /composer/
 # https://packagist.org/packages/guzzlehttp/guzzle
 RUN composer require guzzlehttp/guzzle
 
-FROM alpine
+FROM alpine:3.16
 
 ADD . /src
 WORKDIR /src
