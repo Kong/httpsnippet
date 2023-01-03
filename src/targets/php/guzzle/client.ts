@@ -52,12 +52,12 @@ export const guzzle: Client<GuzzleOptions> = {
         break;
 
       case 'multipart/form-data': {
-        type MultipartField = {
+        interface MultipartField {
           name: string;
           filename?: string;
           contents: string | undefined;
           headers?: Record<string, string>;
-        };
+        }
 
         const fields: MultipartField[] = [];
 
