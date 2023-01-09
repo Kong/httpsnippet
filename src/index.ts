@@ -11,7 +11,6 @@ import FormData from 'form-data';
 import { stringify as queryStringify } from 'qs';
 
 import { formDataIterator, isBlob } from './helpers/form-data';
-import { validateHarRequest } from './helpers/har-validator';
 import { getHeaderName } from './helpers/headers';
 import { reducer } from './helpers/reducer';
 import { targets } from './targets/targets';
@@ -126,9 +125,7 @@ export class HTTPSnippet {
         req.postData.mimeType = 'application/octet-stream';
       }
 
-      if (validateHarRequest(req)) {
-        this.requests.push(this.prepare(req, options));
-      }
+      this.requests.push(this.prepare(req as HarRequest, options));
     });
   }
 

@@ -16,15 +16,6 @@ describe('HTTPSnippet', () => {
     expect(result).toBe(false);
   });
 
-  it('should fail validation for non-HAR inputs', () => {
-    expect.assertions(1);
-
-    // @ts-expect-error intentionally incorrect
-    const attempt = () => new HTTPSnippet({ ziltoid: 'the omniscient' });
-
-    expect(attempt).toThrow('validation failed');
-  });
-
   describe('repair malformed `postData`', () => {
     it('should repair a HAR with an empty `postData` object', () => {
       const snippet = new HTTPSnippet({

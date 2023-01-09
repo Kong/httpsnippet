@@ -157,6 +157,7 @@ There are some major differences between this library and the [httpsnippet](http
 
 * Includes a full integration test suite for a handful of clients and targets.
 * Does not ship with a CLI component.
+* Does not do any HAR schema validation. It's just assumed that the HAR you're supplying to the library is already valid.
 * The main `HTTPSnippet` export contains an `options` argument for an `harIsAlreadyEncoded` option for disabling [escaping](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) of cookies and query strings in URLs.
   * We added this because all HARs that we interact with already have this data escaped and this option prevents them from being double encoded, thus corrupting the data.
 * Node
