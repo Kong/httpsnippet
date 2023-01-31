@@ -57,7 +57,7 @@
     "test": "jest --coverage"
   },
   "devDependencies": {
-    "@readme/eslint-config": "^10.3.2",
+    "@readme/eslint-config": "^10.5.0",
     "@types/eslint": "^8.4.1",
     "@types/event-stream": "^4.0.0",
     "@types/har-format": "^1.2.8",
@@ -65,14 +65,14 @@
     "@types/node": "^18.11.18",
     "@types/qs": "^6.9.7",
     "@types/stringify-object": "^4.0.2",
-    "eslint": "^8.31.0",
-    "glob": "^8.0.1",
+    "eslint": "^8.33.0",
+    "glob": "^8.1.0",
     "jest": "^28.0.3",
-    "prettier": "^2.8.1",
+    "prettier": "^2.8.3",
     "require-directory": "^2.1.1",
     "ts-jest": "^28.0.5",
-    "type-fest": "^3.5.0",
-    "typescript": "^4.9.4"
+    "type-fest": "^3.5.4",
+    "typescript": "^4.9.5"
   },
   "dependencies": {
     "event-stream": "4.0.1",

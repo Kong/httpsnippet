@@ -1,5 +1,5 @@
-import type { HTTPSnippetOptions, Request } from '..';
 import type { Client, ClientId, Target, TargetId } from './targets';
+import type { HTTPSnippetOptions, Request } from '..';
 
 import { readdirSync, readFileSync, writeFileSync } from 'fs';
 import path from 'path';
