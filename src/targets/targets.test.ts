@@ -56,46 +56,48 @@ availableTargets()
   .forEach(({ key: targetId, title, extname: fixtureExtension, clients }) => {
     describe(`${title} Request Validation`, () => {
       clients.filter(testFilter('key', clientFilter)).forEach(({ key: clientId }) => {
-        fixtures.filter(testFilter(0, fixtureFilter)).forEach(([fixture, request]) => {
-          const expectedPath = path.join(
-            'src',
-            'targets',
-            targetId,
-            clientId,
-            'fixtures',
-            `${fixture}${extname(targetId)}`
-          );
-          try {
-            const options: HTTPSnippetOptions = {};
-
-            if (fixture === 'query-encoded') {
-              // Query strings in this HAR are already escaped.
-              options.harIsAlreadyEncoded = true;
-            }
-
-            const expected = readFileSync(expectedPath).toString();
-            const { convert } = new HTTPSnippet(request, options);
-            const result = convert(targetId, clientId); //?
-
-            if (OVERWRITE_EVERYTHING && result) {
-              writeFileSync(expectedPath, String(result));
-              return;
-            }
-
-            it(`${clientId} request should match fixture for "${fixture}.js"`, () => {
-              expect(result).toStrictEqual(expected);
-            });
-          } catch (err) {
-            if (err.constructor.name === 'HARError') {
-              throw err;
-            }
-
-            throw new Error(
-              `Missing a test file for ${targetId}:${clientId} for the ${fixture} fixture.\nExpected to find the output fixture: \`/src/targets/${targetId}/${clientId}/fixtures/${fixture}${
-                fixtureExtension ?? ''
-              }\``
+        describe(`${clientId}`, () => {
+          fixtures.filter(testFilter(0, fixtureFilter)).forEach(([fixture, request]) => {
+            const expectedPath = path.join(
+              'src',
+              'targets',
+              targetId,
+              clientId,
+              'fixtures',
+              `${fixture}${extname(targetId)}`
             );
-          }
+            try {
+              const options: HTTPSnippetOptions = {};
+
+              if (fixture === 'query-encoded') {
+                // Query strings in this HAR are already escaped.
+                options.harIsAlreadyEncoded = true;
+              }
+
+              const expected = readFileSync(expectedPath).toString();
+              const { convert } = new HTTPSnippet(request, options);
+              const result = convert(targetId, clientId); //?
+
+              if (OVERWRITE_EVERYTHING && result) {
+                writeFileSync(expectedPath, String(result));
+                return;
+              }
+
+              it(`request should match fixture for "${fixture}.js"`, () => {
+                expect(result).toStrictEqual(expected);
+              });
+            } catch (err) {
+              if (err.constructor.name === 'HARError') {
+                throw err;
+              }
+
+              throw new Error(
+                `Missing a test file for ${targetId}:${clientId} for the ${fixture} fixture.\nExpected to find the output fixture: \`/src/targets/${targetId}/${clientId}/fixtures/${fixture}${
+                  fixtureExtension ?? ''
+                }\``
+              );
+            }
+          });
         });
       });
     });

@@ -57,6 +57,10 @@ export const curl: Client<CurlOptions> = {
   convert: ({ fullUrl, method, httpVersion, headersObj, allHeaders, postData }, options = {}) => {
     const { indent = '  ', short = false, binary = false, globOff = false, escapeBrackets = false } = options;
 
+    // In the interest of having nicer looking snippets JSON should be indented separately from the
+    // main command argument indentation.
+    const indentJSON = '  ';
+
     const { push, join } = new CodeBuilder({
       ...(typeof indent === 'string' ? { indent } : {}),
       join: indent !== false ? ` \\\n${indent}` : ' ',
@@ -169,12 +173,12 @@ export const curl: Client<CurlOptions> = {
                   `${binary ? '--data-binary' : arg('data')} @- <<EOF\n${JSON.stringify(
                     jsonPayload,
                     null,
-                    indent || ' '
+                    indentJSON
                   )}\nEOF`
                 );
               } else {
                 push(
-                  `${binary ? '--data-binary' : arg('data')} '\n${JSON.stringify(jsonPayload, null, indent || ' ')}\n'`
+                  `${binary ? '--data-binary' : arg('data')} '\n${JSON.stringify(jsonPayload, null, indentJSON)}\n'`
                 );
               }
             } catch (err) {
