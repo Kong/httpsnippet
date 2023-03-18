@@ -13,15 +13,6 @@ describe('hTTPSnippet', () => {
     expect(result).toBe(false);
   });
 
-  it('should fail validation for non-HAR inputs', () => {
-    expect.assertions(1);
-
-    // @ts-expect-error intentionally incorrect
-    const attempt = () => new HTTPSnippet({ ziltoid: 'the omniscient' });
-
-    expect(attempt).toThrow('validation failed');
-  });
-
   it('should parse HAR file with multiple entries', () => {
     const snippet = new HTTPSnippet({
       log: {
@@ -89,7 +80,7 @@ describe('hTTPSnippet', () => {
       const snippet = new HTTPSnippet(mimetypes[input]);
       const request = snippet.requests[0];
 
-      expect(request.postData.mimeType).toStrictEqual(expected);
+      expect(request.postData!.mimeType).toStrictEqual(expected);
     });
   });
 
@@ -97,7 +88,7 @@ describe('hTTPSnippet', () => {
     const snippet = new HTTPSnippet(mimetypes['application/x-www-form-urlencoded']);
     const request = snippet.requests[0];
 
-    expect(request.postData.text).toBe('');
+    expect(request.postData!.text).toBe('');
   });
 
   describe('requestExtras', () => {

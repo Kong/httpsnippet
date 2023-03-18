@@ -96,7 +96,7 @@ export const curl: Client<CurlOptions> = {
     }
 
     // if multipart form data, we want to remove the boundary
-    if (postData.mimeType === 'multipart/form-data') {
+    if (postData?.mimeType === 'multipart/form-data') {
       const contentTypeHeaderName = getHeaderName(headersObj, 'content-type');
       if (contentTypeHeaderName) {
         const contentTypeHeader = headersObj[contentTypeHeaderName];
@@ -126,7 +126,7 @@ export const curl: Client<CurlOptions> = {
     }
 
     // construct post params
-    switch (postData.mimeType) {
+    switch (postData?.mimeType) {
       case 'multipart/form-data':
         postData.params?.forEach(param => {
           let post = '';
@@ -156,6 +156,10 @@ export const curl: Client<CurlOptions> = {
         break;
 
       default: {
+        if (!postData) {
+          break;
+        }
+
         // raw request body
         if (!postData.text) {
           break;

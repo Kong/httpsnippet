@@ -35,7 +35,7 @@ export const xhr: Client = {
 
     const { blank, push, join } = new CodeBuilder({ indent: opts.indent });
 
-    switch (postData.mimeType) {
+    switch (postData?.mimeType) {
       case 'application/json':
         push(
           `const data = JSON.stringify(${stringifyObject(postData.jsonObj, {
@@ -70,7 +70,7 @@ export const xhr: Client = {
         break;
 
       default:
-        push(`const data = ${postData.text ? `'${postData.text}'` : 'null'};`);
+        push(`const data = ${postData?.text ? `'${postData.text}'` : 'null'};`);
         blank();
     }
 

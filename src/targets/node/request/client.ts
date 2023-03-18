@@ -45,7 +45,7 @@ export const request: Client = {
       reqOpts.headers = headersObj;
     }
 
-    switch (postData.mimeType) {
+    switch (postData?.mimeType) {
       case 'application/x-www-form-urlencoded':
         reqOpts.form = postData.paramsObj;
         break;
@@ -96,7 +96,7 @@ export const request: Client = {
         break;
 
       default:
-        if (postData.text) {
+        if (postData?.text) {
           reqOpts.body = postData.text;
         }
     }

@@ -42,7 +42,7 @@ export const unirest: Client = {
       push(`.header("${key}", "${escapeForDoubleQuotes(allHeaders[key])}")`, 1);
     });
 
-    if (postData.text) {
+    if (postData?.text) {
       push(`.body(${JSON.stringify(postData.text)})`, 1);
     }
 

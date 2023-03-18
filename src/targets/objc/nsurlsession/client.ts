@@ -48,7 +48,7 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
       push(nsDeclaration('NSDictionary', 'headers', allHeaders, opts.pretty));
     }
 
-    if (postData.text || postData.jsonObj || postData.params) {
+    if (postData && (postData.text || postData.jsonObj || postData.params)) {
       req.hasBody = true;
 
       switch (postData.mimeType) {

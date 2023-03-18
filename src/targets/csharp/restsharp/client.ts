@@ -29,11 +29,11 @@ export const restsharp: Client = {
       push(`request.AddHeader("${key}", "${escapeForDoubleQuotes(headersObj[key])}");`);
     });
 
-    cookies.forEach(({ name, value }) => {
+    cookies?.forEach(({ name, value }) => {
       push(`request.AddCookie("${name}", "${value}");`);
     });
 
-    if (postData.text) {
+    if (postData?.text) {
       const header = getHeader(allHeaders, 'content-type');
       const text = JSON.stringify(postData.text);
       push(`request.AddParameter("${header}", ${text}, ParameterType.RequestBody);`);

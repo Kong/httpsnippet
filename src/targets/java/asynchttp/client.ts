@@ -35,7 +35,7 @@ export const asynchttp: Client = {
       push(`.setHeader("${key}", "${escapeForDoubleQuotes(allHeaders[key])}")`, 1);
     });
 
-    if (postData.text) {
+    if (postData?.text) {
       push(`.setBody(${JSON.stringify(postData.text)})`, 1);
     }
 

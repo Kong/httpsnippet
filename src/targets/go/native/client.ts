@@ -65,7 +65,7 @@ export const native: Client<GoNativeOptions> = {
         push('"crypto/tls"', indent);
       }
 
-      if (postData.text) {
+      if (postData?.text) {
         push('"strings"', indent);
       }
 
@@ -111,7 +111,7 @@ export const native: Client<GoNativeOptions> = {
     blank();
 
     // If we have body content or not create the var and reader or nil
-    if (postData.text) {
+    if (postData?.text) {
       push(`payload := strings.NewReader(${JSON.stringify(postData.text)})`, indent);
       blank();
       push(`req, ${errorPlaceholder} := http.NewRequest("${method}", url, payload)`, indent);

@@ -45,7 +45,7 @@ export const python3: Client<Python3Options> = {
     }
 
     // Create payload string if it exists
-    const payload = JSON.stringify(postData.text);
+    const payload = JSON.stringify(postData?.text);
     if (payload) {
       push(`payload = ${payload}`);
       blank();

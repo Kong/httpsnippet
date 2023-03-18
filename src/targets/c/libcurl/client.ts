@@ -38,7 +38,7 @@ export const libcurl: Client = {
       push(`curl_easy_setopt(hnd, CURLOPT_COOKIE, "${allHeaders.cookie}");`);
     }
 
-    if (postData.text) {
+    if (postData?.text) {
       blank();
       push(`curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, ${JSON.stringify(postData.text)});`);
     }

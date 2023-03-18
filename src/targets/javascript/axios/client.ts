@@ -44,7 +44,7 @@ export const axios: Client = {
       requestOptions.headers = allHeaders;
     }
 
-    switch (postData.mimeType) {
+    switch (postData?.mimeType) {
       case 'application/x-www-form-urlencoded':
         if (postData.params) {
           push('const encodedParams = new URLSearchParams();');
@@ -83,7 +83,7 @@ export const axios: Client = {
         break;
 
       default:
-        if (postData.text) {
+        if (postData?.text) {
           requestOptions.data = postData.text;
         }
     }

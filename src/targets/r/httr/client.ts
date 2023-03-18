@@ -64,7 +64,7 @@ export const httr: Client = {
     }
 
     // Construct payload
-    const payload = JSON.stringify(postData.text);
+    const payload = JSON.stringify(postData?.text);
 
     if (payload) {
       push(`payload <- ${payload}`);
@@ -72,7 +72,7 @@ export const httr: Client = {
     }
 
     // Define encode
-    if (postData.text || postData.jsonObj || postData.params) {
+    if (postData && (postData.text || postData.jsonObj || postData.params)) {
       switch (postData.mimeType) {
         case 'application/x-www-form-urlencoded':
           push('encode <- "form"');
@@ -112,7 +112,7 @@ export const httr: Client = {
       ? `accept("${escapeForDoubleQuotes(acceptHeader)}")`
       : undefined
 
-    const setContentType = `content_type("${escapeForDoubleQuotes(postData.mimeType)}")`
+    const setContentType = `content_type("${escapeForDoubleQuotes(postData?.mimeType ?? 'application/octet-stream')}")`
 
     const otherHeaders = Object.entries(allHeaders)
       // These headers are all handled separately:
@@ -141,7 +141,7 @@ export const httr: Client = {
       request += ', ' + headerAdditions
     }
 
-    if (postData.text || postData.jsonObj || postData.params) {
+    if (postData && (postData.text || postData.jsonObj || postData.params)) {
       request += ', encode = encode';
     }
 

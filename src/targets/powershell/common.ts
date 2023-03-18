@@ -55,7 +55,7 @@ export const generatePowershellConvert = (command: PowershellCommand) => {
       commandOptions.push('-WebSession $session');
     }
 
-    if (postData.text) {
+    if (postData?.text) {
       commandOptions.push(`-ContentType '${
         escapeString(getHeader(allHeaders, 'content-type'), { delimiter: "'", escapeChar: '`' })
       }'`);

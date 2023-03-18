@@ -41,7 +41,7 @@ export const http2: Client<Http2Options> = {
     push('$request = new http\\Client\\Request;');
     blank();
 
-    switch (postData.mimeType) {
+    switch (postData?.mimeType) {
       case 'application/x-www-form-urlencoded':
         push('$body = new http\\Message\\Body;');
         push(`$body->append(new http\\QueryString(${convertType(postData.paramsObj, indent)}));`);
@@ -105,7 +105,7 @@ export const http2: Client<Http2Options> = {
         break;
 
       default:
-        if (postData.text) {
+        if (postData?.text) {
           push('$body = new http\\Message\\Body;');
           push(`$body->append(${convertType(postData.text)});`);
           blank();

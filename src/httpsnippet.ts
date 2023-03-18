@@ -1,11 +1,10 @@
 import { map as eventStreamMap } from 'event-stream';
 import FormData from 'form-data';
-import { Param, PostDataCommon, Request as NpmHarRequest } from 'har-format';
+import type { Param, PostDataCommon, Request as NpmHarRequest } from 'har-format';
 import { stringify as queryStringify } from 'querystring';
 import { format as urlFormat, parse as urlParse, UrlWithParsedQuery } from 'url';
 
 import { formDataIterator, isBlob } from './helpers/form-data';
-import { validateHarRequest } from './helpers/har-validator';
 import { getHeaderName } from './helpers/headers';
 import { ReducedHelperObject, reducer } from './helpers/reducer';
 import { ClientId, TargetId, targets } from './targets/targets';
@@ -31,10 +30,10 @@ type PostDataBase = PostDataCommon & {
   params?: Param[];
 };
 
-export type HarRequest = Omit<NpmHarRequest, 'postData'> & { postData: PostDataBase };
+export type HarRequest = Omit<NpmHarRequest, 'postData'> & { postData?: PostDataBase };
 
 export interface RequestExtras {
-  postData: PostDataBase & {
+  postData?: PostDataBase & {
     jsonObj?: ReducedHelperObject;
     paramsObj?: ReducedHelperObject;
     boundary?: string;
@@ -106,9 +105,7 @@ export class HTTPSnippet {
         ...request,
       };
 
-      if (validateHarRequest(req)) {
-        this.requests.push(this.prepare(req));
-      }
+      this.requests.push(this.prepare(req as HarRequest));
     });
   }
 
@@ -164,7 +161,7 @@ export class HTTPSnippet {
       request.allHeaders.cookie = cookies.join('; ');
     }
 
-    switch (request.postData.mimeType) {
+    switch (request.postData?.mimeType) {
       case 'multipart/mixed':
       case 'multipart/related':
       case 'multipart/form-data':
@@ -220,15 +217,17 @@ export class HTTPSnippet {
             }
           });
 
+          const { postData } = request;
+
           if (isNativeFormData) {
             for (const data of formDataIterator(form, boundary)) {
-              request.postData.text += data;
+              postData.text += data;
             }
-          } else {
+          } else if (postData) {
             form.pipe(
               // @ts-expect-error TODO
               eventStreamMap(data => {
-                request.postData.text += data;
+                postData.text += data;
               }),
             );
           }
@@ -251,7 +250,8 @@ export class HTTPSnippet {
           request.postData.paramsObj = request.postData.params.reduce(reducer, {});
 
           // always overwrite
-          request.postData.text = queryStringify(request.postData.paramsObj);
+          // @ts-expect-error the `har-format` types make this challenging
+          request.postData.text = (new URLSearchParams(Object.entries(request.postData.paramsObj!))).toString()
         }
         break;
 

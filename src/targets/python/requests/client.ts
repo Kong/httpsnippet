@@ -62,7 +62,7 @@ export const requests: Client<RequestsOptions> = {
     let hasFiles = false;
     let hasPayload = false;
     let jsonPayload = false;
-    switch (postData.mimeType) {
+    switch (postData?.mimeType) {
       case 'application/json':
         if (postData.jsonObj) {
           push(`payload = ${literalRepresentation(postData.jsonObj, opts)}`);
@@ -109,6 +109,10 @@ export const requests: Client<RequestsOptions> = {
         break;
 
       default: {
+        if (!postData) {
+          break;
+        }
+
         if (postData.mimeType === 'application/x-www-form-urlencoded' && postData.paramsObj) {
           push(`payload = ${literalRepresentation(postData.paramsObj, opts)}`);
           hasPayload = true;

@@ -49,7 +49,7 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
       push(literalDeclaration('headers', allHeaders, opts));
     }
 
-    if (postData.text || postData.jsonObj || postData.params) {
+    if (postData && (postData.text || postData.jsonObj || postData.params)) {
       req.hasBody = true;
 
       switch (postData.mimeType) {

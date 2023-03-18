@@ -126,7 +126,7 @@ export const clj_http: Client = {
       'query-params': queryObj,
     };
 
-    switch (postData.mimeType) {
+    switch (postData?.mimeType) {
       case 'application/json':
         {
           params['content-type'] = new Keyword('json');

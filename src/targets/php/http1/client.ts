@@ -65,7 +65,7 @@ export const http1: Client<Http1Options> = {
       blank();
     }
 
-    switch (postData.mimeType) {
+    switch (postData?.mimeType) {
       case 'application/x-www-form-urlencoded':
         push(`$request->setContentType(${convertType(postData.mimeType)});`);
         push(`$request->setPostFields(${convertType(postData.paramsObj, indent)});`);
@@ -79,7 +79,7 @@ export const http1: Client<Http1Options> = {
         break;
 
       default:
-        if (postData.text) {
+        if (postData?.text) {
           push(`$request->setBody(${convertType(postData.text)});`);
           blank();
         }

@@ -49,7 +49,7 @@ export const guzzle: Client<GuzzleOptions> = {
       blank();
     }
 
-    switch (postData.mimeType) {
+    switch (postData?.mimeType) {
       case 'application/x-www-form-urlencoded':
         requestPush(
           `'form_params' => ${convertType(
@@ -114,7 +114,7 @@ export const guzzle: Client<GuzzleOptions> = {
       }
 
       default:
-        if (postData.text) {
+        if (postData?.text) {
           requestPush(`'body' => ${convertType(postData.text)},`, 1);
         }
     }

@@ -37,7 +37,7 @@ export const jquery: Client = {
       headers: allHeaders,
     };
 
-    switch (postData.mimeType) {
+    switch (postData?.mimeType) {
       case 'application/x-www-form-urlencoded':
         settings.data = postData.paramsObj ? postData.paramsObj : postData.text;
         break;
@@ -77,7 +77,7 @@ export const jquery: Client = {
         break;
 
       default:
-        if (postData.text) {
+        if (postData?.text) {
           settings.data = postData.text;
         }
     }

@@ -108,7 +108,7 @@ export const httpclient: Client = {
       push('},', 1);
     }
 
-    if (postData.text) {
+    if (postData?.text) {
       const contentType = postData.mimeType;
       switch (contentType) {
         case 'application/x-www-form-urlencoded':
@@ -146,7 +146,7 @@ export const httpclient: Client = {
           break;
 
         default:
-          push(`Content = new StringContent(${JSON.stringify(postData.text || '')})`, 1);
+          push(`Content = new StringContent(${JSON.stringify(postData?.text || '')})`, 1);
           push('{', 1);
           push('Headers =', 2);
           push('{', 2);

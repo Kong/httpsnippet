@@ -43,7 +43,7 @@ export const native: Client<RubyNativeOptions> = {
     if (!methods.includes(method)) {
       push(`class Net::HTTP::${capMethod} < Net::HTTPRequest`);
       push(`  METHOD = '${method.toUpperCase()}'`);
-      push(`  REQUEST_HAS_BODY = '${postData.text ? 'true' : 'false'}'`);
+      push(`  REQUEST_HAS_BODY = '${postData?.text ? 'true' : 'false'}'`);
       push('  RESPONSE_HAS_BODY = true');
       push('end');
       blank();
@@ -70,7 +70,7 @@ export const native: Client<RubyNativeOptions> = {
       });
     }
 
-    if (postData.text) {
+    if (postData?.text) {
       push(`request.body = ${JSON.stringify(postData.text)}`);
     }
 

@@ -57,7 +57,6 @@
   "devDependencies": {
     "@types/eslint": "^8.4.1",
     "@types/event-stream": "^4.0.0",
-    "@types/har-format": "^1.2.8",
     "@types/jest": "^27.4.1",
     "@types/node": "^16.11.26",
     "@types/stringify-object": "^3.3.0",
@@ -78,9 +77,9 @@
     "typescript": "^4.6.3"
   },
   "dependencies": {
+    "@types/har-format": "^1.2.10",
     "event-stream": "4.0.1",
     "form-data": "4.0.0",
-    "har-schema": "^2.0.0",
     "stringify-object": "3.3.0"
   }
 }

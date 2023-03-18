@@ -57,7 +57,7 @@ export const native: Client<NodeNativeOptions> = {
     push('});');
     blank();
 
-    switch (postData.mimeType) {
+    switch (postData?.mimeType) {
       case 'application/x-www-form-urlencoded':
         if (postData.paramsObj) {
           unshift("const qs = require('querystring');");
@@ -82,7 +82,7 @@ export const native: Client<NodeNativeOptions> = {
         break;
 
       default:
-        if (postData.text) {
+        if (postData?.text) {
           push(`req.write(${stringifyObject(postData.text, { indent })});`);
         }
     }

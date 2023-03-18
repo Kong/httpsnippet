@@ -41,7 +41,7 @@ export const fetch: Client = {
       reqOpts.headers = headersObj;
     }
 
-    switch (postData.mimeType) {
+    switch (postData?.mimeType) {
       case 'application/x-www-form-urlencoded':
         unshift("const { URLSearchParams } = require('url');");
         push('const encodedParams = new URLSearchParams();');
@@ -88,7 +88,7 @@ export const fetch: Client = {
         break;
 
       default:
-        if (postData.text) {
+        if (postData?.text) {
           reqOpts.body = postData.text;
         }
     }
@@ -119,7 +119,7 @@ export const fetch: Client = {
     if (includeFS) {
       unshift("const fs = require('fs');");
     }
-    if (postData.params && postData.mimeType === 'multipart/form-data') {
+    if (postData?.params && postData.mimeType === 'multipart/form-data') {
       push('options.body = formData;');
     }
     blank();

@@ -33,7 +33,7 @@ export const okhttp: Client = {
     push('val client = OkHttpClient()');
     blank();
 
-    if (postData.text) {
+    if (postData?.text) {
       if (postData.boundary) {
         push(
           `val mediaType = MediaType.parse("${postData.mimeType}; boundary=${postData.boundary}")`,
@@ -47,13 +47,13 @@ export const okhttp: Client = {
     push('val request = Request.Builder()');
     push(`.url("${fullUrl}")`, 1);
     if (!methods.includes(method.toUpperCase())) {
-      if (postData.text) {
+      if (postData?.text) {
         push(`.method("${method.toUpperCase()}", body)`, 1);
       } else {
         push(`.method("${method.toUpperCase()}", null)`, 1);
       }
     } else if (methodsWithBody.includes(method.toUpperCase())) {
-      if (postData.text) {
+      if (postData?.text) {
         push(`.${method.toLowerCase()}(body)`, 1);
       } else {
         push(`.${method.toLowerCase()}(null)`, 1);

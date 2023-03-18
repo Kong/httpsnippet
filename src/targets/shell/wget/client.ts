@@ -51,7 +51,7 @@ export const wget: Client<WgetOptions> = {
       push(`--header ${quote(header)}`);
     });
 
-    if (postData.text) {
+    if (postData?.text) {
       push(`--body-data ${escape(quote(postData.text))}`);
     }
 

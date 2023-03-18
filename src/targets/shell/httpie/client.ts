@@ -117,7 +117,7 @@ export const httpie: Client<HttpieOptions> = {
         push(`${key}:${quote(allHeaders[key] as string)}`);
       });
 
-    if (postData.mimeType === 'application/x-www-form-urlencoded') {
+    if (postData?.mimeType === 'application/x-www-form-urlencoded') {
       // construct post params
       if (postData.params && postData.params.length) {
         flags.push(opts.short ? '-f' : '--form');
@@ -134,7 +134,7 @@ export const httpie: Client<HttpieOptions> = {
     url = quote(opts.queryParams ? url : fullUrl);
     unshift(`http ${cliFlags}${method} ${url}`);
 
-    if (raw && postData.text) {
+    if (raw && postData?.text) {
       const postDataText = quote(postData.text);
       unshift(`echo ${postDataText} | `);
     }

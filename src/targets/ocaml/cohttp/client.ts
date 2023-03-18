@@ -50,7 +50,7 @@ export const cohttp: Client = {
     }
 
     // Add body
-    if (postData.text) {
+    if (postData?.text) {
       // Just text
       push(`let body = Cohttp_lwt_body.of_string ${JSON.stringify(postData.text)} in`);
     }
@@ -59,7 +59,7 @@ export const cohttp: Client = {
     blank();
 
     const h = headers.length ? '~headers ' : '';
-    const b = postData.text ? '~body ' : '';
+    const b = postData?.text ? '~body ' : '';
     const m = methods.includes(method.toLowerCase())
       ? `\`${method.toUpperCase()}`
       : `(Code.method_of_string "${method}")`;

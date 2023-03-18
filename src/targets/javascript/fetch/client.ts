@@ -48,7 +48,7 @@ export const fetch: Client<FetchOptions> = {
 
     push(`const url = '${fullUrl}';`);
 
-    switch (postData.mimeType) {
+    switch (postData?.mimeType) {
       case 'application/x-www-form-urlencoded':
         options.body = postData.paramsObj ? postData.paramsObj : postData.text;
         break;
@@ -79,7 +79,7 @@ export const fetch: Client<FetchOptions> = {
         break;
 
       default:
-        if (postData.text) {
+        if (postData?.text) {
           options.body = postData.text;
         }
     }
@@ -94,7 +94,7 @@ export const fetch: Client<FetchOptions> = {
         indent: opts.indent,
         inlineCharacterLimit: 80,
         transform: (_, property, originalResult) => {
-          if (property === 'body' && postData.mimeType === 'application/x-www-form-urlencoded') {
+          if (property === 'body' && postData && postData.mimeType === 'application/x-www-form-urlencoded') {
             return `new URLSearchParams(${originalResult})`;
           }
           return originalResult;
@@ -103,7 +103,7 @@ export const fetch: Client<FetchOptions> = {
     );
     blank();
 
-    if (postData.params && postData.mimeType === 'multipart/form-data') {
+    if (postData?.params && postData.mimeType === 'multipart/form-data') {
       push('options.body = form;');
       blank();
     }

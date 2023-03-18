@@ -61,7 +61,7 @@ export const unirest: Client = {
       blank();
     }
 
-    switch (postData.mimeType) {
+    switch (postData?.mimeType) {
       case 'application/x-www-form-urlencoded':
         if (postData.paramsObj) {
           push(`req.form(${stringifyObject(postData.paramsObj, { indent: opts.indent })});`);
@@ -113,7 +113,7 @@ export const unirest: Client = {
       }
 
       default:
-        if (postData.text) {
+        if (postData?.text) {
           push(`req.send(${stringifyObject(postData.text, { indent: opts.indent })});`);
           blank();
         }

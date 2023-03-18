@@ -95,7 +95,7 @@ export const curl: Client<CurlOptions> = {
         value: method,
       },
       {
-        escape: !postData.jsonObj,
+        escape: !postData?.jsonObj,
         name: 'CURLOPT_POSTFIELDS',
         value: postData
           ? postData.jsonObj

@@ -38,7 +38,7 @@ export const nethttp: Client = {
       push(`.header("${key}", "${escapeForDoubleQuotes(allHeaders[key])}")`, 2);
     });
 
-    if (postData.text) {
+    if (postData?.text) {
       push(
         `.method("${method.toUpperCase()}", HttpRequest.BodyPublishers.ofString(${JSON.stringify(
           postData.text,
