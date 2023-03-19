@@ -10,8 +10,8 @@
 
 import stringifyObject from 'stringify-object';
 
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { Client } from '../../targets';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import type { Client } from '../../targets.js';
 
 export const request: Client = {
   info: {

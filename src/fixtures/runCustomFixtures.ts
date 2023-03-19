@@ -1,8 +1,11 @@
 import { readFile } from 'node:fs/promises';
 import * as path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-import { HTTPSnippet, Request } from '../httpsnippet';
-import { ClientId, TargetId } from '../targets/targets';
+import { HTTPSnippet, Request } from '../httpsnippet.js';
+import { ClientId, TargetId } from '../targets/targets.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /* eslint-disable jest/no-export,jest/valid-title -- we want to do it just for this one case */
 export interface CustomFixture {

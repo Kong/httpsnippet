@@ -1,4 +1,4 @@
-import { ClientInfo, TargetId, TargetInfo, targets } from '../targets/targets';
+import { ClientInfo, TargetId, TargetInfo, targets } from '../targets/targets.js';
 
 export interface AvailableTarget extends TargetInfo {
   clients: ClientInfo[];

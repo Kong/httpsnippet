@@ -1,5 +1,5 @@
-import { Target } from '../targets';
-import { http11 } from './http1.1/client';
+import type { Target } from '../targets.js';
+import { http11 } from './http1.1/client.js';
 
 export const http: Target = {
   info: {

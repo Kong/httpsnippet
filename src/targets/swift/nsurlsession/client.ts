@@ -8,9 +8,9 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { Client } from '../../targets';
-import { literalDeclaration } from '../helpers';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import type { Client } from '../../targets.js';
+import { literalDeclaration } from '../helpers.js';
 
 export interface NsurlsessionOptions {
   pretty?: boolean;

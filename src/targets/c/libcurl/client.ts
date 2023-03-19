@@ -1,6 +1,6 @@
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { escapeForDoubleQuotes } from '../../../helpers/escape';
-import { Client } from '../../targets';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import { escapeForDoubleQuotes } from '../../../helpers/escape.js';
+import type { Client } from '../../targets.js';
 
 export const libcurl: Client = {
   info: {

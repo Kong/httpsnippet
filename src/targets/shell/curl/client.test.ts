@@ -3,8 +3,8 @@ import applicationJson from '../../../fixtures/requests/application-json.json';
 import full from '../../../fixtures/requests/full.json';
 import https from '../../../fixtures/requests/https.json';
 import nested from '../../../fixtures/requests/nested.json';
-import { runCustomFixtures } from '../../../fixtures/runCustomFixtures';
-import { Request } from '../../../httpsnippet';
+import { runCustomFixtures } from '../../../fixtures/runCustomFixtures.js';
+import type { Request } from '../../../httpsnippet.js';
 
 runCustomFixtures({
   targetId: 'shell',

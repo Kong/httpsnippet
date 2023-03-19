@@ -8,9 +8,9 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { quote } from '../../../helpers/shell';
-import { Client } from '../../targets';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import { quote } from '../../../helpers/shell.js';
+import type { Client } from '../../targets.js';
 
 export interface HttpieOptions {
   body?: boolean;

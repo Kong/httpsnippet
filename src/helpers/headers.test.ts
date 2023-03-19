@@ -1,4 +1,4 @@
-import { getHeader, getHeaderName, hasHeader } from './headers';
+import { getHeader, getHeaderName, hasHeader } from './headers.js';
 
 const headers = {
   'Content-Type': 'multipart/form-data; boundary=---011000010111000001101001',

@@ -2,8 +2,8 @@ import applicationFormEncoded from '../../../fixtures/requests/application-form-
 import full from '../../../fixtures/requests/full.json';
 import query from '../../../fixtures/requests/query.json';
 import short from '../../../fixtures/requests/short.json';
-import { runCustomFixtures } from '../../../fixtures/runCustomFixtures';
-import { Request } from '../../../httpsnippet';
+import { runCustomFixtures } from '../../../fixtures/runCustomFixtures.js';
+import type { Request } from '../../../httpsnippet.js';
 
 runCustomFixtures({
   targetId: 'shell',

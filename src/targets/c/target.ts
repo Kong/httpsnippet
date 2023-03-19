@@ -1,5 +1,5 @@
-import { Target } from '../targets';
-import { libcurl } from './libcurl/client';
+import type { Target } from '../targets.js';
+import { libcurl } from './libcurl/client.js';
 
 export const c: Target = {
   info: {

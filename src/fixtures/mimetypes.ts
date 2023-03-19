@@ -1,4 +1,4 @@
-import { Request } from '../httpsnippet';
+import type { Request } from '../httpsnippet.js';
 
 export const mimetypes = {
   'multipart/mixed': {

@@ -1,8 +1,8 @@
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { escapeForDoubleQuotes } from '../../../helpers/escape';
-import { getHeader } from '../../../helpers/headers';
-import { Request } from '../../../httpsnippet';
-import { Client } from '../../targets';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import { escapeForDoubleQuotes } from '../../../helpers/escape.js';
+import { getHeader } from '../../../helpers/headers.js';
+import type { Request } from '../../../httpsnippet.js';
+import type { Client } from '../../targets.js';
 
 const getDecompressionMethods = (allHeaders: Request['allHeaders']) => {
   let acceptEncodings = getHeader(allHeaders, 'accept-encoding');

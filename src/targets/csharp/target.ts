@@ -1,6 +1,6 @@
-import { Target } from '../targets';
-import { httpclient } from './httpclient/client';
-import { restsharp } from './restsharp/client';
+import type { Target } from '../targets.js';
+import { httpclient } from './httpclient/client.js';
+import { restsharp } from './restsharp/client.js';
 
 export const csharp: Target = {
   info: {

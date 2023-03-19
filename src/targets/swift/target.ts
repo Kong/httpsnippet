@@ -1,5 +1,5 @@
-import { Target } from '../targets';
-import { nsurlsession } from './nsurlsession/client';
+import type { Target } from '../targets.js';
+import { nsurlsession } from './nsurlsession/client.js';
 
 export const swift: Target = {
   info: {

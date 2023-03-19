@@ -10,9 +10,9 @@
 
 import stringifyObject from 'stringify-object';
 
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { getHeader, getHeaderName, hasHeader } from '../../../helpers/headers';
-import { Client } from '../../targets';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import { getHeader, getHeaderName, hasHeader } from '../../../helpers/headers.js';
+import type { Client } from '../../targets.js';
 
 export const jquery: Client = {
   info: {

@@ -1,5 +1,5 @@
-import { Target } from '../targets';
-import { cohttp } from './cohttp/client';
+import type { Target } from '../targets.js';
+import { cohttp } from './cohttp/client.js';
 
 export const ocaml: Target = {
   info: {

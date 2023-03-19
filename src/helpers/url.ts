@@ -1,4 +1,4 @@
-import type { ReducedHelperObject } from './reducer';
+import type { ReducedHelperObject } from './reducer.js';
 
 export function toSearchParams(obj: ReducedHelperObject): URLSearchParams {
   return new URLSearchParams(

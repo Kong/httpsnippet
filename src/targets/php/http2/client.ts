@@ -8,10 +8,10 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { getHeader, getHeaderName, hasHeader } from '../../../helpers/headers';
-import { Client } from '../../targets';
-import { convertType } from '../helpers';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import { getHeader, getHeaderName, hasHeader } from '../../../helpers/headers.js';
+import type { Client } from '../../targets.js';
+import { convertType } from '../helpers.js';
 
 export interface Http2Options {
   closingTag?: boolean;

@@ -10,9 +10,9 @@
 
 import stringifyObject from 'stringify-object';
 
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { getHeaderName } from '../../../helpers/headers';
-import { Client } from '../../targets';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import { getHeaderName } from '../../../helpers/headers.js';
+import type { Client } from '../../targets.js';
 
 export const fetch: Client = {
   info: {

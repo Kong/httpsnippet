@@ -1,17 +1,20 @@
 /** @type { import('@jest/types').Config.InitialOptions } */
 module.exports = {
   collectCoverage: false,
-  globals: {
-    'ts-jest': {
-      isolatedModules: true,
-    },
-  },
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  moduleFileExtensions: ['ts', 'js'],
   modulePathIgnorePatterns: ['<rootDir>/dist'],
-  resetMocks: true,
-  resetModules: true,
   testEnvironment: 'node',
   testRegex: ['.+\\.test\\.tsx?$'],
-  transform: { '^.+\\.tsx?$': 'ts-jest' },
-  // verbose: true,
+  preset: 'ts-jest/presets/default-esm',
+  moduleNameMapper: {
+    '^(\\.{1,2}/.*)\\.js$': '$1',
+  },
+  transform: {
+    '^.+\\.ts$': [
+      'ts-jest',
+      {
+        useESM: true,
+      },
+    ],
+  },
 };

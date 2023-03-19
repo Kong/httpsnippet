@@ -13,10 +13,10 @@ export interface HttrOptions {
   indent?: string;
 }
 
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { escapeForDoubleQuotes, escapeForSingleQuotes } from '../../../helpers/escape';
-import { getHeader } from '../../../helpers/headers';
-import { Client } from '../../targets';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import { escapeForDoubleQuotes, escapeForSingleQuotes } from '../../../helpers/escape.js';
+import { getHeader } from '../../../helpers/headers.js';
+import type { Client } from '../../targets.js';
 
 export const httr: Client = {
   info: {

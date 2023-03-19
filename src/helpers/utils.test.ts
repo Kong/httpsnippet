@@ -1,4 +1,4 @@
-import { availableTargets, extname } from './utils';
+import { availableTargets, extname } from './utils.js';
 
 describe('availableTargets', () => {
   it('returns all available targets', () => {

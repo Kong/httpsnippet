@@ -1,8 +1,8 @@
-import { mimetypes } from './fixtures/mimetypes';
+import { mimetypes } from './fixtures/mimetypes.js';
 import headers from './fixtures/requests/headers.json';
 import query from './fixtures/requests/query.json';
 import short from './fixtures/requests/short.json';
-import { HTTPSnippet, Request } from './httpsnippet';
+import { HTTPSnippet, Request } from './httpsnippet.js';
 
 describe('hTTPSnippet', () => {
   it('should return false if no matching target', async () => {

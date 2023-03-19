@@ -1,5 +1,5 @@
-import { Target } from '../targets';
-import { native } from './native/client';
+import type { Target } from '../targets.js';
+import { native } from './native/client.js';
 
 export const ruby: Target = {
   info: {

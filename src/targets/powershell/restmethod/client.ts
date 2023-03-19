@@ -1,5 +1,5 @@
-import { Client } from '../../targets';
-import { generatePowershellConvert } from '../common';
+import type { Client } from '../../targets.js';
+import { generatePowershellConvert } from '../common.js';
 
 export const restmethod: Client = {
   info: {

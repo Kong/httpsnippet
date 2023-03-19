@@ -1,5 +1,5 @@
-import { Target } from '../targets';
-import { clj_http } from './clj_http/client';
+import type { Target } from '../targets.js';
+import { clj_http } from './clj_http/client.js';
 
 export const clojure: Target = {
   info: {

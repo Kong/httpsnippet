@@ -1,5 +1,5 @@
-import { request } from '../targets/node/request/client';
-import { Target } from '../targets/targets';
+import { request } from '../targets/node/request/client.js';
+import type { Target } from '../targets/targets.js';
 
 export const customTarget = {
   info: {

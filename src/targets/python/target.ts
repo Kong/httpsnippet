@@ -1,6 +1,6 @@
-import { Target } from '../targets';
-import { python3 } from './python3/client';
-import { requests } from './requests/client';
+import type { Target } from '../targets.js';
+import { python3 } from './python3/client.js';
+import { requests } from './requests/client.js';
 
 export const python: Target = {
   info: {

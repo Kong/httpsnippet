@@ -1,5 +1,5 @@
-import { Target } from '../targets';
-import { okhttp } from './okhttp/client';
+import type { Target } from '../targets.js';
+import { okhttp } from './okhttp/client.js';
 
 export const kotlin: Target = {
   info: {

@@ -2,8 +2,8 @@ import { readdirSync, readFileSync } from 'fs';
 import * as path from 'node:path';
 
 import short from '../fixtures/requests/short.json';
-import { availableTargets, extname } from '../helpers/utils';
-import { HTTPSnippet, Request } from '../httpsnippet';
+import { availableTargets, extname } from '../helpers/utils.js';
+import { HTTPSnippet, Request } from '../httpsnippet.js';
 import {
   addTarget,
   addTargetClient,
@@ -14,7 +14,7 @@ import {
   Target,
   TargetId,
   targets,
-} from './targets';
+} from './targets.js';
 
 const expectedBasePath = ['src', 'fixtures', 'requests'];
 
@@ -238,7 +238,7 @@ describe('isClient', () => {
 
 describe('addTarget', () => {
   it('should add a new custom target', async () => {
-    const { fetch: fetchClient } = await import('./node/fetch/client');
+    const { fetch: fetchClient } = await import('./node/fetch/client.js');
 
     const deno: Target = {
       info: {

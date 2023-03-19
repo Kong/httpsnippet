@@ -1,14 +1,16 @@
 import { Blob, FormData } from 'formdata-node';
 import type { Param, PostDataCommon, Request as NpmHarRequest } from 'har-format';
 
-import { formDataIterator, isBlob } from './helpers/form-data';
-import { getHeaderName } from './helpers/headers';
-import { ReducedHelperObject, reducer } from './helpers/reducer';
-import { ExtendedURL, toSearchParams } from './helpers/url';
-import { ClientId, TargetId, targets } from './targets/targets';
+import { formDataIterator, isBlob } from './helpers/form-data.js';
+import { getHeaderName } from './helpers/headers.js';
+import { ReducedHelperObject, reducer } from './helpers/reducer.js';
+import { ExtendedURL, toSearchParams } from './helpers/url.js';
+import { ClientId, TargetId, targets } from './targets/targets.js';
 
-export { availableTargets, extname } from './helpers/utils';
-export { addTarget, addTargetClient } from './targets/targets';
+export { CodeBuilder } from './helpers/code-builder.js';
+export { availableTargets, extname } from './helpers/utils.js';
+export type { ClientId, TargetId };
+export { addTarget, addTargetClient } from './targets/targets.js';
 
 const DEBUG_MODE = false;
 

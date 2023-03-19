@@ -1,5 +1,5 @@
-import { Target } from '../targets';
-import { httr } from './httr/client';
+import type { Target } from '../targets.js';
+import { httr } from './httr/client.js';
 
 export const r: Target = {
   info: {

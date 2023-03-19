@@ -10,10 +10,10 @@
 
 import stringifyObject from 'stringify-object';
 
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { escapeForSingleQuotes } from '../../../helpers/escape';
-import { getHeader, getHeaderName, hasHeader } from '../../../helpers/headers';
-import { Client } from '../../targets';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import { escapeForSingleQuotes } from '../../../helpers/escape.js';
+import { getHeader, getHeaderName, hasHeader } from '../../../helpers/headers.js';
+import type { Client } from '../../targets.js';
 
 export interface XhrOptions {
   cors?: boolean;
