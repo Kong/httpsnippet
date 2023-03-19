@@ -12,13 +12,6 @@ export { availableTargets, extname } from './helpers/utils.js';
 export type { ClientId, TargetId };
 export { addTarget, addTargetClient } from './targets/targets.js';
 
-const DEBUG_MODE = false;
-
-const debug = {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function -- intentional noop
-  info: DEBUG_MODE ? console.info : () => {},
-};
-
 /** is this wrong?  yes.  according to the spec (http://www.softwareishard.com/blog/har-12-spec/#postData) it's technically wrong since `params` and `text` are (by the spec) mutually exclusive.  However, in practice, this is not what is often the case.
  *
  * In general, this library takes a _descriptive_ rather than _perscriptive_ approach (see https://amyrey.web.unc.edu/classes/ling-101-online/tutorials/understanding-prescriptive-vs-descriptive-grammar/).
@@ -125,8 +118,6 @@ export class HTTPSnippet {
 
     // construct query objects
     if (request.queryString && request.queryString.length) {
-      debug.info('queryString found, constructing queryString pair map');
-
       request.queryObj = request.queryString.reduce(reducer, {});
     }
 
@@ -237,8 +228,6 @@ export class HTTPSnippet {
           try {
             request.postData.jsonObj = JSON.parse(request.postData.text);
           } catch (e) {
-            debug.info(e);
-
             // force back to `text/plain` if headers have proper content-type value, then this should also work
             request.postData.mimeType = 'text/plain';
           }
