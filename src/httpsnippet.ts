@@ -9,6 +9,7 @@ import { ClientId, TargetId, targets } from './targets/targets.js';
 
 export { CodeBuilder } from './helpers/code-builder.js';
 export { availableTargets, extname } from './helpers/utils.js';
+export { isClient, isTarget } from './targets/targets.js';
 export type { ClientId, TargetId };
 export { addTarget, addTargetClient } from './targets/targets.js';
 
