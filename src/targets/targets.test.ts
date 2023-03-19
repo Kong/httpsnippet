@@ -1,10 +1,20 @@
-import { readdirSync, readFileSync, writeFileSync } from 'fs';
-import path from 'path';
+import { readdirSync, readFileSync } from 'fs';
+import * as path from 'node:path';
 
 import short from '../fixtures/requests/short.json';
 import { availableTargets, extname } from '../helpers/utils';
 import { HTTPSnippet, Request } from '../httpsnippet';
-import { addTarget, addTargetClient, Client, ClientId, isClient, isTarget, Target, TargetId, targets } from './targets';
+import {
+  addTarget,
+  addTargetClient,
+  Client,
+  ClientId,
+  isClient,
+  isTarget,
+  Target,
+  TargetId,
+  targets,
+} from './targets';
 
 const expectedBasePath = ['src', 'fixtures', 'requests'];
 
@@ -33,59 +43,34 @@ const fixtureFilter: string[] = [
   // 'multipart-file',
 ];
 
-/**
- * This is useful when you want to make a change and overwrite it for every fixture.
- * Basically a snapshot reset.
- *
- * Switch to `true` in debug mode to put into effect.
- */
-const OVERWRITE_EVERYTHING = Boolean(process.env.OVERWRITE_EVERYTHING) || false;
-
 const testFilter =
   <T>(property: keyof T, list: T[keyof T][]) =>
   (item: T) =>
     list.length > 0 ? list.includes(item[property]) : true;
 
-availableTargets()
-  .filter(testFilter('key', targetFilter))
-  .forEach(({ key: targetId, title, extname: fixtureExtension, clients }) => {
-    describe(`${title} Request Validation`, () => {
-      clients.filter(testFilter('key', clientFilter)).forEach(({ key: clientId }) => {
-        fixtures.filter(testFilter(0, fixtureFilter)).forEach(([fixture, request]) => {
-          const expectedPath = path.join(
-            'src',
-            'targets',
-            targetId,
-            clientId,
-            'fixtures',
-            `${fixture}${extname(targetId)}`,
-          );
-          try {
-            const expected = readFileSync(expectedPath).toString();
-            const { convert } = new HTTPSnippet(request);
-            const result = convert(targetId, clientId); //?
+const actualTargets = availableTargets().filter(testFilter('key', targetFilter));
 
-            if (OVERWRITE_EVERYTHING && result) {
-              writeFileSync(expectedPath, String(result));
-              return;
-            }
+describe.each(actualTargets)('$title Request Validation', ({ key: targetId, clients }) => {
+  describe.each(clients.filter(testFilter('key', clientFilter)))('$key', ({ key: clientId }) => {
+    fixtures.filter(testFilter(0, fixtureFilter)).forEach(([fixture, request]) => {
+      it(`request should match fixture for "${fixture}.json"`, async () => {
+        const expectedPath = path.join(
+          'src',
+          'targets',
+          targetId,
+          clientId,
+          'fixtures',
+          `${fixture}${extname(targetId)}`,
+        );
+        const expected = readFileSync(expectedPath).toString();
+        const snippet = new HTTPSnippet(request);
+        const result = await snippet.convert(targetId, clientId);
 
-            it(`${clientId} request should match fixture for "${fixture}.json"`, () => {
-              expect(result).toStrictEqual(expected);
-            });
-          } catch (error) {
-            if (error instanceof Error && !('code' in error)) {
-              throw error;
-            }
-
-            throw new Error(
-              `Missing a test file for ${targetId}:${clientId} for the ${fixture} fixture.\nExpected to find the output fixture: \`/src/targets/${targetId}/${clientId}/fixtures/${fixture}${fixtureExtension}\``,
-            );
-          }
-        });
+        expect(result).toStrictEqual(expected);
       });
     });
   });
+});
 
 describe('isTarget', () => {
   it("should throw if you don't provide an object", () => {
@@ -281,7 +266,7 @@ describe('addTarget', () => {
 });
 
 describe('addTargetClient', () => {
-  it('should add a new custom target', () => {
+  it('should add a new custom target', async () => {
     const customClient: Client = {
       info: {
         key: 'custom',
@@ -296,10 +281,10 @@ describe('addTargetClient', () => {
 
     addTargetClient('node', customClient);
 
-    const { convert } = new HTTPSnippet(short as Request);
-    const result = convert('node', 'custom');
+    const snippet = new HTTPSnippet(short as Request);
+    const result = snippet.convert('node', 'custom');
 
-    expect(result).toBe('This was generated from a custom client.');
+    await expect(result).resolves.toBe('This was generated from a custom client.');
 
     delete targets.node.clientsById.custom;
   });

@@ -1,12 +1,10 @@
-import { map as eventStreamMap } from 'event-stream';
-import FormData from 'form-data';
+import { Blob, FormData } from 'formdata-node';
 import type { Param, PostDataCommon, Request as NpmHarRequest } from 'har-format';
-import { stringify as queryStringify } from 'querystring';
-import { format as urlFormat, parse as urlParse, UrlWithParsedQuery } from 'url';
 
 import { formDataIterator, isBlob } from './helpers/form-data';
 import { getHeaderName } from './helpers/headers';
 import { ReducedHelperObject, reducer } from './helpers/reducer';
+import { ExtendedURL, toSearchParams } from './helpers/url';
 import { ClientId, TargetId, targets } from './targets/targets';
 
 export { availableTargets, extname } from './helpers/utils';
@@ -32,6 +30,11 @@ type PostDataBase = PostDataCommon & {
 
 export type HarRequest = Omit<NpmHarRequest, 'postData'> & { postData?: PostDataBase };
 
+function basename(value: string): string {
+  const parts = value.split('/');
+  return parts[parts.length - 1];
+}
+
 export interface RequestExtras {
   postData?: PostDataBase & {
     jsonObj?: ReducedHelperObject;
@@ -41,7 +44,7 @@ export interface RequestExtras {
   fullUrl: string;
   queryObj: ReducedHelperObject;
   headersObj: ReducedHelperObject;
-  uriObj: UrlWithParsedQuery;
+  uriObj: ExtendedURL;
   cookiesObj: ReducedHelperObject;
   allHeaders: ReducedHelperObject;
 }
@@ -71,13 +74,10 @@ const isHarEntry = (value: any): value is HarEntry =>
   Array.isArray(value.log.entries);
 
 export class HTTPSnippet {
-  requests: Request[] = [];
+  readonly requests: Promise<Request[]>;
 
   constructor(input: HarEntry | HarRequest) {
     let entries: Entry[] = [];
-
-    // prep the main container
-    this.requests = [];
 
     // is it har?
     if (isHarEntry(input)) {
@@ -90,30 +90,31 @@ export class HTTPSnippet {
       ];
     }
 
-    entries.forEach(({ request }) => {
-      // add optional properties to make validation successful
-      const req = {
-        bodySize: 0,
-        headersSize: 0,
-        headers: [],
-        cookies: [],
-        httpVersion: 'HTTP/1.1',
-        queryString: [],
-        postData: {
-          mimeType: request.postData?.mimeType || 'application/octet-stream',
-        },
-        ...request,
-      };
+    this.requests = Promise.all(
+      entries.map(({ request }) => {
+        // add optional properties to make validation successful
+        const req = {
+          bodySize: 0,
+          headersSize: 0,
+          headers: [],
+          cookies: [],
+          httpVersion: 'HTTP/1.1',
+          queryString: [],
+          postData: {
+            mimeType: request.postData?.mimeType || 'application/octet-stream',
+          },
+          ...request,
+        };
 
-      this.requests.push(this.prepare(req as HarRequest));
-    });
+        return this.prepare(req as HarRequest);
+      }),
+    );
   }
 
-  prepare = (harRequest: HarRequest) => {
-    const request: Request = {
+  async prepare(harRequest: HarRequest) {
+    const request: Omit<Request, 'uriObj'> = {
       ...harRequest,
       fullUrl: '',
-      uriObj: {} as UrlWithParsedQuery,
       queryObj: {},
       headersObj: {},
       cookiesObj: {},
@@ -173,63 +174,31 @@ export class HTTPSnippet {
         if (request.postData?.params) {
           const form = new FormData();
 
-          // The `form-data` module returns one of two things: a native FormData object, or its own polyfill
-          // Since the polyfill does not support the full API of the native FormData object, when this library is running in a browser environment it'll fail on two things:
-          //
-          //  1. The API for `form.append()` has three arguments and the third should only be present when the second is a
-          //    Blob or USVString.
-          //  1. `FormData.pipe()` isn't a function.
-          //
-          // Since the native FormData object is iterable, we easily detect what version of `form-data` we're working with here to allow `multipart/form-data` requests to be compiled under both browser and Node environments.
-          //
-          // This hack is pretty awful but it's the only way we can use this library in the browser as if we code this against just the native FormData object, we can't polyfill that back into Node because Blob and File objects, which something like `formdata-polyfill` requires, don't exist there.
-          // @ts-expect-error TODO
-          const isNativeFormData = typeof form[Symbol.iterator] === 'function';
-
           // TODO: THIS ABSOLUTELY MUST BE REMOVED.
           // IT BREAKS SOME USE-CASES FOR MULTIPART FORMS THAT DEPEND ON BEING ABLE TO SET THE BOUNDARY.
           // easter egg
           const boundary = '---011000010111000001101001'; // this is binary for "api". yep.
-          if (!isNativeFormData) {
-            // @ts-expect-error THIS IS WRONG.  VERY WRONG.
-            form._boundary = boundary;
-          }
 
           request.postData?.params.forEach(param => {
             const name = param.name;
             const value = param.value || '';
-            const filename = param.fileName || null;
+            const filename = param.fileName;
 
-            if (isNativeFormData) {
-              if (isBlob(value)) {
-                // @ts-expect-error TODO
-                form.append(name, value, filename);
-              } else {
-                form.append(name, value);
-              }
+            if (isBlob(value)) {
+              form.append(name, value, filename);
             } else {
-              form.append(name, value, {
-                // @ts-expect-error TODO
-                filename,
-                // @ts-expect-error TODO
-                contentType: param.contentType || null,
-              });
+              form.append(
+                name,
+                new Blob([value], { type: param.contentType }),
+                filename ? basename(filename) : filename,
+              );
             }
           });
 
           const { postData } = request;
 
-          if (isNativeFormData) {
-            for (const data of formDataIterator(form, boundary)) {
-              postData.text += data;
-            }
-          } else if (postData) {
-            form.pipe(
-              // @ts-expect-error TODO
-              eventStreamMap(data => {
-                postData.text += data;
-              }),
-            );
+          for await (const data of formDataIterator(form, boundary)) {
+            postData.text += data;
           }
 
           request.postData.boundary = boundary;
@@ -246,12 +215,13 @@ export class HTTPSnippet {
         if (!request.postData.params) {
           request.postData.text = '';
         } else {
-          // @ts-expect-error the `har-format` types make this challenging
-          request.postData.paramsObj = request.postData.params.reduce(reducer, {});
+          request.postData.paramsObj = request.postData.params.reduce<ReducedHelperObject>(
+            reducer,
+            {},
+          );
 
           // always overwrite
-          // @ts-expect-error the `har-format` types make this challenging
-          request.postData.text = (new URLSearchParams(Object.entries(request.postData.paramsObj!))).toString()
+          request.postData.text = toSearchParams(request.postData.paramsObj).toString();
         }
         break;
 
@@ -280,46 +250,32 @@ export class HTTPSnippet {
       ...request.headersObj,
     };
 
-    const urlWithParsedQuery = urlParse(request.url, true, true); //?
+    const url = new URL(request.url);
 
-    // query string key/value pairs in with literal querystrings containd within the url
+    const query = Object.fromEntries(url.searchParams);
+
+    // query string key/value pairs in with literal querystrings contained within the url
     request.queryObj = {
       ...request.queryObj,
-      ...(urlWithParsedQuery.query as ReducedHelperObject),
+      ...query,
     }; //?
 
-    // reset uriObj values for a clean url
-    const search = queryStringify(request.queryObj);
+    const search = toSearchParams(request.queryObj);
 
-    const uriObj = {
-      ...urlWithParsedQuery,
-      query: request.queryObj,
-      search,
-      path: search ? `${urlWithParsedQuery.pathname}?${search}` : urlWithParsedQuery.pathname,
-    };
-
-    // keep the base url clean of queryString
-    const url = urlFormat({
-      ...urlWithParsedQuery,
-      query: null,
-      search: null,
-    }); //?
-
-    const fullUrl = urlFormat({
-      ...urlWithParsedQuery,
-      ...uriObj,
-    }); //?
+    const fullUrl = new URL(request.url);
+    fullUrl.search = search.toString();
+    url.search = '';
 
     return {
       ...request,
       allHeaders,
-      fullUrl,
-      url,
-      uriObj,
+      fullUrl: fullUrl.toString(),
+      url: url.toString(),
+      uriObj: new ExtendedURL(fullUrl.toString()),
     };
-  };
+  }
 
-  convert = (targetId: TargetId, clientId?: ClientId, options?: any) => {
+  async convert(targetId: TargetId, clientId?: ClientId, options?: any) {
     if (!options && clientId) {
       options = clientId;
     }
@@ -330,7 +286,7 @@ export class HTTPSnippet {
     }
 
     const { convert } = target.clientsById[clientId || target.info.default];
-    const results = this.requests.map(request => convert(request, options));
+    const results = (await this.requests).map(request => convert(request, options));
     return results.length === 1 ? results[0] : results;
-  };
+  }
 }

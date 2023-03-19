@@ -1,5 +1,3 @@
-import { ValueOf } from 'type-fest';
-
 type Headers<T> = Record<string, T>;
 
 /**

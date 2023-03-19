@@ -39,7 +39,9 @@ export const cohttp: Client = {
 
     if (headers.length === 1) {
       push(
-        `let headers = Header.add (Header.init ()) "${headers[0]}" "${escapeForDoubleQuotes(allHeaders[headers[0]])}" in`,
+        `let headers = Header.add (Header.init ()) "${headers[0]}" "${escapeForDoubleQuotes(
+          allHeaders[headers[0]],
+        )}" in`,
       );
     } else if (headers.length > 1) {
       push('let headers = Header.add_list (Header.init ()) [');

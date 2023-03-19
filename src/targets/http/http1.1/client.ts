@@ -69,8 +69,7 @@ export const http11: Client<Http11Options> = {
     // RFC 7230 Section 3.3.3. Message Body Length
     // Automatically set Content-Length header if option is on, postData is present and no header already exists.
     if (opts.autoContentLength && postData?.text && !headerKeys.includes('content-length')) {
-      const length = Buffer.byteLength(postData.text, 'ascii').toString();
-      push(`Content-Length: ${length}`);
+      push(`Content-Length: ${postData.text.length}`);
     }
 
     // Add extra line after header section.

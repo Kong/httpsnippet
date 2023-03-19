@@ -1,6 +1,5 @@
-import { writeFileSync } from 'fs';
-import { readFile } from 'fs/promises';
-import path from 'path';
+import { readFile } from 'node:fs/promises';
+import * as path from 'node:path';
 
 import { HTTPSnippet, Request } from '../httpsnippet';
 import { ClientId, TargetId } from '../targets/targets';
@@ -22,21 +21,18 @@ export interface CustomFixture {
 export const runCustomFixtures = ({ targetId, clientId, tests }: CustomFixture) => {
   describe(`custom fixtures for ${targetId}:${clientId}`, () => {
     tests.forEach(({ it: title, expected: fixtureFile, options, input: request }) => {
-      const result = new HTTPSnippet(request).convert(targetId, clientId, options);
-      const filePath = path.join(
-        __dirname,
-        '..',
-        'targets',
-        targetId,
-        clientId,
-        'fixtures',
-        fixtureFile,
-      );
-      if (process.env.OVERWRITE_EVERYTHING) {
-        writeFileSync(filePath, String(result));
-      }
-
       it(title, async () => {
+        const result = await new HTTPSnippet(request).convert(targetId, clientId, options);
+        const filePath = path.join(
+          __dirname,
+          '..',
+          'targets',
+          targetId,
+          clientId,
+          'fixtures',
+          fixtureFile,
+        );
+
         const buffer = await readFile(filePath);
         const fixture = String(buffer);
 

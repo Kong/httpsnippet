@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
+    "target": "ES2022",
     "rootDir": ".",
     "types": ["node", "jest"]
   },

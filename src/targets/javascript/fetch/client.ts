@@ -94,7 +94,11 @@ export const fetch: Client<FetchOptions> = {
         indent: opts.indent,
         inlineCharacterLimit: 80,
         transform: (_, property, originalResult) => {
-          if (property === 'body' && postData && postData.mimeType === 'application/x-www-form-urlencoded') {
+          if (
+            property === 'body' &&
+            postData &&
+            postData.mimeType === 'application/x-www-form-urlencoded'
+          ) {
             return `new URLSearchParams(${originalResult})`;
           }
           return originalResult;

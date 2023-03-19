@@ -26,7 +26,7 @@
  * Extracted from https://github.com/node-fetch/node-fetch/blob/64c5c296a0250b852010746c76144cb9e14698d9/src/utils/form-data.js
  */
 
-import type FormData from 'form-data';
+import type { FormData, FormDataEntryValue } from 'formdata-node';
 
 const carriage = '\r\n';
 const dashes = '-'.repeat(2);
@@ -41,15 +41,15 @@ export const isBlob = (object: any) =>
   typeof object.constructor === 'function' &&
   /^(Blob|File)$/.test(object[NAME]);
 
-const getFooter = (boundary: string) => `${dashes}${boundary}${dashes}${carriage.repeat(2)}`;
+const getFooter = (boundary: string) => `${dashes}${boundary}${dashes}${carriage.repeat(1)}`;
 
-const getHeader = (boundary: string, name: string, field: { name: string; type: string }) => {
+const getHeader = (boundary: string, name: string, field: FormDataEntryValue) => {
   let header = '';
 
   header += `${dashes}${boundary}${carriage}`;
   header += `Content-Disposition: form-data; name="${name}"`;
 
-  if (isBlob(field)) {
+  if (typeof field !== 'string' && field.name !== 'blob') {
     header += `; filename="${field.name}"${carriage}`;
     header += `Content-Type: ${field.type || 'application/octet-stream'}`;
   }
@@ -57,15 +57,13 @@ const getHeader = (boundary: string, name: string, field: { name: string; type: 
   return `${header}${carriage.repeat(2)}`;
 };
 
-export const formDataIterator = function* (form: FormData, boundary: string) {
-  // @ts-expect-error not sure how this ever worked
+export const formDataIterator = async function* (form: FormData, boundary: string) {
   for (const [name, value] of form) {
     yield getHeader(boundary, name, value);
-
-    if (isBlob(value)) {
-      yield* value.stream();
-    } else {
+    if (typeof value === 'string') {
       yield value;
+    } else {
+      yield await value.text();
     }
 
     yield carriage;

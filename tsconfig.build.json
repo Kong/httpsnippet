@@ -3,11 +3,12 @@
     "outDir": "dist",
     "rootDir": "src",
     "allowJs": true,
-    "resolveJsonModule": true,
     "strict": true,
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "downlevelIteration": true,
-    "lib": ["ESNext"]
+    "lib": ["ES2021"],
+    "target": "ES2021"
   },
   "include": ["src"],
   "exclude": ["dist", "**/*.test.ts"]

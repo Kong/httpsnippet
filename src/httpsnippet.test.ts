@@ -5,15 +5,15 @@ import short from './fixtures/requests/short.json';
 import { HTTPSnippet, Request } from './httpsnippet';
 
 describe('hTTPSnippet', () => {
-  it('should return false if no matching target', () => {
+  it('should return false if no matching target', async () => {
     const snippet = new HTTPSnippet(short as Request);
     // @ts-expect-error intentionally incorrect
-    const result = snippet.convert(null);
+    const result = await snippet.convert(null);
 
     expect(result).toBe(false);
   });
 
-  it('should parse HAR file with multiple entries', () => {
+  it('should parse HAR file with multiple entries', async () => {
     const snippet = new HTTPSnippet({
       log: {
         version: '1.2',
@@ -39,8 +39,8 @@ describe('hTTPSnippet', () => {
     });
 
     expect(snippet).toHaveProperty('requests');
-    expect(Array.isArray(snippet.requests)).toBeTruthy();
-    expect(snippet.requests).toHaveLength(2);
+    expect(Array.isArray(await snippet.requests)).toBeTruthy();
+    await expect(snippet.requests).resolves.toHaveLength(2);
   });
 
   describe('mimetype conversion', () => {
@@ -76,68 +76,76 @@ describe('hTTPSnippet', () => {
     ] as {
       input: keyof typeof mimetypes;
       expected: string;
-    }[])(`mimetype conversion of $input to $output`, ({ input, expected }) => {
+    }[])(`mimetype conversion of $input to $output`, async ({ input, expected }) => {
       const snippet = new HTTPSnippet(mimetypes[input]);
-      const request = snippet.requests[0];
+      const request = (await snippet.requests)[0];
 
-      expect(request.postData!.mimeType).toStrictEqual(expected);
+      expect(request.postData).toHaveProperty('mimeType', expected);
     });
   });
 
-  it('should set postData.text to empty string when postData.params is undefined in application/x-www-form-urlencoded', () => {
+  it('should set postData.text to empty string when postData.params is undefined in application/x-www-form-urlencoded', async () => {
     const snippet = new HTTPSnippet(mimetypes['application/x-www-form-urlencoded']);
-    const request = snippet.requests[0];
+    const request = (await snippet.requests)[0];
 
-    expect(request.postData!.text).toBe('');
+    expect(request.postData).toHaveProperty('text', '');
   });
 
   describe('requestExtras', () => {
     describe('uriObj', () => {
-      it('should add uriObj', () => {
+      it('should add uriObj', async () => {
         const snippet = new HTTPSnippet(query as Request);
-        const request = snippet.requests[0];
+        const request = (await snippet.requests)[0];
 
-        expect(request.uriObj).toMatchObject({
-          auth: null,
-          hash: null,
+        const keys = ['path', ...Object.getOwnPropertyNames(URL.prototype)];
+        const uriObj: Record<string, unknown> = {};
+        for (const key of keys) {
+          uriObj[key] = request.uriObj[key as keyof typeof request.uriObj];
+        }
+
+        expect(uriObj).toMatchObject({
+          hash: '',
           host: 'mockbin.com',
           hostname: 'mockbin.com',
-          href: 'http://mockbin.com/har?key=value',
+          href: 'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value',
           path: '/har?foo=bar&foo=baz&baz=abc&key=value',
           pathname: '/har',
-          port: null,
+          port: '',
           protocol: 'http:',
-          query: {
-            baz: 'abc',
-            key: 'value',
-            foo: ['bar', 'baz'],
-          },
-          search: 'foo=bar&foo=baz&baz=abc&key=value',
-          slashes: true,
+          search: '?foo=bar&foo=baz&baz=abc&key=value',
         });
+
+        expect(
+          JSON.parse(JSON.stringify(Array.from(request.uriObj.searchParams.entries()))),
+        ).toStrictEqual([
+          ['foo', 'bar'],
+          ['foo', 'baz'],
+          ['baz', 'abc'],
+          ['key', 'value'],
+        ]);
       });
 
-      it('should fix the `path` property of uriObj to match queryString', () => {
+      it('should fix the `path` property of uriObj to match queryString', async () => {
         const snippet = new HTTPSnippet(query as Request);
-        const request = snippet.requests[0];
+        const request = (await snippet.requests)[0];
 
         expect(request.uriObj.path).toBe('/har?foo=bar&foo=baz&baz=abc&key=value');
       });
     });
 
     describe('queryObj', () => {
-      it('should add queryObj', () => {
+      it('should add queryObj', async () => {
         const snippet = new HTTPSnippet(query as Request);
-        const request = snippet.requests[0];
+        const request = (await snippet.requests)[0];
 
         expect(request.queryObj).toMatchObject({ baz: 'abc', key: 'value', foo: ['bar', 'baz'] });
       });
     });
 
     describe('headersObj', () => {
-      it('should add headersObj', () => {
+      it('should add headersObj', async () => {
         const snippet = new HTTPSnippet(headers as Request);
-        const request = snippet.requests[0];
+        const request = (await snippet.requests)[0];
 
         expect(request.headersObj).toMatchObject({
           accept: 'application/json',
@@ -145,7 +153,7 @@ describe('hTTPSnippet', () => {
         });
       });
 
-      it('should add headersObj to source object case insensitive when HTTP/1.0', () => {
+      it('should add headersObj to source object case insensitive when HTTP/1.0', async () => {
         const snippet = new HTTPSnippet({
           ...headers,
           httpVersion: 'HTTP/1.1',
@@ -158,7 +166,7 @@ describe('hTTPSnippet', () => {
           ],
         } as Request);
 
-        const request = snippet.requests[0];
+        const request = (await snippet.requests)[0];
 
         expect(request.headersObj).toMatchObject({
           'Kong-Admin-Token': 'Ziltoid The Omniscient',
@@ -167,7 +175,7 @@ describe('hTTPSnippet', () => {
         });
       });
 
-      it('should add headersObj to source object lowercased when HTTP/2.x', () => {
+      it('should add headersObj to source object lowercased when HTTP/2.x', async () => {
         const snippet = new HTTPSnippet({
           ...headers,
           httpVersion: 'HTTP/2',
@@ -180,7 +188,7 @@ describe('hTTPSnippet', () => {
           ],
         } as Request);
 
-        const request = snippet.requests[0];
+        const request = (await snippet.requests)[0];
 
         expect(request.headersObj).toMatchObject({
           'kong-admin-token': 'Ziltoid The Omniscient',
@@ -191,18 +199,18 @@ describe('hTTPSnippet', () => {
     });
 
     describe('url', () => {
-      it('should modify the original url to strip query string', () => {
+      it('should modify the original url to strip query string', async () => {
         const snippet = new HTTPSnippet(query as Request);
-        const request = snippet.requests[0];
+        const request = (await snippet.requests)[0];
 
         expect(request.url).toBe('http://mockbin.com/har');
       });
     });
 
     describe('fullUrl', () => {
-      it('adds fullURL', () => {
+      it('adds fullURL', async () => {
         const snippet = new HTTPSnippet(query as Request);
-        const request = snippet.requests[0];
+        const request = (await snippet.requests)[0];
 
         expect(request.fullUrl).toBe('http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value');
       });
