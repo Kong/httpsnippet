@@ -1,4 +1,4 @@
-# HTTPSnippet
+# HTTPSnippet-lite
 
 [![version][npm-version]][npm-url] [![License][npm-license]][license-url]
 
@@ -6,18 +6,13 @@
 
 Relies on the popular [HAR](http://www.softwareishard.com/blog/har-12-spec/#request) format to import data and describe HTTP calls.
 
-See it in action on companion service: [APIembed](https://apiembed.com)
+[![Build](https://github.com/httpsnippet-lite/workflows/CI/badge.svg)](https://github.com/httpsnippet-lite)
 
-[![Build](https://github.com/Kong/httpsnippet/actions/workflows/build.yml/badge.svg)](https://github.com/Kong/httpsnippet/actions/workflows/build.yml) [![Downloads][npm-downloads]][npm-url]
-
-- [HTTPSnippet](#httpsnippet)
+- [HTTPSnippet](#httpsnippet-lite)
   - [Quickstart](#quickstart)
     - [Core Concepts](#core-concepts)
     - [CLI Quickstart](#cli-quickstart)
     - [TypeScript Library Quickstart](#typescript-library-quickstart)
-  - [CLI Usage](#cli-usage)
-    - [CLI Installation](#cli-installation)
-    - [Example](#example)
   - [TypeScript Library Usage](#typescript-library-usage)
     - [Library Installation](#library-installation)
     - [Types](#types)
@@ -54,17 +49,13 @@ See it in action on companion service: [APIembed](https://apiembed.com)
 ### CLI Quickstart
 
 ```shell
-httpsnippet har.json \ # the path your input file (must be in HAR format)
-  --target shell \ # your desired language
-  --client curl \ # your desired language library
-  --output ./examples \ # an output directory, otherwise will just output to Stdout
-  --options '{ "indent": false }' # any client options as a JSON string
+npm install --save httpsnippet-lite
 ```
 
 ### TypeScript Library Quickstart
 
 ```ts
-import { HTTPSnippet } from 'httpsnippet';
+import { HTTPSnippet } from 'httpsnippet-lite';
 
 const snippet = new HTTPSnippet({
   method: 'GET',
@@ -72,135 +63,17 @@ const snippet = new HTTPSnippet({
 });
 
 const options = { indent: '\t' };
-const output = snippet.convert('shell', 'curl', options);
+const output = await snippet.convert('shell', 'curl', options);
 console.log(output);
-```
-
-## CLI Usage
-
-### CLI Installation
-
-| NPM                                         | Yarn                                   |
-| ------------------------------------------- | -------------------------------------- |
-| <pre>npm install --global httpsnippet</pre> | <pre>yarn global add httpsnippet</pre> |
-
-```text
-httpsnippet [harFilePath]
-
-the default command
-
-Options:
-      --help     Show help                                   [boolean]
-      --version  Show version number                         [boolean]
-  -t, --target   target output                     [string] [required]
-  -c, --client   language client                              [string]
-  -o, --output   write output to directory                    [string]
-  -x, --options  provide extra options for the target/client  [string]
-
-Examples:
-  httpsnippet my_har.json --target rust --client actix --output my_src_directory
-```
-
-### Example
-
-The input to HTTPSnippet is any valid [HAR Request Object](http://www.softwareishard.com/blog/har-12-spec/#request), or full [HAR](http://www.softwareishard.com/blog/har-12-spec/#log) log format.
-
-<details>
-<summary>`example.json`</summary>
-
-```json
-{
-  "method": "POST",
-  "url": "http://mockbin.com/har?key=value",
-  "httpVersion": "HTTP/1.1",
-  "queryString": [
-    {
-      "name": "foo",
-      "value": "bar"
-    },
-    {
-      "name": "foo",
-      "value": "baz"
-    },
-    {
-      "name": "baz",
-      "value": "abc"
-    }
-  ],
-  "headers": [
-    {
-      "name": "accept",
-      "value": "application/json"
-    },
-    {
-      "name": "content-type",
-      "value": "application/x-www-form-urlencoded"
-    }
-  ],
-  "cookies": [
-    {
-      "name": "foo",
-      "value": "bar"
-    },
-    {
-      "name": "bar",
-      "value": "baz"
-    }
-  ],
-  "postData": {
-    "mimeType": "application/x-www-form-urlencoded",
-    "params": [
-      {
-        "name": "foo",
-        "value": "bar"
-      }
-    ]
-  }
-}
-```
-
-</details>
-
-```shell
-httpsnippet example.json --target shell --client curl --output ./examples
-```
-
-```console
-$ tree examples
-examples/
-└── example.sh
-```
-
-inside `examples/example.sh` you'll see the generated output:
-
-```shell
-curl --request POST \
-  --url 'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value' \
-  --header 'accept: application/json' \
-  --header 'content-type: application/x-www-form-urlencoded' \
-  --cookie 'foo=bar; bar=baz' \
-  --data foo=bar
-```
-
-provide extra options:
-
-```shell
-httpsnippet example.json --target shell --client curl --output ./examples --options '{ "indent": false }'
-```
-
-and see how the output changes, in this case without indentation
-
-```shell
-curl --request POST --url 'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=value' --header 'accept: application/json' --header 'content-type: application/x-www-form-urlencoded' --cookie 'foo=bar; bar=baz' --data foo=bar
 ```
 
 ## TypeScript Library Usage
 
 ### Library Installation
 
-| NPM                                       | Yarn                            |
-| ----------------------------------------- | ------------------------------- |
-| <pre>npm install --save httpsnippet</pre> | <pre>yarn add httpsnippet</pre> |
+| NPM                                            | Yarn                                 |
+|------------------------------------------------|--------------------------------------|
+| <pre>npm install --save httpsnippet-lite</pre> | <pre>yarn add httpsnippet-lite</pre> |
 
 ### Types
 
@@ -292,7 +165,7 @@ interface Target {
 Name of [conversion target](https://github.com/Kong/httpsnippet/wiki/Targets)
 
 ```ts
-import { HTTPSnippet } from 'httpsnippet';
+import { HTTPSnippet } from 'httpsnippet-lite';
 
 const snippet = new HTTPSnippet({
   method: 'GET',
@@ -317,11 +190,11 @@ const snippet = new HTTPSnippet({
 });
 
 // generate Node.js: Native output
-console.log(snippet.convert('node'));
+console.log(await snippet.convert('node'));
 
 // generate Node.js: Native output, indent with tabs
 console.log(
-  snippet.convert('node', {
+  await snippet.convert('node', {
     indent: '\t',
   }),
 );
@@ -337,7 +210,7 @@ const isTarget: (target: Target) => target is Target;
 
 ```ts
 import { myCustomTarget } from './my-custom-target';
-import { isTarget } from 'httpsnippet';
+import { isTarget } from 'httpsnippet-lite';
 
 try {
   console.log(isTarget(myCustomTarget));
@@ -357,12 +230,12 @@ const addTarget: (target: Target) => void;
 ```ts
 import { myCustomClient } from './my-custom-client';
 import { HAR } from 'my-custom-har';
-import { HTTPSnippet, addTargetClient } from 'httpsnippet';
+import { HTTPSnippet, addTargetClient } from 'httpsnippet-lite';
 
 addTargetClient(myCustomClient);
 
 const snippet = new HTTPSnippet(HAR);
-const output = snippet.convert('customTargetId');
+const output = await snippet.convert('customTargetId');
 console.log(output);
 ```
 
@@ -393,34 +266,28 @@ Use `addTargetClient` to add a custom client to an existing target. See [`addTar
 const addTargetClient: (targetId: TargetId, client: Client) => void;
 ```
 
-```ts
-import { myCustomClient } from './my-custom-client';
-import { HAR } from 'my-custom-har';
-import { HTTPSnippet, addTargetClient } from 'httpsnippet';
+## Documentation
 
-addTargetClient('customTargetId', myCustomClient);
+At the heart of this module is the [HAR Format](http://www.softwareishard.com/blog/har-12-spec/#request) as the HTTP request description format, please review some of the sample JSON HAR Request objects in [test fixtures](/test/fixtures/requests), or read the [HAR Docs](http://www.softwareishard.com/blog/har-12-spec/#request) for more details.
 
-const snippet = new HTTPSnippet(HAR);
-const output = snippet.convert('customTargetId', 'customClientId');
-console.log(output);
-```
+For detailed information on each target, please review the [wiki](https://github.com/Kong/httpsnippet/wiki).
 
-## Bugs and feature requests
+## Differences from `kong/httpsnippet`
 
-Have a bug or a feature request? Please first read the [issue guidelines](CONTRIBUTING.md#using-the-issue-tracker) and search for existing and closed issues. If your problem or idea is not addressed yet, [please open a new issue](/issues).
+Here's a list of the most significant differences between httpsnippet-lite and [httpsnippet](https://github.com/Kong/httpsnippet) upstream:
 
-## Contributing
+* No reliance on Node.js core modules and globals
+* convert() method is async
+* HAR is not validated
+* CLI is not bundled
+* Dual packaging available
 
-Please read through our [contributing guidelines](CONTRIBUTING.md). Included are directions for opening issues, coding standards, and notes on development.
+## License
 
-For info on creating new conversion targets, please review this [guideline](https://github.com/Kong/httpsnippet/wiki/Creating-Targets)
-
-Moreover, if your pull request contains TypeScript patches or features, you must include relevant unit tests.
-
-Editor preferences are available in the [editor config](.editorconfig) for easy use in common text editors. Read more and download plugins at <http://editorconfig.org>.
+[MIT](LICENSE) &copy; [Kong](https://konghq.com)
 
 [license-url]: https://github.com/Kong/httpsnippet/blob/master/LICENSE
-[npm-url]: https://www.npmjs.com/package/httpsnippet
-[npm-license]: https://img.shields.io/npm/l/httpsnippet.svg?style=flat-square
-[npm-version]: https://img.shields.io/npm/v/httpsnippet.svg?style=flat-square
-[npm-downloads]: https://img.shields.io/npm/dm/httpsnippet.svg?style=flat-square
+
+[npm-url]: https://www.npmjs.com/package/httpsnippet-lite
+[npm-license]: https://img.shields.io/npm/l/httpsnippet-lite.svg?style=flat-square
+[npm-version]: https://img.shields.io/npm/v/httpsnippet-lite.svg?style=flat-square

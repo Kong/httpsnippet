@@ -1,9 +1,10 @@
 {
   "version": "3.0.0",
-  "name": "httpsnippet",
+  "name": "httpsnippet-lite",
   "description": "HTTP Request snippet generator for *most* languages",
-  "author": "Kong <office@konghq.com>",
-  "homepage": "https://github.com/Kong/httpsnippet",
+  "author": "Jakub Rożek",
+  "contributors": ["Kong <office@konghq.com>"],
+  "homepage": "https://github.com/P0lip/httpsnippet",
   "license": "MIT",
   "sideEffects": false,
   "type": "commonjs",
@@ -50,9 +51,9 @@
   "engines": {
     "node": "^14.19.1 || ^16.14.2 || ^18.0.0"
   },
-  "repository": "Kong/httpsnippet",
+  "repository": "P0lip/httpsnippet",
   "bugs": {
-    "url": "https://github.com/Kong/httpsnippet/issues"
+    "url": "https://github.com/P0lip/httpsnippet/issues"
   },
   "scripts": {
     "lint": "npm run lint:prettify && npm run lint:code && npm run lint:markdown",
