@@ -1,3 +1,4 @@
+import { describe, expect, it } from '@jest/globals';
 import { readdirSync, readFileSync } from 'fs';
 import * as path from 'node:path';
 

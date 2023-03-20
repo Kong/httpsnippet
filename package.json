@@ -1,9 +1,11 @@
 {
-  "version": "3.0.0",
+  "version": "3.0.1",
   "name": "httpsnippet-lite",
   "description": "HTTP Request snippet generator for *most* languages",
   "author": "Jakub Rożek",
-  "contributors": ["Kong <office@konghq.com>"],
+  "contributors": [
+    "Kong <office@konghq.com>"
+  ],
   "homepage": "https://github.com/P0lip/httpsnippet",
   "license": "MIT",
   "sideEffects": false,
@@ -67,7 +69,6 @@
     "prepublishOnly": "npm run lint && npm run test && npm run build"
   },
   "devDependencies": {
-    "@types/jest": "^27.4.1",
     "@types/node": "^16.11.26",
     "@types/stringify-object": "^3.3.0",
     "@typescript-eslint/eslint-plugin": "^5.17.0",

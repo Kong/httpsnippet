@@ -1,3 +1,5 @@
+import { describe, expect, it } from '@jest/globals';
+
 import { availableTargets, extname } from './utils.js';
 
 describe('availableTargets', () => {

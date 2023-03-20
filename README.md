@@ -72,7 +72,7 @@ console.log(output);
 ### Library Installation
 
 | NPM                                            | Yarn                                 |
-|------------------------------------------------|--------------------------------------|
+| ---------------------------------------------- | ------------------------------------ |
 | <pre>npm install --save httpsnippet-lite</pre> | <pre>yarn add httpsnippet-lite</pre> |
 
 ### Types
@@ -276,18 +276,17 @@ For detailed information on each target, please review the [wiki](https://github
 
 Here's a list of the most significant differences between httpsnippet-lite and [httpsnippet](https://github.com/Kong/httpsnippet) upstream:
 
-* No reliance on Node.js core modules and globals
-* convert() method is async
-* HAR is not validated
-* CLI is not bundled
-* Dual packaging available
+- No reliance on Node.js core modules and globals
+- convert() method is async
+- HAR is not validated
+- CLI is not bundled
+- Dual packaging available
 
 ## License
 
 [MIT](LICENSE) &copy; [Kong](https://konghq.com)
 
 [license-url]: https://github.com/Kong/httpsnippet/blob/master/LICENSE
-
 [npm-url]: https://www.npmjs.com/package/httpsnippet-lite
 [npm-license]: https://img.shields.io/npm/l/httpsnippet-lite.svg?style=flat-square
 [npm-version]: https://img.shields.io/npm/v/httpsnippet-lite.svg?style=flat-square

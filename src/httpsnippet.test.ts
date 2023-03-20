@@ -1,3 +1,5 @@
+import { describe, expect, it } from '@jest/globals';
+
 import { mimetypes } from './fixtures/mimetypes.js';
 import headers from './fixtures/requests/headers.json';
 import query from './fixtures/requests/query.json';

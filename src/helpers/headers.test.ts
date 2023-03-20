@@ -1,3 +1,5 @@
+import { describe, expect, it } from '@jest/globals';
+
 import { getHeader, getHeaderName, hasHeader } from './headers.js';
 
 const headers = {

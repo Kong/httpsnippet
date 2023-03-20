@@ -1,3 +1,5 @@
+import { describe, expect, it } from '@jest/globals';
+
 import { escapeString } from './escape.js';
 
 describe('escape methods', () => {

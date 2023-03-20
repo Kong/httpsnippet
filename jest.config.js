@@ -1,10 +1,10 @@
 /** @type { import('@jest/types').Config.InitialOptions } */
 module.exports = {
   collectCoverage: false,
-  moduleFileExtensions: ['ts', 'js'],
+  injectGlobals: false,
   modulePathIgnorePatterns: ['<rootDir>/dist'],
   testEnvironment: 'node',
-  testRegex: ['.+\\.test\\.tsx?$'],
+  testRegex: ['.+\\.test\\.ts$'],
   preset: 'ts-jest/presets/default-esm',
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
@@ -14,6 +14,7 @@ module.exports = {
       'ts-jest',
       {
         useESM: true,
+        isolatedModules: true,
       },
     ],
   },
