@@ -32,8 +32,6 @@ Relies on the popular [HAR](http://www.softwareishard.com/blog/har-12-spec/#requ
       - [`addTarget`](#addtarget)
       - [`isClient`](#isclient)
       - [`addTargetClient`](#addtargetclient)
-  - [Bugs and feature requests](#bugs-and-feature-requests)
-  - [Contributing](#contributing)
 
 ## Quickstart
 
