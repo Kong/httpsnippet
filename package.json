@@ -63,7 +63,8 @@
     "build": "npm run build:cjs && npm run build:esm",
     "build:esm": "tsc -p tsconfig.build.json --outDir dist/esm --declarationDir dist/types",
     "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs --module commonjs --declarationDir dist/types",
-    "test": "jest"
+    "test": "jest",
+    "prepublishOnly": "npm run lint && npm run test && npm run build"
   },
   "devDependencies": {
     "@types/jest": "^27.4.1",
