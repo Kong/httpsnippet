@@ -2,6 +2,7 @@ import type { Merge } from 'type-fest';
 
 import type { CodeBuilderOptions } from '../helpers/code-builder.js';
 import type { Request } from '../httpsnippet.js';
+import { availableTargets } from '../httpsnippet.js';
 import { c } from './c/target.js';
 import { clojure } from './clojure/target.js';
 import { csharp } from './csharp/target.js';
@@ -139,6 +140,10 @@ export const isTarget = (target: Target): target is Target => {
 
   return true;
 };
+
+export function isValidTargetId(value: string): value is TargetId {
+  return availableTargets().some(({ key }) => key === value);
+}
 
 export const addTarget = (target: Target) => {
   if (!isTarget(target)) {

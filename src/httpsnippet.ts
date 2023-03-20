@@ -11,7 +11,7 @@ export { CodeBuilder } from './helpers/code-builder.js';
 export { availableTargets, extname } from './helpers/utils.js';
 export { isClient, isTarget } from './targets/targets.js';
 export type { ClientId, TargetId };
-export { addTarget, addTargetClient } from './targets/targets.js';
+export { addTarget, addTargetClient, isValidTargetId } from './targets/targets.js';
 
 /** is this wrong?  yes.  according to the spec (http://www.softwareishard.com/blog/har-12-spec/#postData) it's technically wrong since `params` and `text` are (by the spec) mutually exclusive.  However, in practice, this is not what is often the case.
  *
