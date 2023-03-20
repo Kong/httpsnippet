@@ -10,9 +10,9 @@ describe('hTTPSnippet', () => {
   it('should return false if no matching target', async () => {
     const snippet = new HTTPSnippet(short as Request);
     // @ts-expect-error intentionally incorrect
-    const result = await snippet.convert(null);
+    const result = snippet.convert(null);
 
-    expect(result).toBe(false);
+    await expect(result).resolves.toBeNull();
   });
 
   it('should parse HAR file with multiple entries', async () => {

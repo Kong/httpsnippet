@@ -274,7 +274,7 @@ export class HTTPSnippet {
 
     const target = targets[targetId];
     if (!target) {
-      return false;
+      return null;
     }
 
     const { convert } = target.clientsById[clientId || target.info.default];
