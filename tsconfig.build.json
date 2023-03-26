@@ -9,7 +9,7 @@
     "esModuleInterop": true,
     "module": "NodeNext",
     "lib": ["ES2022"],
-    "target": "ES2022"
+    "target": "ES2018"
   },
   "include": ["src"],
   "exclude": ["src/fixtures", "dist", "**/*.test.ts"]
