@@ -1,5 +1,5 @@
 /** @type { import('@jest/types').Config.InitialOptions } */
-module.exports = {
+export default {
   collectCoverage: false,
   injectGlobals: false,
   modulePathIgnorePatterns: ['<rootDir>/dist'],

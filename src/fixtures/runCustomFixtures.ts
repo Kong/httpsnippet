@@ -1,7 +1,8 @@
-import { describe, expect, it } from '@jest/globals';
 import { readFile } from 'node:fs/promises';
 import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+import { describe, expect, it } from '@jest/globals';
 
 import { HTTPSnippet, Request } from '../httpsnippet.js';
 import { ClientId, TargetId } from '../targets/targets.js';

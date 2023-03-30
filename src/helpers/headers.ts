@@ -31,7 +31,7 @@ const mimeTypeJson = [
   '+json',
 ] as const;
 
-type MimeTypeJson = `${string}${typeof mimeTypeJson[number]}${string}`;
+type MimeTypeJson = `${string}${(typeof mimeTypeJson)[number]}${string}`;
 
 /**
  * Determines if a given mimetype is JSON, or a variant of such.

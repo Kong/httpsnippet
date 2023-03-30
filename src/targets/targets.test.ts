@@ -1,6 +1,7 @@
+import * as path from 'node:path';
+
 import { describe, expect, it } from '@jest/globals';
 import { readdirSync, readFileSync } from 'fs';
-import * as path from 'node:path';
 
 import short from '../fixtures/requests/short.json';
 import { availableTargets, extname } from '../helpers/utils.js';

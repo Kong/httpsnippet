@@ -13,7 +13,6 @@ module.exports = {
     'plugin:jest/all',
     'plugin:jest-formatting/strict',
     'plugin:eslint-comments/recommended',
-    'prettier',
   ],
   plugins: ['eslint-comments', 'simple-import-sort', 'jest', 'jest-formatting'],
   rules: {
@@ -26,5 +25,6 @@ module.exports = {
     'simple-import-sort/exports': 'error',
     'jest/prefer-expect-assertions': 'off',
     'jest/require-hook': 'off',
+    'jest/max-expects': 'warn',
   },
 };
