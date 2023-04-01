@@ -88,7 +88,6 @@
   "dependencies": {
     "@types/har-format": "^1.2.10",
     "formdata-node": "^4.4.1",
-    "stringify-object": "3.3.0",
-    "type-fest": "^3.6.1"
+    "stringify-object": "3.3.0"
   }
 }
