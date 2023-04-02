@@ -3,6 +3,7 @@
     "outDir": "dist",
     "rootDir": "src",
     "allowJs": false,
+    "resolveJsonModule": false,
     "declaration": true,
     "strict": true,
     "moduleResolution": "Node16",

@@ -1,5 +1,5 @@
 /** @type { import('prettier').Config } */
-module.exports = {
+export default {
   arrowParens: 'avoid',
   bracketSameLine: false,
   bracketSpacing: true,
