@@ -45,7 +45,9 @@ const jsType = (input?: any) => {
 };
 
 const objEmpty = (input?: any) => {
-  if (jsType(input) === 'object') {
+  if (input === undefined) {
+    return true;
+  } else if (jsType(input) === 'object') {
     return Object.keys(input).length === 0;
   }
   return false;
