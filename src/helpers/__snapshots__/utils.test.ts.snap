@@ -316,6 +316,12 @@ Array [
         "link": "http://ruby-doc.org/stdlib-2.2.1/libdoc/net/http/rdoc/Net/HTTP.html",
         "title": "net::http",
       },
+      Object {
+        "description": "Faraday HTTP client",
+        "key": "faraday",
+        "link": "https://github.com/lostisland/faraday",
+        "title": "faraday",
+      },
     ],
     "default": "native",
     "extname": ".rb",
