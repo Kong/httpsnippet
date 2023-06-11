@@ -202,6 +202,33 @@ curl --request POST --url 'http://mockbin.com/har?foo=bar&foo=baz&baz=abc&key=va
 | ----------------------------------------- | ------------------------------- |
 | <pre>npm install --save httpsnippet</pre> | <pre>yarn add httpsnippet</pre> |
 
+If using Webpack 5, also add this to your webpack.config.js:
+
+``` ejs
+const webpack = require('webpack')
+// import webpack from 'webpack'
+
+module.exports = {
+  /* ... */
+
+  resolve: {
+    fallback: {
+      'stream': require.resolve('stream-browserify'),
+      'util': require.resolve('util/'),
+      'url': require.resolve('url/'),
+      'querystring': require.resolve('querystring-es3'),
+      'string_decoder': require.resolve('string_decoder/'),
+      'buffer': require.resolve('buffer/')
+    }
+  },
+  plugins: [
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
+  ]
+}
+```
+
 ### Types
 
 #### `HarRequest`
