@@ -32,8 +32,23 @@ export const restsharp: Client = {
     // URL as the base path so it can be an empty string
     push(`var request = new RestRequest("");`);
 
+    // If we have multipart form data, set this value. Setting the content-type header manually and then trying to add a mutlipart file parameter
+    const isMultipart = postData.mimeType && postData.mimeType == 'multipart/form-data';
+    if (isMultipart) {
+      push(`request.AlwaysMultipartFormData = true;`);
+    }
+
     // Add headers, including the cookies
     Object.keys(headersObj).forEach(key => {
+      // if we have post data, restsharp really wants to set the contentType
+      // itself; do not add a content-type header or you end up with failures
+      // which manifest as unhandled exceptions.
+      if (postData.mimeType && key.toLowerCase() == 'content-type') {
+        if (isMultipart && postData.boundary) {
+          push(`request.FormBoundary = "${postData.boundary}";`);
+        }
+        return;
+      }
       push(`request.AddHeader("${key}", "${escapeForDoubleQuotes(headersObj[key])}");`);
     });
 
@@ -41,15 +56,35 @@ export const restsharp: Client = {
       push(`request.AddCookie("${name}", "${value}", "${uriObj.pathname}", "${uriObj.host}");`);
     });
 
-    // here we're just assuming that the text is a JSON post, and that content
-    // type is application/json. Improvements welcome to support multipart or
-    // form-urlencoded
-    if (postData.text) {
-      const text = JSON.stringify(postData.text);
-      push(`request.AddJsonBody(${text}, false);`);
+    switch (postData.mimeType) {
+      case 'multipart/form-data':
+        if (!postData.params) break;
+        postData.params.forEach(param => {
+          if (param.fileName) {
+            push(`request.AddFile("${param.name}", "${param.fileName}");`);
+          } else {
+            push(`request.AddParameter("${param.name}", "${param.value}");`);
+          }
+        });
+        break;
+      case 'application/x-www-form-urlencoded':
+        if (!postData.params) break;
+        postData.params.forEach(param => {
+          push(`request.AddParameter("${param.name}", "${param.value}");`);
+        });
+        break;
+      case 'application/json': {
+        if (!postData.text) break;
+        const text = JSON.stringify(postData.text);
+        push(`request.AddJsonBody(${text}, false);`);
+        break;
+      }
+      default:
+        if (!postData.text) break;
+        push(`request.AddStringBody("${postData.text}", "${postData.mimeType}");`);
     }
 
-    push(`var response = await client.${title(method)}Async(request);`);
+    push(`var response = await client.${title(method)}Async(request); `);
     return join();
   },
 };
