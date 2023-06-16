@@ -67,11 +67,11 @@ export const request: Client = {
           }
 
           let attachment: {
-            value?: string;
             options?: {
-              filename: string;
               contentType: string | null;
+              filename: string;
             };
+            value?: string;
           } = {};
 
           if (param.fileName) {

@@ -26,10 +26,10 @@ export type TargetId = keyof typeof targets;
 export type ClientId = string;
 
 export interface ClientInfo {
-  key: ClientId;
-  title: string;
-  link: string;
   description: string;
+  key: ClientId;
+  link: string;
+  title: string;
 }
 
 export type Converter<T extends Record<string, any>> = (
@@ -38,23 +38,23 @@ export type Converter<T extends Record<string, any>> = (
 ) => string;
 
 export interface Client<T extends Record<string, any> = Record<string, any>> {
-  info: ClientInfo;
   convert: Converter<T>;
+  info: ClientInfo;
 }
 
 export type Extension = `.${string}` | null;
 
 export interface TargetInfo {
+  cli?: string;
+  default: string;
+  extname: Extension;
   key: TargetId;
   title: string;
-  extname: Extension;
-  default: string;
-  cli?: string;
 }
 
 export interface Target {
-  info: TargetInfo;
   clientsById: Record<ClientId, Client>;
+  info: TargetInfo;
 }
 
 export const targets = {

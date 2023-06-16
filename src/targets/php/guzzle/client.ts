@@ -54,10 +54,10 @@ export const guzzle: Client<GuzzleOptions> = {
 
       case 'multipart/form-data': {
         interface MultipartField {
-          name: string;
-          filename?: string;
           contents: string | undefined;
+          filename?: string;
           headers?: Record<string, string>;
+          name: string;
         }
 
         const fields: MultipartField[] = [];

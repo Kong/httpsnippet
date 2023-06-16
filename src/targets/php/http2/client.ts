@@ -55,11 +55,11 @@ export const http2: Client<Http2Options> = {
         }
 
         const files: {
+          [anything: string]: string | undefined;
+          data: string | undefined;
+          file: string;
           name: string;
           type: string | undefined;
-          file: string;
-          data: string | undefined;
-          [anything: string]: string | undefined;
         }[] = [];
         const fields: Record<string, any> = {};
         postData.params.forEach(({ name, fileName, value, contentType }) => {

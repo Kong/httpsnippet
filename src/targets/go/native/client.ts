@@ -13,9 +13,9 @@ import { CodeBuilder } from '../../../helpers/code-builder';
 import { escapeForDoubleQuotes } from '../../../helpers/escape';
 
 export interface GoNativeOptions {
-  showBoilerplate?: boolean;
   checkErrors?: boolean;
   printBody?: boolean;
+  showBoilerplate?: boolean;
   timeout?: number;
 }
 

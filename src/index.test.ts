@@ -125,8 +125,8 @@ describe('HTTPSnippet', () => {
         expected: 'text/plain',
       },
     ] as {
-      input: keyof typeof mimetypes;
       expected: string;
+      input: keyof typeof mimetypes;
     }[])('mimetype conversion of $input to $output', ({ input, expected }) => {
       const snippet = new HTTPSnippet(mimetypes[input]);
       const request = snippet.requests[0];

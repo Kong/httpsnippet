@@ -10,15 +10,15 @@ import path from 'path';
 import { HTTPSnippet } from '..';
 
 export interface CustomFixture {
-  targetId: TargetId;
   clientId: ClientId;
+  targetId: TargetId;
   tests: {
-    it: string;
-    input: Request;
-    options: any;
-
     /** a file path pointing to the expected custom fixture result */
     expected: string;
+
+    input: Request;
+    it: string;
+    options: any;
   }[];
 }
 

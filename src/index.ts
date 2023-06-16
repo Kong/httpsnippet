@@ -32,24 +32,24 @@ const debug = {
  * Then, in addition to that, it really adds to complexity with TypeScript (TypeScript takes this constraint very very seriously) in a way that's not actually super useful.  So, we treat this object as though it could have both or either of `params` and/or `text`.
  */
 type PostDataBase = PostDataCommon & {
-  text?: string;
   params?: Param[];
+  text?: string;
 };
 
 export type HarRequest = Omit<NpmHarRequest, 'postData'> & { postData: PostDataBase };
 
 export interface RequestExtras {
+  allHeaders: ReducedHelperObject;
+  cookiesObj: ReducedHelperObject;
+  fullUrl: string;
+  headersObj: ReducedHelperObject;
   postData: PostDataBase & {
+    boundary?: string;
     jsonObj?: ReducedHelperObject;
     paramsObj?: ReducedHelperObject;
-    boundary?: string;
   };
-  fullUrl: string;
   queryObj: ReducedHelperObject;
-  headersObj: ReducedHelperObject;
   uriObj: UrlWithParsedQuery;
-  cookiesObj: ReducedHelperObject;
-  allHeaders: ReducedHelperObject;
 }
 
 export type Request = HarRequest & RequestExtras;
@@ -60,12 +60,12 @@ interface Entry {
 
 interface HarEntry {
   log: {
-    version: string;
     creator: {
       name: string;
       version: string;
     };
     entries: Entry[];
+    version: string;
   };
 }
 
