@@ -3,7 +3,12 @@ const fetch = require('node-fetch');
 const url = 'https://httpbin.org/headers';
 const options = {
   method: 'GET',
-  headers: {accept: 'application/json', 'x-foo': 'Bar', 'x-bar': 'Foo'}
+  headers: {
+    accept: 'application/json',
+    'x-foo': 'Bar',
+    'x-bar': 'Foo',
+    'quoted-value': '"quoted" \'string\''
+  }
 };
 
 fetch(url, options)

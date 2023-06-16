@@ -9,6 +9,7 @@ var request = new HttpRequestMessage
         { "accept", "application/json" },
         { "x-foo", "Bar" },
         { "x-bar", "Foo" },
+        { "quoted-value", "\"quoted\" 'string'" },
     },
 };
 using (var response = await client.SendAsync(request))

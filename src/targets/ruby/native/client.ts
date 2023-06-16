@@ -1,6 +1,7 @@
 import type { Client } from '../../targets';
 
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { escapeForSingleQuotes } from '../../../helpers/escape';
 
 export const native: Client = {
   info: {
@@ -14,11 +15,6 @@ export const native: Client = {
 
     push("require 'uri'");
     push("require 'net/http'");
-
-    if (uriObj.protocol === 'https:') {
-      push("require 'openssl'");
-    }
-
     blank();
 
     // To support custom methods we check for the supported methods
@@ -62,7 +58,7 @@ export const native: Client = {
     const headers = Object.keys(allHeaders);
     if (headers.length) {
       headers.forEach(key => {
-        push(`request["${key}"] = '${allHeaders[key]}'`);
+        push(`request["${key}"] = '${escapeForSingleQuotes(allHeaders[key])}'`);
       });
     }
 

@@ -13,7 +13,7 @@ const data = JSON.stringify({
     1,
     'a',
     {
-      arr_mix_nested: {}
+      arr_mix_nested: []
     }
   ],
   boolean: false

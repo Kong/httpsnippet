@@ -2,5 +2,6 @@ GET /headers HTTP/1.1
 Accept: application/json
 X-Foo: Bar
 X-Bar: Foo
+Quoted-Value: "quoted" 'string'
 Host: httpbin.org
 

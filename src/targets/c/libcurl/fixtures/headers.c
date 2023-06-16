@@ -7,6 +7,7 @@ struct curl_slist *headers = NULL;
 headers = curl_slist_append(headers, "accept: application/json");
 headers = curl_slist_append(headers, "x-foo: Bar");
 headers = curl_slist_append(headers, "x-bar: Foo");
+headers = curl_slist_append(headers, "quoted-value: \"quoted\" 'string'");
 curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
 
 CURLcode ret = curl_easy_perform(hnd);

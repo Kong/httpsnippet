@@ -1,1 +1,1 @@
-curl --request GET --url http://mockbin.com/request --http1.0
+curl --request GET --url https://httpbin.org/anything --http1.0

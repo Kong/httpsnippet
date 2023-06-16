@@ -4,4 +4,4 @@ url = "http://httpbin.org/anything"
 
 response = requests.get(url)
 
-print(response.text)
+print(response.json())

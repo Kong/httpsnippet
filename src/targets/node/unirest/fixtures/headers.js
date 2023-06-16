@@ -5,7 +5,8 @@ const req = unirest('GET', 'https://httpbin.org/headers');
 req.headers({
   accept: 'application/json',
   'x-foo': 'Bar',
-  'x-bar': 'Foo'
+  'x-bar': 'Foo',
+  'quoted-value': '"quoted" \'string\''
 });
 
 req.end(function (res) {

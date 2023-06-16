@@ -2,6 +2,7 @@ import type { Request } from '../../..';
 import type { Client } from '../../targets';
 
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { escapeForDoubleQuotes } from '../../../helpers/escape';
 import { getHeader } from '../../../helpers/headers';
 
 const getDecompressionMethods = (allHeaders: Request['allHeaders']) => {
@@ -103,7 +104,7 @@ export const httpclient: Client = {
       push('Headers =', 1);
       push('{', 1);
       headers.forEach(key => {
-        push(`{ "${String(key)}", "${allHeaders[key]}" },`, 2);
+        push(`{ "${key}", "${escapeForDoubleQuotes(allHeaders[key])}" },`, 2);
       });
       push('},', 1);
     }

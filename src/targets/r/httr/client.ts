@@ -10,6 +10,8 @@
 import type { Client } from '../../targets';
 
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { escapeForDoubleQuotes, escapeForSingleQuotes } from '../../../helpers/escape';
+import { getHeader } from '../../../helpers/headers';
 
 export const httr: Client = {
   info: {
@@ -87,22 +89,24 @@ export const httr: Client = {
     }
 
     // Construct headers
-    const headers: string[] = [];
-    let cookies;
-    let accept;
+    const cookieHeader = getHeader(allHeaders, 'cookie');
+    const acceptHeader = getHeader(allHeaders, 'accept');
 
-    Object.keys(allHeaders).forEach(header => {
-      if (header.toLowerCase() === 'accept') {
-        accept = `, accept("${allHeaders[header]}")`;
-      } else if (header.toLowerCase() === 'cookie') {
-        cookies = `, set_cookies(\`${String(allHeaders[header])
-          .replace(/;/g, '", `')
-          .replace(/` /g, '`')
-          .replace(/[=]/g, '` = "')}")`;
-      } else if (header.toLowerCase() !== 'content-type') {
-        headers.push(`'${header}' = '${allHeaders[header]}'`);
-      }
-    });
+    const setCookies = cookieHeader
+      ? `set_cookies(\`${String(cookieHeader).replace(/;/g, '", `').replace(/` /g, '`').replace(/[=]/g, '` = "')}")`
+      : undefined;
+
+    const setAccept = acceptHeader ? `accept("${escapeForDoubleQuotes(acceptHeader)}")` : undefined;
+
+    const setContentType = `content_type("${escapeForDoubleQuotes(postData.mimeType)}")`;
+
+    const otherHeaders = Object.entries(allHeaders)
+      // These headers are all handled separately:
+      .filter(([key]) => !['cookie', 'accept', 'content-type'].includes(key.toLowerCase()))
+      .map(([key, value]) => `'${key}' = '${escapeForSingleQuotes(value)}'`)
+      .join(', ');
+
+    const setHeaders = otherHeaders ? `add_headers(${otherHeaders})` : undefined;
 
     // Construct request
     let request = `response <- VERB("${method}", url`;
@@ -111,22 +115,14 @@ export const httr: Client = {
       request += ', body = payload';
     }
 
-    if (headers.length) {
-      request += `, add_headers(${headers.join(', ')})`;
-    }
-
     if (queryString.length) {
       request += ', query = queryString';
     }
 
-    request += `, content_type("${postData.mimeType}")`;
+    const headerAdditions = [setHeaders, setContentType, setAccept, setCookies].filter(x => !!x).join(', ');
 
-    if (typeof accept !== 'undefined') {
-      request += accept;
-    }
-
-    if (typeof cookies !== 'undefined') {
-      request += cookies;
+    if (headerAdditions) {
+      request += `, ${headerAdditions}`;
     }
 
     if (postData.text || postData.jsonObj || postData.params) {

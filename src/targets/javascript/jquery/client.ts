@@ -65,7 +65,7 @@ export const jquery: Client = {
 
         // remove the contentType header
         if (hasHeader(allHeaders, 'content-type')) {
-          if (String(getHeader(allHeaders, 'content-type'))?.includes('boundary')) {
+          if (getHeader(allHeaders, 'content-type')?.includes('boundary')) {
             const headerName = getHeaderName(allHeaders, 'content-type');
             if (headerName) {
               delete settings.headers[headerName];

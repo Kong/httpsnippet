@@ -2,7 +2,8 @@
 
 NSDictionary *headers = @{ @"accept": @"application/json",
                            @"x-foo": @"Bar",
-                           @"x-bar": @"Foo" };
+                           @"x-bar": @"Foo",
+                           @"quoted-value": @"\"quoted\" 'string'" };
 
 NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://httpbin.org/headers"]
                                                        cachePolicy:NSURLRequestUseProtocolCachePolicy

@@ -53,7 +53,7 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
 
       switch (postData.mimeType) {
         case 'application/x-www-form-urlencoded':
-          if (postData.params) {
+          if (postData.params?.length) {
             // By appending parameters one by one in the resulting snippet,
             // we make it easier for the user to edit it according to his or her needs after pasting.
             // The user can just add/remove lines adding/removing body parameters.

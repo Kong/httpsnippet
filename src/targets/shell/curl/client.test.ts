@@ -1,5 +1,6 @@
 import type { Request } from '../../..';
 
+import applicationFormEncoded from '../../../fixtures/requests/application-form-encoded';
 import full from '../../../fixtures/requests/full';
 import nested from '../../../fixtures/requests/nested';
 import { runCustomFixtures } from '../../../fixtures/runCustomFixtures';
@@ -56,7 +57,7 @@ runCustomFixtures({
       it: 'should use --http1.0 for HTTP/1.0',
       input: {
         method: 'GET',
-        url: 'http://mockbin.com/request',
+        url: 'https://httpbin.org/anything',
         httpVersion: 'HTTP/1.0',
       } as Request,
       options: {
@@ -72,7 +73,21 @@ runCustomFixtures({
       },
       expected: 'custom-indentation.sh',
     },
-
+    {
+      it: 'should url encode the params key',
+      input: {
+        ...applicationFormEncoded.log.entries[0].request,
+        postData: {
+          mimeType: 'application/x-www-form-urlencoded',
+          params: [
+            { name: 'user name', value: 'John Doe' },
+            { name: '$filter', value: 'by id' },
+          ],
+        },
+      } as Request,
+      options: {},
+      expected: 'urlencode.sh',
+    },
     {
       it: 'should send JSON-encoded data with single quotes within a HEREDOC',
       input: {
@@ -153,6 +168,21 @@ runCustomFixtures({
         // escapeBrackets: true, // @todo this need to be enabled?
       },
       expected: 'harIsAlreadyEncoded=option-escape-brackets.sh',
+    },
+    {
+      it: 'should use --compressed for requests that accept encodings',
+      input: {
+        method: 'GET',
+        url: 'https://httpbin.org/anything',
+        headers: [
+          {
+            name: 'accept-encoding',
+            value: 'deflate, gzip, br',
+          },
+        ],
+      } as Request,
+      options: {},
+      expected: 'accept-encoding-compressed.sh',
     },
   ],
 });

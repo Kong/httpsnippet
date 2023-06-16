@@ -6,7 +6,8 @@ const settings = {
   headers: {
     accept: 'application/json',
     'x-foo': 'Bar',
-    'x-bar': 'Foo'
+    'x-bar': 'Foo',
+    'quoted-value': '"quoted" \'string\''
   }
 };
 

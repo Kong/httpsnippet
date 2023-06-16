@@ -20,12 +20,9 @@ export const native: Client = {
     link: 'http://nodejs.org/api/http.html#http_http_request_options_callback',
     description: 'Node.js native HTTP interface',
   },
-  convert: ({ uriObj, method, allHeaders, postData }, options) => {
-    const opts = {
-      indent: '  ',
-      ...options,
-    };
-    const { blank, join, push, unshift } = new CodeBuilder({ indent: opts.indent });
+  convert: ({ uriObj, method, allHeaders, postData }, options = {}) => {
+    const { indent = '  ' } = options;
+    const { blank, join, push, unshift } = new CodeBuilder({ indent });
 
     const reqOpts = {
       method,
@@ -38,7 +35,7 @@ export const native: Client = {
     push(`const http = require('${uriObj.protocol?.replace(':', '')}');`);
 
     blank();
-    push(`const options = ${stringifyObject(reqOpts, { indent: opts.indent })};`);
+    push(`const options = ${stringifyObject(reqOpts, { indent })};`);
     blank();
     push('const req = http.request(options, function (res) {');
     push('const chunks = [];', 1);
@@ -80,7 +77,7 @@ export const native: Client = {
 
       default:
         if (postData.text) {
-          push(`req.write(${stringifyObject(postData.text, { indent: opts.indent })});`);
+          push(`req.write(${stringifyObject(postData.text, { indent })});`);
         }
     }
 

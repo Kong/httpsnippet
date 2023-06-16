@@ -1,6 +1,5 @@
 require 'uri'
 require 'net/http'
-require 'openssl'
 
 url = URI("https://httpbin.org/anything?foo=bar&foo=baz&baz=abc&key=value")
 

@@ -1,6 +1,7 @@
 import type { Client } from '../../targets';
 
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { escapeForDoubleQuotes } from '../../../helpers/escape';
 import { getHeader } from '../../../helpers/headers';
 
 export const restsharp: Client = {
@@ -26,7 +27,7 @@ export const restsharp: Client = {
     // Add headers, including the cookies
 
     Object.keys(headersObj).forEach(key => {
-      push(`request.AddHeader("${key}", "${headersObj[key]}");`);
+      push(`request.AddHeader("${key}", "${escapeForDoubleQuotes(headersObj[key])}");`);
     });
 
     cookies.forEach(({ name, value }) => {

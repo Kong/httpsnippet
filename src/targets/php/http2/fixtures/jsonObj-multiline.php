@@ -4,10 +4,9 @@ $client = new http\Client;
 $request = new http\Client\Request;
 
 $body = new http\Message\Body;
-$body->append('{
-  "foo": "bar"
-}');
-
+$body->append(json_encode([
+  'foo' => 'bar'
+]));
 $request->setRequestUrl('https://httpbin.org/anything');
 $request->setRequestMethod('POST');
 $request->setBody($body);

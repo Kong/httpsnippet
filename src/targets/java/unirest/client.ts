@@ -10,6 +10,7 @@
 import type { Client } from '../../targets';
 
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { escapeForDoubleQuotes } from '../../../helpers/escape';
 
 export const unirest: Client = {
   info: {
@@ -36,7 +37,7 @@ export const unirest: Client = {
 
     // Add headers, including the cookies
     Object.keys(allHeaders).forEach(key => {
-      push(`.header("${key}", "${allHeaders[key]}")`, 1);
+      push(`.header("${key}", "${escapeForDoubleQuotes(allHeaders[key])}")`, 1);
     });
 
     if (postData.text) {

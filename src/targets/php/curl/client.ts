@@ -10,11 +10,13 @@
 import type { Client } from '../../targets';
 
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { escapeForDoubleQuotes } from '../../../helpers/escape';
+import { convertType } from '../helpers';
 
 export interface CurlOptions {
   closingTag?: boolean;
   maxRedirects?: number;
-  nameErrors?: boolean;
+  namedErrors?: boolean;
   noTags?: boolean;
   shortTags?: boolean;
   timeout?: number;
@@ -27,22 +29,21 @@ export const curl: Client<CurlOptions> = {
     link: 'http://php.net/manual/en/book.curl.php',
     description: 'PHP with ext-curl',
   },
-  convert: ({ uriObj, postData, fullUrl, method, httpVersion, cookies, headersObj }, options) => {
-    const opts = {
-      closingTag: false,
-      indent: '  ',
-      maxRedirects: 10,
-      namedErrors: false,
-      noTags: false,
-      shortTags: false,
-      timeout: 30,
-      ...options,
-    };
+  convert: ({ uriObj, postData, fullUrl, method, httpVersion, cookies, headersObj }, options = {}) => {
+    const {
+      closingTag = false,
+      indent = '  ',
+      maxRedirects = 10,
+      namedErrors = false,
+      noTags = false,
+      shortTags = false,
+      timeout = 30,
+    } = options;
 
-    const { push, blank, join } = new CodeBuilder({ indent: opts.indent });
+    const { push, blank, join } = new CodeBuilder({ indent });
 
-    if (!opts.noTags) {
-      push(opts.shortTags ? '<?' : '<?php');
+    if (!noTags) {
+      push(shortTags ? '<?' : '<?php');
       blank();
     }
 
@@ -73,12 +74,12 @@ export const curl: Client<CurlOptions> = {
       {
         escape: false,
         name: 'CURLOPT_MAXREDIRS',
-        value: opts.maxRedirects,
+        value: maxRedirects,
       },
       {
         escape: false,
         name: 'CURLOPT_TIMEOUT',
-        value: opts.timeout,
+        value: timeout,
       },
       {
         escape: false,
@@ -91,15 +92,19 @@ export const curl: Client<CurlOptions> = {
         value: method,
       },
       {
-        escape: true,
+        escape: !postData.jsonObj,
         name: 'CURLOPT_POSTFIELDS',
-        value: postData ? postData.text : undefined,
+        value: postData
+          ? postData.jsonObj
+            ? `json_encode(${convertType(postData.jsonObj, indent.repeat(2), indent)})`
+            : postData.text
+          : undefined,
       },
     ];
 
     push('curl_setopt_array($curl, [');
 
-    const curlopts = new CodeBuilder({ indent: opts.indent, join: `\n${opts.indent}` });
+    const curlopts = new CodeBuilder({ indent, join: `\n${indent}` });
 
     curlOptions.forEach(({ value, name, escape }) => {
       if (value !== null && value !== undefined) {
@@ -116,11 +121,11 @@ export const curl: Client<CurlOptions> = {
     // construct cookies
     const headers = Object.keys(headersObj)
       .sort()
-      .map(key => `"${key}: ${headersObj[key]}"`);
+      .map(key => `"${key}: ${escapeForDoubleQuotes(headersObj[key])}"`);
 
     if (headers.length) {
       curlopts.push('CURLOPT_HTTPHEADER => [');
-      curlopts.push(headers.join(`,\n${opts.indent}${opts.indent}`), 1);
+      curlopts.push(headers.join(`,\n${indent}${indent}`), 1);
       curlopts.push('],');
     }
 
@@ -134,7 +139,7 @@ export const curl: Client<CurlOptions> = {
     blank();
     push('if ($err) {');
 
-    if (opts.namedErrors) {
+    if (namedErrors) {
       push('echo array_flip(get_defined_constants(true)["curl"])[$err];', 1);
     } else {
       push('echo "cURL Error #:" . $err;', 1);
@@ -144,7 +149,7 @@ export const curl: Client<CurlOptions> = {
     push('echo $response;', 1);
     push('}');
 
-    if (!opts.noTags && opts.closingTag) {
+    if (!noTags && closingTag) {
       blank();
       push('?>');
     }

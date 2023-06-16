@@ -1,6 +1,7 @@
 import type { Client } from '../../targets';
 
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { escapeForDoubleQuotes } from '../../../helpers/escape';
 
 export const libcurl: Client = {
   info: {
@@ -26,7 +27,7 @@ export const libcurl: Client = {
       push('struct curl_slist *headers = NULL;');
 
       headers.forEach(header => {
-        push(`headers = curl_slist_append(headers, "${header}: ${headersObj[header]}");`);
+        push(`headers = curl_slist_append(headers, "${header}: ${escapeForDoubleQuotes(headersObj[header])}");`);
       });
 
       push('curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);');

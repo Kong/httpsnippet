@@ -160,13 +160,15 @@ There are some major differences between this library and the [httpsnippet](http
 * Does not do any HAR schema validation. It's just assumed that the HAR you're supplying to the library is already valid.
 * The main `HTTPSnippet` export contains an `options` argument for an `harIsAlreadyEncoded` option for disabling [escaping](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) of cookies and query strings in URLs.
   * We added this because all HARs that we interact with already have this data escaped and this option prevents them from being double encoded, thus corrupting the data.
+* Does not support the `insecureSkipVerify` option on `go:native`, `node:native`, `ruby:native`, and `shell:curl` as we don't want snippets generated for our users to bypass SSL certificate verification.
 * Node
   * `fetch`
-    * Body payloads are treated as an object literal and wrapped within `JSON.stringify()`. We do this to keep those targets looking nicer with those kinds of payloads. This also applies to the JS `fetch` target as wel.
+    * Body payloads are treated as an object literal and wrapped within `JSON.stringify()`. We do this to keep those targets looking nicer with those kinds of payloads. This also applies to the JS `fetch` target as well.
   * `request`
     * Does not provide query string parameters in a `params` argument due to complexities with query encoding.
-* PHP → `guzzle`
-  * Snippets have `require_once('vendor/autoload.php');` prefixed at the top.
+* PHP
+  * `guzzle`
+    * Snippets have `require_once('vendor/autoload.php');` prefixed at the top.
 * Python
   * `python3`
     * Does not ship this client due to its incompatibility with being able to support file uploads.

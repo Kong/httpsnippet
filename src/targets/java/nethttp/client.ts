@@ -10,6 +10,7 @@
 import type { Client } from '../../targets';
 
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { escapeForDoubleQuotes } from '../../../helpers/escape';
 
 export interface NetHttpOptions {
   indent?: string;
@@ -34,7 +35,7 @@ export const nethttp: Client = {
     push(`.uri(URI.create("${fullUrl}"))`, 2);
 
     Object.keys(allHeaders).forEach(key => {
-      push(`.header("${key}", "${allHeaders[key]}")`, 2);
+      push(`.header("${key}", "${escapeForDoubleQuotes(allHeaders[key])}")`, 2);
     });
 
     if (postData.text) {

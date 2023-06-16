@@ -23,6 +23,10 @@ module.exports = {
               name: 'x-bar',
               value: 'Foo',
             },
+            {
+              name: 'quoted-value',
+              value: '"quoted" \'string\'',
+            },
           ],
         },
         response: {

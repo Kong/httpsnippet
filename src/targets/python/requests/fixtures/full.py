@@ -2,7 +2,7 @@ import requests
 
 url = "https://httpbin.org/anything?foo=bar&foo=baz&baz=abc&key=value"
 
-payload = "foo=bar"
+payload = { "foo": "bar" }
 headers = {
     "cookie": "foo=bar; bar=baz",
     "accept": "application/json",
@@ -11,4 +11,4 @@ headers = {
 
 response = requests.post(url, data=payload, headers=headers)
 
-print(response.text)
+print(response.json())

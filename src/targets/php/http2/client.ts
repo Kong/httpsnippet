@@ -26,20 +26,14 @@ export const http2: Client<Http2Options> = {
     link: 'http://devel-m6w6.rhcloud.com/mdref/http',
     description: 'PHP with pecl/http v2',
   },
-  convert: ({ postData, headersObj, method, queryObj, cookiesObj, url }, options) => {
-    const opts = {
-      closingTag: false,
-      indent: '  ',
-      noTags: false,
-      shortTags: false,
-      ...options,
-    };
+  convert: ({ postData, headersObj, method, queryObj, cookiesObj, url }, options = {}) => {
+    const { closingTag = false, indent = '  ', noTags = false, shortTags = false } = options;
 
-    const { push, blank, join } = new CodeBuilder({ indent: opts.indent });
+    const { push, blank, join } = new CodeBuilder({ indent });
     let hasBody = false;
 
-    if (!opts.noTags) {
-      push(opts.shortTags ? '<?' : '<?php');
+    if (!noTags) {
+      push(shortTags ? '<?' : '<?php');
       blank();
     }
 
@@ -50,7 +44,7 @@ export const http2: Client<Http2Options> = {
     switch (postData.mimeType) {
       case 'application/x-www-form-urlencoded':
         push('$body = new http\\Message\\Body;');
-        push(`$body->append(new http\\QueryString(${convertType(postData.paramsObj, opts.indent)}));`);
+        push(`$body->append(new http\\QueryString(${convertType(postData.paramsObj, indent)}));`);
         blank();
         hasBody = true;
         break;
@@ -83,15 +77,15 @@ export const http2: Client<Http2Options> = {
           }
         });
 
-        const field = Object.keys(fields).length ? convertType(fields, opts.indent) : 'null';
-        const formValue = files.length ? convertType(files, opts.indent) : 'null';
+        const field = Object.keys(fields).length ? convertType(fields, indent) : 'null';
+        const formValue = files.length ? convertType(files, indent) : 'null';
 
         push('$body = new http\\Message\\Body;');
         push(`$body->addForm(${field}, ${formValue});`);
 
         // remove the contentType header
         if (hasHeader(headersObj, 'content-type')) {
-          if (String(getHeader(headersObj, 'content-type')).indexOf('boundary')) {
+          if (getHeader(headersObj, 'content-type')?.indexOf('boundary')) {
             const headerName = getHeaderName(headersObj, 'content-type');
             if (headerName) {
               delete headersObj[headerName];
@@ -104,6 +98,12 @@ export const http2: Client<Http2Options> = {
         hasBody = true;
         break;
       }
+
+      case 'application/json':
+        push('$body = new http\\Message\\Body;');
+        push(`$body->append(json_encode(${convertType(postData.jsonObj, indent)}));`);
+        hasBody = true;
+        break;
 
       default:
         if (postData.text) {
@@ -123,18 +123,18 @@ export const http2: Client<Http2Options> = {
     }
 
     if (Object.keys(queryObj).length) {
-      push(`$request->setQuery(new http\\QueryString(${convertType(queryObj, opts.indent)}));`);
+      push(`$request->setQuery(new http\\QueryString(${convertType(queryObj, indent)}));`);
       blank();
     }
 
     if (Object.keys(headersObj).length) {
-      push(`$request->setHeaders(${convertType(headersObj, opts.indent)});`);
+      push(`$request->setHeaders(${convertType(headersObj, indent)});`);
       blank();
     }
 
     if (Object.keys(cookiesObj).length) {
       blank();
-      push(`$client->setCookies(${convertType(cookiesObj, opts.indent)});`);
+      push(`$client->setCookies(${convertType(cookiesObj, indent)});`);
       blank();
     }
 
@@ -143,7 +143,7 @@ export const http2: Client<Http2Options> = {
     blank();
     push('echo $response->getBody();');
 
-    if (!opts.noTags && opts.closingTag) {
+    if (!noTags && closingTag) {
       blank();
       push('?>');
     }

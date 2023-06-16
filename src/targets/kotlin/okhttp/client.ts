@@ -10,6 +10,7 @@
 import type { Client } from '../../targets';
 
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { escapeForDoubleQuotes } from '../../../helpers/escape';
 
 export const okhttp: Client = {
   info: {
@@ -61,7 +62,7 @@ export const okhttp: Client = {
 
     // Add headers, including the cookies
     Object.keys(allHeaders).forEach(key => {
-      push(`.addHeader("${key}", "${allHeaders[key]}")`, 1);
+      push(`.addHeader("${key}", "${escapeForDoubleQuotes(allHeaders[key])}")`, 1);
     });
 
     push('.build()', 1);

@@ -8,7 +8,10 @@ $request->setHeaders([
   'content-type' => 'application/json'
 ]);
 
-$request->setBody('{"foo":null}');
+$request->setContentType('application/json');
+$request->setBody(json_encode([
+  'foo' => null
+]));
 
 try {
   $response = $request->send();

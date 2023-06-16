@@ -18,7 +18,7 @@ module.exports = {
           ],
           postData: {
             mimeType: 'application/json',
-            text: '{"number":1,"string":"f\\"oo","arr":[1,2,3],"nested":{"a":"b"},"arr_mix":[1,"a",{"arr_mix_nested":{}}],"boolean":false}',
+            text: '{"number":1,"string":"f\\"oo","arr":[1,2,3],"nested":{"a":"b"},"arr_mix":[1,"a",{"arr_mix_nested":[]}],"boolean":false}',
           },
         },
         response: {
@@ -36,7 +36,7 @@ module.exports = {
             mimeType: 'application/json',
             text: JSON.stringify({
               args: {},
-              data: '{\n  "number": 1,\n  "string": "f\\"oo",\n  "arr": [\n    1,\n    2,\n    3\n  ],\n  "nested": {\n    "a": "b"\n  },\n  "arr_mix": [\n    1,\n    "a",\n    {\n      "arr_mix_nested": {}\n    }\n  ],\n  "boolean": false\n}',
+              data: '{\n  "number": 1,\n  "string": "f\\"oo",\n  "arr": [\n    1,\n    2,\n    3\n  ],\n  "nested": {\n    "a": "b"\n  },\n  "arr_mix": [\n    1,\n    "a",\n    {\n      "arr_mix_nested": []\n    }\n  ],\n  "boolean": false\n}',
               files: {},
               form: {},
               headers: {
@@ -48,7 +48,7 @@ module.exports = {
                   1,
                   'a',
                   {
-                    arr_mix_nested: {},
+                    arr_mix_nested: [],
                   },
                 ],
                 boolean: false,

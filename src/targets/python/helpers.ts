@@ -1,14 +1,4 @@
 /**
- * Create an string of given length filled with blank spaces
- *
- * @param length Length of the array to return
- * @param str String to pad out with
- */
-function buildString(length: number, str: string) {
-  return str.repeat(length);
-}
-
-/**
  * Create a string corresponding to a Dictionary or Array literal representation with pretty option
  * and indentation.
  */
@@ -19,8 +9,8 @@ function concatValues(
   indentation: string,
   indentLevel: number
 ) {
-  const currentIndent = buildString(indentLevel, indentation);
-  const closingBraceIndent = buildString(indentLevel - 1, indentation);
+  const currentIndent = indentation.repeat(indentLevel);
+  const closingBraceIndent = indentation.repeat(indentLevel - 1);
   const join = pretty ? `,\n${currentIndent}` : ', ';
   const openingBrace = concatType === 'object' ? '{' : '[';
   const closingBrace = concatType === 'object' ? '}' : ']';
@@ -28,7 +18,12 @@ function concatValues(
   if (pretty) {
     return `${openingBrace}\n${currentIndent}${values.join(join)}\n${closingBraceIndent}${closingBrace}`;
   }
-  return openingBrace + values.join(join) + closingBrace;
+
+  if (concatType === 'object' && values.length > 0) {
+    return `${openingBrace} ${values.join(join)} ${closingBrace}`;
+  }
+
+  return `${openingBrace}${values.join(join)}${closingBrace}`;
 }
 
 /**
@@ -63,6 +58,7 @@ export const literalRepresentation = (value: any, opts: Record<string, any>, ind
       for (const key in value) {
         keyValuePairs.push(`"${key}": ${literalRepresentation(value[key], opts, indentLevel)}`);
       }
+
       return concatValues('object', keyValuePairs, opts.pretty && keyValuePairs.length > 1, opts.indent, indentLevel);
     }
 

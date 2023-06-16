@@ -1,6 +1,5 @@
 require 'uri'
 require 'net/http'
-require 'openssl'
 
 class Net::HTTP::Propfind < Net::HTTPRequest
   METHOD = 'PROPFIND'

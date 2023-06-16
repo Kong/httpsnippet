@@ -13,5 +13,6 @@ xhr.open('GET', 'https://httpbin.org/headers');
 xhr.setRequestHeader('accept', 'application/json');
 xhr.setRequestHeader('x-foo', 'Bar');
 xhr.setRequestHeader('x-bar', 'Foo');
+xhr.setRequestHeader('quoted-value', '"quoted" \'string\'');
 
 xhr.send(data);

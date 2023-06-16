@@ -11,29 +11,30 @@
 import type { Client } from '../../targets';
 
 import { CodeBuilder } from '../../../helpers/code-builder';
-import { getHeaderName, isMimeTypeJSON } from '../../../helpers/headers';
+import { getHeader, getHeaderName, isMimeTypeJSON } from '../../../helpers/headers';
 import { quote } from '../../../helpers/shell';
 
 export interface CurlOptions {
-  short?: boolean;
   binary?: boolean;
   globOff?: boolean;
   indent?: string | false;
-  escapeBrackets?: boolean;
+  prettifyJson?: boolean;
+  short?: boolean;
 }
 
 /**
  * This is a const record with keys that correspond to the long names and values that correspond to the short names for cURL arguments.
  */
 const params = {
-  globoff: 'g',
-  request: 'X',
-  'url ': '',
   'http1.0': '0',
-  header: 'H',
+  'url ': '',
   cookie: 'b',
-  form: 'F',
   data: 'd',
+  form: 'F',
+  globoff: 'g',
+  header: 'H',
+  insecure: 'k',
+  request: 'X',
 } as const;
 
 const getArg = (short: boolean) => (longName: keyof typeof params) => {
@@ -55,7 +56,7 @@ export const curl: Client<CurlOptions> = {
     description: 'cURL is a command line tool and library for transferring data with URL syntax',
   },
   convert: ({ fullUrl, method, httpVersion, headersObj, allHeaders, postData }, options = {}) => {
-    const { indent = '  ', short = false, binary = false, globOff = false, escapeBrackets = false } = options;
+    const { indent = '  ', short = false, binary = false, globOff = false } = options;
 
     // In the interest of having nicer looking snippets JSON should be indented separately from the
     // main command argument indentation.
@@ -69,9 +70,6 @@ export const curl: Client<CurlOptions> = {
     const arg = getArg(short);
 
     let formattedUrl = quote(fullUrl);
-    if (escapeBrackets) {
-      formattedUrl = formattedUrl.replace(/\[/g, '\\[').replace(/\]/g, '\\]');
-    }
 
     push(`curl ${arg('request')} ${method}`);
     if (globOff) {
@@ -82,6 +80,11 @@ export const curl: Client<CurlOptions> = {
 
     if (httpVersion === 'HTTP/1.0') {
       push(arg('http1.0'));
+    }
+
+    if (getHeader(allHeaders, 'accept-encoding')) {
+      // note: there is no shorthand for this cURL option
+      push('--compressed');
     }
 
     // if multipart form data, we want to remove the boundary

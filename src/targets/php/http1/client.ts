@@ -25,19 +25,13 @@ export const http1: Client<Http1Options> = {
     link: 'http://php.net/manual/en/book.http.php',
     description: 'PHP with pecl/http v1',
   },
-  convert: ({ method, url, postData, queryObj, headersObj, cookiesObj }, options) => {
-    const opts = {
-      closingTag: false,
-      indent: '  ',
-      noTags: false,
-      shortTags: false,
-      ...options,
-    };
+  convert: ({ method, url, postData, queryObj, headersObj, cookiesObj }, options = {}) => {
+    const { closingTag = false, indent = '  ', noTags = false, shortTags = false } = options;
 
-    const { push, blank, join } = new CodeBuilder({ indent: opts.indent });
+    const { push, blank, join } = new CodeBuilder({ indent });
 
-    if (!opts.noTags) {
-      push(opts.shortTags ? '<?' : '<?php');
+    if (!noTags) {
+      push(shortTags ? '<?' : '<?php');
       blank();
     }
 
@@ -57,24 +51,30 @@ export const http1: Client<Http1Options> = {
     blank();
 
     if (Object.keys(queryObj).length) {
-      push(`$request->setQueryData(${convertType(queryObj, opts.indent)});`);
+      push(`$request->setQueryData(${convertType(queryObj, indent)});`);
       blank();
     }
 
     if (Object.keys(headersObj).length) {
-      push(`$request->setHeaders(${convertType(headersObj, opts.indent)});`);
+      push(`$request->setHeaders(${convertType(headersObj, indent)});`);
       blank();
     }
 
     if (Object.keys(cookiesObj).length) {
-      push(`$request->setCookies(${convertType(cookiesObj, opts.indent)});`);
+      push(`$request->setCookies(${convertType(cookiesObj, indent)});`);
       blank();
     }
 
     switch (postData.mimeType) {
       case 'application/x-www-form-urlencoded':
         push(`$request->setContentType(${convertType(postData.mimeType)});`);
-        push(`$request->setPostFields(${convertType(postData.paramsObj, opts.indent)});`);
+        push(`$request->setPostFields(${convertType(postData.paramsObj, indent)});`);
+        blank();
+        break;
+
+      case 'application/json':
+        push(`$request->setContentType(${convertType(postData.mimeType)});`);
+        push(`$request->setBody(json_encode(${convertType(postData.jsonObj, indent)}));`);
         blank();
         break;
 
@@ -93,7 +93,7 @@ export const http1: Client<Http1Options> = {
     push('echo $ex;', 1);
     push('}');
 
-    if (!opts.noTags && opts.closingTag) {
+    if (!noTags && closingTag) {
       blank();
       push('?>');
     }

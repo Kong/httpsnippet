@@ -12,6 +12,7 @@ import type { Client } from '../../targets';
 import stringifyObject from 'stringify-object';
 
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { escapeForSingleQuotes } from '../../../helpers/escape';
 import { getHeader, getHeaderName, hasHeader } from '../../../helpers/headers';
 
 export interface XhrOptions {
@@ -57,7 +58,7 @@ export const xhr: Client = {
 
         // remove the contentType header
         if (hasHeader(allHeaders, 'content-type')) {
-          if (String(getHeader(allHeaders, 'content-type')).includes('boundary')) {
+          if (getHeader(allHeaders, 'content-type')?.includes('boundary')) {
             const headerName = getHeaderName(allHeaders, 'content-type');
             if (headerName) {
               delete allHeaders[headerName];
@@ -89,7 +90,7 @@ export const xhr: Client = {
     push(`xhr.open('${method}', '${fullUrl}');`);
 
     Object.keys(allHeaders).forEach(key => {
-      push(`xhr.setRequestHeader('${key}', '${allHeaders[key]}');`);
+      push(`xhr.setRequestHeader('${key}', '${escapeForSingleQuotes(allHeaders[key])}');`);
     });
 
     blank();

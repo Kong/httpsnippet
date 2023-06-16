@@ -17,7 +17,7 @@ curl --request POST \
     1,
     "a",
     {
-      "arr_mix_nested": {}
+      "arr_mix_nested": []
     }
   ],
   "boolean": false

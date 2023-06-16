@@ -10,7 +10,7 @@ runCustomFixtures({
       it: "should properly concatenate query strings that aren't nested",
       input: {
         method: 'GET',
-        url: 'http://mockbin.com/har',
+        url: 'https://httpbin.org/anything',
         httpVersion: 'HTTP/1.1',
         queryString: [
           {

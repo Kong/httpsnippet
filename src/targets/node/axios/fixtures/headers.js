@@ -3,7 +3,12 @@ const axios = require('axios');
 const options = {
   method: 'GET',
   url: 'https://httpbin.org/headers',
-  headers: {accept: 'application/json', 'x-foo': 'Bar', 'x-bar': 'Foo'}
+  headers: {
+    accept: 'application/json',
+    'x-foo': 'Bar',
+    'x-bar': 'Foo',
+    'quoted-value': '"quoted" \'string\''
+  }
 };
 
 axios

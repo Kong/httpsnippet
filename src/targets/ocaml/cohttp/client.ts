@@ -10,6 +10,7 @@
 import type { Client } from '../../targets';
 
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { escapeForDoubleQuotes } from '../../../helpers/escape';
 
 export const cohttp: Client = {
   info: {
@@ -37,11 +38,15 @@ export const cohttp: Client = {
     const headers = Object.keys(allHeaders);
 
     if (headers.length === 1) {
-      push(`let headers = Header.add (Header.init ()) "${headers[0]}" "${allHeaders[headers[0]]}" in`);
+      push(
+        `let headers = Header.add (Header.init ()) "${headers[0]}" "${escapeForDoubleQuotes(
+          allHeaders[headers[0]]
+        )}" in`
+      );
     } else if (headers.length > 1) {
       push('let headers = Header.add_list (Header.init ()) [');
       headers.forEach(key => {
-        push(`("${key}", "${allHeaders[key]}");`, 1);
+        push(`("${key}", "${escapeForDoubleQuotes(allHeaders[key])}");`, 1);
       });
       push('] in');
     }

@@ -10,8 +10,11 @@
 import type { Client } from '../../targets';
 
 import { CodeBuilder } from '../../../helpers/code-builder';
+import { escapeForDoubleQuotes } from '../../../helpers/escape';
 import { getHeaderName } from '../../../helpers/headers';
 import { literalRepresentation } from '../helpers';
+
+const builtInMethods = ['HEAD', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'];
 
 export interface RequestsOptions {
   pretty?: true;
@@ -109,6 +112,12 @@ export const requests: Client<RequestsOptions> = {
         break;
 
       default: {
+        if (postData.mimeType === 'application/x-www-form-urlencoded' && postData.paramsObj) {
+          push(`payload = ${literalRepresentation(postData.paramsObj, opts)}`);
+          hasPayload = true;
+          break;
+        }
+
         const stringPayload = JSON.stringify(postData.text);
         if (stringPayload) {
           push(`payload = ${stringPayload}`);
@@ -125,7 +134,7 @@ export const requests: Client<RequestsOptions> = {
       blank();
     } else if (headerCount === 1) {
       Object.keys(headers).forEach(header => {
-        push(`headers = {"${header}": "${headers[header]}"}`);
+        push(`headers = {"${header}": "${escapeForDoubleQuotes(headers[header])}"}`);
         blank();
       });
     } else if (headerCount > 1) {
@@ -135,9 +144,9 @@ export const requests: Client<RequestsOptions> = {
 
       Object.keys(headers).forEach(header => {
         if (count !== headerCount) {
-          push(`"${header}": "${headers[header]}",`, 1);
+          push(`"${header}": "${escapeForDoubleQuotes(headers[header])}",`, 1);
         } else {
-          push(`"${header}": "${headers[header]}"`, 1);
+          push(`"${header}": "${escapeForDoubleQuotes(headers[header])}"`, 1);
         }
         count += 1;
       });
@@ -147,13 +156,9 @@ export const requests: Client<RequestsOptions> = {
     }
 
     // Construct request
-    let request;
-    // Method list pulled from their api reference https://docs.python-requests.org/en/latest/api/#requests.head
-    if (['HEAD', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE'].includes(method)) {
-      request = `response = requests.${method.toLowerCase()}(url`;
-    } else {
-      request = `response = requests.request("${method}", url`;
-    }
+    let request = builtInMethods.includes(method)
+      ? `response = requests.${method.toLowerCase()}(url`
+      : `response = requests.request("${method}", url`;
 
     if (hasPayload) {
       if (jsonPayload) {
@@ -177,7 +182,7 @@ export const requests: Client<RequestsOptions> = {
     blank();
 
     // Print response
-    push('print(response.text)');
+    push('print(response.json())');
 
     return join();
   },

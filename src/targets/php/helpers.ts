@@ -1,8 +1,13 @@
+import { escapeString } from '../../helpers/escape';
+
 export const convertType = (obj: any[] | any, indent?: string, lastIndent?: string) => {
   lastIndent = lastIndent || '';
   indent = indent || '';
 
   switch (Object.prototype.toString.call(obj)) {
+    case '[object Boolean]':
+      return obj;
+
     case '[object Null]':
       return 'null';
 
@@ -10,7 +15,7 @@ export const convertType = (obj: any[] | any, indent?: string, lastIndent?: stri
       return 'null';
 
     case '[object String]':
-      return `'${obj.replace(/\\/g, '\\\\').replace(/'/g, "'")}'`;
+      return `'${escapeString(obj, { delimiter: "'", escapeNewlines: false })}'`;
 
     case '[object Number]':
       return obj.toString();

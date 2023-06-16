@@ -1,6 +1,6 @@
 import requests
 
-url = "https://httpbin.org/anything"
+url = "https://httpbin.org/anything?param=value"
 
 response = requests.get(url)
 

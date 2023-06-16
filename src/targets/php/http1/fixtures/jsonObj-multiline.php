@@ -8,9 +8,10 @@ $request->setHeaders([
   'content-type' => 'application/json'
 ]);
 
-$request->setBody('{
-  "foo": "bar"
-}');
+$request->setContentType('application/json');
+$request->setBody(json_encode([
+  'foo' => 'bar'
+]));
 
 try {
   $response = $request->send();
