@@ -1,6 +1,5 @@
 import { CodeBuilder } from '../../../helpers/code-builder';
 import { escapeForDoubleQuotes } from '../../../helpers/escape';
-import { getHeader } from '../../../helpers/headers';
 import { Client } from '../../targets';
 
 function title(s: string): string {
@@ -14,7 +13,7 @@ export const restsharp: Client = {
     link: 'http://restsharp.org/',
     description: 'Simple REST and HTTP API Client for .NET',
   },
-  convert: ({ allHeaders, method, fullUrl, headersObj, cookies, postData, uriObj }) => {
+  convert: ({ method, fullUrl, headersObj, cookies, postData, uriObj }) => {
     const { push, join } = new CodeBuilder();
     const isSupportedMethod = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'].includes(
       method.toUpperCase(),
