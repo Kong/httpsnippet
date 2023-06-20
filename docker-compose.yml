@@ -8,6 +8,7 @@ services:
     environment:
       - HTTPBIN=true
       - INTEGRATION_CLIENT=node
+      - NODE_ENV=integration
 
   integration_php:
     build:
@@ -17,6 +18,7 @@ services:
     environment:
       - HTTPBIN=true
       - INTEGRATION_CLIENT=php
+      - NODE_ENV=integration
 
   integration_python:
     build:
@@ -26,6 +28,7 @@ services:
     environment:
       - HTTPBIN=true
       - INTEGRATION_CLIENT=python
+      - NODE_ENV=integration
 
   integration_shell:
     build:
@@ -35,3 +38,4 @@ services:
     environment:
       - HTTPBIN=true
       - INTEGRATION_CLIENT=shell
+      - NODE_ENV=integration
