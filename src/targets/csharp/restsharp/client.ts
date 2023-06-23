@@ -44,7 +44,11 @@ export const restsharp: Client = {
       // if we have post data, restsharp really wants to set the contentType
       // itself; do not add a content-type header or you end up with failures
       // which manifest as unhandled exceptions.
-      if (postData.mimeType && key.toLowerCase() === 'content-type') {
+      //
+      // The only case where we _do_ want to add it is if there's no postData
+      // text, in which case there will be no `AddJsonBody` call, and restsharp
+      // won't know to set the content type
+      if (postData.mimeType && key.toLowerCase() === 'content-type' && postData.text) {
         if (isMultipart && postData.boundary) {
           push(`request.FormBoundary = "${postData.boundary}";`);
         }
@@ -87,7 +91,7 @@ export const restsharp: Client = {
 
     push(`var response = await client.${title(method)}Async(request);\n`);
 
-    push('Console.WriteLine("{0}", response.Content);');
+    push('Console.WriteLine("{0}", response.Content);\n');
 
     return join();
   },

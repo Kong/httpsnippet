@@ -31,6 +31,7 @@ exports[`availableTargets returns all available targets 1`] = `
     "title": "Clojure",
   },
   {
+    "cli": "dotnet",
     "clients": [
       {
         "description": ".NET Standard HTTP Client",

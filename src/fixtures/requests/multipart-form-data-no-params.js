@@ -38,9 +38,7 @@ module.exports = {
               data: '',
               files: {},
               form: {},
-              headers: {
-                'Content-Type': ['multipart/form-data'],
-              },
+              headers: {},
               json: null,
               method: 'POST',
               url: 'https://httpbin.org/anything',

@@ -78,3 +78,15 @@ services:
       - HTTPBIN=true
       - INTEGRATION_CLIENT=shell
       - NODE_ENV=integration
+
+  integration_csharp:
+    depends_on:
+      - reverse_proxy
+    build:
+      context: .
+      dockerfile: integrations/csharp.Dockerfile
+    command: 'npx jest src/integration.test.ts'
+    environment:
+      - HTTPBIN=true
+      - INTEGRATION_CLIENT=csharp
+      - NODE_ENV=integration
