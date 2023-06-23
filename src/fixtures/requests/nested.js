@@ -41,9 +41,9 @@ module.exports = {
             mimeType: 'application/json',
             text: JSON.stringify({
               args: {
-                fiz: 'buz',
-                'foo[bar]': 'baz,zap',
-                key: 'value',
+                fiz: ['buz'],
+                'foo[bar]': ['baz,zap'],
+                key: ['value'],
               },
               data: '',
               files: {},
@@ -51,7 +51,7 @@ module.exports = {
               headers: {},
               json: null,
               method: 'GET',
-              url: 'https://httpbin.org/anything?foo[bar]=baz%2Czap&fiz=buz&key=value',
+              url: 'https://httpbin.org/anything?foo%5Bbar%5D=baz%2Czap&fiz=buz&key=value',
             }),
           },
           headersSize: -1,

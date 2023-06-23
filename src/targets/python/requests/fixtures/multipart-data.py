@@ -7,4 +7,4 @@ payload = { "bar": "Bonjour le monde" }
 
 response = requests.post(url, data=payload, files=files)
 
-print(response.json())
+print(response.text)

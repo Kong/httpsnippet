@@ -181,8 +181,7 @@ export const requests: Client<RequestsOptions> = {
     push(request);
     blank();
 
-    // Print response
-    push('print(response.json())');
+    push('print(response.text)');
 
     return join();
   },

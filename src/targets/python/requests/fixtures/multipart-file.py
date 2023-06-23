@@ -6,4 +6,4 @@ files = { "foo": ("src/fixtures/files/hello.txt", open("src/fixtures/files/hello
 
 response = requests.post(url, files=files)
 
-print(response.json())
+print(response.text)

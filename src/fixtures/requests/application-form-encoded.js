@@ -45,14 +45,14 @@ module.exports = {
             mimeType: 'application/json',
             text: JSON.stringify({
               args: {},
-              data: '',
+              data: 'foo=bar&hello=world',
               files: {},
               form: {
-                foo: 'bar',
-                hello: 'world',
+                foo: ['bar'],
+                hello: ['world'],
               },
               headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Type': ['application/x-www-form-urlencoded'],
               },
               json: null,
               method: 'POST',

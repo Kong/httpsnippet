@@ -41,9 +41,9 @@ module.exports = {
             mimeType: 'application/json',
             text: JSON.stringify({
               args: {
-                baz: 'abc',
+                baz: ['abc'],
                 foo: ['bar', 'baz'],
-                key: 'value',
+                key: ['value'],
               },
               data: '',
               files: {},

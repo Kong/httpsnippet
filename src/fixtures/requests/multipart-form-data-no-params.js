@@ -39,7 +39,7 @@ module.exports = {
               files: {},
               form: {},
               headers: {
-                'Content-Type': 'multipart/form-data',
+                'Content-Type': ['multipart/form-data'],
               },
               json: null,
               method: 'POST',

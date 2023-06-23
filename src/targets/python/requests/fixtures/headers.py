@@ -11,4 +11,4 @@ headers = {
 
 response = requests.get(url, headers=headers)
 
-print(response.json())
+print(response.text)

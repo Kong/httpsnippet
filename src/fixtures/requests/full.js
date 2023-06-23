@@ -70,19 +70,19 @@ module.exports = {
             mimeType: 'application/json',
             text: JSON.stringify({
               args: {
-                baz: 'abc',
+                baz: ['abc'],
                 foo: ['bar', 'baz'],
-                key: 'value',
+                key: ['value'],
               },
-              data: '',
+              data: 'foo=bar',
               files: {},
               form: {
-                foo: 'bar',
+                foo: ['bar'],
               },
               headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/x-www-form-urlencoded',
-                Cookie: 'foo=bar; bar=baz',
+                Accept: ['application/json'],
+                'Content-Type': ['application/x-www-form-urlencoded'],
+                Cookie: ['foo=bar; bar=baz'],
               },
               json: null,
               method: 'POST',

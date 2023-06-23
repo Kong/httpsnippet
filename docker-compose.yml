@@ -1,40 +1,79 @@
 version: '3'
 services:
+  httpbin:
+    image: mccutchen/go-httpbin
+    command: ['/bin/go-httpbin', '-port', '8080']
+
+  # the job of this container is to:
+  # - host our fake "httpbin.org"
+  # - terminate SSL
+  # - forward both 443 and 80 to the httpbin
+  #
+  # see integrations/Caddyfile for its config
+  reverse_proxy:
+    image: caddy:2.6.4
+    depends_on:
+      - httpbin
+    volumes:
+      - ./integrations/https-cert:/https-cert:ro
+      - ./integrations/Caddyfile:/etc/caddy/Caddyfile
+    environment:
+      - HTTPS_CERT_FILE=/https-cert/httpbin.org.pem
+      - HTTPS_KEY_FILE=/https-cert/httpbin.org-key.pem
+    networks:
+      default:
+        # on the docker-compose network, this proxy will be aliased as
+        # httpbin.org. To make this work with HTTPS, each integration test
+        # container needs to install the root CA contained in
+        # ./integrations/https-cert/rootCA.pem
+        aliases:
+          - httpbin.org
+
   integration_node:
+    depends_on:
+      - reverse_proxy
     build:
       context: .
       dockerfile: integrations/node.Dockerfile
-    command: "npx jest src/integration.test.ts"
+    command: 'npx jest src/integration.test.ts'
     environment:
       - HTTPBIN=true
       - INTEGRATION_CLIENT=node
       - NODE_ENV=integration
+      - NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-certificates.crt
 
   integration_php:
+    depends_on:
+      - reverse_proxy
     build:
       context: .
       dockerfile: integrations/php.Dockerfile
-    command: "npx jest src/integration.test.ts"
+    command: 'npx jest src/integration.test.ts'
     environment:
       - HTTPBIN=true
       - INTEGRATION_CLIENT=php
       - NODE_ENV=integration
 
   integration_python:
+    depends_on:
+      - reverse_proxy
     build:
       context: .
       dockerfile: integrations/python.Dockerfile
-    command: "npx jest src/integration.test.ts"
+    command: 'npx jest src/integration.test.ts'
     environment:
       - HTTPBIN=true
       - INTEGRATION_CLIENT=python
       - NODE_ENV=integration
+      - REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 
   integration_shell:
+    depends_on:
+      - reverse_proxy
     build:
       context: .
       dockerfile: integrations/shell.Dockerfile
-    command: "npx jest src/integration.test.ts"
+    command: 'npx jest src/integration.test.ts'
     environment:
       - HTTPBIN=true
       - INTEGRATION_CLIENT=shell

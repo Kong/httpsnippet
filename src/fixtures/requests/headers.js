@@ -44,9 +44,9 @@ module.exports = {
             mimeType: 'application/json',
             text: JSON.stringify({
               headers: {
-                Accept: 'application/json',
-                'X-Bar': 'Foo',
-                'X-Foo': 'Bar',
+                Accept: ['application/json'],
+                'X-Bar': ['Foo'],
+                'X-Foo': ['Bar'],
               },
             }),
           },

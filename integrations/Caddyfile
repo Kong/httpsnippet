@@ -1,0 +1,9 @@
+:443 {
+  reverse_proxy httpbin:8080
+  tls /https-cert/httpbin.org.pem /https-cert/httpbin.org-key.pem
+}
+
+:80 {
+  reverse_proxy httpbin:8080
+}
+

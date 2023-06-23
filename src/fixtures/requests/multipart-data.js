@@ -52,10 +52,10 @@ module.exports = {
                 foo: 'Hello World',
               },
               form: {
-                bar: 'Bonjour le monde',
+                bar: ['Bonjour le monde'],
               },
               headers: {
-                'Content-Type': 'multipart/form-data; boundary=------------------------6e4b42ed3719ed70',
+                'Content-Type': ['multipart/form-data; boundary=------------------------6e4b42ed3719ed70'],
               },
               json: null,
               method: 'POST',

@@ -40,7 +40,7 @@ module.exports = {
               files: {},
               form: {},
               headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': ['application/json'],
               },
               json: {
                 arr: [1, 2, 3],

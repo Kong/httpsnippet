@@ -35,10 +35,8 @@ module.exports = {
             size: -1,
             mimeType: 'application/json',
             text: JSON.stringify({
-              cookies: {
-                bar: 'baz',
-                foo: 'bar',
-              },
+              bar: 'baz',
+              foo: 'bar',
             }),
           },
           headersSize: -1,

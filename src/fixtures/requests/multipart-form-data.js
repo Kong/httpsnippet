@@ -44,10 +44,10 @@ module.exports = {
               data: '',
               files: {},
               form: {
-                foo: 'bar',
+                foo: ['bar'],
               },
               headers: {
-                'Content-Type': 'multipart/form-data; boundary=------------------------8dd0f6c44b5bc105',
+                'Content-Type': ['multipart/form-data; boundary=------------------------8dd0f6c44b5bc105'],
               },
               json: null,
               method: 'POST',

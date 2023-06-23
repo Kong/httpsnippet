@@ -4,4 +4,4 @@ url = "https://httpbin.org/anything?startTime=2019-06-13T19%3A08%3A25.455Z&endTi
 
 response = requests.get(url)
 
-print(response.json())
+print(response.text)

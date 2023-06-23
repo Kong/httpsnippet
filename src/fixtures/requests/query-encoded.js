@@ -37,8 +37,8 @@ module.exports = {
             mimeType: 'application/json',
             text: JSON.stringify({
               args: {
-                endTime: '2015-09-15T14:00:12-04:00',
-                startTime: '2019-06-13T19:08:25.455Z',
+                endTime: ['2015-09-15T14:00:12-04:00'],
+                startTime: ['2019-06-13T19:08:25.455Z'],
               },
               data: '',
               files: {},

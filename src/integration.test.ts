@@ -195,7 +195,7 @@ availableTargets()
               // Some targets send files that have a new line at the end of them without that new
               // line so we need to make our assertion universal across all targets.
               let files = {};
-              if (Object.keys(response.files).length) {
+              if (Object.keys(response.files || {}).length) {
                 files = Object.entries(response.files)
                   .map(([k, v]) => ({ [k]: String(v).trim() }))
                   .reduce((prev, next) => Object.assign(prev, next));
@@ -203,7 +203,7 @@ availableTargets()
 
               expect(files).toStrictEqual(expected.files);
 
-              expect(response.form).toStrictEqual(expected.form);
+              expect(response.form || {}).toStrictEqual(expected.form);
               expect(response.method).toStrictEqual(expected.method);
               expect(response.url).toStrictEqual(expected.url);
 
@@ -219,19 +219,22 @@ availableTargets()
               // which we don't want to do, this is the way it's got to be.
               if (fixture === 'application-json' && fixtureExtension === '.js') {
                 const respJSON = response.json;
-                respJSON.arr_mix[2] = { arr_mix_nested: {} };
+                respJSON.arr_mix[2] = { arr_mix_nested: [] };
 
                 expect(respJSON).toStrictEqual(expected.json);
               } else {
                 expect(response.json).toStrictEqual(expected.json);
               }
 
+              const expectJson = expected.headers?.['Content-Type']?.[0].includes('application/json');
+              const expectMultipart = expected.headers?.['Content-Type']?.[0].includes('multipart/form-data');
+
               // If we're dealing with a JSON payload, some snippets add indents and new lines to
               // the data that is sent to
               // HTTPBin (that it then returns back us in the same format) -- to make this `data`
               // check target agnostic we need to parse and re-stringify our expectations so that
               // this test can universally match them all.
-              if (expected.headers?.['Content-Type']?.includes('application/json')) {
+              if (expectJson) {
                 // In our postdata-malformed fixture we're sending a POST payload without any
                 // content so what HTTPBin sends back to us is a `json: null` and `data: ''`, which
                 // we need to specially assert here as running `JSON.parse()` on an empty string
@@ -243,20 +246,24 @@ availableTargets()
                     JSON.stringify(JSON.parse(expected.data))
                   );
                 }
-              } else {
+                // httpbin-go includes multipart/form-data in the `data` response
+                // field, which I think is sensible. In this case, the response
+                // includes a randomly-generated boundary and is difficult to
+                // sensibly match against, so don't check the data attribute
+              } else if (!expectMultipart) {
                 expect(response.data).toStrictEqual(expected.data);
               }
 
               // `multipart/form-data` needs some special tests to assert that boundaries were sent
               // and received properly.
-              if (expected.headers?.['Content-Type']?.includes('multipart/form-data')) {
-                if (expected.headers['Content-Type'] === response.headers['Content-Type']) {
+              if (expectMultipart) {
+                if (expected.headers['Content-Type'][0] !== response.headers['Content-Type'][0]) {
                   // If the headers match identically, great! If not we need to make sure that
-                  // there's a boundary set up.
-                } else {
-                  // It doesn't matter that the /right/ boundary is set up because some targets may
-                  // add their own, we just need to make sure that **a** boundary is present.
-                  const contentTypes: string[] = response.headers['Content-Type']
+                  // there's a boundary set up. It doesn't matter that the
+                  // /right/ boundary is set up because some targets may add
+                  // their own, we just need to make sure that **a** boundary
+                  // is present.
+                  const contentTypes: string[] = response.headers['Content-Type'][0]
                     .split(';')
                     .map((p: string) => p.trim());
 
