@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM node:18-alpine
 
 COPY integrations/https-cert/rootCA.pem /root/integration-test.pem
 
@@ -14,12 +14,9 @@ ADD package.json /src/
 
 # https://www.npmjs.com/package/axios
 # https://www.npmjs.com/package/request
-RUN npm install axios request
-
 # Installing node-fetch@2 because as of 3.0 is't now an ESM-only package.
 # https://www.npmjs.com/package/node-fetch
-RUN npm install node-fetch@2
-
-RUN npm install
+RUN npm install axios request node-fetch@2 && \
+  npm install
 
 ADD . /src
