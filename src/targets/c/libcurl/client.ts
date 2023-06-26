@@ -16,6 +16,7 @@ export const libcurl: Client = {
     push('CURL *hnd = curl_easy_init();');
     blank();
     push(`curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "${method.toUpperCase()}");`);
+    push('curl_easy_setopt(hnd, CURLOPT_WRITEDATA, stdout);');
     push(`curl_easy_setopt(hnd, CURLOPT_URL, "${fullUrl}");`);
 
     // Add headers, including the cookies

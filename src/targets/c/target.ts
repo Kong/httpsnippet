@@ -8,6 +8,7 @@ export const c: Target = {
     title: 'C',
     extname: '.c',
     default: 'libcurl',
+    cli: 'c',
   },
   clientsById: {
     libcurl,

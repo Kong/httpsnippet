@@ -3,6 +3,7 @@
 exports[`availableTargets returns all available targets 1`] = `
 [
   {
+    "cli": "c",
     "clients": [
       {
         "description": "Simple REST and HTTP API Client for C",
