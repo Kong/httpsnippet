@@ -8,6 +8,7 @@ export const go: Target = {
     title: 'Go',
     extname: '.go',
     default: 'native',
+    cli: 'go',
   },
   clientsById: {
     native,

@@ -20,6 +20,5 @@ func main() {
 
 	res, _ := http.DefaultClient.Do(req)
 
-	fmt.Println(res)
 
 }

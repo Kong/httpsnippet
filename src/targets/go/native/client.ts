@@ -125,7 +125,6 @@ export const native: Client<GoNativeOptions> = {
 
     // Print it
     blank();
-    push('fmt.Println(res)', indent);
 
     if (printBody) {
       push('fmt.Println(string(body))', indent);

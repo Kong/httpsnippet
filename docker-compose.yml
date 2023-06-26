@@ -90,3 +90,15 @@ services:
       - HTTPBIN=true
       - INTEGRATION_CLIENT=csharp
       - NODE_ENV=integration
+
+  integration_golang:
+    depends_on:
+      - reverse_proxy
+    build:
+      context: .
+      dockerfile: integrations/go.Dockerfile
+    command: 'npx jest src/integration.test.ts'
+    environment:
+      - HTTPBIN=true
+      - INTEGRATION_CLIENT=go
+      - NODE_ENV=integration

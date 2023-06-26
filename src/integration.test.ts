@@ -17,6 +17,7 @@ const ENVIRONMENT_CONFIG = {
   docker: {
     // Every client + target that we test in an HTTPBin-powered Docker environment.
     csharp: ['httpclient', 'restsharp'],
+    go: ['native'],
     node: ['axios', 'fetch', 'native', 'request'],
     php: ['curl', 'guzzle'],
     python: ['requests'],
@@ -44,6 +45,9 @@ const EXEC_FUNCTION: Record<string, (arg: string) => Buffer> = {
     // - run Program.cs and return the output
     shell.execSync(`cp ${fixturePath} /src/IntTestCsharp/Program.cs`);
     return shell.execSync('cd /src/IntTestCsharp && dotnet run Program.cs');
+  },
+  go: (fixturePath: string) => {
+    return shell.execSync(`go run ${fixturePath}`);
   },
 };
 

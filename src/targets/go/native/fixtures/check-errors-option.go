@@ -33,7 +33,6 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Println(res)
 	fmt.Println(string(body))
 
 }
