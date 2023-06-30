@@ -57,7 +57,7 @@ export const native: Client = {
     }
 
     if (typeof payload === undefined || payload === '') {
-      return '';
+      return 'No JSON body';
     }
 
     return JSON.stringify(payload, null, opts.indent);
