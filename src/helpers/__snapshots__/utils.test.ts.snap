@@ -148,6 +148,20 @@ exports[`availableTargets returns all available targets 1`] = `
   {
     "clients": [
       {
+        "description": "A JSON represetation of any HAR payload.",
+        "key": "native",
+        "link": "https://www.json.org/json-en.html",
+        "title": "Native JSON",
+      },
+    ],
+    "default": "native",
+    "extname": ".json",
+    "key": "json",
+    "title": "JSON",
+  },
+  {
+    "clients": [
+      {
         "description": "An HTTP Request Client Library",
         "key": "okhttp",
         "link": "http://square.github.io/okhttp/",

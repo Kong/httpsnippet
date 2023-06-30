@@ -9,6 +9,7 @@ import { go } from './go/target';
 import { http } from './http/target';
 import { java } from './java/target';
 import { javascript } from './javascript/target';
+import { json } from './json/target';
 import { kotlin } from './kotlin/target';
 import { node } from './node/target';
 import { objc } from './objc/target';
@@ -65,6 +66,7 @@ export const targets = {
   http,
   java,
   javascript,
+  json,
   kotlin,
   node,
   objc,
