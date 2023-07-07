@@ -27,6 +27,7 @@ See it in action on companion service: [APIembed](https://apiembed.com)
       - [`ClientId`](#clientid)
       - [`Converter`](#converter)
       - [`Client`](#client)
+      - [`ClientInfo`](#clientinfo)
       - [`Extension`](#extension)
       - [`TargetInfo`](#targetinfo)
       - [`Target`](#target)
@@ -256,6 +257,17 @@ type Converter<T extends Record<string, any>> = (
 interface Client<T extends Record<string, any> = Record<string, any>> {
   info: ClientInfo;
   convert: Converter<T>;
+}
+```
+
+#### `ClientInfo`
+
+```ts
+interface ClientInfo {
+  key: ClientId;
+  title: string;
+  link: string;
+  description: string;
 }
 ```
 
