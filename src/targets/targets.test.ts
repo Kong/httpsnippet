@@ -4,7 +4,17 @@ import path from 'path';
 import short from '../fixtures/requests/short.json';
 import { availableTargets, extname } from '../helpers/utils';
 import { HTTPSnippet, Request } from '../httpsnippet';
-import { addTarget, addTargetClient, Client, ClientId, isClient, isTarget, Target, TargetId, targets } from './targets';
+import {
+  addTarget,
+  addTargetClient,
+  Client,
+  ClientId,
+  isClient,
+  isTarget,
+  Target,
+  TargetId,
+  targets,
+} from './targets';
 
 const expectedBasePath = ['src', 'fixtures', 'requests'];
 
