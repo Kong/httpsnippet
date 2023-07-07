@@ -7,7 +7,9 @@
     "strict": true,
     "esModuleInterop": true,
     "downlevelIteration": true,
-    "lib": ["ESNext"]
+    "lib": ["ESNext"],
+    "declaration": true,
+    "declarationMap": true,
   },
   "include": ["src"],
   "exclude": ["dist", "**/*.test.ts"]

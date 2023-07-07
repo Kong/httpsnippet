@@ -1,5 +1,5 @@
 {
-  "version": "3.0.0",
+  "version": "3.0.1",
   "name": "httpsnippet",
   "description": "HTTP Request snippet generator for *most* languages",
   "author": "Kong <office@konghq.com>",
@@ -53,6 +53,7 @@
     "lint:code": "eslint . --ext ts,d.ts,test.ts --fix",
     "lint:markdown": "markdownlint-cli2 \"**/*.md\" \"#**/node_modules\"",
     "build": "tsc --build tsconfig.build.json",
+    "build:types": "tsc -d --declarationDir dist/lib --declarationMap --emitDeclarationOnly",
     "test": "jest"
   },
   "devDependencies": {
