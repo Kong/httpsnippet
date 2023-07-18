@@ -100,10 +100,10 @@ export class HTTPSnippet {
         cookies: [],
         httpVersion: 'HTTP/1.1',
         queryString: [],
-        postData: {
+        ...request,
+        postData: request?.postData || {
           mimeType: request.postData?.mimeType || 'application/octet-stream',
         },
-        ...request,
       };
 
       if (validateHarRequest(req)) {
