@@ -164,7 +164,7 @@ export class HTTPSnippet {
       request.allHeaders.cookie = cookies.join('; ');
     }
 
-    switch (request.postData.mimeType) {
+    switch (request?.postData.mimeType) {
       case 'multipart/mixed':
       case 'multipart/related':
       case 'multipart/form-data':
