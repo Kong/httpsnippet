@@ -18,6 +18,7 @@ import { powershell } from './powershell/target';
 import { python } from './python/target';
 import { r } from './r/target';
 import { ruby } from './ruby/target';
+import { rust } from './rust/target';
 import { shell } from './shell/target';
 import { swift } from './swift/target';
 
@@ -73,6 +74,7 @@ export const targets = {
   python,
   r,
   ruby,
+  rust,
   shell,
   swift,
 };
