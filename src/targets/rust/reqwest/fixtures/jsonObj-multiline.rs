@@ -1,15 +1,19 @@
+use serde_json::json;
 use reqwest;
 
 #[tokio::main]
 pub async fn main() {
     let url = "http://mockbin.com/har";
 
-    let form = reqwest::multipart::Form::new()
-        .text("", "");
+    let payload = json!({"foo": "bar"});
+
+    let mut headers = reqwest::header::HeaderMap::new();
+    headers.insert("content-type", "application/json".parse().unwrap());
 
     let client = reqwest::Client::new();
     let response = client.post(url)
-        .multipart(form)
+        .headers(headers)
+        .json(&payload)
         .send()
         .await;
 

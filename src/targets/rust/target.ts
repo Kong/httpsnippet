@@ -1,4 +1,4 @@
-import { Target } from "../targets";
+import { Target } from '../targets';
 import { reqwest } from './reqwest/client';
 
 
@@ -11,5 +11,5 @@ export const rust: Target = {
   },
   clientsById: {
     reqwest,
-  }
-}
+  },
+};

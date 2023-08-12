@@ -1,15 +1,17 @@
-use std::collections::HashMap;
-
+use serde_json::json;
 use reqwest;
 
 #[tokio::main]
 pub async fn main() {
     let url = "http://mockbin.com/har";
 
-    let querystring = [("foo", "bar"), ("foo", "baz"), ("baz", "abc"), ("key", "value")];
+    let querystring = [
+        ("foo", "bar,baz"),
+        ("baz", "abc"),
+        ("key", "value"),
+    ];
 
-    let mut payload = HashMap::new();
-    payload.insert("foo", "bar");
+    let payload = json!({"foo": "bar"});
 
     let mut headers = reqwest::header::HeaderMap::new();
     headers.insert("cookie", "foo=bar; bar=baz".parse().unwrap());
@@ -18,9 +20,9 @@ pub async fn main() {
 
     let client = reqwest::Client::new();
     let response = client.post(url)
-        .json(&payload)
-        .form(&querystring)
+        .query(&querystring)
         .headers(headers)
+        .form(&payload)
         .send()
         .await;
 
