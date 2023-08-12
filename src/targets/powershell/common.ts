@@ -56,9 +56,12 @@ export const generatePowershellConvert = (command: PowershellCommand) => {
     }
 
     if (postData.text) {
-      commandOptions.push(`-ContentType '${
-        escapeString(getHeader(allHeaders, 'content-type'), { delimiter: "'", escapeChar: '`' })
-      }'`);
+      commandOptions.push(
+        `-ContentType '${escapeString(getHeader(allHeaders, 'content-type'), {
+          delimiter: "'",
+          escapeChar: '`',
+        })}'`,
+      );
       commandOptions.push(`-Body '${postData.text}'`);
     }
 

@@ -8,12 +8,11 @@
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
 
-import { CodeBuilder } from "../../../helpers/code-builder";
-import { Client } from "../../targets";
-import { literalRepresentation } from "../helpers";
+import { CodeBuilder } from '../../../helpers/code-builder';
+import { Client } from '../../targets';
+import { literalRepresentation } from '../helpers';
 
-
-export const reqwest: Client =  {
+export const reqwest: Client = {
   info: {
     key: 'reqwest',
     title: 'reqwest',
@@ -24,7 +23,7 @@ export const reqwest: Client =  {
     const opts = {
       indent: '    ',
       pretty: true,
-      ...options
+      ...options,
     };
 
     let indentLevel = 0;
@@ -49,13 +48,13 @@ export const reqwest: Client =  {
     // construct query string
     if (Object.keys(queryObj).length) {
       hasQuery = true;
-      push("let querystring = [", indentLevel);
+      push('let querystring = [', indentLevel);
       indentLevel += 1;
       for (const [key, value] of Object.entries(queryObj)) {
         push(`("${key}", "${value}"),`, indentLevel);
       }
       indentLevel -= 1;
-      push("];", indentLevel);
+      push('];', indentLevel);
       blank();
     }
 
@@ -71,7 +70,10 @@ export const reqwest: Client =  {
     switch (postData.mimeType) {
       case 'application/json':
         if (postData.jsonObj) {
-          push(`let payload = ${literalRepresentation(postData.jsonObj, opts, indentLevel)};`, indentLevel);
+          push(
+            `let payload = ${literalRepresentation(postData.jsonObj, opts, indentLevel)};`,
+            indentLevel,
+          );
         }
         jsonPayload = true;
         break;
@@ -81,7 +83,7 @@ export const reqwest: Client =  {
 
         if (!postData.params) {
           push(`let form = reqwest::multipart::Form::new()`, indentLevel);
-          push(`.text("", "");`, indentLevel+1);
+          push(`.text("", "");`, indentLevel + 1);
           break;
         }
 
@@ -93,10 +95,10 @@ export const reqwest: Client =  {
           } else {
             payload[p.name] = p.value;
           }
-        })
+        });
 
         if (hasFiles) {
-          for (let line of fileToPartString) {
+          for (const line of fileToPartString) {
             push(line, indentLevel);
           }
           blank();
@@ -107,7 +109,7 @@ export const reqwest: Client =  {
           push(`.part("${name}", file_to_part("${fileName}").await)`, indentLevel + 1);
         }
         for (const [name, value] of Object.entries(payload)) {
-          push(`.text("${name}", "${value}")`, indentLevel+1);
+          push(`.text("${name}", "${value}")`, indentLevel + 1);
         }
         pushToLast(';');
 
@@ -115,13 +117,19 @@ export const reqwest: Client =  {
 
       default: {
         if (postData.mimeType === 'application/x-www-form-urlencoded' && postData.paramsObj) {
-          push(`let payload = ${literalRepresentation(postData.paramsObj, opts, indentLevel)};`, indentLevel)
+          push(
+            `let payload = ${literalRepresentation(postData.paramsObj, opts, indentLevel)};`,
+            indentLevel,
+          );
           hasForm = true;
           break;
         }
 
         if (postData.text) {
-          push(`let payload = ${literalRepresentation(postData.text, opts, indentLevel)};`, indentLevel)
+          push(
+            `let payload = ${literalRepresentation(postData.text, opts, indentLevel)};`,
+            indentLevel,
+          );
           hasBody = true;
           break;
         }
@@ -137,14 +145,17 @@ export const reqwest: Client =  {
     // construct headers
     if (Object.keys(allHeaders).length) {
       hasHeaders = true;
-      push("let mut headers = reqwest::header::HeaderMap::new();", indentLevel);
+      push('let mut headers = reqwest::header::HeaderMap::new();', indentLevel);
       for (const [key, value] of Object.entries(allHeaders)) {
         // Skip setting content-type if there is a file, as this header will
         // cause the request to hang, and reqwest will set it for us.
         if (key.toLowerCase() === 'content-type' && isMultipart) {
           continue;
         }
-        push(`headers.insert("${key}", ${literalRepresentation(value, opts)}.parse().unwrap());`, indentLevel);
+        push(
+          `headers.insert("${key}", ${literalRepresentation(value, opts)}.parse().unwrap());`,
+          indentLevel,
+        );
       }
       blank();
     }
@@ -163,64 +174,66 @@ export const reqwest: Client =  {
         break;
 
       default: {
-        push(`let response = client.request(reqwest::Method::from_str("${method}").unwrap(), url)`, indentLevel);
+        push(
+          `let response = client.request(reqwest::Method::from_str("${method}").unwrap(), url)`,
+          indentLevel,
+        );
         unshift(`use std::str::FromStr;`);
         break;
       }
     }
 
     if (hasQuery) {
-      push(`.query(&querystring)`, indentLevel+1)
+      push(`.query(&querystring)`, indentLevel + 1);
     }
 
     if (isMultipart) {
-      push(`.multipart(form)`, indentLevel+1);
+      push(`.multipart(form)`, indentLevel + 1);
     }
 
     if (hasHeaders) {
-      push(`.headers(headers)`, indentLevel+1);
+      push(`.headers(headers)`, indentLevel + 1);
     }
 
     if (jsonPayload) {
-      push(`.json(&payload)`, indentLevel+1);
+      push(`.json(&payload)`, indentLevel + 1);
     }
 
     if (hasForm) {
-      push(`.form(&payload)`, indentLevel+1);
+      push(`.form(&payload)`, indentLevel + 1);
     }
 
     if (hasBody) {
-      push(`.body(payload)`, indentLevel+1);
+      push(`.body(payload)`, indentLevel + 1);
     }
 
     // send query
-    push('.send()', indentLevel+1);
-    push('.await;', indentLevel+1);
+    push('.send()', indentLevel + 1);
+    push('.await;', indentLevel + 1);
     blank();
-
 
     // Print response
-    push("let results = response.unwrap()", indentLevel);
-    push(".json::<serde_json::Value>()", indentLevel+1);
-    push(".await", indentLevel+1);
-    push(".unwrap();", indentLevel+1);
+    push('let results = response.unwrap()', indentLevel);
+    push('.json::<serde_json::Value>()', indentLevel + 1);
+    push('.await', indentLevel + 1);
+    push('.unwrap();', indentLevel + 1);
     blank();
 
-    push("dbg!(results);", indentLevel);
+    push('dbg!(results);', indentLevel);
 
     push('}\n');
 
     return join();
-  }
-}
+  },
+};
 
 const fileToPartString = [
-`async fn file_to_part(file_name: &'static str) -> reqwest::multipart::Part {`,
-`    let file = tokio::fs::File::open(file_name).await.unwrap();`,
-`    let stream = tokio_util::codec::FramedRead::new(file, tokio_util::codec::BytesCodec::new());`,
-`    let body = reqwest::Body::wrap_stream(stream);`,
-`    reqwest::multipart::Part::stream(body)`,
-`        .file_name(file_name)`,
-`        .mime_str("text/plain").unwrap()`,
-`}`
-]
+  `async fn file_to_part(file_name: &'static str) -> reqwest::multipart::Part {`,
+  `    let file = tokio::fs::File::open(file_name).await.unwrap();`,
+  `    let stream = tokio_util::codec::FramedRead::new(file, tokio_util::codec::BytesCodec::new());`,
+  `    let body = reqwest::Body::wrap_stream(stream);`,
+  `    reqwest::multipart::Part::stream(body)`,
+  `        .file_name(file_name)`,
+  `        .mime_str("text/plain").unwrap()`,
+  `}`,
+];
