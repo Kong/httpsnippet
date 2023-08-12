@@ -1,4 +1,3 @@
-
 function concatValues(
   concatType: 'array' | 'object',
   values: any,
@@ -13,7 +12,9 @@ function concatValues(
   const closingBrace = concatType === 'object' ? '})' : ')';
 
   if (pretty) {
-    return `${openingBrace}\n${currentIndent}${values.join(join)}\n${closingBraceIndent}${closingBrace}`;
+    return `${openingBrace}\n${currentIndent}${values.join(
+      join,
+    )}\n${closingBraceIndent}${closingBrace}`;
   }
 
   return `${openingBrace}${values.join(join)}${closingBrace}`;
@@ -31,11 +32,11 @@ export const literalRepresentation = (
   opts: Record<string, any>,
   indentLevel?: number,
 ): any => {
-/*
- * Note: this version is almost entirely borrowed from the Python client helper. The
- * only real modification involves the braces and the types. The helper
- * could potentially be parameterised for reuse.
- */
+  /*
+   * Note: this version is almost entirely borrowed from the Python client helper. The
+   * only real modification involves the braces and the types. The helper
+   * could potentially be parameterised for reuse.
+   */
   indentLevel = indentLevel === undefined ? 1 : indentLevel + 1;
 
   switch (Object.prototype.toString.call(value)) {
@@ -51,7 +52,7 @@ export const literalRepresentation = (
         }
         return literalRepresentation(v, opts, indentLevel);
       });
-      return concatValues('array', valuesRep, pretty, opts.indent, indentLevel)
+      return concatValues('array', valuesRep, pretty, opts.indent, indentLevel);
     }
 
     case '[object Object]': {
@@ -69,7 +70,7 @@ export const literalRepresentation = (
     }
 
     case '[object Null]':
-      return "json!(null)";
+      return 'json!(null)';
 
     case '[object Boolean]':
       return value ? 'true' : 'false';
@@ -80,4 +81,4 @@ export const literalRepresentation = (
       }
       return `"${value.toString().replace(/"/g, '\\"')}"`;
   }
-}
+};

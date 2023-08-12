@@ -26,7 +26,11 @@ export const libcurl: Client = {
       push('struct curl_slist *headers = NULL;');
 
       headers.forEach(header => {
-        push(`headers = curl_slist_append(headers, "${header}: ${escapeForDoubleQuotes(headersObj[header])}");`);
+        push(
+          `headers = curl_slist_append(headers, "${header}: ${escapeForDoubleQuotes(
+            headersObj[header],
+          )}");`,
+        );
       });
 
       push('curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);');

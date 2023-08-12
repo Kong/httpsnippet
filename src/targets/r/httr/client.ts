@@ -98,31 +98,26 @@ export const httr: Client = {
 
     // Construct headers
     const cookieHeader = getHeader(allHeaders, 'cookie');
-    let acceptHeader = getHeader(allHeaders, 'accept');
+    const acceptHeader = getHeader(allHeaders, 'accept');
 
     const setCookies = cookieHeader
       ? `set_cookies(\`${String(cookieHeader)
           .replace(/;/g, '", `')
           .replace(/` /g, '`')
-          .replace(/[=]/g, '` = "')
-        }")`
-      : undefined
+          .replace(/[=]/g, '` = "')}")`
+      : undefined;
 
-    const setAccept = acceptHeader
-      ? `accept("${escapeForDoubleQuotes(acceptHeader)}")`
-      : undefined
+    const setAccept = acceptHeader ? `accept("${escapeForDoubleQuotes(acceptHeader)}")` : undefined;
 
-    const setContentType = `content_type("${escapeForDoubleQuotes(postData.mimeType)}")`
+    const setContentType = `content_type("${escapeForDoubleQuotes(postData.mimeType)}")`;
 
     const otherHeaders = Object.entries(allHeaders)
       // These headers are all handled separately:
       .filter(([key]) => !['cookie', 'accept', 'content-type'].includes(key.toLowerCase()))
       .map(([key, value]) => `'${key}' = '${escapeForSingleQuotes(value)}'`)
-      .join(', ')
+      .join(', ');
 
-    const setHeaders = otherHeaders
-      ? `add_headers(${otherHeaders})`
-      : undefined
+    const setHeaders = otherHeaders ? `add_headers(${otherHeaders})` : undefined;
 
     // Construct request
     let request = `response <- VERB("${method}", url`;
@@ -135,10 +130,12 @@ export const httr: Client = {
       request += ', query = queryString';
     }
 
-    const headerAdditions = [setHeaders, setContentType, setAccept, setCookies].filter(x => !!x).join(', ');
+    const headerAdditions = [setHeaders, setContentType, setAccept, setCookies]
+      .filter(x => !!x)
+      .join(', ');
 
     if (headerAdditions) {
-      request += ', ' + headerAdditions
+      request += `, ${  headerAdditions}`;
     }
 
     if (postData.text || postData.jsonObj || postData.params) {
