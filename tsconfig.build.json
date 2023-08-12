@@ -9,7 +9,7 @@
     "downlevelIteration": true,
     "lib": ["ESNext"],
     "declaration": true,
-    "declarationMap": true,
+    "declarationMap": true
   },
   "include": ["src"],
   "exclude": ["dist", "**/*.test.ts"]
