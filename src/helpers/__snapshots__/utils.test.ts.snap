@@ -325,6 +325,20 @@ Array [
   Object {
     "clients": Array [
       Object {
+        "description": "reqwest HTTP library",
+        "key": "reqwest",
+        "link": "https://docs.rs/reqwest/latest/reqwest/",
+        "title": "reqwest",
+      },
+    ],
+    "default": "reqwest",
+    "extname": ".rs",
+    "key": "rust",
+    "title": "Rust",
+  },
+  Object {
+    "clients": Array [
+      Object {
         "description": "cURL is a command line tool and library for transferring data with URL syntax",
         "key": "curl",
         "link": "http://curl.haxx.se/",
