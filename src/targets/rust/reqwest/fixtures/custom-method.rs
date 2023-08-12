@@ -1,5 +1,4 @@
 use std::str::FromStr;
-
 use reqwest;
 
 #[tokio::main]

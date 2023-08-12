@@ -4,14 +4,13 @@ use reqwest;
 pub async fn main() {
     let url = "http://mockbin.com/har";
 
-    let payload = "{\"foo\":null}";
-
+    let form = reqwest::multipart::Form::new()
+        .text("foo", "bar");
     let mut headers = reqwest::header::HeaderMap::new();
-    headers.insert("content-type", "application/json".parse().unwrap());
 
     let client = reqwest::Client::new();
     let response = client.post(url)
-        .body(payload)
+        .multipart(form)
         .headers(headers)
         .send()
         .await;
