@@ -2,7 +2,7 @@
   "extends": [
     "@readme/eslint-config",
     "@readme/eslint-config/typescript",
-    "@readme/eslint-config/testing"
+    "@readme/eslint-config/testing/jest"
   ],
   "root": true,
   "parserOptions": {
@@ -18,7 +18,9 @@
     "max-classes-per-file": "off",
     "no-param-reassign": "off",
     "no-underscore-dangle": ["error", { "allow": ["_boundary"] }],
-    "spaced-comment": "off"
+    "spaced-comment": "off",
+
+    "unicorn/prefer-node-protocol": "error"
   },
   "env": {
     "browser": true

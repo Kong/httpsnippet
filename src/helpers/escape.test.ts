@@ -20,7 +20,7 @@ describe('Escape methods', () => {
 
     it('escapes unrepresentable characters', () => {
       expect(
-        escapeString('hello \u0000') // 0 = ASCII 'null' character
+        escapeString('hello \u0000'), // 0 = ASCII 'null' character
       ).toBe('hello \\u0000');
     });
   });

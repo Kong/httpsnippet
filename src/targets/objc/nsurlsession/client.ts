@@ -61,7 +61,7 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
 
             const [head, ...tail] = postData.params;
             push(
-              `NSMutableData *postData = [[NSMutableData alloc] initWithData:[@"${head.name}=${head.value}" dataUsingEncoding:NSUTF8StringEncoding]];`
+              `NSMutableData *postData = [[NSMutableData alloc] initWithData:[@"${head.name}=${head.value}" dataUsingEncoding:NSUTF8StringEncoding]];`,
             );
 
             tail.forEach(({ name, value }) => {
@@ -94,12 +94,12 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
           push('if (param[@"fileName"]) {', 1);
           push(
             '[body appendFormat:@"Content-Disposition:form-data; name=\\"%@\\"; filename=\\"%@\\"\\r\\n", param[@"name"], param[@"fileName"]];',
-            2
+            2,
           );
           push('[body appendFormat:@"Content-Type: %@\\r\\n\\r\\n", param[@"contentType"]];', 2);
           push(
             '[body appendFormat:@"%@", [NSString stringWithContentsOfFile:param[@"fileName"] encoding:NSUTF8StringEncoding error:&error]];',
-            2
+            2,
           );
           push('if (error) {', 2);
           push('NSLog(@"%@", error);', 3);
@@ -116,7 +116,7 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
         default:
           blank();
           push(
-            `NSData *postData = [[NSData alloc] initWithData:[@"${postData.text}" dataUsingEncoding:NSUTF8StringEncoding]];`
+            `NSData *postData = [[NSData alloc] initWithData:[@"${postData.text}" dataUsingEncoding:NSUTF8StringEncoding]];`,
           );
       }
     }
@@ -143,7 +143,7 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
     push('NSURLSession *session = [NSURLSession sharedSession];');
     push('NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request');
     push(
-      '                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {'
+      '                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {',
     );
     push('                                            if (error) {', 1);
     push('                                            NSLog(@"%@", error);', 2);
@@ -152,7 +152,7 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
     // Casting the NSURLResponse to NSHTTPURLResponse so the user can see the status     .
     push(
       '                                            NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;',
-      2
+      2,
     );
     push('                                            NSLog(@"%@", httpResponse);', 2);
     push('                                            }', 1);

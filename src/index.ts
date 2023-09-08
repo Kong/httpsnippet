@@ -1,10 +1,9 @@
 import type { ReducedHelperObject } from './helpers/reducer';
 import type { ClientId, TargetId } from './targets/targets';
 import type { Param, PostDataCommon, Request as NpmHarRequest } from 'har-format';
-import type { UrlWithParsedQuery } from 'url';
+import type { UrlWithParsedQuery } from 'node:url';
 
-// eslint-disable-next-line node/no-deprecated-api
-import { format as urlFormat, parse as urlParse } from 'url';
+import { format as urlFormat, parse as urlParse } from 'node:url';
 
 import { map as eventStreamMap } from 'event-stream';
 import FormData from 'form-data';
@@ -17,13 +16,6 @@ import { targets } from './targets/targets';
 
 export { availableTargets, extname } from './helpers/utils';
 export { addTarget, addTargetClient } from './targets/targets';
-
-const DEBUG_MODE = false;
-
-const debug = {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function, no-console
-  info: DEBUG_MODE ? console.info : () => {},
-};
 
 /** is this wrong?  yes.  according to the spec (http://www.softwareishard.com/blog/har-12-spec/#postData) it's technically wrong since `params` and `text` are (by the spec) mutually exclusive.  However, in practice, this is not what is often the case.
  *
@@ -142,8 +134,6 @@ export class HTTPSnippet {
 
     // construct query objects
     if (request.queryString && request.queryString.length) {
-      debug.info('queryString found, constructing queryString pair map');
-
       request.queryObj = request.queryString.reduce(reducer, {});
     }
 
@@ -166,7 +156,7 @@ export class HTTPSnippet {
           ...accumulator,
           [name]: value,
         }),
-        {}
+        {},
       );
     }
 
@@ -249,7 +239,7 @@ export class HTTPSnippet {
               // @ts-expect-error TODO
               eventStreamMap(data => {
                 request.postData.text += data;
-              })
+              }),
             );
           }
 
@@ -284,8 +274,6 @@ export class HTTPSnippet {
           try {
             request.postData.jsonObj = JSON.parse(request.postData.text);
           } catch (e) {
-            debug.info(e);
-
             // force back to `text/plain` if headers have proper content-type value, then this should also work
             request.postData.mimeType = 'text/plain';
           }

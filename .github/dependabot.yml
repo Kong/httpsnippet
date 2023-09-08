@@ -8,6 +8,12 @@ updates:
       - erunion
     labels:
       - dependencies
+    groups:
+      minor-development-deps:
+        dependency-type: 'development'
+        update-types:
+          - minor
+          - patch
     commit-message:
       prefix: chore(deps)
       prefix-development: chore(deps-dev)
@@ -21,6 +27,12 @@ updates:
       - erunion
     labels:
       - dependencies
+    groups:
+      minor-development-deps:
+        dependency-type: 'development'
+        update-types:
+          - minor
+          - patch
     commit-message:
       prefix: chore(deps)
       prefix-development: chore(deps-dev)

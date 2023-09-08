@@ -110,7 +110,7 @@ export const fetch: Client<FetchOptions> = {
 
           return originalResult;
         },
-      })};`
+      })};`,
     );
     blank();
 

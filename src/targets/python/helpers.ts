@@ -7,7 +7,7 @@ function concatValues(
   values: any,
   pretty: boolean,
   indentation: string,
-  indentLevel: number
+  indentLevel: number,
 ) {
   const currentIndent = indentation.repeat(indentLevel);
   const closingBraceIndent = indentation.repeat(indentLevel - 1);

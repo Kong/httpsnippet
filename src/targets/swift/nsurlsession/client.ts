@@ -123,7 +123,7 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
     push('                                        cachePolicy: .useProtocolCachePolicy,');
     push(
       // @ts-expect-error needs better types
-      `                                    timeoutInterval: ${parseInt(opts.timeout, 10).toFixed(1)})`
+      `                                    timeoutInterval: ${parseInt(opts.timeout, 10).toFixed(1)})`,
     );
     push(`request.httpMethod = "${method}"`);
 
@@ -140,7 +140,7 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
 
     push('let session = URLSession.shared');
     push(
-      'let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in'
+      'let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in',
     );
     push('if (error != nil) {', 1);
     push('print(error as Any)', 2);

@@ -3,9 +3,9 @@
 import type { HTTPSnippetOptions, Request } from '..';
 import type { ClientId, TargetId } from '../targets/targets';
 
-import { writeFileSync } from 'fs';
-import { readFile } from 'fs/promises';
-import path from 'path';
+import { writeFileSync } from 'node:fs';
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
 
 import { HTTPSnippet } from '..';
 

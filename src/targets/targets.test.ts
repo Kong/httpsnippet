@@ -1,8 +1,8 @@
 import type { Client, ClientId, Target, TargetId } from './targets';
 import type { HTTPSnippetOptions, Request } from '..';
 
-import { readdirSync, readFileSync, writeFileSync } from 'fs';
-import path from 'path';
+import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import path from 'node:path';
 
 import { HTTPSnippet } from '..';
 import short from '../fixtures/requests/short';
@@ -64,7 +64,7 @@ availableTargets()
               targetId,
               clientId,
               'fixtures',
-              `${fixture}${extname(targetId)}`
+              `${fixture}${extname(targetId)}`,
             );
             try {
               const options: HTTPSnippetOptions = {};
@@ -94,7 +94,7 @@ availableTargets()
               throw new Error(
                 `Missing a test file for ${targetId}:${clientId} for the ${fixture} fixture.\nExpected to find the output fixture: \`/src/targets/${targetId}/${clientId}/fixtures/${fixture}${
                   fixtureExtension ?? ''
-                }\``
+                }\``,
               );
             }
           });
@@ -109,7 +109,7 @@ describe('isTarget', () => {
     expect(() => isTarget(null)).toThrow('you tried to add a target which is not an object, got type: "null"');
     // @ts-expect-error intentionally incorrect
     expect(() => isTarget(undefined)).toThrow(
-      'you tried to add a target which is not an object, got type: "undefined"'
+      'you tried to add a target which is not an object, got type: "undefined"',
     );
     // @ts-expect-error intentionally incorrect
     expect(() => isTarget([])).toThrow('you tried to add a target which is not an object, got type: "array"');
@@ -130,41 +130,41 @@ describe('isTarget', () => {
     expect(() => isTarget({ info: { key: 'c' } })).toThrow('a target already exists with this key, `c`');
     // @ts-expect-error intentionally incorrect
     expect(() => isTarget({ info: { key: 'z' } })).toThrow(
-      'targets must have an `info` object with the property `title`'
+      'targets must have an `info` object with the property `title`',
     );
     // @ts-expect-error intentionally incorrect
     expect(() => isTarget({ info: { key: 'z', title: '' } })).toThrow('target title must be a non-zero-length string');
     // @ts-expect-error intentionally incorrect
     expect(() => isTarget({ info: { key: 'z', title: null } })).toThrow(
-      'target title must be a non-zero-length string'
+      'target title must be a non-zero-length string',
     );
     // @ts-expect-error intentionally incorrect
     expect(() => isTarget({ info: { key: 'z', title: undefined } })).toThrow(
-      'target title must be a non-zero-length string'
+      'target title must be a non-zero-length string',
     );
     // @ts-expect-error intentionally incorrect
     expect(() => isTarget({ info: { key: 'z', title: 't' } })).toThrow(
-      'targets must have an `info` object with the property `extname`'
+      'targets must have an `info` object with the property `extname`',
     );
     // @ts-expect-error intentionally incorrect
     expect(() => isTarget({ info: { key: 'z', title: 't', extname: '' } })).toThrow(
-      'No clients provided in target z.  You must provide the property `clientsById` containg your clients.'
+      'No clients provided in target z.  You must provide the property `clientsById` containg your clients.',
     );
     expect(() =>
       // @ts-expect-error intentionally incorrect
-      isTarget({ info: { key: 'z', title: 't', extname: '' }, clientsById: {} })
+      isTarget({ info: { key: 'z', title: 't', extname: '' }, clientsById: {} }),
     ).toThrow('No clients provided in target z.  You must provide the property `clientsById` containg your clients.');
     expect(() =>
       // @ts-expect-error intentionally incorrect
-      isTarget({ info: { key: 'z', title: 't', extname: '' }, clientsById: null })
+      isTarget({ info: { key: 'z', title: 't', extname: '' }, clientsById: null }),
     ).toThrow('No clients provided in target z.  You must provide the property `clientsById` containg your clients.');
     expect(() =>
       // @ts-expect-error intentionally incorrect
-      isTarget({ info: { key: 'z', title: 't', extname: '' }, clientsById: undefined })
+      isTarget({ info: { key: 'z', title: 't', extname: '' }, clientsById: undefined }),
     ).toThrow('No clients provided in target z.  You must provide the property `clientsById` containg your clients.');
     expect(() =>
       // @ts-expect-error intentionally incorrect
-      isTarget({ info: { key: 'z', title: 't', extname: '' }, clientsById: { a: {} } })
+      isTarget({ info: { key: 'z', title: 't', extname: '' }, clientsById: { a: {} } }),
     ).toThrow('targets must have an `info` object with the property `default`');
     expect(() =>
       isTarget({
@@ -172,9 +172,9 @@ describe('isTarget', () => {
         info: { key: 'z', title: 't', extname: '', default: 'b' },
         // @ts-expect-error intentionally incorrect
         clientsById: { a: {} },
-      })
+      }),
     ).toThrow(
-      'target z is configured with a default client b, but no such client was found in the property `clientsById` (found ["a"])'
+      'target z is configured with a default client b, but no such client was found in the property `clientsById` (found ["a"])',
     );
 
     expect(
@@ -191,7 +191,7 @@ describe('isTarget', () => {
             convert: () => '',
           },
         },
-      })
+      }),
     ).toBeTruthy();
   });
 });
@@ -208,41 +208,41 @@ describe('isClient', () => {
     expect(() => isClient({ info: '' })).toThrow('targets client must have an `info` object with property `key`');
     // @ts-expect-error intentionally incorrect
     expect(() => isClient({ info: { key: undefined } })).toThrow(
-      'client.info.key must contain an identifier unique to this target'
+      'client.info.key must contain an identifier unique to this target',
     );
     // @ts-expect-error intentionally incorrect
     expect(() => isClient({ info: { key: null } })).toThrow(
-      'client.info.key must contain an identifier unique to this target'
+      'client.info.key must contain an identifier unique to this target',
     );
     // @ts-expect-error intentionally incorrect
     expect(() => isClient({ info: { key: '' } })).toThrow(
-      'client.info.key must contain an identifier unique to this target'
+      'client.info.key must contain an identifier unique to this target',
     );
     // @ts-expect-error intentionally incorrect
     expect(() => isClient({ info: { key: 'a' } })).toThrow(
-      'targets client must have an `info` object with property `title`'
+      'targets client must have an `info` object with property `title`',
     );
     // @ts-expect-error intentionally incorrect
     expect(() => isClient({ info: { key: 'a', title: '' } })).toThrow(
-      'targets client must have an `info` object with property `description`'
+      'targets client must have an `info` object with property `description`',
     );
     // @ts-expect-error intentionally incorrect
     expect(() => isClient({ info: { key: 'a', description: '', title: '' } })).toThrow(
-      'targets client must have an `info` object with property `link`'
+      'targets client must have an `info` object with property `link`',
     );
     // @ts-expect-error intentionally incorrect
     expect(() => isClient({ info: { key: 'a', title: '', link: '', description: '' } })).toThrow(
-      'targets client must have a `convert` property containing a conversion function'
+      'targets client must have a `convert` property containing a conversion function',
     );
     expect(() =>
       // @ts-expect-error intentionally incorrect
-      isClient({ info: { key: 'a', title: '', link: '', description: '' }, convert: '' })
+      isClient({ info: { key: 'a', title: '', link: '', description: '' }, convert: '' }),
     ).toThrow('targets client must have a `convert` property containing a conversion function');
     expect(
       isClient({
         info: { key: 'a', title: '', link: '', description: '' },
         convert: () => '',
-      })
+      }),
     ).toBeTruthy();
   });
 });

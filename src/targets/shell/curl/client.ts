@@ -176,12 +176,12 @@ export const curl: Client<CurlOptions> = {
                   `${binary ? '--data-binary' : arg('data')} @- <<EOF\n${JSON.stringify(
                     jsonPayload,
                     null,
-                    indentJSON
-                  )}\nEOF`
+                    indentJSON,
+                  )}\nEOF`,
                 );
               } else {
                 push(
-                  `${binary ? '--data-binary' : arg('data')} '\n${JSON.stringify(jsonPayload, null, indentJSON)}\n'`
+                  `${binary ? '--data-binary' : arg('data')} '\n${JSON.stringify(jsonPayload, null, indentJSON)}\n'`,
                 );
               }
             } catch (err) {

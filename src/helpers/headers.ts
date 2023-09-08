@@ -27,5 +27,5 @@ export const hasHeader = <T>(headers: Headers<T>, name: string) => Boolean(getHe
  */
 export const isMimeTypeJSON = (mimeType: string) =>
   ['application/json', 'application/x-json', 'text/json', 'text/x-json', '+json'].some(
-    type => mimeType.indexOf(type) > -1
+    type => mimeType.indexOf(type) > -1,
   );

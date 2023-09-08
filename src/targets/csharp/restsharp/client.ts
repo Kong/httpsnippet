@@ -17,7 +17,7 @@ export const restsharp: Client = {
   convert: ({ method, fullUrl, headersObj, cookies, postData, uriObj }) => {
     const { push, join } = new CodeBuilder();
     const isSupportedMethod = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'].includes(
-      method.toUpperCase()
+      method.toUpperCase(),
     );
 
     if (!isSupportedMethod) {

@@ -10,7 +10,7 @@ export const availableTargets = () =>
   Object.keys(targets).map<AvailableTarget>(targetId => ({
     ...targets[targetId as TargetId].info,
     clients: Object.keys(targets[targetId as TargetId].clientsById).map(
-      clientId => targets[targetId as TargetId].clientsById[clientId].info
+      clientId => targets[targetId as TargetId].clientsById[clientId].info,
     ),
   }));
 

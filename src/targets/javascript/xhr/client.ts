@@ -40,7 +40,7 @@ export const xhr: Client = {
         push(
           `const data = JSON.stringify(${stringifyObject(postData.jsonObj, {
             indent: opts.indent,
-          })});`
+          })});`,
         );
         blank();
         break;

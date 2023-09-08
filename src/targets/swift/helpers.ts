@@ -70,7 +70,7 @@ export const literalRepresentation = <T, U>(value: T, opts: U, indentLevel?: num
         opts.pretty && keyValuePairs.length > 1,
         // @ts-expect-error needs better types
         opts.indent,
-        indentLevel
+        indentLevel,
       );
     }
 

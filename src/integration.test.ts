@@ -4,10 +4,10 @@ import type { AvailableTarget } from './helpers/utils';
 import type { TargetId } from './targets/targets';
 import type { Response } from 'har-format';
 
-import shell from 'child_process';
-import { readdirSync, readFileSync, writeFileSync } from 'fs';
-import path from 'path';
-import { format } from 'util';
+import shell from 'node:child_process';
+import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import path from 'node:path';
+import { format } from 'node:util';
 
 import { availableTargets, extname } from './helpers/utils';
 
@@ -59,7 +59,7 @@ const EXEC_FUNCTION: Record<string, (arg: string) => Buffer> = {
 
 int main(void) {
   ${readFileSync(fixturePath, 'utf8')}
-}`
+}`,
     );
     shell.execSync(`gcc ${inf} -o ${exe} -lcurl`);
     return shell.execSync(exe);
@@ -165,7 +165,7 @@ function integrationTest(
   clientId: string,
   { key: targetId, cli: targetCLI, extname: fixtureExtension }: AvailableTarget,
   fixture: string,
-  request: Request
+  request: Request,
 ) {
   test(`should return the expected response for \`${fixture}\``, () => {
     const basePath = path.join('src', 'targets', targetId, clientId, 'fixtures', `${fixture}${extname(targetId)}`);
@@ -241,7 +241,7 @@ function integrationTest(
       expect(response.headers).toStrictEqual(
         expect.objectContaining({
           ...expected.headers,
-        })
+        }),
       );
 
       return;

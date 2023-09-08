@@ -107,7 +107,7 @@ export const requests: Client<RequestsOptions> = {
         addPostProcessor(code =>
           code
             .replace(/"\('(.+)', open\('(.+)', 'rb'\)\)"/g, '("$1", open("$2", "rb"))')
-            .replace(/"\('(.+)', open\('(.+)', 'rb'\), '(.+)'\)"/g, '("$1", open("$2", "rb"), "$3")')
+            .replace(/"\('(.+)', open\('(.+)', 'rb'\), '(.+)'\)"/g, '("$1", open("$2", "rb"), "$3")'),
         );
         break;
 

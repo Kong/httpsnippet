@@ -56,7 +56,7 @@ export const native: Client = {
         }
     }
 
-    if (typeof payload === undefined || payload === '') {
+    if (typeof payload === 'undefined' || payload === '') {
       return 'No JSON body';
     }
 

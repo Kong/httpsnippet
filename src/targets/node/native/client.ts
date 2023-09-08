@@ -59,7 +59,7 @@ export const native: Client = {
             `req.write(qs.stringify(${stringifyObject(postData.paramsObj, {
               indent: '  ',
               inlineCharacterLimit: 80,
-            })}));`
+            })}));`,
           );
         }
         break;
@@ -70,7 +70,7 @@ export const native: Client = {
             `req.write(JSON.stringify(${stringifyObject(postData.jsonObj, {
               indent: '  ',
               inlineCharacterLimit: 80,
-            })}));`
+            })}));`,
           );
         }
         break;
