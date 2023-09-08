@@ -1,4 +1,4 @@
-import type { Target } from '../targets/targets';
+import type { Target } from '../targets';
 
 import { request } from '../targets/node/request/client';
 

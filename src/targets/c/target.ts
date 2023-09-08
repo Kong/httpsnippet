@@ -1,4 +1,4 @@
-import type { Target } from '../targets';
+import type { Target } from '..';
 
 import { libcurl } from './libcurl/client';
 

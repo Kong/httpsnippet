@@ -1,5 +1,5 @@
 import type { ReducedHelperObject } from './helpers/reducer';
-import type { ClientId, TargetId } from './targets/targets';
+import type { ClientId, TargetId } from './targets';
 import type { Param, PostDataCommon, Request as NpmHarRequest } from 'har-format';
 import type { UrlWithParsedQuery } from 'node:url';
 
@@ -12,10 +12,10 @@ import { stringify as queryStringify } from 'qs';
 import { formDataIterator, isBlob } from './helpers/form-data';
 import { getHeaderName } from './helpers/headers';
 import { reducer } from './helpers/reducer';
-import { targets } from './targets/targets';
+import { targets } from './targets';
 
 export { availableTargets, extname } from './helpers/utils';
-export { addTarget, addTargetClient } from './targets/targets';
+export { addTarget, addTargetClient } from './targets';
 
 /** is this wrong?  yes.  according to the spec (http://www.softwareishard.com/blog/har-12-spec/#postData) it's technically wrong since `params` and `text` are (by the spec) mutually exclusive.  However, in practice, this is not what is often the case.
  *

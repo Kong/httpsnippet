@@ -1,5 +1,5 @@
+import type { Client } from '../..';
 import type { Request } from '../../..';
-import type { Client } from '../../targets';
 
 import { CodeBuilder } from '../../../helpers/code-builder';
 import { escapeForDoubleQuotes } from '../../../helpers/escape';

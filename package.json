@@ -21,9 +21,9 @@
       "import": "./dist/helpers/reducer.mjs"
     },
     "./targets": {
-      "types": "./dist/targets.d.ts",
-      "require": "./dist/targets.js",
-      "import": "./dist/targets.mjs"
+      "types": "./dist/targets/index.d.ts",
+      "require": "./dist/targets/index.js",
+      "import": "./dist/targets/index.mjs"
     },
     "./package.json": "./package.json"
   },

@@ -5,7 +5,7 @@ export default defineConfig(options => ({
 
   cjsInterop: true,
   dts: true,
-  entry: ['src/index.ts', 'src/helpers/code-builder.ts', 'src/helpers/reducer.ts', 'src/targets/targets.ts'],
+  entry: ['src/index.ts', 'src/helpers/code-builder.ts', 'src/helpers/reducer.ts', 'src/targets/index.ts'],
   format: ['esm', 'cjs'],
   shims: true,
   silent: !options.watch,

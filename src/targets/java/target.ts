@@ -1,4 +1,4 @@
-import type { Target } from '../targets';
+import type { Target } from '..';
 
 import { asynchttp } from './asynchttp/client';
 import { nethttp } from './nethttp/client';

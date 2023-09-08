@@ -1,4 +1,4 @@
-import type { Target } from '../targets';
+import type { Target } from '..';
 
 import { http11 } from './http1.1/client';
 

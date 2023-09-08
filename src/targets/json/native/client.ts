@@ -7,8 +7,8 @@
  *
  * For any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
+import type { Client } from '../..';
 import type { ReducedHelperObject } from '../../../helpers/reducer';
-import type { Client } from '../../targets';
 
 export const native: Client = {
   info: {

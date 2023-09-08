@@ -1,4 +1,4 @@
-import type { Client } from '../../targets';
+import type { Client } from '../..';
 
 import { CodeBuilder } from '../../../helpers/code-builder';
 import { escapeForSingleQuotes } from '../../../helpers/escape';

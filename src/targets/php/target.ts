@@ -1,4 +1,4 @@
-import type { Target } from '../targets';
+import type { Target } from '..';
 
 import { curl } from './curl/client';
 import { guzzle } from './guzzle/client';

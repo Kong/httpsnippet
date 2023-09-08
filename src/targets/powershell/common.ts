@@ -1,4 +1,4 @@
-import type { Converter } from '../targets';
+import type { Converter } from '..';
 
 import { CodeBuilder } from '../../helpers/code-builder';
 import { escapeString } from '../../helpers/escape';

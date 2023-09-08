@@ -1,4 +1,4 @@
-import type { Target } from '../targets';
+import type { Target } from '..';
 
 import { httpclient } from './httpclient/client';
 import { restsharp } from './restsharp/client';

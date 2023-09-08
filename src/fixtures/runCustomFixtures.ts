@@ -1,7 +1,7 @@
 /* eslint-disable jest/valid-title */
 /* eslint-disable jest/no-export */
 import type { HTTPSnippetOptions, Request } from '..';
-import type { ClientId, TargetId } from '../targets/targets';
+import type { ClientId, TargetId } from '../targets';
 
 import { writeFileSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';

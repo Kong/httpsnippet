@@ -1,7 +1,7 @@
 /* eslint-disable jest/no-conditional-expect */
 import type { Request } from '.';
 import type { AvailableTarget } from './helpers/utils';
-import type { TargetId } from './targets/targets';
+import type { TargetId } from './targets';
 import type { Response } from 'har-format';
 
 import shell from 'node:child_process';

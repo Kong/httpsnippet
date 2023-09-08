@@ -1,4 +1,4 @@
-import type { Client } from '../../targets';
+import type { Client } from '../..';
 
 import { generatePowershellConvert } from '../common';
 
