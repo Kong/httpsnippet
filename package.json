@@ -10,6 +10,16 @@
       "require": "./dist/index.js",
       "import": "./dist/index.mjs"
     },
+    "./helpers/code-builder": {
+      "types": "./dist/helpers/code-builder.d.ts",
+      "require": "./dist/helpers/code-builder.js",
+      "import": "./dist/helpers/code-builder.mjs"
+    },
+    "./helpers/reducer": {
+      "types": "./dist/helpers/reducer.d.ts",
+      "require": "./dist/helpers/reducer.js",
+      "import": "./dist/helpers/reducer.mjs"
+    },
     "./targets": {
       "types": "./dist/targets.d.ts",
       "require": "./dist/targets.js",
