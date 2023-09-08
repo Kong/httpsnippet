@@ -4,9 +4,11 @@
     "declaration": true,
     "downlevelIteration": true,
     "esModuleInterop": true,
-    "lib": ["ESNext"],
+    "lib": ["DOM", "ES2020"],
+    "moduleResolution": "node",
     "outDir": "dist",
     "resolveJsonModule": true,
+    "target": "ES2020",
     "strict": true
   },
   "include": ["./src/**/*"],
