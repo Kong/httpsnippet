@@ -5,9 +5,10 @@ import type { UrlWithParsedQuery } from 'node:url';
 
 import { format as urlFormat, parse as urlParse } from 'node:url';
 
-import * as eventStream from 'event-stream';
 import FormData from 'form-data';
 import { stringify as queryStringify } from 'qs';
+
+import mapStream from 'map-stream';
 
 import { formDataIterator, isBlob } from './helpers/form-data';
 import { getHeaderName } from './helpers/headers';
@@ -16,8 +17,6 @@ import { targets } from './targets';
 
 export { availableTargets, extname } from './helpers/utils';
 export { addTarget, addTargetClient } from './targets';
-
-const { map: eventStreamMap } = eventStream;
 
 /** is this wrong?  yes.  according to the spec (http://www.softwareishard.com/blog/har-12-spec/#postData) it's technically wrong since `params` and `text` are (by the spec) mutually exclusive.  However, in practice, this is not what is often the case.
  *
@@ -238,8 +237,7 @@ export class HTTPSnippet {
             }
           } else {
             form.pipe(
-              // @ts-expect-error TODO
-              eventStreamMap(data => {
+              mapStream((data: string) => {
                 request.postData.text += data;
               }),
             );

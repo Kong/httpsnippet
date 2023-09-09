@@ -8,6 +8,6 @@
     // https://bobbyhadz.com/blog/typescript-object-is-of-type-unknown
     "useUnknownInCatchVariables": false
   },
-  "exclude": ["dist"],
-  "include": ["jest.config.js", ".prettierrc.js", ".eslintrc.js", "src"]
+  "exclude": ["dist/"],
+  "include": ["src/"]
 }

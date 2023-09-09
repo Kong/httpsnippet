@@ -7,10 +7,13 @@
     "lib": ["DOM", "ES2020"],
     "moduleResolution": "node",
     "outDir": "dist",
+    "paths": {
+      "map-stream": ["./.sink.d.ts"],
+    },
     "resolveJsonModule": true,
     "target": "ES2020",
     "strict": true
   },
   "include": ["./src/**/*"],
-  "exclude": ["dist", "./src/fixtures/", "**/*.test.ts"]
+  "exclude": ["dist/", "./src/fixtures/", "**/*.test.ts"]
 }

@@ -84,7 +84,6 @@
   "devDependencies": {
     "@readme/eslint-config": "^12.2.0",
     "@types/eslint": "^8.44.2",
-    "@types/event-stream": "^4.0.1",
     "@types/har-format": "^1.2.12",
     "@types/jest": "^29.5.4",
     "@types/node": "^20.5.9",
@@ -100,8 +99,8 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "event-stream": "4.0.1",
     "form-data": "^4.0.0",
+    "map-stream": "^0.0.7",
     "qs": "^6.11.2",
     "stringify-object": "^3.3.0"
   },
