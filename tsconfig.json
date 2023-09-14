@@ -8,9 +8,6 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "outDir": "dist",
-    "paths": {
-      "map-stream": ["./.sink.d.ts"],
-    },
     "resolveJsonModule": true,
     "target": "ES2020",
 

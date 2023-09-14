@@ -39,7 +39,7 @@ Type: `object`
 
 Available options:
 
-* `harIsAlreadyEncoded` (`boolean`): In the event of you supplying a `source` HAR that already contains escaped data (query and cookie parameters)strings, this allows you to disable automatic encoding of those parameters to prevent them from being double-escaped.
+- `harIsAlreadyEncoded` (`boolean`): In the event of you supplying a `source` HAR that already contains escaped data (query and cookie parameters)strings, this allows you to disable automatic encoding of those parameters to prevent them from being double-escaped.
 
 ### convert(target [, options])
 
@@ -64,11 +64,11 @@ const snippet = new HTTPSnippet({
 });
 
 // generate Node.js: Native output
-console.log(snippet.convert('node'));
+console.log(await snippet.convert('node'));
 
 // generate Node.js: Native output, indent with tabs
 console.log(
-  snippet.convert('node', {
+  await snippet.convert('node', {
     indent: '\t',
   }),
 );
@@ -104,13 +104,13 @@ const snippet = new HTTPSnippet({
 
 // generate Shell: cURL output
 console.log(
-  snippet.convert('shell', 'curl', {
+  await snippet.convert('shell', 'curl', {
     indent: '\t',
   }),
 );
 
 // generate Node.js: Unirest output
-console.log(snippet.convert('node', 'unirest'));
+console.log(await snippet.convert('node', 'unirest'));
 ```
 
 ### addTarget(target)
@@ -155,32 +155,31 @@ For detailed information on each target, please review the [wiki](https://github
 
 There are some major differences between this library and the [httpsnippet](https://github.com/Kong/httpsnippet) upstream:
 
-* Includes a full integration test suite for a handful of clients and targets.
-* Does not ship with a CLI component.
-* Does not do any HAR schema validation. It's just assumed that the HAR you're supplying to the library is already valid.
-* The main `HTTPSnippet` export contains an `options` argument for an `harIsAlreadyEncoded` option for disabling [escaping](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) of cookies and query strings in URLs.
-  * We added this because all HARs that we interact with already have this data escaped and this option prevents them from being double encoded, thus corrupting the data.
-* Does not support the `insecureSkipVerify` option on `go:native`, `node:native`, `ruby:native`, and `shell:curl` as we don't want snippets generated for our users to bypass SSL certificate verification.
-* Node
-  * `fetch`
-    * Body payloads are treated as an object literal and wrapped within `JSON.stringify()`. We do this to keep those targets looking nicer with those kinds of payloads. This also applies to the JS `fetch` target as well.
-  * `request`
-    * Does not provide query string parameters in a `params` argument due to complexities with query encoding.
-* PHP
-  * `guzzle`
-    * Snippets have `require_once('vendor/autoload.php');` prefixed at the top.
-* Python
-  * `python3`
-    * Does not ship this client due to its incompatibility with being able to support file uploads.
-  * `requests`
-    * Does not provide query string parameters in a `params` argument due to complexities with query encoding.
+- Includes a full integration test suite for a handful of clients and targets.
+- Does not ship with a CLI component.
+- Does not do any HAR schema validation. It's just assumed that the HAR you're supplying to the library is already valid.
+- The main `HTTPSnippet` export contains an `options` argument for an `harIsAlreadyEncoded` option for disabling [escaping](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) of cookies and query strings in URLs.
+  - We added this because all HARs that we interact with already have this data escaped and this option prevents them from being double encoded, thus corrupting the data.
+- Does not support the `insecureSkipVerify` option on `go:native`, `node:native`, `ruby:native`, and `shell:curl` as we don't want snippets generated for our users to bypass SSL certificate verification.
+- Node
+  - `fetch`
+    - Body payloads are treated as an object literal and wrapped within `JSON.stringify()`. We do this to keep those targets looking nicer with those kinds of payloads. This also applies to the JS `fetch` target as well.
+  - `request`
+    - Does not provide query string parameters in a `params` argument due to complexities with query encoding.
+- PHP
+  - `guzzle`
+    - Snippets have `require_once('vendor/autoload.php');` prefixed at the top.
+- Python
+  - `python3`
+    - Does not ship this client due to its incompatibility with being able to support file uploads.
+  - `requests`
+    - Does not provide query string parameters in a `params` argument due to complexities with query encoding.
 
 ## License
 
 [MIT](LICENSE) &copy; [Kong](https://konghq.com)
 
 [license-url]: https://github.com/Kong/httpsnippet/blob/master/LICENSE
-
 [npm-url]: https://www.npmjs.com/package/@readme/httpsnippet
 [npm-license]: https://img.shields.io/npm/l/@readme/httpsnippet.svg?style=flat-square
 [npm-version]: https://img.shields.io/npm/v/@readme/httpsnippet.svg?style=flat-square

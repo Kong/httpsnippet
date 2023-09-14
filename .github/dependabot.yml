@@ -1,7 +1,7 @@
 version: 2
 updates:
   - package-ecosystem: github-actions
-    directory: "/"
+    directory: '/'
     schedule:
       interval: monthly
     reviewers:
@@ -19,7 +19,7 @@ updates:
       prefix-development: chore(deps-dev)
 
   - package-ecosystem: npm
-    directory: "/"
+    directory: '/'
     schedule:
       interval: monthly
     open-pull-requests-limit: 10
@@ -40,4 +40,4 @@ updates:
       # stringify-objectis now an ESM package and can't be used here without a rewrite.
       - dependency-name: stringify-object
         versions:
-          - ">= 4"
+          - '>= 4'

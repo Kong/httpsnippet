@@ -10,21 +10,24 @@ import short from './fixtures/requests/short.cjs';
 import { HTTPSnippet } from './index.js';
 
 describe('HTTPSnippet', () => {
-  it('should return false if no matching target', () => {
+  it('should return false if no matching target', async () => {
     const snippet = new HTTPSnippet(short.log.entries[0].request as Request);
+
     // @ts-expect-error intentionally incorrect
-    const result = snippet.convert(null);
+    const result = await snippet.convert(null);
 
     expect(result).toBe(false);
   });
 
   describe('repair malformed `postData`', () => {
-    it('should repair a HAR with an empty `postData` object', () => {
+    it('should repair a HAR with an empty `postData` object', async () => {
       const snippet = new HTTPSnippet({
         method: 'POST',
         url: 'https://httpbin.org/anything',
         postData: {},
       } as Request);
+
+      await snippet.convert('node');
 
       const request = snippet.requests[0];
       expect(request.postData).toStrictEqual({
@@ -32,7 +35,7 @@ describe('HTTPSnippet', () => {
       });
     });
 
-    it('should repair a HAR with a `postData` params object missing `mimeType`', () => {
+    it('should repair a HAR with a `postData` params object missing `mimeType`', async () => {
       // @ts-expect-error Testing a malformed HAR case.
       const snippet = new HTTPSnippet({
         method: 'POST',
@@ -41,6 +44,7 @@ describe('HTTPSnippet', () => {
           params: [],
         },
       } as Request);
+      await snippet.convert('node');
 
       const request = snippet.requests[0];
       expect(request.postData).toStrictEqual({
@@ -49,7 +53,7 @@ describe('HTTPSnippet', () => {
       });
     });
 
-    it('should repair a HAR with a `postData` text object missing `mimeType`', () => {
+    it('should repair a HAR with a `postData` text object missing `mimeType`', async () => {
       const snippet = new HTTPSnippet({
         method: 'POST',
         url: 'https://httpbin.org/anything',
@@ -57,6 +61,7 @@ describe('HTTPSnippet', () => {
           text: '',
         },
       } as Request);
+      await snippet.convert('node');
 
       const request = snippet.requests[0];
       expect(request.postData).toStrictEqual({
@@ -66,7 +71,7 @@ describe('HTTPSnippet', () => {
     });
   });
 
-  it('should parse HAR file with multiple entries', () => {
+  it('should parse HAR file with multiple entries', async () => {
     const snippet = new HTTPSnippet({
       log: {
         version: '1.2',
@@ -90,6 +95,8 @@ describe('HTTPSnippet', () => {
         ],
       },
     });
+
+    await snippet.convert('node');
 
     expect(snippet).toHaveProperty('requests');
     expect(Array.isArray(snippet.requests)).toBeTruthy();
@@ -129,25 +136,29 @@ describe('HTTPSnippet', () => {
     ] as {
       expected: string;
       input: keyof typeof mimetypes;
-    }[])('mimetype conversion of $input to $output', ({ input, expected }) => {
+    }[])('mimetype conversion of $input to $output', async ({ input, expected }) => {
       const snippet = new HTTPSnippet(mimetypes[input]);
-      const request = snippet.requests[0];
+      await snippet.convert('node');
 
+      const request = snippet.requests[0];
       expect(request.postData.mimeType).toStrictEqual(expected);
     });
   });
 
-  it('should set postData.text to empty string when postData.params is undefined in application/x-www-form-urlencoded', () => {
+  it('should set postData.text to empty string when postData.params is undefined in application/x-www-form-urlencoded', async () => {
     const snippet = new HTTPSnippet(mimetypes['application/x-www-form-urlencoded']);
-    const request = snippet.requests[0];
+    await snippet.convert('node');
 
+    const request = snippet.requests[0];
     expect(request.postData.text).toBe('');
   });
 
   describe('requestExtras', () => {
     describe('uriObj', () => {
-      it('should add uriObj', () => {
+      it('should add uriObj', async () => {
         const snippet = new HTTPSnippet(query.log.entries[0].request as Request);
+        await snippet.convert('node');
+
         const request = snippet.requests[0];
 
         expect(request.uriObj).toMatchObject({
@@ -170,35 +181,38 @@ describe('HTTPSnippet', () => {
         });
       });
 
-      it('should fix the `path` property of uriObj to match queryString', () => {
+      it('should fix the `path` property of uriObj to match queryString', async () => {
         const snippet = new HTTPSnippet(query.log.entries[0].request as Request);
-        const request = snippet.requests[0];
+        await snippet.convert('node');
 
+        const request = snippet.requests[0];
         expect(request.uriObj.path).toBe('/anything?foo=bar&foo=baz&baz=abc&key=value');
       });
     });
 
     describe('queryObj', () => {
-      it('should add queryObj', () => {
+      it('should add queryObj', async () => {
         const snippet = new HTTPSnippet(query.log.entries[0].request as Request);
-        const request = snippet.requests[0];
+        await snippet.convert('node');
 
+        const request = snippet.requests[0];
         expect(request.queryObj).toMatchObject({ baz: 'abc', key: 'value', foo: ['bar', 'baz'] });
       });
     });
 
     describe('headersObj', () => {
-      it('should add headersObj', () => {
+      it('should add headersObj', async () => {
         const snippet = new HTTPSnippet(headers.log.entries[0].request as Request);
-        const request = snippet.requests[0];
+        await snippet.convert('node');
 
+        const request = snippet.requests[0];
         expect(request.headersObj).toMatchObject({
           accept: 'application/json',
           'x-foo': 'Bar',
         });
       });
 
-      it('should add headersObj to source object case insensitive when HTTP/1.0', () => {
+      it('should add headersObj to source object case insensitive when HTTP/1.0', async () => {
         const snippet = new HTTPSnippet({
           ...headers.log.entries[0].request,
           httpVersion: 'HTTP/1.1',
@@ -211,6 +225,8 @@ describe('HTTPSnippet', () => {
           ],
         } as Request);
 
+        await snippet.convert('node');
+
         const request = snippet.requests[0];
 
         expect(request.headersObj).toMatchObject({
@@ -220,7 +236,7 @@ describe('HTTPSnippet', () => {
         });
       });
 
-      it('should add headersObj to source object lowercased when HTTP/2.x', () => {
+      it('should add headersObj to source object lowercased when HTTP/2.x', async () => {
         const snippet = new HTTPSnippet({
           ...headers.log.entries[0].request,
           httpVersion: 'HTTP/2',
@@ -233,6 +249,8 @@ describe('HTTPSnippet', () => {
           ],
         } as Request);
 
+        await snippet.convert('node');
+
         const request = snippet.requests[0];
 
         expect(request.headersObj).toMatchObject({
@@ -244,19 +262,21 @@ describe('HTTPSnippet', () => {
     });
 
     describe('url', () => {
-      it('should modify the original url to strip query string', () => {
+      it('should modify the original url to strip query string', async () => {
         const snippet = new HTTPSnippet(query.log.entries[0].request as Request);
-        const request = snippet.requests[0];
+        await snippet.convert('node');
 
+        const request = snippet.requests[0];
         expect(request.url).toBe('https://httpbin.org/anything');
       });
     });
 
     describe('fullUrl', () => {
-      it('adds fullURL', () => {
+      it('adds fullURL', async () => {
         const snippet = new HTTPSnippet(query.log.entries[0].request as Request);
-        const request = snippet.requests[0];
+        await snippet.convert('node');
 
+        const request = snippet.requests[0];
         expect(request.fullUrl).toBe('https://httpbin.org/anything?foo=bar&foo=baz&baz=abc&key=value');
       });
     });

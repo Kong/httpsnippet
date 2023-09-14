@@ -20,7 +20,12 @@
 
     "unicorn/prefer-node-protocol": "error",
 
-    "vitest/require-hook": "off"
+    "vitest/require-hook": [
+      "error",
+      {
+        "allowedFunctionCalls": ["runCustomFixtures"]
+      }
+    ]
   },
   "overrides": [
     {

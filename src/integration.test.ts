@@ -131,6 +131,7 @@ function looseJSONParse(obj: any) {
   return new Function(`"use strict";return ${obj}`)();
 }
 
+// eslint-disable-next-line vitest/require-hook
 availableTargets()
   .filter(target => target.cli)
   .filter(testFilter('key', environmentFilter()))

@@ -1,10 +1,10 @@
 POST /anything HTTP/1.1
 Content-Type: multipart/form-data; boundary=---011000010111000001101001
 Host: httpbin.org
-Content-Length: 266
+Content-Length: 283
 
 -----011000010111000001101001
-Content-Disposition: form-data; name="foo"; filename="hello.txt"
+Content-Disposition: form-data; name="foo"; filename="src/fixtures/files/hello.txt"
 Content-Type: text/plain
 
 Hello World

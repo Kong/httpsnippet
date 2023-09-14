@@ -24,24 +24,23 @@ export interface CustomFixture {
 
 export const runCustomFixtures = ({ targetId, clientId, tests }: CustomFixture) => {
   describe(`custom fixtures for ${targetId}:${clientId}`, () => {
-    tests.forEach(({ it: title, expected: fixtureFile, options, input: request }) => {
+    it.each(tests.map(t => [t.it, t]))('%s', async (_, { expected: fixtureFile, options, input: request }) => {
       const opts: HTTPSnippetOptions = {};
       if (options.harIsAlreadyEncoded) {
         opts.harIsAlreadyEncoded = options.harIsAlreadyEncoded;
       }
 
-      const result = new HTTPSnippet(request, opts).convert(targetId, clientId, options);
+      const snippet = new HTTPSnippet(request, opts);
+      const result = await snippet.convert(targetId, clientId, options);
       const filePath = path.join(__dirname, '..', 'targets', targetId, clientId, 'fixtures', fixtureFile);
       if (process.env.OVERWRITE_EVERYTHING) {
         writeFileSync(filePath, String(result));
       }
 
-      it(title, async () => {
-        const buffer = await readFile(filePath);
-        const fixture = String(buffer);
+      const buffer = await readFile(filePath);
+      const fixture = String(buffer);
 
-        expect(result).toStrictEqual(fixture);
-      });
+      expect(result).toStrictEqual(fixture);
     });
   });
 };

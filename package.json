@@ -75,8 +75,13 @@
     "prebuild": "npm run clean",
     "prepack": "npm run build",
     "pretest": "npm run lint",
-    "prettier": "prettier --list-different --write \"./**/**.{js,ts}\"",
+    "prettier": "prettier --list-different --write .",
     "test": "vitest --coverage"
+  },
+  "dependencies": {
+    "formdata-to-string": "^1.1.0",
+    "qs": "^6.11.2",
+    "stringify-object": "^3.3.0"
   },
   "devDependencies": {
     "@readme/eslint-config": "^13.0.1",
@@ -93,12 +98,6 @@
     "type-fest": "^4.3.1",
     "typescript": "^5.2.2",
     "vitest": "^0.34.4"
-  },
-  "dependencies": {
-    "form-data": "^4.0.0",
-    "map-stream": "^0.0.7",
-    "qs": "^6.11.2",
-    "stringify-object": "^3.3.0"
   },
   "prettier": "@readme/eslint-config/prettier"
 }

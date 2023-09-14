@@ -53,13 +53,18 @@ const testFilter =
   (item: T) =>
     list.length > 0 ? list.includes(item[property]) : true;
 
-availableTargets()
-  .filter(testFilter('key', targetFilter))
-  .forEach(({ key: targetId, title, clients }) => {
-    describe(`${title} Request Validation`, () => {
-      clients.filter(testFilter('key', clientFilter)).forEach(({ key: clientId, extname: fixtureExtension }) => {
-        describe(`${clientId}`, () => {
-          fixtures.filter(testFilter(0, fixtureFilter)).forEach(([fixture, request]) => {
+describe('request validation', () => {
+  describe.each(
+    availableTargets()
+      .filter(testFilter('key', targetFilter))
+      .map(target => [target.key, target]),
+  )('%s', (title, { key: targetId, clients }) => {
+    describe.each(clients.filter(testFilter('key', clientFilter)).map(client => [client.key, client]))(
+      '%s',
+      (clientId, { extname: fixtureExtension }) => {
+        it.each(fixtures.filter(testFilter(0, fixtureFilter)))(
+          'request should match fixture for "%s.js"',
+          async (fixture, request) => {
             const expectedPath = path.join(
               'src',
               'targets',
@@ -68,6 +73,10 @@ availableTargets()
               'fixtures',
               `${fixture}${extname(targetId, clientId)}`,
             );
+
+            let result;
+            let expected;
+
             try {
               const options: HTTPSnippetOptions = {};
 
@@ -76,18 +85,15 @@ availableTargets()
                 options.harIsAlreadyEncoded = true;
               }
 
-              const expected = readFileSync(expectedPath).toString();
-              const { convert } = new HTTPSnippet(request, options);
-              const result = convert(targetId, clientId); //?
+              expected = readFileSync(expectedPath).toString();
+              const snippet = new HTTPSnippet(request, options);
+
+              result = await snippet.convert(targetId, clientId);
 
               if (OVERWRITE_EVERYTHING && result) {
                 writeFileSync(expectedPath, String(result));
                 return;
               }
-
-              it(`request should match fixture for "${fixture}.js"`, () => {
-                expect(result).toStrictEqual(expected);
-              });
             } catch (err) {
               if (err.constructor.name === 'HARError') {
                 throw err;
@@ -99,11 +105,14 @@ availableTargets()
                 }\``,
               );
             }
-          });
-        });
-      });
-    });
+
+            expect(result).toStrictEqual(expected);
+          },
+        );
+      },
+    );
   });
+});
 
 describe('isTarget', () => {
   it("should throw if you don't provide an object", () => {
@@ -286,7 +295,7 @@ describe('addTargetClient', () => {
     delete targets.node.clientsById.custom;
   });
 
-  it('should add a new custom target', () => {
+  it('should add a new custom target', async () => {
     const customClient: Client = {
       info: {
         key: 'custom',
@@ -302,8 +311,9 @@ describe('addTargetClient', () => {
 
     addTargetClient('node', customClient);
 
-    const { convert } = new HTTPSnippet(short.log.entries[0].request as Request, {});
-    const result = convert('node', 'custom');
+    const snippet = new HTTPSnippet(short.log.entries[0].request as Request, {});
+
+    const result = await snippet.convert('node', 'custom');
 
     expect(result).toBe('This was generated from a custom client.');
   });
