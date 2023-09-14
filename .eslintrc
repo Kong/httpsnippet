@@ -1,13 +1,11 @@
 {
   "extends": [
     "@readme/eslint-config",
+    "@readme/eslint-config/esm",
     "@readme/eslint-config/typescript",
-    "@readme/eslint-config/testing/jest"
+    "@readme/eslint-config/testing/vitest"
   ],
   "root": true,
-  "parserOptions": {
-    "ecmaVersion": 2020
-  },
   "rules": {
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-use-before-define": "off",
@@ -20,8 +18,18 @@
     "no-underscore-dangle": ["error", { "allow": ["_boundary"] }],
     "spaced-comment": "off",
 
-    "unicorn/prefer-node-protocol": "error"
+    "unicorn/prefer-node-protocol": "error",
+
+    "vitest/require-hook": "off"
   },
+  "overrides": [
+    {
+      "files": ["src/fixtures/**"],
+      "rules": {
+        "import/no-commonjs": "off"
+      }
+    }
+  ],
   "env": {
     "browser": true
   }

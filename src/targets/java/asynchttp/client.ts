@@ -7,10 +7,10 @@
  *
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
-import type { Client } from '../..';
+import type { Client } from '../../index.js';
 
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { escapeForDoubleQuotes } from '../../../helpers/escape';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import { escapeForDoubleQuotes } from '../../../helpers/escape.js';
 
 export const asynchttp: Client = {
   info: {
@@ -18,6 +18,7 @@ export const asynchttp: Client = {
     title: 'AsyncHttp',
     link: 'https://github.com/AsyncHttpClient/async-http-client',
     description: 'Asynchronous Http and WebSocket Client library for Java',
+    extname: '.java',
   },
   convert: ({ method, allHeaders, postData, fullUrl }, options) => {
     const opts = {

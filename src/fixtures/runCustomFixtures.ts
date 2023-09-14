@@ -1,13 +1,13 @@
-/* eslint-disable jest/valid-title */
-/* eslint-disable jest/no-export */
-import type { HTTPSnippetOptions, Request } from '..';
-import type { ClientId, TargetId } from '../targets';
+import type { HTTPSnippetOptions, Request } from '../index.js';
+import type { ClientId, TargetId } from '../targets/index.js';
 
 import { writeFileSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
-import { HTTPSnippet } from '..';
+import { describe, it, expect } from 'vitest';
+
+import { HTTPSnippet } from '../index.js';
 
 export interface CustomFixture {
   clientId: ClientId;

@@ -7,10 +7,10 @@
  *
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
-import type { Client } from '../..';
+import type { Client } from '../../index.js';
 
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { convertType, supportedMethods } from '../helpers';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import { convertType, supportedMethods } from '../helpers.js';
 
 export interface Http1Options {
   closingTag?: boolean;
@@ -24,6 +24,7 @@ export const http1: Client<Http1Options> = {
     title: 'HTTP v1',
     link: 'http://php.net/manual/en/book.http.php',
     description: 'PHP with pecl/http v1',
+    extname: '.php',
   },
   convert: ({ method, url, postData, queryObj, headersObj, cookiesObj }, options = {}) => {
     const { closingTag = false, indent = '  ', noTags = false, shortTags = false } = options;

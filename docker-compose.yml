@@ -35,7 +35,7 @@ services:
     build:
       context: .
       dockerfile: integrations/node.Dockerfile
-    command: 'npx jest src/integration.test.ts'
+    command: 'npx vitest run src/integration.test.ts'
     environment:
       - HTTPBIN=true
       - INTEGRATION_CLIENT=node
@@ -48,7 +48,7 @@ services:
     build:
       context: .
       dockerfile: integrations/php.Dockerfile
-    command: 'npx jest src/integration.test.ts'
+    command: 'npx vitest run src/integration.test.ts'
     environment:
       - HTTPBIN=true
       - INTEGRATION_CLIENT=php
@@ -60,7 +60,7 @@ services:
     build:
       context: .
       dockerfile: integrations/python.Dockerfile
-    command: 'npx jest src/integration.test.ts'
+    command: 'npx vitest run src/integration.test.ts'
     environment:
       - HTTPBIN=true
       - INTEGRATION_CLIENT=python
@@ -73,7 +73,7 @@ services:
     build:
       context: .
       dockerfile: integrations/shell.Dockerfile
-    command: 'npx jest src/integration.test.ts'
+    command: 'npx vitest run src/integration.test.ts'
     environment:
       - HTTPBIN=true
       - INTEGRATION_CLIENT=shell
@@ -85,7 +85,7 @@ services:
     build:
       context: .
       dockerfile: integrations/csharp.Dockerfile
-    command: 'npx jest src/integration.test.ts'
+    command: 'npx vitest run src/integration.test.ts'
     environment:
       - HTTPBIN=true
       - INTEGRATION_CLIENT=csharp
@@ -97,7 +97,7 @@ services:
     build:
       context: .
       dockerfile: integrations/c.Dockerfile
-    command: 'npx jest src/integration.test.ts'
+    command: 'npx vitest run src/integration.test.ts'
     environment:
       - HTTPBIN=true
       - INTEGRATION_CLIENT=c
@@ -109,7 +109,7 @@ services:
     build:
       context: .
       dockerfile: integrations/go.Dockerfile
-    command: 'npx jest src/integration.test.ts'
+    command: 'npx vitest run src/integration.test.ts'
     environment:
       - HTTPBIN=true
       - INTEGRATION_CLIENT=go

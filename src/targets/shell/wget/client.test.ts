@@ -1,8 +1,8 @@
-import type { Request } from '../../..';
+import type { Request } from '../../../index.js';
 
-import full from '../../../fixtures/requests/full';
-import short from '../../../fixtures/requests/short';
-import { runCustomFixtures } from '../../../fixtures/runCustomFixtures';
+import full from '../../../fixtures/requests/full.cjs';
+import short from '../../../fixtures/requests/short.cjs';
+import { runCustomFixtures } from '../../../fixtures/runCustomFixtures.js';
 
 runCustomFixtures({
   targetId: 'shell',

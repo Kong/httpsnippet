@@ -1,7 +1,7 @@
-/* eslint-disable jest/no-conditional-expect */
-import type { Request } from '.';
-import type { AvailableTarget } from './helpers/utils';
-import type { TargetId } from './targets';
+/* eslint-disable vitest/no-conditional-expect */
+import type { AvailableTarget } from './helpers/utils.js';
+import type { Request } from './index.js';
+import type { TargetId } from './targets/index.js';
 import type { Response } from 'har-format';
 
 import shell from 'node:child_process';
@@ -9,7 +9,9 @@ import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { format } from 'node:util';
 
-import { availableTargets, extname } from './helpers/utils';
+import { describe, test, expect } from 'vitest';
+
+import { availableTargets, extname } from './helpers/utils.js';
 
 const expectedBasePath = ['src', 'fixtures', 'requests'];
 
@@ -25,7 +27,7 @@ const ENVIRONMENT_CONFIG = {
     shell: ['curl'],
   },
   local: {
-    // When running tests locally, or within a Jest CI environment, we shold limit the targets that
+    // When running tests locally, or within a CI environment, we shold limit the targets that
     // we're testing so as to not require a mess of dependency requirements that would be better
     // served within a container.
     node: ['native'],
@@ -101,10 +103,8 @@ const environmentFilter = (): string[] => {
 
 const clientFilter = (target: TargetId): string[] => {
   if (process.env.HTTPBIN) {
-    // @ts-expect-error fix this type
     return ENVIRONMENT_CONFIG.docker[target];
   } else if (process.env.NODE_ENV === 'test') {
-    // @ts-expect-error fix this type
     return ENVIRONMENT_CONFIG.local[target];
   }
 
@@ -136,16 +136,14 @@ availableTargets()
   .filter(testFilter('key', environmentFilter()))
   .forEach(target => {
     const { key: targetId, title, clients } = target;
-    (process.env.NODE_ENV === 'test' ? describe.skip : describe)(`${title} integration tests`, () => {
+
+    describe.skipIf(process.env.NODE_ENV === 'test')(`${title} integration tests`, () => {
       clients.filter(testFilter('key', clientFilter(target.key))).forEach(({ key: clientId }) => {
         // If we're in an HTTPBin-powered Docker environment we only want to run tests for the
         // client that our Docker has been configured for.
-        if (process.env.HTTPBIN && process.env.INTEGRATION_CLIENT !== targetId) {
-          return;
-        }
+        const shouldSkip = process.env.HTTPBIN && process.env.INTEGRATION_CLIENT !== targetId;
 
-        // eslint-disable-next-line jest/valid-title
-        describe(clientId, () => {
+        describe.skipIf(shouldSkip)(clientId, () => {
           fixtures.filter(testFilter(0, fixtureIgnoreFilter, true)).forEach(([fixture, request]) => {
             if (fixture === 'custom-method' && clientId === 'restsharp') {
               // restsharp doesn't even let you express calling an invalid
@@ -163,12 +161,13 @@ availableTargets()
 
 function integrationTest(
   clientId: string,
-  { key: targetId, cli: targetCLI, extname: fixtureExtension }: AvailableTarget,
+  { key: targetId, cli: targetCLI }: AvailableTarget,
   fixture: string,
   request: Request,
 ) {
   test(`should return the expected response for \`${fixture}\``, () => {
-    const basePath = path.join('src', 'targets', targetId, clientId, 'fixtures', `${fixture}${extname(targetId)}`);
+    const fixtureExtension = extname(targetId, clientId);
+    const basePath = path.join('src', 'targets', targetId, clientId, 'fixtures', `${fixture}${fixtureExtension}`);
 
     // Clone the fixture we're testing against to another object because for multipart cases
     // we're deleting the header, and if we don't clone the fixture to another object, that
@@ -225,7 +224,7 @@ function integrationTest(
       // Some JS targets print out their response with `console.log(json)` which creates
       // a JSON object that we can't access with `JSON.parse()`.
       // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval#never_use_eval!
-      if (fixtureExtension !== '.js') {
+      if (!['.js', '.cjs'].includes(fixtureExtension)) {
         throw err;
       }
 
@@ -274,7 +273,7 @@ function integrationTest(
     // Of course the side effect to this is is that now these test cases may be subject
     // to flakiness but without updating the root snippets to not use `console.log()`,
     // which we don't want to do, this is the way it's got to be.
-    if (fixture === 'application-json' && fixtureExtension === '.js') {
+    if (fixture === 'application-json' && ['.js', '.cjs'].includes(fixtureExtension)) {
       const respJSON = response.json;
       respJSON.arr_mix[2] = { arr_mix_nested: [] };
 

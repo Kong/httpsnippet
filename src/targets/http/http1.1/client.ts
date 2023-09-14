@@ -8,9 +8,9 @@
  *
  * For any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
-import type { Client } from '../..';
+import type { Client } from '../../index.js';
 
-import { CodeBuilder } from '../../../helpers/code-builder';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
 
 const CRLF = '\r\n';
 
@@ -31,6 +31,7 @@ export const http11: Client<Http11Options> = {
     title: 'HTTP/1.1',
     link: 'https://tools.ietf.org/html/rfc7230',
     description: 'HTTP/1.1 request string in accordance with RFC 7230',
+    extname: null,
   },
   convert: ({ method, fullUrl, uriObj, httpVersion, allHeaders, postData }, options) => {
     const opts = {

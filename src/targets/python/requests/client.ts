@@ -7,12 +7,12 @@
  *
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
-import type { Client } from '../..';
+import type { Client } from '../../index.js';
 
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { escapeForDoubleQuotes } from '../../../helpers/escape';
-import { getHeaderName } from '../../../helpers/headers';
-import { literalRepresentation } from '../helpers';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import { escapeForDoubleQuotes } from '../../../helpers/escape.js';
+import { getHeaderName } from '../../../helpers/headers.js';
+import { literalRepresentation } from '../helpers.js';
 
 const builtInMethods = ['HEAD', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'];
 
@@ -26,6 +26,7 @@ export const requests: Client<RequestsOptions> = {
     title: 'Requests',
     link: 'http://docs.python-requests.org/en/latest/api/#requests.request',
     description: 'Requests HTTP library',
+    extname: '.py',
   },
   convert: ({ fullUrl, postData, allHeaders, method }, options) => {
     const opts = {

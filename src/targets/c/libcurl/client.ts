@@ -1,7 +1,7 @@
-import type { Client } from '../..';
+import type { Client } from '../../index.js';
 
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { escapeForDoubleQuotes } from '../../../helpers/escape';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import { escapeForDoubleQuotes } from '../../../helpers/escape.js';
 
 export const libcurl: Client = {
   info: {
@@ -9,6 +9,7 @@ export const libcurl: Client = {
     title: 'Libcurl',
     link: 'http://curl.haxx.se/libcurl',
     description: 'Simple REST and HTTP API Client for C',
+    extname: '.c',
   },
   convert: ({ method, fullUrl, headersObj, allHeaders, postData }) => {
     const { push, blank, join } = new CodeBuilder();

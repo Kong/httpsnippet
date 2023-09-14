@@ -1,4 +1,6 @@
-import { escapeString } from './escape';
+import { describe, it, expect } from 'vitest';
+
+import { escapeString } from './escape.js';
 
 describe('Escape methods', () => {
   describe('escapeString', () => {

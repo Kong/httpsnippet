@@ -1,9 +1,9 @@
-import type { Request } from '../../..';
+import type { Request } from '../../../index.js';
 
-import applicationFormEncoded from '../../../fixtures/requests/application-form-encoded';
-import full from '../../../fixtures/requests/full';
-import nested from '../../../fixtures/requests/nested';
-import { runCustomFixtures } from '../../../fixtures/runCustomFixtures';
+import applicationFormEncoded from '../../../fixtures/requests/application-form-encoded.cjs';
+import full from '../../../fixtures/requests/full.cjs';
+import nested from '../../../fixtures/requests/nested.cjs';
+import { runCustomFixtures } from '../../../fixtures/runCustomFixtures.js';
 
 runCustomFixtures({
   targetId: 'shell',

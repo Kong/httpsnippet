@@ -8,11 +8,11 @@
  *
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
-import type { Client } from '../..';
+import type { Client } from '../../index.js';
 
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { getHeader, getHeaderName, isMimeTypeJSON } from '../../../helpers/headers';
-import { quote } from '../../../helpers/shell';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import { getHeader, getHeaderName, isMimeTypeJSON } from '../../../helpers/headers.js';
+import { quote } from '../../../helpers/shell.js';
 
 export interface CurlOptions {
   binary?: boolean;
@@ -54,6 +54,7 @@ export const curl: Client<CurlOptions> = {
     title: 'cURL',
     link: 'http://curl.haxx.se/',
     description: 'cURL is a command line tool and library for transferring data with URL syntax',
+    extname: '.sh',
   },
   convert: ({ fullUrl, method, httpVersion, headersObj, allHeaders, postData }, options = {}) => {
     const { indent = '  ', short = false, binary = false, globOff = false } = options;

@@ -7,10 +7,10 @@
  *
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
-import type { Client } from '../..';
+import type { Client } from '../../index.js';
 
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { escapeForDoubleQuotes } from '../../../helpers/escape';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import { escapeForDoubleQuotes } from '../../../helpers/escape.js';
 
 export const cohttp: Client = {
   info: {
@@ -18,6 +18,7 @@ export const cohttp: Client = {
     title: 'CoHTTP',
     link: 'https://github.com/mirage/ocaml-cohttp',
     description: 'Cohttp is a very lightweight HTTP server using Lwt or Async for OCaml',
+    extname: '.ml',
   },
   convert: ({ fullUrl, allHeaders, postData, method }, options) => {
     const opts = {

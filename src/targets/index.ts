@@ -1,26 +1,26 @@
-import type { Request } from '..';
-import type { CodeBuilderOptions } from '../helpers/code-builder';
+import type { CodeBuilderOptions } from '../helpers/code-builder.js';
+import type { Request } from '../index.js';
 import type { Merge } from 'type-fest';
 
-import { c } from './c/target';
-import { clojure } from './clojure/target';
-import { csharp } from './csharp/target';
-import { go } from './go/target';
-import { http } from './http/target';
-import { java } from './java/target';
-import { javascript } from './javascript/target';
-import { json } from './json/target';
-import { kotlin } from './kotlin/target';
-import { node } from './node/target';
-import { objc } from './objc/target';
-import { ocaml } from './ocaml/target';
-import { php } from './php/target';
-import { powershell } from './powershell/target';
-import { python } from './python/target';
-import { r } from './r/target';
-import { ruby } from './ruby/target';
-import { shell } from './shell/target';
-import { swift } from './swift/target';
+import { c } from './c/target.js';
+import { clojure } from './clojure/target.js';
+import { csharp } from './csharp/target.js';
+import { go } from './go/target.js';
+import { http } from './http/target.js';
+import { java } from './java/target.js';
+import { javascript } from './javascript/target.js';
+import { json } from './json/target.js';
+import { kotlin } from './kotlin/target.js';
+import { node } from './node/target.js';
+import { objc } from './objc/target.js';
+import { ocaml } from './ocaml/target.js';
+import { php } from './php/target.js';
+import { powershell } from './powershell/target.js';
+import { python } from './python/target.js';
+import { r } from './r/target.js';
+import { ruby } from './ruby/target.js';
+import { shell } from './shell/target.js';
+import { swift } from './swift/target.js';
 
 export type TargetId = keyof typeof targets;
 
@@ -28,6 +28,7 @@ export type ClientId = string;
 
 export interface ClientInfo {
   description: string;
+  extname: Extension;
   key: ClientId;
   link: string;
   title: string;
@@ -48,7 +49,6 @@ export type Extension = `.${string}` | null;
 export interface TargetInfo {
   cli?: string;
   default: string;
-  extname: Extension;
   key: TargetId;
   title: string;
 }
@@ -108,10 +108,6 @@ export const isTarget = (target: Target): target is Target => {
 
   if (!target.info.title) {
     throw new Error('target title must be a non-zero-length string');
-  }
-
-  if (!Object.prototype.hasOwnProperty.call(target.info, 'extname')) {
-    throw new Error('targets must have an `info` object with the property `extname`');
   }
 
   if (
@@ -177,6 +173,10 @@ export const isClient = (client: Client): client is Client => {
 
   if (!Object.prototype.hasOwnProperty.call(client.info, 'link')) {
     throw new Error('targets client must have an `info` object with property `link`');
+  }
+
+  if (!Object.prototype.hasOwnProperty.call(client.info, 'extname')) {
+    throw new Error('targets client must have an `info` object with the property `extname`');
   }
 
   if (!Object.prototype.hasOwnProperty.call(client, 'convert') || typeof client.convert !== 'function') {

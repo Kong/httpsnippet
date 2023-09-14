@@ -1,4 +1,4 @@
-import type { Request } from '..';
+import type { Request } from '../index.js';
 
 export const mimetypes = {
   'multipart/mixed': {

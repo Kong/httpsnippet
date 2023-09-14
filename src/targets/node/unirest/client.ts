@@ -7,11 +7,11 @@
  *
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
-import type { Client } from '../..';
+import type { Client } from '../../index.js';
 
 import stringifyObject from 'stringify-object';
 
-import { CodeBuilder } from '../../../helpers/code-builder';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
 
 export const unirest: Client = {
   info: {
@@ -19,6 +19,7 @@ export const unirest: Client = {
     title: 'Unirest',
     link: 'http://unirest.io/nodejs.html',
     description: 'Lightweight HTTP Request Client Library',
+    extname: '.cjs',
   },
   convert: ({ method, url, cookies, queryObj, postData, headersObj }, options) => {
     const opts = {

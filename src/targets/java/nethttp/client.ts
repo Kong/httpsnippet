@@ -7,10 +7,10 @@
  *
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
-import type { Client } from '../..';
+import type { Client } from '../../index.js';
 
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { escapeForDoubleQuotes } from '../../../helpers/escape';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import { escapeForDoubleQuotes } from '../../../helpers/escape.js';
 
 export interface NetHttpOptions {
   indent?: string;
@@ -22,6 +22,7 @@ export const nethttp: Client = {
     title: 'java.net.http',
     link: 'https://openjdk.java.net/groups/net/httpclient/intro.html',
     description: 'Java Standardized HTTP Client API',
+    extname: '.java',
   },
   convert: ({ allHeaders, fullUrl, method, postData }, options) => {
     const opts = {

@@ -1,13 +1,25 @@
 {
-  "extends": "./tsconfig.build.json",
   "compilerOptions": {
-    "rootDir": ".",
-    "types": ["node", "jest"],
+    "allowJs": true,
+    "declaration": true,
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "lib": ["DOM", "ES2020"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "outDir": "dist",
+    "paths": {
+      "map-stream": ["./.sink.d.ts"],
+    },
+    "resolveJsonModule": true,
+    "target": "ES2020",
 
     // Allows us to not have to typeguard in catches.
     // https://bobbyhadz.com/blog/typescript-object-is-of-type-unknown
-    "useUnknownInCatchVariables": false
+    "useUnknownInCatchVariables": false,
+
+    "strict": true
   },
-  "exclude": ["dist/"],
-  "include": ["src/"]
+  "exclude": ["dist/", "./src/fixtures/", "**/*.test.ts"],
+  "include": ["./src/**/*"]
 }

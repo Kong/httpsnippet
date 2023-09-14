@@ -1,11 +1,13 @@
-import type { Request } from '.';
+import type { Request } from './index.js';
 
-import { mimetypes } from './fixtures/mimetypes';
-import headers from './fixtures/requests/headers';
-import query from './fixtures/requests/query';
-import short from './fixtures/requests/short';
+import { describe, it, expect } from 'vitest';
 
-import { HTTPSnippet } from '.';
+import { mimetypes } from './fixtures/mimetypes.js';
+import headers from './fixtures/requests/headers.cjs';
+import query from './fixtures/requests/query.cjs';
+import short from './fixtures/requests/short.cjs';
+
+import { HTTPSnippet } from './index.js';
 
 describe('HTTPSnippet', () => {
   it('should return false if no matching target', () => {

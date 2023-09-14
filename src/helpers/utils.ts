@@ -1,6 +1,6 @@
-import type { ClientInfo, TargetId, TargetInfo } from '../targets';
+import type { ClientId, ClientInfo, TargetId, TargetInfo } from '../targets/index.js';
 
-import { targets } from '../targets';
+import { targets } from '../targets/index.js';
 
 export interface AvailableTarget extends TargetInfo {
   clients: ClientInfo[];
@@ -14,4 +14,11 @@ export const availableTargets = () =>
     ),
   }));
 
-export const extname = (targetId: TargetId) => targets[targetId]?.info.extname || '';
+export const extname = (targetId: TargetId, clientId: ClientId) => {
+  const target = targets[targetId];
+  if (!target) {
+    return '';
+  }
+
+  return target.clientsById[clientId]?.info.extname || '';
+};

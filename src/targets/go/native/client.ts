@@ -7,10 +7,10 @@
  *
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
-import type { Client } from '../..';
+import type { Client } from '../../index.js';
 
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { escapeForDoubleQuotes } from '../../../helpers/escape';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import { escapeForDoubleQuotes } from '../../../helpers/escape.js';
 
 export interface GoNativeOptions {
   checkErrors?: boolean;
@@ -25,6 +25,7 @@ export const native: Client<GoNativeOptions> = {
     title: 'NewRequest',
     link: 'http://golang.org/pkg/net/http/#NewRequest',
     description: 'Golang HTTP client request',
+    extname: '.go',
   },
   convert: ({ postData, method, allHeaders, fullUrl }, options = {}) => {
     const { blank, push, join } = new CodeBuilder({ indent: '\t' });

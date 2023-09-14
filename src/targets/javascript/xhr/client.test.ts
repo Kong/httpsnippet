@@ -1,7 +1,7 @@
-import type { Request } from '../../..';
+import type { Request } from '../../../index.js';
 
-import request from '../../../fixtures/requests/short';
-import { runCustomFixtures } from '../../../fixtures/runCustomFixtures';
+import request from '../../../fixtures/requests/short.cjs';
+import { runCustomFixtures } from '../../../fixtures/runCustomFixtures.js';
 
 runCustomFixtures({
   targetId: 'javascript',

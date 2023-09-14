@@ -11,5 +11,5 @@ export default defineConfig(options => ({
   silent: !options.watch,
   sourcemap: true,
   treeshake: true,
-  tsconfig: './tsconfig.build.json',
+  tsconfig: './tsconfig.json',
 }));

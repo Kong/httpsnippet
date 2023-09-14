@@ -1,9 +1,9 @@
-import type { Client } from '../..';
-import type { Request } from '../../..';
+import type { Request } from '../../../index.js';
+import type { Client } from '../../index.js';
 
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { escapeForDoubleQuotes } from '../../../helpers/escape';
-import { getHeader } from '../../../helpers/headers';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import { escapeForDoubleQuotes } from '../../../helpers/escape.js';
+import { getHeader } from '../../../helpers/headers.js';
 
 const getDecompressionMethods = (allHeaders: Request['allHeaders']) => {
   let acceptEncodings = getHeader(allHeaders, 'accept-encoding');
@@ -41,6 +41,7 @@ export const httpclient: Client = {
     title: 'HttpClient',
     link: 'https://docs.microsoft.com/en-us/dotnet/api/system.net.http.httpclient',
     description: '.NET Standard HTTP Client',
+    extname: '.cs',
   },
   convert: ({ allHeaders, postData, method, fullUrl }, options) => {
     const opts = {

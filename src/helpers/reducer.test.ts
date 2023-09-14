@@ -1,4 +1,6 @@
-import { reducer } from './reducer';
+import { describe, it, expect } from 'vitest';
+
+import { reducer } from './reducer.js';
 
 describe('reducer', () => {
   it('should convert array object pair to key-value object', () => {

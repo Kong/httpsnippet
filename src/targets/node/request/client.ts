@@ -7,11 +7,11 @@
  *
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
-import type { Client } from '../..';
+import type { Client } from '../../index.js';
 
 import stringifyObject from 'stringify-object';
 
-import { CodeBuilder } from '../../../helpers/code-builder';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
 
 export const request: Client = {
   info: {
@@ -19,6 +19,7 @@ export const request: Client = {
     title: 'Request',
     link: 'https://github.com/request/request',
     description: 'Simplified HTTP request client',
+    extname: '.cjs',
   },
   convert: ({ method, url, fullUrl, postData, headersObj, cookies }, options) => {
     const opts = {

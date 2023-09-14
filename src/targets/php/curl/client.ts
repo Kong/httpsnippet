@@ -7,11 +7,11 @@
  *
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
-import type { Client } from '../..';
+import type { Client } from '../../index.js';
 
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { escapeForDoubleQuotes } from '../../../helpers/escape';
-import { convertType } from '../helpers';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import { escapeForDoubleQuotes } from '../../../helpers/escape.js';
+import { convertType } from '../helpers.js';
 
 export interface CurlOptions {
   closingTag?: boolean;
@@ -28,6 +28,7 @@ export const curl: Client<CurlOptions> = {
     title: 'cURL',
     link: 'http://php.net/manual/en/book.curl.php',
     description: 'PHP with ext-curl',
+    extname: '.php',
   },
   convert: ({ uriObj, postData, fullUrl, method, httpVersion, cookies, headersObj }, options = {}) => {
     const {

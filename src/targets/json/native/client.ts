@@ -7,8 +7,8 @@
  *
  * For any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
-import type { Client } from '../..';
-import type { ReducedHelperObject } from '../../../helpers/reducer';
+import type { ReducedHelperObject } from '../../../helpers/reducer.js';
+import type { Client } from '../../index.js';
 
 export const native: Client = {
   info: {
@@ -16,6 +16,7 @@ export const native: Client = {
     title: 'Native JSON',
     link: 'https://www.json.org/json-en.html',
     description: 'A JSON represetation of any HAR payload.',
+    extname: '.json',
   },
   convert: ({ postData }, inputOpts) => {
     const opts = {

@@ -1,4 +1,6 @@
-import { getHeader, getHeaderName, hasHeader } from './headers';
+import { describe, it, expect } from 'vitest';
+
+import { getHeader, getHeaderName, hasHeader } from './headers.js';
 
 const headers = {
   'Content-Type': 'multipart/form-data; boundary=---011000010111000001101001',

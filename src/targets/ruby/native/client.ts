@@ -1,7 +1,7 @@
-import type { Client } from '../..';
+import type { Client } from '../../index.js';
 
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { escapeForSingleQuotes } from '../../../helpers/escape';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import { escapeForSingleQuotes } from '../../../helpers/escape.js';
 
 export const native: Client = {
   info: {
@@ -9,6 +9,7 @@ export const native: Client = {
     title: 'net::http',
     link: 'http://ruby-doc.org/stdlib-2.2.1/libdoc/net/http/rdoc/Net/HTTP.html',
     description: 'Ruby HTTP client',
+    extname: '.rb',
   },
   convert: ({ uriObj, method: rawMethod, fullUrl, postData, allHeaders }) => {
     const { push, blank, join } = new CodeBuilder();

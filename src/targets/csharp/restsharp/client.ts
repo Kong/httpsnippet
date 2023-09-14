@@ -1,7 +1,7 @@
-import type { Client } from '../..';
+import type { Client } from '../../index.js';
 
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { escapeForDoubleQuotes } from '../../../helpers/escape';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import { escapeForDoubleQuotes } from '../../../helpers/escape.js';
 
 function title(s: string): string {
   return s[0].toUpperCase() + s.slice(1).toLowerCase();
@@ -13,6 +13,7 @@ export const restsharp: Client = {
     title: 'RestSharp',
     link: 'http://restsharp.org/',
     description: 'Simple REST and HTTP API Client for .NET',
+    extname: '.cs',
   },
   convert: ({ method, fullUrl, headersObj, cookies, postData, uriObj }) => {
     const { push, join } = new CodeBuilder();

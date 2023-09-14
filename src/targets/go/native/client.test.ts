@@ -1,7 +1,7 @@
-import type { Request } from '../../..';
+import type { Request } from '../../../index.js';
 
-import request from '../../../fixtures/requests/full';
-import { runCustomFixtures } from '../../../fixtures/runCustomFixtures';
+import request from '../../../fixtures/requests/full.cjs';
+import { runCustomFixtures } from '../../../fixtures/runCustomFixtures.js';
 
 runCustomFixtures({
   targetId: 'go',

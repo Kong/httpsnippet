@@ -1,4 +1,4 @@
-import { escapeString } from '../../helpers/escape';
+import { escapeString } from '../../helpers/escape.js';
 
 export const convertType = (obj: any[] | any, indent?: string, lastIndent?: string) => {
   lastIndent = lastIndent || '';

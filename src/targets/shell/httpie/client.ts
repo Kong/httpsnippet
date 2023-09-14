@@ -7,10 +7,10 @@
  *
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
-import type { Client } from '../..';
+import type { Client } from '../../index.js';
 
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { quote } from '../../../helpers/shell';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import { quote } from '../../../helpers/shell.js';
 
 export interface HttpieOptions {
   body?: boolean;
@@ -32,6 +32,7 @@ export const httpie: Client<HttpieOptions> = {
     title: 'HTTPie',
     link: 'http://httpie.org/',
     description: 'a CLI, cURL-like tool for humans',
+    extname: '.sh',
   },
   convert: ({ allHeaders, postData, queryObj, fullUrl, method, url }, options) => {
     const opts = {

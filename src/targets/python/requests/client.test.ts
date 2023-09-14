@@ -1,6 +1,6 @@
-import type { Request } from '../../..';
+import type { Request } from '../../../index.js';
 
-import { runCustomFixtures } from '../../../fixtures/runCustomFixtures';
+import { runCustomFixtures } from '../../../fixtures/runCustomFixtures.js';
 
 runCustomFixtures({
   targetId: 'python',

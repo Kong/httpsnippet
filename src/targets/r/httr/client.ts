@@ -7,11 +7,11 @@
  *
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
-import type { Client } from '../..';
+import type { Client } from '../../index.js';
 
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { escapeForDoubleQuotes, escapeForSingleQuotes } from '../../../helpers/escape';
-import { getHeader } from '../../../helpers/headers';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import { escapeForDoubleQuotes, escapeForSingleQuotes } from '../../../helpers/escape.js';
+import { getHeader } from '../../../helpers/headers.js';
 
 export const httr: Client = {
   info: {
@@ -19,6 +19,7 @@ export const httr: Client = {
     title: 'httr',
     link: 'https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html',
     description: 'httr: Tools for Working with URLs and HTTP',
+    extname: '.r',
   },
   convert: ({ url, queryObj, queryString, postData, allHeaders, method }) => {
     // Start snippet

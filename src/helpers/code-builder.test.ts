@@ -1,4 +1,6 @@
-import { CodeBuilder } from './code-builder';
+import { describe, it, expect } from 'vitest';
+
+import { CodeBuilder } from './code-builder.js';
 
 describe('codeBuilder', () => {
   describe('indentLine', () => {

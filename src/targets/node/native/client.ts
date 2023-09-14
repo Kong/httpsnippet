@@ -7,11 +7,11 @@
  *
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
-import type { Client } from '../..';
+import type { Client } from '../../index.js';
 
 import stringifyObject from 'stringify-object';
 
-import { CodeBuilder } from '../../../helpers/code-builder';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
 
 export const native: Client = {
   info: {
@@ -19,6 +19,7 @@ export const native: Client = {
     title: 'HTTP',
     link: 'http://nodejs.org/api/http.html#http_http_request_options_callback',
     description: 'Node.js native HTTP interface',
+    extname: '.cjs',
   },
   convert: ({ uriObj, method, allHeaders, postData }, options = {}) => {
     const { indent = '  ' } = options;

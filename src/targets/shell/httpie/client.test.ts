@@ -1,10 +1,10 @@
-import type { Request } from '../../..';
+import type { Request } from '../../../index.js';
 
-import applicationFormEncoded from '../../../fixtures/requests/application-form-encoded';
-import full from '../../../fixtures/requests/full';
-import query from '../../../fixtures/requests/query';
-import short from '../../../fixtures/requests/short';
-import { runCustomFixtures } from '../../../fixtures/runCustomFixtures';
+import applicationFormEncoded from '../../../fixtures/requests/application-form-encoded.cjs';
+import full from '../../../fixtures/requests/full.cjs';
+import query from '../../../fixtures/requests/query.cjs';
+import short from '../../../fixtures/requests/short.cjs';
+import { runCustomFixtures } from '../../../fixtures/runCustomFixtures.js';
 
 runCustomFixtures({
   targetId: 'shell',

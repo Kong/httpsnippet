@@ -1,5 +1,5 @@
-import type { ReducedHelperObject } from './helpers/reducer';
-import type { ClientId, TargetId } from './targets';
+import type { ReducedHelperObject } from './helpers/reducer.js';
+import type { ClientId, TargetId } from './targets/index.js';
 import type { Param, PostDataCommon, Request as NpmHarRequest } from 'har-format';
 import type { UrlWithParsedQuery } from 'node:url';
 
@@ -10,13 +10,13 @@ import { stringify as queryStringify } from 'qs';
 
 import mapStream from 'map-stream';
 
-import { formDataIterator, isBlob } from './helpers/form-data';
-import { getHeaderName } from './helpers/headers';
-import { reducer } from './helpers/reducer';
-import { targets } from './targets';
+import { formDataIterator, isBlob } from './helpers/form-data.js';
+import { getHeaderName } from './helpers/headers.js';
+import { reducer } from './helpers/reducer.js';
+import { targets } from './targets/index.js';
 
-export { availableTargets, extname } from './helpers/utils';
-export { addTarget, addTargetClient } from './targets';
+export { availableTargets, extname } from './helpers/utils.js';
+export { addTarget, addTargetClient } from './targets/index.js';
 
 /** is this wrong?  yes.  according to the spec (http://www.softwareishard.com/blog/har-12-spec/#postData) it's technically wrong since `params` and `text` are (by the spec) mutually exclusive.  However, in practice, this is not what is often the case.
  *

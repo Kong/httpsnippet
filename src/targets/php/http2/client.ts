@@ -7,11 +7,11 @@
  *
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
-import type { Client } from '../..';
+import type { Client } from '../../index.js';
 
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { getHeader, getHeaderName, hasHeader } from '../../../helpers/headers';
-import { convertType } from '../helpers';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import { getHeader, getHeaderName, hasHeader } from '../../../helpers/headers.js';
+import { convertType } from '../helpers.js';
 
 export interface Http2Options {
   closingTag?: boolean;
@@ -25,6 +25,7 @@ export const http2: Client<Http2Options> = {
     title: 'HTTP v2',
     link: 'http://devel-m6w6.rhcloud.com/mdref/http',
     description: 'PHP with pecl/http v2',
+    extname: '.php',
   },
   convert: ({ postData, headersObj, method, queryObj, cookiesObj, url }, options = {}) => {
     const { closingTag = false, indent = '  ', noTags = false, shortTags = false } = options;

@@ -1,9 +1,9 @@
-import type { Request } from '../../..';
+import type { Request } from '../../../index.js';
 
-import full from '../../../fixtures/requests/full';
-import jsonNullValue from '../../../fixtures/requests/jsonObj-null-value';
-import short from '../../../fixtures/requests/short';
-import { runCustomFixtures } from '../../../fixtures/runCustomFixtures';
+import full from '../../../fixtures/requests/full.cjs';
+import jsonNullValue from '../../../fixtures/requests/jsonObj-null-value.cjs';
+import short from '../../../fixtures/requests/short.cjs';
+import { runCustomFixtures } from '../../../fixtures/runCustomFixtures.js';
 
 runCustomFixtures({
   targetId: 'swift',

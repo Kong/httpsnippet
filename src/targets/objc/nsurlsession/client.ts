@@ -7,10 +7,10 @@
  *
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
-import type { Client } from '../..';
+import type { Client } from '../../index.js';
 
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { nsDeclaration } from '../helpers';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import { nsDeclaration } from '../helpers.js';
 
 export interface NsurlsessionOptions {
   pretty?: boolean;
@@ -23,6 +23,7 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
     title: 'NSURLSession',
     link: 'https://developer.apple.com/library/mac/documentation/Foundation/Reference/NSURLSession_class/index.html',
     description: "Foundation's NSURLSession request",
+    extname: '.m',
   },
   convert: ({ allHeaders, postData, method, fullUrl }, options) => {
     const opts = {

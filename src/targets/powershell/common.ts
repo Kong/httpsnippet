@@ -1,8 +1,8 @@
-import type { Converter } from '..';
+import type { Converter } from '../index.js';
 
-import { CodeBuilder } from '../../helpers/code-builder';
-import { escapeString } from '../../helpers/escape';
-import { getHeader } from '../../helpers/headers';
+import { CodeBuilder } from '../../helpers/code-builder.js';
+import { escapeString } from '../../helpers/escape.js';
+import { getHeader } from '../../helpers/headers.js';
 
 export type PowershellCommand = 'Invoke-RestMethod' | 'Invoke-WebRequest';
 

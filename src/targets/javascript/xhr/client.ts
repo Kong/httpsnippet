@@ -7,13 +7,13 @@
  *
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
-import type { Client } from '../..';
+import type { Client } from '../../index.js';
 
 import stringifyObject from 'stringify-object';
 
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { escapeForSingleQuotes } from '../../../helpers/escape';
-import { getHeader, getHeaderName, hasHeader } from '../../../helpers/headers';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import { escapeForSingleQuotes } from '../../../helpers/escape.js';
+import { getHeader, getHeaderName, hasHeader } from '../../../helpers/headers.js';
 
 export interface XhrOptions {
   cors?: boolean;
@@ -25,6 +25,7 @@ export const xhr: Client = {
     title: 'XMLHttpRequest',
     link: 'https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest',
     description: 'W3C Standard API that provides scripted client functionality',
+    extname: '.js',
   },
   convert: ({ postData, allHeaders, method, fullUrl }, options) => {
     const opts = {

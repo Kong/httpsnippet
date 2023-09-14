@@ -7,12 +7,12 @@
  *
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
-import type { Client } from '../..';
+import type { Client } from '../../index.js';
 
 import stringifyObject from 'stringify-object';
 
-import { CodeBuilder } from '../../../helpers/code-builder';
-import { getHeader, getHeaderName, hasHeader } from '../../../helpers/headers';
+import { CodeBuilder } from '../../../helpers/code-builder.js';
+import { getHeader, getHeaderName, hasHeader } from '../../../helpers/headers.js';
 
 export const jquery: Client = {
   info: {
@@ -20,6 +20,7 @@ export const jquery: Client = {
     title: 'jQuery',
     link: 'http://api.jquery.com/jquery.ajax/',
     description: 'Perform an asynchronous HTTP (Ajax) requests with jQuery',
+    extname: '.js',
   },
   convert: ({ fullUrl, method, allHeaders, postData }, options) => {
     const opts = {
