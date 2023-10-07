@@ -76,7 +76,7 @@
     "prepack": "npm run build",
     "pretest": "npm run lint",
     "prettier": "prettier --list-different --write .",
-    "test": "vitest --coverage"
+    "test": "vitest run --coverage"
   },
   "dependencies": {
     "formdata-to-string": "^1.1.0",
@@ -84,18 +84,18 @@
     "stringify-object": "^3.3.0"
   },
   "devDependencies": {
-    "@readme/eslint-config": "^13.0.1",
+    "@readme/eslint-config": "^13.1.0",
     "@types/eslint": "^8.44.2",
     "@types/har-format": "^1.2.12",
-    "@types/node": "^20.5.9",
+    "@types/node": "^20.8.3",
     "@types/qs": "^6.9.8",
     "@types/stringify-object": "^4.0.2",
     "@vitest/coverage-v8": "^0.34.4",
-    "eslint": "^8.48.0",
+    "eslint": "^8.51.0",
     "prettier": "^3.0.3",
     "require-directory": "^2.1.1",
     "tsup": "^7.2.0",
-    "type-fest": "^4.3.1",
+    "type-fest": "^4.4.0",
     "typescript": "^5.2.2",
     "vitest": "^0.34.4"
   },

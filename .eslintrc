@@ -6,6 +6,9 @@
     "@readme/eslint-config/testing/vitest"
   ],
   "root": true,
+  "env": {
+    "browser": true
+  },
   "rules": {
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-use-before-define": "off",
@@ -18,8 +21,6 @@
     "no-underscore-dangle": ["error", { "allow": ["_boundary"] }],
     "spaced-comment": "off",
 
-    "unicorn/prefer-node-protocol": "error",
-
     "vitest/require-hook": [
       "error",
       {
@@ -31,11 +32,15 @@
     {
       "files": ["src/fixtures/**"],
       "rules": {
-        "import/no-commonjs": "off"
+        "import/no-commonjs": "off",
+        "unicorn/prefer-module": "off"
+      }
+    },
+    {
+      "files": ["src/**/*.test.*"],
+      "rules": {
+        "unicorn/prefer-module": "off"
       }
     }
-  ],
-  "env": {
-    "browser": true
-  }
+  ]
 }
