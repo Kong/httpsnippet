@@ -69,6 +69,7 @@
     "url": "https://github.com/readmeio/httpsnippet.git"
   },
   "scripts": {
+    "attw": "attw --pack --format table-flipped",
     "build": "tsup",
     "clean": "rm -rf dist/",
     "lint": "eslint . --ext .js,.cjs,.ts",
