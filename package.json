@@ -80,7 +80,7 @@
     "test": "vitest run --coverage"
   },
   "dependencies": {
-    "formdata-to-string": "^1.1.0",
+    "formdata-to-string": "^2.0.0",
     "qs": "^6.11.2",
     "stringify-object": "^3.3.0"
   },
