@@ -6,7 +6,7 @@
     "esModuleInterop": true,
     "lib": ["DOM", "ES2020"],
     "module": "ESNext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "Bundler",
     "outDir": "dist",
     "resolveJsonModule": true,
     "target": "ES2020",
