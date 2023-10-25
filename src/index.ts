@@ -13,7 +13,7 @@ import { reducer } from './helpers/reducer.js';
 import { targets } from './targets/index.js';
 
 export { availableTargets, extname } from './helpers/utils.js';
-export { addTarget, addTargetClient } from './targets/index.js';
+export { addTarget, addTargetClient, addClientPlugin } from './targets/index.js';
 
 /** is this wrong?  yes.  according to the spec (http://www.softwareishard.com/blog/har-12-spec/#postData) it's technically wrong since `params` and `text` are (by the spec) mutually exclusive.  However, in practice, this is not what is often the case.
  *
