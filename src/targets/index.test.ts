@@ -1,4 +1,4 @@
-import type { Client, ClientId, Target, TargetId } from './index.js';
+import type { Client, ClientId, ClientPlugin, Target, TargetId } from './index.js';
 import type { HTTPSnippetOptions, Request } from '../index.js';
 
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -10,7 +10,7 @@ import short from '../fixtures/requests/short.cjs';
 import { availableTargets, extname } from '../helpers/utils.js';
 import { HTTPSnippet } from '../index.js';
 
-import { isClient, isTarget, addTarget, addTargetClient, targets } from './index.js';
+import { isClient, isTarget, addTarget, addTargetClient, targets, addClientPlugin } from './index.js';
 
 const expectedBasePath = ['src', 'fixtures', 'requests'];
 
@@ -310,6 +310,38 @@ describe('addTargetClient', () => {
     };
 
     addTargetClient('node', customClient);
+
+    const snippet = new HTTPSnippet(short.log.entries[0].request as Request, {});
+
+    const result = await snippet.convert('node', 'custom');
+
+    expect(result).toBe('This was generated from a custom client.');
+  });
+});
+
+describe('addClientPlugin', () => {
+  afterEach(() => {
+    delete targets.node.clientsById.custom;
+  });
+
+  it('should add a new custom target', async () => {
+    const customPlugin: ClientPlugin = {
+      target: 'node',
+      client: {
+        info: {
+          key: 'custom',
+          title: 'Custom HTTP library',
+          link: 'https://example.com',
+          description: 'A custom HTTP library',
+          extname: '.custom',
+        },
+        convert: () => {
+          return 'This was generated from a custom client.';
+        },
+      },
+    };
+
+    addClientPlugin(customPlugin);
 
     const snippet = new HTTPSnippet(short.log.entries[0].request as Request, {});
 

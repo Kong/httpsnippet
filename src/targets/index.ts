@@ -44,6 +44,11 @@ export interface Client<T extends Record<string, any> = Record<string, any>> {
   info: ClientInfo;
 }
 
+export interface ClientPlugin {
+  client: Client;
+  target: TargetId;
+}
+
 export type Extension = `.${string}` | null;
 
 export interface TargetInfo {
@@ -184,6 +189,10 @@ export const isClient = (client: Client): client is Client => {
   }
 
   return true;
+};
+
+export const addClientPlugin = (plugin: ClientPlugin) => {
+  addTargetClient(plugin.target, plugin.client);
 };
 
 export const addTargetClient = (targetId: TargetId, client: Client) => {

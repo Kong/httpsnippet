@@ -16,13 +16,13 @@ npm install --save @readme/httpsnippet
 
 ## Usage
 
-### HTTPSnippet(source [, options])
+### HTTPSnippet(input [, options])
 
-#### source
+#### input
 
 _Required_ Type: `object`
 
-Name of [conversion target](https://github.com/Kong/httpsnippet/wiki/Targets)
+The [HAR](http://www.softwareishard.com/blog/har-12-spec/#request) request object to generate a snippet for.
 
 ```ts
 import { HTTPSnippet } from 'httpsnippet';
@@ -128,13 +128,13 @@ HTTPSnippet.addTarget(customLanguageTarget);
 
 ### addTargetClient(target, client)
 
-### Target
+#### Target
 
 _Required_ Type: `string`
 
 Name of [conversion target](https://github.com/Kong/httpsnippet/wiki/Targets)
 
-### Client
+#### Client
 
 _Required_ Type: `object`
 
@@ -144,6 +144,34 @@ Representation of a [conversion target client](https://github.com/Kong/httpsnipp
 import { customClient } from 'httpsnippet-for-my-node-http-client';
 HTTPSnippet.addTargetClient('node', customClient);
 ```
+
+### addClientPlugin(plugin)
+
+#### Plugin
+
+_Required_ Type: `object`
+
+The client plugin to install.
+
+```ts
+addClientPlugin({
+  target: 'node',
+  client: {
+    info: {
+      key: 'custom',
+      title: 'Custom HTTP library',
+      link: 'https://example.com',
+      description: 'A custom HTTP library',
+      extname: '.custom',
+    },
+    convert: () => {
+      return 'This was generated from a custom client.';
+    },
+  },
+});
+```
+
+The above example will create a new `custom` client snippet generator for the `node` target.
 
 ## Documentation
 
@@ -161,6 +189,7 @@ There are some major differences between this library and the [httpsnippet](http
 - The main `HTTPSnippet` export contains an `options` argument for an `harIsAlreadyEncoded` option for disabling [escaping](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) of cookies and query strings in URLs.
   - We added this because all HARs that we interact with already have this data escaped and this option prevents them from being double encoded, thus corrupting the data.
 - Does not support the `insecureSkipVerify` option on `go:native`, `node:native`, `ruby:native`, and `shell:curl` as we don't want snippets generated for our users to bypass SSL certificate verification.
+- Includes a full plugin system, `#addClientPlugin`, for quick installation of a target client.
 - Node
   - `fetch`
     - Body payloads are treated as an object literal and wrapped within `JSON.stringify()`. We do this to keep those targets looking nicer with those kinds of payloads. This also applies to the JS `fetch` target as well.
