@@ -44,6 +44,7 @@ exports[`availableTargets > returns all available targets 1`] = `
       {
         "description": "Simple REST and HTTP API Client for .NET",
         "extname": ".cs",
+        "installation": "dotnet add package RestSharp",
         "key": "restsharp",
         "link": "http://restsharp.org/",
         "title": "RestSharp",
@@ -129,6 +130,7 @@ exports[`availableTargets > returns all available targets 1`] = `
       {
         "description": "Promise based HTTP client for the browser and node.js",
         "extname": ".js",
+        "installation": "npm install axios --save",
         "key": "axios",
         "link": "https://github.com/axios/axios",
         "title": "Axios",
@@ -193,6 +195,7 @@ exports[`availableTargets > returns all available targets 1`] = `
       {
         "description": "Simplified HTTP request client",
         "extname": ".cjs",
+        "installation": "npm install request --save",
         "key": "request",
         "link": "https://github.com/request/request",
         "title": "Request",
@@ -207,6 +210,7 @@ exports[`availableTargets > returns all available targets 1`] = `
       {
         "description": "Promise based HTTP client for the browser and node.js",
         "extname": ".cjs",
+        "install": "npm install axios --save",
         "key": "axios",
         "link": "https://github.com/axios/axios",
         "title": "Axios",
@@ -214,6 +218,7 @@ exports[`availableTargets > returns all available targets 1`] = `
       {
         "description": "Simplified HTTP node-fetch client",
         "extname": ".cjs",
+        "installation": "npm install node-fetch@2 --save",
         "key": "fetch",
         "link": "https://github.com/bitinn/node-fetch",
         "title": "Fetch",
@@ -242,6 +247,7 @@ exports[`availableTargets > returns all available targets 1`] = `
       {
         "description": "Cohttp is a very lightweight HTTP server using Lwt or Async for OCaml",
         "extname": ".ml",
+        "installation": "opam install cohttp-lwt-unix cohttp-async",
         "key": "cohttp",
         "link": "https://github.com/mirage/ocaml-cohttp",
         "title": "CoHTTP",
@@ -264,6 +270,7 @@ exports[`availableTargets > returns all available targets 1`] = `
       {
         "description": "PHP with Guzzle",
         "extname": ".php",
+        "installation": "composer require guzzlehttp/guzzle",
         "key": "guzzle",
         "link": "http://docs.guzzlephp.org/en/stable/",
         "title": "Guzzle",
@@ -314,6 +321,7 @@ exports[`availableTargets > returns all available targets 1`] = `
       {
         "description": "Requests HTTP library",
         "extname": ".py",
+        "installation": "python -m pip install requests",
         "key": "requests",
         "link": "http://docs.python-requests.org/en/latest/api/#requests.request",
         "title": "Requests",
@@ -364,6 +372,7 @@ exports[`availableTargets > returns all available targets 1`] = `
       {
         "description": "a CLI, cURL-like tool for humans",
         "extname": ".sh",
+        "installation": "brew install httpie",
         "key": "httpie",
         "link": "http://httpie.org/",
         "title": "HTTPie",

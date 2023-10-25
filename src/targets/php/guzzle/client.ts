@@ -28,6 +28,7 @@ export const guzzle: Client<GuzzleOptions> = {
     link: 'http://docs.guzzlephp.org/en/stable/',
     description: 'PHP with Guzzle',
     extname: '.php',
+    installation: 'composer require guzzlehttp/guzzle',
   },
   convert: ({ postData, fullUrl, method, cookies, headersObj }, options) => {
     const opts = {

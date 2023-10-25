@@ -21,6 +21,7 @@ export const fetch: Client = {
     link: 'https://github.com/bitinn/node-fetch',
     description: 'Simplified HTTP node-fetch client',
     extname: '.cjs',
+    installation: 'npm install node-fetch@2 --save',
   },
   convert: ({ method, fullUrl, postData, headersObj, cookies }, options) => {
     const opts = {

@@ -14,6 +14,7 @@ export const restsharp: Client = {
     link: 'http://restsharp.org/',
     description: 'Simple REST and HTTP API Client for .NET',
     extname: '.cs',
+    installation: 'dotnet add package RestSharp',
   },
   convert: ({ method, fullUrl, headersObj, cookies, postData, uriObj }) => {
     const { push, join } = new CodeBuilder();

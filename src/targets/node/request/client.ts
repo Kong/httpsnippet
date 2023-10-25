@@ -20,6 +20,7 @@ export const request: Client = {
     link: 'https://github.com/request/request',
     description: 'Simplified HTTP request client',
     extname: '.cjs',
+    installation: 'npm install request --save',
   },
   convert: ({ method, url, fullUrl, postData, headersObj, cookies }, options) => {
     const opts = {

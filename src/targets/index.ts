@@ -29,6 +29,7 @@ export type ClientId = string;
 export interface ClientInfo {
   description: string;
   extname: Extension;
+  installation?: string;
   key: ClientId;
   link: string;
   title: string;
