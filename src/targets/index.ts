@@ -45,8 +45,8 @@ export interface Client<T extends Record<string, any> = Record<string, any>> {
   info: ClientInfo;
 }
 
-export interface ClientPlugin {
-  client: Client;
+export interface ClientPlugin<T extends Record<string, any> = Record<string, any>> {
+  client: Client<T>;
   target: TargetId;
 }
 
