@@ -85,7 +85,7 @@
     "stringify-object": "^3.3.0"
   },
   "devDependencies": {
-    "@readme/eslint-config": "^13.1.0",
+    "@readme/eslint-config": "^13.4.0",
     "@types/eslint": "^8.44.6",
     "@types/har-format": "^1.2.14",
     "@types/node": "^20.8.9",
