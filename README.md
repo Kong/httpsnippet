@@ -60,7 +60,7 @@ import { HTTPSnippet } from 'httpsnippet';
 
 const snippet = new HTTPSnippet({
   method: 'GET',
-  url: 'httsp://httpbin.org/anything',
+  url: 'https://httpbin.org/anything',
 });
 
 // generate Node.js: Native output
