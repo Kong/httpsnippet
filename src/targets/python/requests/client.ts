@@ -131,7 +131,7 @@ export const requests: Client<RequestsOptions> = {
       blank();
     } else if (headerCount === 1) {
       for (const header in headers) {
-        push(`headers = {"${header}": "${escapeForDoubleQuotes(headers[header])}"}`);
+        push(`headers = {"${header}": """${escapeForDoubleQuotes(headers[header])}"""}`);
         blank();
       }
     } else if (headerCount > 1) {
@@ -141,9 +141,9 @@ export const requests: Client<RequestsOptions> = {
 
       for (const header in headers) {
         if (count !== headerCount) {
-          push(`"${header}": "${escapeForDoubleQuotes(headers[header])}",`, 1);
+          push(`"${header}": """${escapeForDoubleQuotes(headers[header])}""",`, 1);
         } else {
-          push(`"${header}": "${escapeForDoubleQuotes(headers[header])}"`, 1);
+          push(`"${header}": """${escapeForDoubleQuotes(headers[header])}"""`, 1);
         }
         count += 1;
       }
