@@ -1,0 +1,1 @@
+# Faraday cannot currently run PROPFIND requests. Please use another client.

@@ -1,5 +1,6 @@
 import { Target } from '../targets';
 import { native } from './native/client';
+import { faraday } from './faraday/client';
 
 export const ruby: Target = {
   info: {
@@ -10,5 +11,6 @@ export const ruby: Target = {
   },
   clientsById: {
     native,
+    faraday
   },
 };
