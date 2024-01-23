@@ -31,7 +31,7 @@ type PostDataBase = PostDataCommon & {
   params?: Param[];
 };
 
-export type HarRequest = Omit<NpmHarRequest, 'postData'> & { postData: PostDataBase };
+export type HarRequest = Omit<NpmHarRequest, 'postData'> & { postData?: PostDataBase };
 
 export interface RequestExtras {
   postData: PostDataBase & {
