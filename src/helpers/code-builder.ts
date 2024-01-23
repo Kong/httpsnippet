@@ -57,6 +57,18 @@ export class CodeBuilder {
   };
 
   /**
+   * Add the line to the end of the last line. Creates a new line
+   * if no lines exist yet.
+   */
+  pushToLast = (line: string) => {
+    if (!this.code) {
+      this.push(line);
+    }
+    const updatedLine = `${this.code[this.code.length - 1]}${line}`;
+    this.code[this.code.length - 1] = updatedLine;
+  };
+
+  /**
    * Add an empty line at the end of current lines
    */
   blank = () => {
