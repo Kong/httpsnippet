@@ -27,7 +27,7 @@ export const axios: Client = {
     };
     const { blank, join, push, addPostProcessor } = new CodeBuilder({ indent: opts.indent });
 
-    push("const axios = require('axios').default;");
+    push("const axios = require('axios');");
 
     const reqOpts: Record<string, any> = {
       method,
