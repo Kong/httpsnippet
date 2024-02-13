@@ -25,7 +25,7 @@ _Required_ Type: `object`
 The [HAR](http://www.softwareishard.com/blog/har-12-spec/#request) request object to generate a snippet for.
 
 ```ts
-import { HTTPSnippet } from 'httpsnippet';
+import { HTTPSnippet } from '@readme/httpsnippet';
 
 const snippet = new HTTPSnippet({
   method: 'GET',
@@ -56,7 +56,7 @@ Type: `object`
 Target options, _see [wiki](https://github.com/Kong/httpsnippet/wiki/Targets) for details_
 
 ```ts
-import { HTTPSnippet } from 'httpsnippet';
+import { HTTPSnippet } from '@readme/httpsnippet';
 
 const snippet = new HTTPSnippet({
   method: 'GET',
@@ -95,7 +95,7 @@ Type: `object`
 Target options, _see [wiki](https://github.com/Kong/httpsnippet/wiki/Targets) for details_
 
 ```ts
-import { HTTPSnippet } from 'httpsnippet';
+import { HTTPSnippet } from '@readme/httpsnippet';
 
 const snippet = new HTTPSnippet({
   method: 'GET',
