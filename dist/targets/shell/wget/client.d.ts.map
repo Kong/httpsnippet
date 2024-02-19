@@ -1,0 +1,1 @@
+{"version":3,"file":"client.d.ts","sourceRoot":"","sources":["../../../../src/targets/shell/wget/client.ts"],"names":[],"mappings":"AAAA;;;;;;;;GAQG;AAIH,OAAO,EAAE,MAAM,EAAE,MAAM,eAAe,CAAC;AAEvC,MAAM,WAAW,WAAW;IAC1B,KAAK,CAAC,EAAE,OAAO,CAAC;IAChB,OAAO,CAAC,EAAE,OAAO,CAAC;CACnB;AAED,eAAO,MAAM,IAAI,EAAE,MAAM,CAAC,WAAW,CA2CpC,CAAC"}

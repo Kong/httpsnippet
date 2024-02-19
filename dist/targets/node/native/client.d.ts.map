@@ -1,0 +1,1 @@
+{"version":3,"file":"client.d.ts","sourceRoot":"","sources":["../../../../src/targets/node/native/client.ts"],"names":[],"mappings":"AAAA;;;;;;;;GAQG;AAKH,OAAO,EAAE,MAAM,EAAE,MAAM,eAAe,CAAC;AAEvC,MAAM,WAAW,iBAAiB;IAChC,kBAAkB,CAAC,EAAE,OAAO,CAAC;CAC9B;AAED,eAAO,MAAM,MAAM,EAAE,MAAM,CAAC,iBAAiB,CA0E5C,CAAC"}

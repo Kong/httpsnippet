@@ -1,0 +1,1 @@
+{"version":3,"file":"client.d.ts","sourceRoot":"","sources":["../../../../src/targets/python/requests/client.ts"],"names":[],"mappings":"AAAA;;;;;;;;GAQG;AAKH,OAAO,EAAE,MAAM,EAAE,MAAM,eAAe,CAAC;AAKvC,MAAM,WAAW,eAAe;IAC9B,MAAM,CAAC,EAAE,IAAI,CAAC;CACf;AAED,eAAO,MAAM,QAAQ,EAAE,MAAM,CAAC,eAAe,CAuK5C,CAAC"}

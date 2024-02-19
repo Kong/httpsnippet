@@ -1,0 +1,1 @@
+{"version":3,"file":"client.d.ts","sourceRoot":"","sources":["../../../../src/targets/java/nethttp/client.ts"],"names":[],"mappings":"AAAA;;;;;;;;GAQG;AAIH,OAAO,EAAE,MAAM,EAAE,MAAM,eAAe,CAAC;AAEvC,MAAM,WAAW,cAAc;IAC7B,MAAM,CAAC,EAAE,MAAM,CAAC;CACjB;AAED,eAAO,MAAM,OAAO,EAAE,MA0CrB,CAAC"}

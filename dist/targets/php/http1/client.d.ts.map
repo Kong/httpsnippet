@@ -1,0 +1,1 @@
+{"version":3,"file":"client.d.ts","sourceRoot":"","sources":["../../../../src/targets/php/http1/client.ts"],"names":[],"mappings":"AAAA;;;;;;;;GAQG;AAGH,OAAO,EAAE,MAAM,EAAE,MAAM,eAAe,CAAC;AAGvC,MAAM,WAAW,YAAY;IAC3B,UAAU,CAAC,EAAE,OAAO,CAAC;IACrB,MAAM,CAAC,EAAE,OAAO,CAAC;IACjB,SAAS,CAAC,EAAE,OAAO,CAAC;CACrB;AAED,eAAO,MAAM,KAAK,EAAE,MAAM,CAAC,YAAY,CAkFtC,CAAC"}
