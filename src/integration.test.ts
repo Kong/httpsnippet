@@ -139,12 +139,14 @@ availableTargets()
     const { key: targetId, title, clients } = target;
 
     describe.skipIf(process.env.NODE_ENV === 'test')(`${title} integration tests`, () => {
+      // eslint-disable-next-line vitest/require-hook
       clients.filter(testFilter('key', clientFilter(target.key))).forEach(({ key: clientId }) => {
         // If we're in an HTTPBin-powered Docker environment we only want to run tests for the
         // client that our Docker has been configured for.
         const shouldSkip = process.env.HTTPBIN && process.env.INTEGRATION_CLIENT !== targetId;
 
         describe.skipIf(shouldSkip)(clientId, () => {
+          // eslint-disable-next-line vitest/require-hook
           fixtures.filter(testFilter(0, fixtureIgnoreFilter, true)).forEach(([fixture, request]) => {
             if (fixture === 'custom-method' && clientId === 'restsharp') {
               // restsharp doesn't even let you express calling an invalid

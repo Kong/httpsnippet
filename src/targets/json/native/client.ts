@@ -24,7 +24,7 @@ export const native: Client = {
       ...inputOpts,
     };
 
-    let payload: string | ReducedHelperObject | undefined = '';
+    let payload: ReducedHelperObject | string | undefined = '';
 
     switch (postData.mimeType) {
       case 'application/x-www-form-urlencoded':
