@@ -38,7 +38,7 @@ export const native: Client<CrystalNativeOptions> = {
     if (headers.length) {
       push('headers = HTTP::Headers{');
       headers.forEach(key => {
-        push(`  "${key}" => '${escapeForSingleQuotes(allHeaders[key])}'`);
+        push(`  "${key}" => "${escapeForDoubleQuotes(allHeaders[key])}"`);
       });
       push('}');
     }
@@ -68,7 +68,7 @@ export const native: Client<CrystalNativeOptions> = {
 
     blank();
 
-    push('puts response.read_body');
+    push('puts response.body');
 
     return join();
   },
