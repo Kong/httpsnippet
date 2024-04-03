@@ -66,8 +66,6 @@ export const native: Client<CrystalNativeOptions> = {
       );
     }
 
-    blank();
-
     push('puts response.body');
 
     return join();
