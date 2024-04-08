@@ -64,11 +64,11 @@ const snippet = new HTTPSnippet({
 });
 
 // generate Node.js: Native output
-console.log(await snippet.convert('node'));
+console.log(snippet.convert('node'));
 
 // generate Node.js: Native output, indent with tabs
 console.log(
-  await snippet.convert('node', {
+  snippet.convert('node', {
     indent: '\t',
   }),
 );
@@ -104,13 +104,13 @@ const snippet = new HTTPSnippet({
 
 // generate Shell: cURL output
 console.log(
-  await snippet.convert('shell', 'curl', {
+  snippet.convert('shell', 'curl', {
     indent: '\t',
   }),
 );
 
 // generate Node.js: Unirest output
-console.log(await snippet.convert('node', 'unirest'));
+console.log(snippet.convert('node', 'unirest'));
 ```
 
 ### addTarget(target)

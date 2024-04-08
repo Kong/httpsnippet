@@ -64,7 +64,7 @@ describe('request validation', () => {
       (clientId, { extname: fixtureExtension }) => {
         it.each(fixtures.filter(testFilter(0, fixtureFilter)))(
           'request should match fixture for "%s.js"',
-          async (fixture, request) => {
+          (fixture, request) => {
             const expectedPath = path.join(
               'src',
               'targets',
@@ -88,7 +88,7 @@ describe('request validation', () => {
               expected = readFileSync(expectedPath).toString();
               const snippet = new HTTPSnippet(request, options);
 
-              result = await snippet.convert(targetId, clientId);
+              result = snippet.convert(targetId, clientId);
 
               if (OVERWRITE_EVERYTHING && result) {
                 writeFileSync(expectedPath, String(result));
@@ -295,7 +295,7 @@ describe('addTargetClient', () => {
     delete targets.node.clientsById.custom;
   });
 
-  it('should add a new custom target', async () => {
+  it('should add a new custom target', () => {
     const customClient: Client = {
       info: {
         key: 'custom',
@@ -313,7 +313,7 @@ describe('addTargetClient', () => {
 
     const snippet = new HTTPSnippet(short.log.entries[0].request as Request, {});
 
-    const result = await snippet.convert('node', 'custom');
+    const result = snippet.convert('node', 'custom');
 
     expect(result).toBe('This was generated from a custom client.');
   });
@@ -324,7 +324,7 @@ describe('addClientPlugin', () => {
     delete targets.node.clientsById.custom;
   });
 
-  it('should add a new custom target', async () => {
+  it('should add a new custom target', () => {
     const customPlugin: ClientPlugin = {
       target: 'node',
       client: {
@@ -345,7 +345,7 @@ describe('addClientPlugin', () => {
 
     const snippet = new HTTPSnippet(short.log.entries[0].request as Request, {});
 
-    const result = await snippet.convert('node', 'custom');
+    const result = snippet.convert('node', 'custom');
 
     expect(result).toBe('This was generated from a custom client.');
   });
