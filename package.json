@@ -75,7 +75,7 @@
     "lint": "eslint . --ext .js,.cjs,.ts",
     "prebuild": "npm run clean",
     "prepack": "npm run build",
-    "pretest": "npm run lint",
+    "pretest": "npm run lint && npm run prettier",
     "prettier": "prettier --list-different --write .",
     "test": "vitest run --coverage"
   },
@@ -85,10 +85,10 @@
     "stringify-object": "^3.3.0"
   },
   "devDependencies": {
-    "@readme/eslint-config": "^13.5.0",
+    "@readme/eslint-config": "^14.0.0",
     "@types/eslint": "^8.44.7",
     "@types/har-format": "^1.2.15",
-    "@types/node": "^20.9.0",
+    "@types/node": "^20.12.5",
     "@types/qs": "^6.9.10",
     "@types/stringify-object": "^4.0.5",
     "@vitest/coverage-v8": "^1.1.1",
@@ -96,8 +96,8 @@
     "prettier": "^3.0.3",
     "require-directory": "^2.1.1",
     "tsup": "^8.0.1",
-    "type-fest": "^4.6.0",
-    "typescript": "^5.2.2",
+    "type-fest": "^4.15.0",
+    "typescript": "^5.4.4",
     "vitest": "^1.1.1"
   },
   "prettier": "@readme/eslint-config/prettier"
