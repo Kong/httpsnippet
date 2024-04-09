@@ -334,6 +334,6 @@ export class HTTPSnippet {
 
     const { convert } = target.clientsById[clientId || target.info.default];
     const results = this.requests.map(request => convert(request, options));
-    return results.length === 1 ? results[0] : results;
+    return results;
   }
 }
