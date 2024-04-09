@@ -74,8 +74,8 @@ describe('request validation', () => {
               `${fixture}${extname(targetId, clientId)}`,
             );
 
-            let result;
-            let expected;
+            let result: string[] | false;
+            let expected: string;
 
             try {
               const options: HTTPSnippetOptions = {};
@@ -88,7 +88,7 @@ describe('request validation', () => {
               expected = readFileSync(expectedPath).toString();
               const snippet = new HTTPSnippet(request, options);
 
-              result = snippet.convert(targetId, clientId);
+              result = snippet.convert(targetId, clientId)[0];
 
               if (OVERWRITE_EVERYTHING && result) {
                 writeFileSync(expectedPath, String(result));
@@ -313,7 +313,7 @@ describe('addTargetClient', () => {
 
     const snippet = new HTTPSnippet(short.log.entries[0].request as Request, {});
 
-    const result = snippet.convert('node', 'custom');
+    const result = snippet.convert('node', 'custom')[0];
 
     expect(result).toBe('This was generated from a custom client.');
   });
@@ -345,7 +345,7 @@ describe('addClientPlugin', () => {
 
     const snippet = new HTTPSnippet(short.log.entries[0].request as Request, {});
 
-    const result = snippet.convert('node', 'custom');
+    const result = snippet.convert('node', 'custom')[0];
 
     expect(result).toBe('This was generated from a custom client.');
   });
