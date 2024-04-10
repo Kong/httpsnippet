@@ -79,7 +79,7 @@ export const literalRepresentation = <T, U>(value: T, opts: U, indentLevel?: num
 
     default:
       if (value === null || value === undefined) {
-        return '';
+        return 'nil';
       }
       return `"${(value as any).toString().replace(/"/g, '\\"')}"`;
   }

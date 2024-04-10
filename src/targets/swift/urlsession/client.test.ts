@@ -7,7 +7,7 @@ import { runCustomFixtures } from '../../../fixtures/runCustomFixtures.js';
 
 runCustomFixtures({
   targetId: 'swift',
-  clientId: 'nsurlsession',
+  clientId: 'urlsession',
   tests: [
     {
       it: 'should support an indent option',

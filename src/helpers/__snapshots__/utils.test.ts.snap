@@ -392,14 +392,14 @@ exports[`availableTargets > returns all available targets 1`] = `
   {
     "clients": [
       {
-        "description": "Foundation's NSURLSession request",
+        "description": "Foundation's URLSession request",
         "extname": ".swift",
-        "key": "nsurlsession",
-        "link": "https://developer.apple.com/library/mac/documentation/Foundation/Reference/NSURLSession_class/index.html",
-        "title": "NSURLSession",
+        "key": "urlsession",
+        "link": "https://developer.apple.com/documentation/foundation/urlsession",
+        "title": "URLSession",
       },
     ],
-    "default": "nsurlsession",
+    "default": "urlsession",
     "key": "swift",
     "title": "Swift",
   },

@@ -1,16 +1,14 @@
 import Foundation
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 let headers = ["content-type": "multipart/form-data; boundary=---011000010111000001101001"]
 let parameters = [
   [
     "name": "foo",
-    "value": "Hello World",
     "fileName": "src/fixtures/files/hello.txt",
     "contentType": "text/plain"
-  ],
-  [
-    "name": "bar",
-    "value": "Bonjour le monde"
   ]
 ]
 
@@ -36,21 +34,10 @@ for param in parameters {
   }
 }
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://httpbin.org/anything")! as URL,
-                                        cachePolicy: .useProtocolCachePolicy,
-                                    timeoutInterval: 10.0)
+var request = URLRequest(url: URL(string: "https://httpbin.org/anything")!)
 request.httpMethod = "POST"
 request.allHTTPHeaderFields = headers
-request.httpBody = postData as Data
+request.httpBody = postData
 
-let session = URLSession.shared
-let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
-  if (error != nil) {
-    print(error as Any)
-  } else {
-    let httpResponse = response as? HTTPURLResponse
-    print(httpResponse)
-  }
-})
-
-dataTask.resume()
+let (data, response) = try await URLSession.shared.data(with: request)
+print(String(decoding: data, as: UTF8.self))

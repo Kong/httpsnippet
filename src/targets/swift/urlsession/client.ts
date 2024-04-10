@@ -1,6 +1,6 @@
 /**
  * @description
- * HTTP code snippet generator for Swift using NSURLSession.
+ * HTTP code snippet generator for Swift using URLSession.
  *
  * @author
  * @thibaultCha
@@ -12,17 +12,17 @@ import type { Client } from '../../index.js';
 import { CodeBuilder } from '../../../helpers/code-builder.js';
 import { literalDeclaration } from '../helpers.js';
 
-export interface NsurlsessionOptions {
+export interface UrlsessionOptions {
   pretty?: boolean;
   timeout?: number | string;
 }
 
-export const nsurlsession: Client<NsurlsessionOptions> = {
+export const urlsession: Client<UrlsessionOptions> = {
   info: {
-    key: 'nsurlsession',
-    title: 'NSURLSession',
-    link: 'https://developer.apple.com/library/mac/documentation/Foundation/Reference/NSURLSession_class/index.html',
-    description: "Foundation's NSURLSession request",
+    key: 'urlsession',
+    title: 'URLSession',
+    link: 'https://developer.apple.com/documentation/foundation/urlsession',
+    description: "Foundation's URLSession request",
     extname: '.swift',
   },
   convert: ({ allHeaders, postData, fullUrl, method }, options) => {
@@ -35,7 +35,7 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
 
     const { push, blank, join } = new CodeBuilder({ indent: opts.indent });
 
-    // Markers for headers to be created as litteral objects and later be set on the NSURLRequest if exist
+    // Markers for headers to be created as litteral objects and later be set on the URLRequest if exist
     const req = {
       hasHeaders: false,
       hasBody: false,
@@ -43,6 +43,9 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
 
     // We just want to make sure people understand that is the only dependency
     push('import Foundation');
+    push('#if canImport(FoundationNetworking)');
+    push('  import FoundationNetworking');
+    push('#endif');
 
     if (Object.keys(allHeaders).length) {
       req.hasHeaders = true;
@@ -61,9 +64,9 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
           blank();
           if (postData.params?.length) {
             const [head, ...tail] = postData.params;
-            push(`let postData = NSMutableData(data: "${head.name}=${head.value}".data(using: String.Encoding.utf8)!)`);
+            push(`${tail.length > 0 ? 'var' : 'let'} postData = Data("${head.name}=${head.value}".utf8)`);
             tail.forEach(({ name, value }) => {
-              push(`postData.append("&${name}=${value}".data(using: String.Encoding.utf8)!)`);
+              push(`postData.append(Data("&${name}=${value}".utf8))`);
             });
           } else {
             req.hasBody = false;
@@ -75,7 +78,7 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
             push(`${literalDeclaration('parameters', postData.jsonObj, opts)} as [String : Any]`);
             blank();
 
-            push('let postData = JSONSerialization.data(withJSONObject: parameters, options: [])');
+            push('let postData = try JSONSerialization.data(withJSONObject: parameters, options: [])');
           }
           break;
 
@@ -83,7 +86,7 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
           /**
            * By appending multipart parameters one by one in the resulting snippet,
            * we make it easier for the user to edit it according to his or her needs after pasting.
-           * The user can just edit the parameters NSDictionary or put this part of a snippet in a multipart builder method.
+           * The user can just edit the parameters Dictionary or put this part of a snippet in a multipart builder method.
            */
 
           push(literalDeclaration('parameters', postData.params, opts));
@@ -113,19 +116,13 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
 
         default:
           blank();
-          push(`let postData = NSData(data: "${postData.text}".data(using: String.Encoding.utf8)!)`);
+          push(`let postData = Data("${postData.text}".utf8)`);
       }
     }
 
     blank();
 
-    // NSURLRequestUseProtocolCachePolicy is the default policy, let's just always set it to avoid confusion.
-    push(`let request = NSMutableURLRequest(url: NSURL(string: "${fullUrl}")! as URL,`);
-    push('                                        cachePolicy: .useProtocolCachePolicy,');
-    push(
-      // @ts-expect-error needs better types
-      `                                    timeoutInterval: ${parseInt(opts.timeout, 10).toFixed(1)})`,
-    );
+    push(`var request = URLRequest(url: URL(string: "${fullUrl}")!)`);
     push(`request.httpMethod = "${method}"`);
 
     if (req.hasHeaders) {
@@ -133,25 +130,16 @@ export const nsurlsession: Client<NsurlsessionOptions> = {
     }
 
     if (req.hasBody) {
-      push('request.httpBody = postData as Data');
+      push('request.httpBody = postData');
     }
 
     blank();
     // Retrieving the shared session will be less verbose than creating a new one.
 
-    push('let session = URLSession.shared');
-    push(
-      'let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in',
-    );
-    push('if (error != nil) {', 1);
-    push('print(error as Any)', 2);
-    push('} else {', 1); // Casting the NSURLResponse to NSHTTPURLResponse so the user can see the status     .
-    push('let httpResponse = response as? HTTPURLResponse', 2);
-    push('print(httpResponse)', 2);
-    push('}', 1);
-    push('})');
+    push('let (data, response) = try await URLSession.shared.data(with: request)');
+    push('print(String(decoding: data, as: UTF8.self))');
+
     blank();
-    push('dataTask.resume()');
 
     return join();
   },
