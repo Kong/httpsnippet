@@ -25,7 +25,7 @@ export const urlsession: Client<UrlsessionOptions> = {
     description: "Foundation's URLSession request",
     extname: '.swift',
   },
-  convert: ({ allHeaders, postData, fullUrl, method }, options) => {
+  convert: ({ allHeaders, postData, uriObj, queryObj, method }, options) => {
     const opts = {
       indent: '  ',
       pretty: true,
@@ -122,7 +122,36 @@ export const urlsession: Client<UrlsessionOptions> = {
 
     blank();
 
-    push(`var request = URLRequest(url: URL(string: "${fullUrl}")!)`);
+    push(`let url = URL(string: "${uriObj.href}")!`);
+
+    const queries = queryObj ? Object.entries(queryObj) : [];
+    if (queries.length < 1) {
+      push('var request = URLRequest(url: url)');
+    } else {
+      push('var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!');
+      push('let queryItems: [URLQueryItem] = [');
+
+      queries.forEach(query => {
+        const key = query[0];
+        const value = query[1];
+        switch (Object.prototype.toString.call(value)) {
+          case '[object String]':
+            push(`${opts.indent}URLQueryItem(name: "${key}", value: "${value}"),`);
+            break;
+          case '[object Array]':
+            value.forEach(val => {
+              push(`${opts.indent}URLQueryItem(name: "${key}", value: "${val}"),`);
+            });
+            break;
+        }
+      });
+      push(']');
+      push('components.queryItems = components.queryItems.map { $0 + queryItems } ?? queryItems');
+
+      blank();
+      push('var request = URLRequest(url: components.url!)');
+    }
+
     push(`request.httpMethod = "${method}"`);
 
     if (req.hasHeaders) {
@@ -136,7 +165,7 @@ export const urlsession: Client<UrlsessionOptions> = {
     blank();
     // Retrieving the shared session will be less verbose than creating a new one.
 
-    push('let (data, response) = try await URLSession.shared.data(with: request)');
+    push('let (data, response) = try await URLSession.shared.data(for: request)');
     push('print(String(decoding: data, as: UTF8.self))');
 
     blank();

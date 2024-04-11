@@ -5,9 +5,10 @@ import Foundation
 
 let headers = ["content-type": "application/json"]
 
-var request = URLRequest(url: URL(string: "https://httpbin.org/anything")!)
+let url = URL(string: "https://httpbin.org/anything")!
+var request = URLRequest(url: url)
 request.httpMethod = "POST"
 request.allHTTPHeaderFields = headers
 
-let (data, response) = try await URLSession.shared.data(with: request)
+let (data, response) = try await URLSession.shared.data(for: request)
 print(String(decoding: data, as: UTF8.self))
