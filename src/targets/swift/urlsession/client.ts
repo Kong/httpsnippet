@@ -10,7 +10,7 @@
 import type { Client } from '../../index.js';
 
 import { CodeBuilder } from '../../../helpers/code-builder.js';
-import { literalDeclaration } from '../helpers.js';
+import { literalRepresentation, literalDeclaration } from '../helpers.js';
 
 export interface UrlsessionOptions {
   pretty?: boolean;
@@ -29,47 +29,35 @@ export const urlsession: Client<UrlsessionOptions> = {
     const opts = {
       indent: '  ',
       pretty: true,
-      timeout: '10',
+      timeout: 10,
       ...options,
     };
 
     const { push, blank, join } = new CodeBuilder({ indent: opts.indent });
 
-    // Markers for headers to be created as litteral objects and later be set on the URLRequest if exist
-    const req = {
-      hasHeaders: false,
-      hasBody: false,
-    };
-
-    // We just want to make sure people understand that is the only dependency
     push('import Foundation');
-    push('#if canImport(FoundationNetworking)');
-    push('  import FoundationNetworking');
-    push('#endif');
+    blank();
 
-    if (Object.keys(allHeaders).length) {
-      req.hasHeaders = true;
-      blank();
-      push(literalDeclaration('headers', allHeaders, opts));
-    }
-
-    if (postData.text || postData.jsonObj || postData.params) {
-      req.hasBody = true;
-
+    const hasBody = postData.text || postData.jsonObj || postData.params;
+    if (hasBody) {
       switch (postData.mimeType) {
         case 'application/x-www-form-urlencoded':
           // By appending parameters one by one in the resulting snippet,
           // we make it easier for the user to edit it according to his or her needs after pasting.
           // The user can just add/remove lines adding/removing body parameters.
-          blank();
           if (postData.params?.length) {
-            const [head, ...tail] = postData.params;
-            push(`${tail.length > 0 ? 'var' : 'let'} postData = Data("${head.name}=${head.value}".utf8)`);
-            tail.forEach(({ name, value }) => {
-              push(`postData.append(Data("&${name}=${value}".utf8))`);
-            });
-          } else {
-            req.hasBody = false;
+            const parameters = postData.params.map(p => `"${p.name}": "${p.value}"`);
+            if (opts.pretty) {
+              push('let parameters = [');
+              parameters.forEach(param => push(`${param},`, 1));
+              push(']');
+            } else {
+              push(`let parameters = [${parameters.join(', ')}]`);
+            }
+
+            push('let joinedParameters = parameters.map { "\\($0.key)=\\($0.value)" }.joined(separator: "&")');
+            push('let postData = Data(joinedParameters.utf8)');
+            blank();
           }
           break;
 
@@ -77,8 +65,8 @@ export const urlsession: Client<UrlsessionOptions> = {
           if (postData.jsonObj) {
             push(`${literalDeclaration('parameters', postData.jsonObj, opts)} as [String : Any]`);
             blank();
-
             push('let postData = try JSONSerialization.data(withJSONObject: parameters, options: [])');
+            blank();
           }
           break;
 
@@ -94,17 +82,13 @@ export const urlsession: Client<UrlsessionOptions> = {
           push(`let boundary = "${postData.boundary}"`);
           blank();
           push('var body = ""');
-          push('var error: NSError? = nil');
           push('for param in parameters {');
           push('let paramName = param["name"]!', 1);
           push('body += "--\\(boundary)\\r\\n"', 1);
           push('body += "Content-Disposition:form-data; name=\\"\\(paramName)\\""', 1);
           push('if let filename = param["fileName"] {', 1);
           push('let contentType = param["content-type"]!', 2);
-          push('let fileContent = String(contentsOfFile: filename, encoding: String.Encoding.utf8)', 2);
-          push('if (error != nil) {', 2);
-          push('print(error as Any)', 3);
-          push('}', 2);
+          push('let fileContent = try String(contentsOfFile: filename, encoding: .utf8)', 2);
           push('body += "; filename=\\"\\(filename)\\"\\r\\n"', 2);
           push('body += "Content-Type: \\(contentType)\\r\\n\\r\\n"', 2);
           push('body += fileContent', 2);
@@ -112,15 +96,16 @@ export const urlsession: Client<UrlsessionOptions> = {
           push('body += "\\r\\n\\r\\n\\(paramValue)"', 2);
           push('}', 1);
           push('}');
+          blank();
+          push('let postData = Data(body.utf8)');
+          blank();
           break;
 
         default:
-          blank();
           push(`let postData = Data("${postData.text}".utf8)`);
+          blank();
       }
     }
-
-    blank();
 
     push(`let url = URL(string: "${uriObj.href}")!`);
 
@@ -136,11 +121,11 @@ export const urlsession: Client<UrlsessionOptions> = {
         const value = query[1];
         switch (Object.prototype.toString.call(value)) {
           case '[object String]':
-            push(`${opts.indent}URLQueryItem(name: "${key}", value: "${value}"),`);
+            push(`URLQueryItem(name: "${key}", value: "${value}"),`, 1);
             break;
           case '[object Array]':
-            value.forEach(val => {
-              push(`${opts.indent}URLQueryItem(name: "${key}", value: "${val}"),`);
+            (value as string[]).forEach((val: string) => {
+              push(`URLQueryItem(name: "${key}", value: "${val}"),`, 1);
             });
             break;
         }
@@ -153,22 +138,20 @@ export const urlsession: Client<UrlsessionOptions> = {
     }
 
     push(`request.httpMethod = "${method}"`);
+    push(`request.timeoutInterval = ${opts.timeout}`);
 
-    if (req.hasHeaders) {
-      push('request.allHTTPHeaderFields = headers');
+    if (Object.keys(allHeaders).length) {
+      push(`request.allHTTPHeaderFields = ${literalRepresentation(allHeaders, opts)}`);
     }
 
-    if (req.hasBody) {
+    if (hasBody) {
       push('request.httpBody = postData');
     }
 
     blank();
-    // Retrieving the shared session will be less verbose than creating a new one.
 
     push('let (data, response) = try await URLSession.shared.data(for: request)');
     push('print(String(decoding: data, as: UTF8.self))');
-
-    blank();
 
     return join();
   },

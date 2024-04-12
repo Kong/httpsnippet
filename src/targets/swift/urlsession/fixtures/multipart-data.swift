@@ -1,9 +1,5 @@
 import Foundation
-#if canImport(FoundationNetworking)
-  import FoundationNetworking
-#endif
 
-let headers = ["content-type": "multipart/form-data; boundary=---011000010111000001101001"]
 let parameters = [
   [
     "name": "foo",
@@ -20,17 +16,13 @@ let parameters = [
 let boundary = "---011000010111000001101001"
 
 var body = ""
-var error: NSError? = nil
 for param in parameters {
   let paramName = param["name"]!
   body += "--\(boundary)\r\n"
   body += "Content-Disposition:form-data; name=\"\(paramName)\""
   if let filename = param["fileName"] {
     let contentType = param["content-type"]!
-    let fileContent = String(contentsOfFile: filename, encoding: String.Encoding.utf8)
-    if (error != nil) {
-      print(error as Any)
-    }
+    let fileContent = try String(contentsOfFile: filename, encoding: .utf8)
     body += "; filename=\"\(filename)\"\r\n"
     body += "Content-Type: \(contentType)\r\n\r\n"
     body += fileContent
@@ -39,10 +31,13 @@ for param in parameters {
   }
 }
 
+let postData = Data(body.utf8)
+
 let url = URL(string: "https://httpbin.org/anything")!
 var request = URLRequest(url: url)
 request.httpMethod = "POST"
-request.allHTTPHeaderFields = headers
+request.timeoutInterval = 10
+request.allHTTPHeaderFields = ["content-type": "multipart/form-data; boundary=---011000010111000001101001"]
 request.httpBody = postData
 
 let (data, response) = try await URLSession.shared.data(for: request)

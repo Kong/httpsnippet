@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-  import FoundationNetworking
-#endif
 
 let url = URL(string: "https://httpbin.org/anything?key=value")!
 var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
@@ -15,6 +12,7 @@ components.queryItems = components.queryItems.map { $0 + queryItems } ?? queryIt
 
 var request = URLRequest(url: components.url!)
 request.httpMethod = "GET"
+request.timeoutInterval = 10
 
 let (data, response) = try await URLSession.shared.data(for: request)
 print(String(decoding: data, as: UTF8.self))

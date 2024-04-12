@@ -1,17 +1,17 @@
 import Foundation
-#if canImport(FoundationNetworking)
-  import FoundationNetworking
-#endif
 
-let headers = ["content-type": "application/x-www-form-urlencoded"]
-
-var postData = Data("foo=bar".utf8)
-postData.append(Data("&hello=world".utf8))
+let parameters = [
+  "foo": "bar",
+  "hello": "world",
+]
+let joinedParameters = parameters.map { "\($0.key)=\($0.value)" }.joined(separator: "&")
+let postData = Data(joinedParameters.utf8)
 
 let url = URL(string: "https://httpbin.org/anything")!
 var request = URLRequest(url: url)
 request.httpMethod = "POST"
-request.allHTTPHeaderFields = headers
+request.timeoutInterval = 10
+request.allHTTPHeaderFields = ["content-type": "application/x-www-form-urlencoded"]
 request.httpBody = postData
 
 let (data, response) = try await URLSession.shared.data(for: request)

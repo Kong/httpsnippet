@@ -1,11 +1,8 @@
 import Foundation
-#if canImport(FoundationNetworking)
-  import FoundationNetworking
-#endif
 
-let headers = ["cookie": "foo=bar; bar=baz", "accept": "application/json", "content-type": "application/x-www-form-urlencoded"]
-
-let postData = Data("foo=bar".utf8)
+let parameters = ["foo": "bar"]
+let joinedParameters = parameters.map { "\($0.key)=\($0.value)" }.joined(separator: "&")
+let postData = Data(joinedParameters.utf8)
 
 let url = URL(string: "https://httpbin.org/anything?key=value")!
 var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
@@ -19,7 +16,8 @@ components.queryItems = components.queryItems.map { $0 + queryItems } ?? queryIt
 
 var request = URLRequest(url: components.url!)
 request.httpMethod = "POST"
-request.allHTTPHeaderFields = headers
+request.timeoutInterval = 10
+request.allHTTPHeaderFields = ["cookie": "foo=bar; bar=baz", "accept": "application/json", "content-type": "application/x-www-form-urlencoded"]
 request.httpBody = postData
 
 let (data, response) = try await URLSession.shared.data(for: request)

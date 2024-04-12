@@ -1,16 +1,12 @@
 import Foundation
-#if canImport(FoundationNetworking)
-  import FoundationNetworking
-#endif
-
-let headers = ["content-type": "text/plain"]
 
 let postData = Data("Hello World".utf8)
 
 let url = URL(string: "https://httpbin.org/anything")!
 var request = URLRequest(url: url)
 request.httpMethod = "POST"
-request.allHTTPHeaderFields = headers
+request.timeoutInterval = 10
+request.allHTTPHeaderFields = ["content-type": "text/plain"]
 request.httpBody = postData
 
 let (data, response) = try await URLSession.shared.data(for: request)
