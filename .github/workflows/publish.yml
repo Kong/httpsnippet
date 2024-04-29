@@ -1,0 +1,56 @@
+name: Publish httpsnippet
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Tag version to release'
+        required: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.9.0
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Configure Git user
+        uses: Homebrew/actions/git-user-config@master
+        with:
+          username: ${{ (github.event_name == 'workflow_dispatch' && github.actor) || 'insomnia-infra' }}
+
+      - name: Tag the Repository
+        run: |
+          git tag ${{ github.event.inputs.version }}
+          git push origin ${{ github.event.inputs.version }}
+
+      - name: Create Tag and Release
+        uses: ncipollo/release-action@v1
+        id: core_tag_and_release
+        with:
+          tag: ${{ github.event.inputs.version }}
+          name: "httpsnippet ${{ github.event.inputs.version }} 📦"
+          generateReleaseNotes: true
+          prerelease: false
+          draft: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Publish to NPM
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
