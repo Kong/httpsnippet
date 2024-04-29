@@ -20,5 +20,5 @@ request.timeoutInterval = 10
 request.allHTTPHeaderFields = ["cookie": "foo=bar; bar=baz", "accept": "application/json", "content-type": "application/x-www-form-urlencoded"]
 request.httpBody = postData
 
-let (data, response) = try await URLSession.shared.data(for: request)
+let (data, _) = try await URLSession.shared.data(for: request)
 print(String(decoding: data, as: UTF8.self))

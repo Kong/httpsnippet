@@ -1,6 +1,6 @@
 import Foundation
 
-let parameters = ["foo": "bar"] as [String : Any]
+let parameters = ["foo": "bar"] as [String : Any?]
 
 let postData = try JSONSerialization.data(withJSONObject: parameters, options: [])
 
@@ -11,5 +11,5 @@ request.timeoutInterval = 10
 request.allHTTPHeaderFields = ["content-type": "application/json"]
 request.httpBody = postData
 
-let (data, response) = try await URLSession.shared.data(for: request)
+let (data, _) = try await URLSession.shared.data(for: request)
 print(String(decoding: data, as: UTF8.self))

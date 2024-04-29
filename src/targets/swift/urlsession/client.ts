@@ -63,7 +63,7 @@ export const urlsession: Client<UrlsessionOptions> = {
 
         case 'application/json':
           if (postData.jsonObj) {
-            push(`${literalDeclaration('parameters', postData.jsonObj, opts)} as [String : Any]`);
+            push(`${literalDeclaration('parameters', postData.jsonObj, opts)} as [String : Any?]`);
             blank();
             push('let postData = try JSONSerialization.data(withJSONObject: parameters, options: [])');
             blank();
@@ -87,7 +87,7 @@ export const urlsession: Client<UrlsessionOptions> = {
           push('body += "--\\(boundary)\\r\\n"', 1);
           push('body += "Content-Disposition:form-data; name=\\"\\(paramName)\\""', 1);
           push('if let filename = param["fileName"] {', 1);
-          push('let contentType = param["content-type"]!', 2);
+          push('let contentType = param["contentType"]!', 2);
           push('let fileContent = try String(contentsOfFile: filename, encoding: .utf8)', 2);
           push('body += "; filename=\\"\\(filename)\\"\\r\\n"', 2);
           push('body += "Content-Type: \\(contentType)\\r\\n\\r\\n"', 2);
@@ -150,7 +150,7 @@ export const urlsession: Client<UrlsessionOptions> = {
 
     blank();
 
-    push('let (data, response) = try await URLSession.shared.data(for: request)');
+    push('let (data, _) = try await URLSession.shared.data(for: request)');
     push('print(String(decoding: data, as: UTF8.self))');
 
     return join();

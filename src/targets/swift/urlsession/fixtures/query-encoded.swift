@@ -12,5 +12,5 @@ var request = URLRequest(url: components.url!)
 request.httpMethod = "GET"
 request.timeoutInterval = 10
 
-let (data, response) = try await URLSession.shared.data(for: request)
+let (data, _) = try await URLSession.shared.data(for: request)
 print(String(decoding: data, as: UTF8.self))
