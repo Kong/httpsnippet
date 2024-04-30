@@ -50,6 +50,17 @@ var getArg = function (short) { return function (longName) {
     }
     return "--".concat(longName);
 }; };
+var encodeData = function(k, v, binary, push) {
+    var encodedName = encodeURIComponent(k);
+    var encodedValue = encodeURIComponent(v);
+    var needsEncoding = encodedValue !== v;
+    var nameNeedsQuotes = encodedName !== k;
+    var name = nameNeedsQuotes ? `"${k}"` : k;
+    var value = needsEncoding ? `"${v}"` : v;
+    var flag = binary ? '--data-binary' : needsEncoding ? '--data-urlencode' : '-d';
+    // console.log(flag);
+    push("".concat(flag, " ").concat(("".concat(name, "=").concat(value))));
+};
 exports.curl = {
     info: {
         key: 'curl',
@@ -59,7 +70,10 @@ exports.curl = {
     },
     convert: function (_a, options) {
         var _b;
-        var fullUrl = _a.fullUrl, method = _a.method, httpVersion = _a.httpVersion, headersObj = _a.headersObj, allHeaders = _a.allHeaders, postData = _a.postData;
+        var fullUrl = _a.fullUrl, method = _a.method, httpVersion = _a.httpVersion, headersObj = _a.headersObj, allHeaders = _a.allHeaders, postData = _a.postData, uriObj = _a.uriObj, queryObj = _a.queryObj;
+        // console.log(uriObj);
+        // console.log(queryObj);
+        // console.log(fullUrl);
         // console.log(postData);
         if (options === void 0) { options = {}; }
         var _c = options.binary, binary = _c === void 0 ? false : _c, _d = options.globOff, globOff = _d === void 0 ? false : _d, _e = options.indent, indent = _e === void 0 ? '  ' : _e, _f = options.insecureSkipVerify, insecureSkipVerify = _f === void 0 ? false : _f, _g = options.prettifyJson, prettifyJson = _g === void 0 ? false : _g, _h = options.short, short = _h === void 0 ? false : _h;
@@ -68,9 +82,15 @@ exports.curl = {
         var arg = getArg(short);
         // console.log(JSON.stringify(arg, null, 4));
         var formattedUrl = (0, shell_1.quote)(fullUrl);
+        // console.log(formattedUrl);
         // console.log(method);
         // push("curl ".concat(arg('request'), " ").concat(method));
-        push(`curl ${fullUrl}`);
+        if (method === 'GET' && formattedUrl[0] === "'" && uriObj.search.length > 0) {
+            fullUrl = uriObj.href;
+            push(`curl -G ${fullUrl}`);
+        } else {
+            push(`curl ${formattedUrl}`);
+        }
         if (globOff) {
             formattedUrl = unescape(formattedUrl);
             push(arg('globoff'));
@@ -120,6 +140,11 @@ exports.curl = {
         if (allHeaders.cookie) {
             push("".concat(arg('cookie'), " ").concat((0, shell_1.quote)(allHeaders.cookie)));
         }
+        if (method === 'GET' && formattedUrl[0] === "'" && uriObj.search.length > 0) {
+            Object.entries(queryObj).forEach(function ([k, v]) {
+                encodeData(k, v, binary, push);
+            });
+        }
         // console.log(postData);
         // construct post params
         switch (postData.mimeType) {
@@ -138,15 +163,7 @@ exports.curl = {
             case 'application/x-www-form-urlencoded':
                 if (postData.params) {
                     postData.params.forEach(function (param) {
-                        var encodedName = encodeURIComponent(param.name);
-                        var encodedValue = encodeURIComponent(param.value);
-                        var needsEncoding = encodedValue !== param.value;
-                        var nameNeedsQuotes = encodedName !== param.name;
-                        var name = nameNeedsQuotes ? `"${param.name}"` : param.name;
-                        var value = needsEncoding ? `"${param.value}"` : param.value;
-                        var flag = binary ? '--data-binary' : needsEncoding ? '--data-urlencode' : '-d';
-                        // console.log(flag);
-                        push("".concat(flag, " ").concat(("".concat(name, "=").concat(value))));
+                        encodeData(param.name, param.value, binary, push);
                     });
                 }
                 else {
