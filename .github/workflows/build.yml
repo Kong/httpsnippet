@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [16, 18, 20, 21]
+        node-version: [20, 21, 22]
     steps:
       - name: Checkout branch
         uses: actions/checkout@v3
