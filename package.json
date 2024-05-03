@@ -56,6 +56,14 @@
     "build:types": "tsc -d --declarationDir dist/lib --declarationMap --emitDeclarationOnly",
     "test": "jest"
   },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "event-stream": "4.0.1",
+    "form-data": "4.0.0",
+    "har-schema": "^2.0.0",
+    "stringify-object": "5.0.0",
+    "yargs": "^17.7.2"
+  },
   "devDependencies": {
     "@types/eslint": "^8.56.2",
     "@types/event-stream": "^4.0.5",
@@ -78,13 +86,5 @@
     "ts-jest": "^29.1.2",
     "type-fest": "^4.10.1",
     "typescript": "^5.3.3"
-  },
-  "dependencies": {
-    "chalk": "^5.3.0",
-    "event-stream": "4.0.1",
-    "form-data": "4.0.0",
-    "har-schema": "^2.0.0",
-    "stringify-object": "5.0.0",
-    "yargs": "^17.7.2"
   }
 }
