@@ -11,21 +11,56 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  check:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        node-version: [16, 18, 20]
+    outputs:
+      supported_node_runtimes: ${{steps.metadata.outputs.supported_node_runtimes}}
+      legacy_node_runtimes: ${{steps.metadata.outputs.legacy_node_runtimes}}
+      all_node_runtimes: ${{steps.metadata.outputs.all_node_runtimes}}
     steps:
       - name: Checkout branch
         uses: actions/checkout@v3
+        with:
+          path: ${{ github.repository }}
 
+      # Perform SCA analysis for the code repository
+      # Produces SBOM and CVE report
+      # Helps understand vulnerabilities / license compliance across third party dependencies
+      - id: sca-project
+        uses: Kong/public-shared-actions/security-actions/sca@2f02738ecb1670f01391162e43fe3f5d4e7942a1 # v2.2.2
+        with:
+          dir: ${{ github.repository }}
+          upload-sbom-release-assets: true
+  
+      - id: metadata
+        run: |
+          supported_node_runtimes='{"version": [${{env.supported_node_runtimes}}]}' > GITHUB_OUTPUT 
+          legacy_node_runtimes='{"version":[${{env.legacy_node_runtimes}}]}' > GITHUB_OUTPUT
+          all_node_runtimes='{"version": [${{env.supported_node_runtimes}}, ${{env.legacy_node_runtimes}}]}' > GITHUB_OUTPUT
+          
+          cat $GITHUB_OUTPUT
+        env:
+          supported_node_runtimes: '"20"' # Command separated Double qouted strings eclosed in single qouted string
+          legacy_node_runtimes: '"16","18"'
+
+  # The build job is still needed to support building on pull_request for supported and legacy node runtimes
+  # The provenance job uses slsa nodejs builder and doesn't support pull_request event
+  build:
+    needs: [check]
+    name: Build - ${{matrix.node-version}}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: "${{fromJson(needs.check.outputs.all_node_runtimes)}}"
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v3
+        with:
+          path: ${{ github.repository }}
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-
       - name: Install
         run: npm ci
 
@@ -37,3 +72,52 @@ jobs:
 
       - name: Build
         run: npm run build
+
+  ## Build and Generate provenance using slsa nodejs builder only for supported Node runtime
+  provenance:
+    needs: [check, build]
+    permissions:
+      id-token: write # For signing
+      contents: read # For repo checkout.
+      actions: read # For getting workflow run info.
+    if: >
+      github.event_name != 'pull_request'
+    #  github.repository_owner == 'Kong' 
+    # && 
+      
+    #  &&  github.ref_type == 'tag' || github.event_name == 'push'
+    strategy:
+      matrix: "${{ fromJson(needs.check.outputs.supported_node_runtimes)}}"
+    uses: slsa-framework/slsa-github-generator/.github/workflows/builder_nodejs_slsa3.yml@v2.0.0
+    with:
+      run-scripts: 'ci, test, lint, build'
+      node-version: ${{matrix.node-version}} # Only for supported runtime
+
+  publish:
+    needs: [build, provenance]
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "PACKAGE_NAME=${{ needs.build.outputs.package-name }}"
+          echo "PACKAGE_DOWNLOAD_NAME=${{ needs.build.outputs.package-download-name }}"
+          echo "PACKAGE_DOWNLOAD_SHA256=${{ needs.build.outputs.package-download-sha256 }}"
+          echo "PROVEANACE_NAME=${{ needs.build.outputs.provenance-name }}"
+          echo "PROVEANACE_DOWNLOAD_NAME=${{ needs.build.outputs.provenance-download-name }}"
+          echo "PROVEANACE_DOWNLOAD_SHA256=${{ needs.build.outputs.provenance-download-sha256 }}"
+
+      # - name: Set up Node registry authentication
+      #   uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c # v3.6.0
+      #   with:
+      #     registry-url: "https://registry.npmjs.org"
+      # - name: publish
+      #   id: publish
+      #   uses: slsa-framework/slsa-github-generator/actions/nodejs/publish@v2.0.0
+      #   with:
+      #     access: public
+      #     node-auth-token: ${{ secrets.NPM_TOKEN }}
+      #     package-name: ${{ needs.build.outputs.package-name }}
+      #     package-download-name: ${{ needs.build.outputs.package-download-name }}
+      #     package-download-sha256: ${{ needs.build.outputs.package-download-sha256 }}
+      #     provenance-name: ${{ needs.build.outputs.provenance-name }}
+      #     provenance-download-name: ${{ needs.build.outputs.provenance-download-name }}
+      #     provenance-download-sha256: ${{ needs.build.outputs.provenance-download-sha256 }}
