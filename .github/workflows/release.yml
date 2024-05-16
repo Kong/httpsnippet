@@ -29,7 +29,7 @@ jobs:
         run: |
           git tag ${{ env.TAG }}
           git push origin ${{ env.TAG }}
-        
+
       - name: Create Tag and Release
         uses: ncipollo/release-action@v1
         id: core_tag_and_release
@@ -40,4 +40,4 @@ jobs:
           prerelease: false
           draft: false
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PAT_INSOMNIA_INFRA }}
