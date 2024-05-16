@@ -34,6 +34,7 @@ jobs:
           upload-sbom-release-assets: true
 
   build:
+    needs: [scan]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
