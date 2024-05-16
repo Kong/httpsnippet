@@ -1,0 +1,43 @@
+name: Release httpsnippet
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Tag version to release'
+        required: true
+
+env:
+  # Release Tag to build and publish
+  TAG: ${{ github.event.inputs.version }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git user
+        uses: Homebrew/actions/git-user-config@master
+        with:
+          username: ${{ (github.event_name == 'workflow_dispatch' && github.actor) || 'insomnia-infra' }}
+
+      - name: Tag the Repository
+        run: |
+          git tag ${{ env.TAG }}
+          git push origin ${{ env.TAG }}
+        
+      - name: Create Tag and Release
+        uses: ncipollo/release-action@v1
+        id: core_tag_and_release
+        with:
+          tag: ${{ env.TAG }}
+          name: "httpsnippet ${{ env.TAG }} 📦"
+          generateReleaseNotes: true
+          prerelease: false
+          draft: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
