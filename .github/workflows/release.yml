@@ -19,6 +19,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.PAT_INSOMNIA_INFRA }}
+
 
       - name: Configure Git user
         uses: Homebrew/actions/git-user-config@master
