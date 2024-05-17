@@ -21,11 +21,18 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.PAT_INSOMNIA_INFRA }}
 
-
       - name: Configure Git user
         uses: Homebrew/actions/git-user-config@master
         with:
           username: ${{ (github.event_name == 'workflow_dispatch' && github.actor) || 'insomnia-infra' }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install
+        run: npm ci
 
       - name: Create new package version
         run: npm version "${{ env.TAG }}"
