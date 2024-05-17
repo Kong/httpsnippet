@@ -43,9 +43,7 @@ jobs:
           git remote -v
 
       - name: Merge version commit into master
-        run: |
-          remote_repo="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          git push origin ${{ env.TAG }}
+        run: git push origin ${{ env.TAG }}
 
       - name: Create Tag and Release
         uses: ncipollo/release-action@v1
