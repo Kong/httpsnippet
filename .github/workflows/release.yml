@@ -27,10 +27,19 @@ jobs:
         with:
           username: ${{ (github.event_name == 'workflow_dispatch' && github.actor) || 'insomnia-infra' }}
 
+      - name: Create new package version
+        run: npm version "${{ github.event.inputs.version }}"
+
+      - name: Git Commit
+        run: git commit -am "Bump version to ${{ github.event.inputs.version }}"
+
       - name: Tag the Repository
         run: |
           git tag ${{ env.TAG }}
-          git push origin ${{ env.TAG }}
+          remote_repo="https://${GITHUB_ACTOR}:${RELEASE_GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git push "${remote_repo}" --follow-tags
+        env:
+          RELEASE_GH_TOKEN: ${{ secrets.PAT_INSOMNIA_INFRA }}
 
       - name: Create Tag and Release
         uses: ncipollo/release-action@v1
