@@ -38,12 +38,14 @@ jobs:
         run: npm version "${{ env.TAG }}"
 
       - name: DEBUG see tags
-        run: git tag --list
+        run: |
+          git tag --list
+          git remove -v
 
       - name: Merge version commit into master
         run: |
           remote_repo="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          git push "${remote_repo}" ${{ env.TAG }}
+          git push origin ${{ env.TAG }}
 
       - name: Create Tag and Release
         uses: ncipollo/release-action@v1
