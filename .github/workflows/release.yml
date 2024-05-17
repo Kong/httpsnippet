@@ -21,16 +21,32 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.PAT_INSOMNIA_INFRA }}
 
-
       - name: Configure Git user
         uses: Homebrew/actions/git-user-config@master
         with:
           username: ${{ (github.event_name == 'workflow_dispatch' && github.actor) || 'insomnia-infra' }}
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install
+        run: npm ci
+
+      - name: Create new package version
+        run: npm version "${{ env.TAG }}"
+
+      - name: Git Commit
+        run: git commit -am "Bump version to ${{ env.TAG }}"
+
       - name: Tag the Repository
         run: |
           git tag ${{ env.TAG }}
-          git push origin ${{ env.TAG }}
+          remote_repo="https://${GITHUB_ACTOR}:${RELEASE_GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git push "${remote_repo}" --follow-tags
+        env:
+          RELEASE_GH_TOKEN: ${{ secrets.PAT_INSOMNIA_INFRA }}
 
       - name: Create Tag and Release
         uses: ncipollo/release-action@v1
