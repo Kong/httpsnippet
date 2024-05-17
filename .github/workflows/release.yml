@@ -43,7 +43,9 @@ jobs:
           git remote -v
 
       - name: Merge version commit into master
-        run: git push origin v${{ env.TAG }}
+        run: |
+          git push origin v${{ env.TAG }}
+          git push origin master
 
       - name: Create Tag and Release
         uses: ncipollo/release-action@v1
