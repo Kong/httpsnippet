@@ -40,7 +40,7 @@ jobs:
       - name: DEBUG see tags
         run: |
           git tag --list
-          git remove -v
+          git remote -v
 
       - name: Merge version commit into master
         run: |
