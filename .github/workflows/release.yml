@@ -28,10 +28,10 @@ jobs:
           username: ${{ (github.event_name == 'workflow_dispatch' && github.actor) || 'insomnia-infra' }}
 
       - name: Create new package version
-        run: npm version "${{ github.event.inputs.version }}"
+        run: npm version "${{ env.TAG }}"
 
       - name: Git Commit
-        run: git commit -am "Bump version to ${{ github.event.inputs.version }}"
+        run: git commit -am "Bump version to ${{ env.TAG }}"
 
       - name: Tag the Repository
         run: |
