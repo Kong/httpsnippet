@@ -37,11 +37,10 @@ jobs:
       - name: Create new package version
         run: npm version "${{ env.TAG }}"
 
-      - name: Tag the Repository
+      - name: Merge version commit into master
         run: |
-          git tag ${{ env.TAG }}
           remote_repo="https://${GITHUB_ACTOR}:${RELEASE_GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          git push "${remote_repo}" --follow-tags
+          git push "${remote_repo}"
         env:
           RELEASE_GH_TOKEN: ${{ secrets.PAT_INSOMNIA_INFRA }}
 
