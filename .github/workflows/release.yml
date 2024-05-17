@@ -37,12 +37,13 @@ jobs:
       - name: Create new package version
         run: npm version "${{ env.TAG }}"
 
+      - name: DEBUG see tags
+        run: git tag --list
+
       - name: Merge version commit into master
         run: |
-          remote_repo="https://${GITHUB_ACTOR}:${RELEASE_GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          git push "${remote_repo}"
-        env:
-          RELEASE_GH_TOKEN: ${{ secrets.PAT_INSOMNIA_INFRA }}
+          remote_repo="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git push "${remote_repo}" ${{ env.TAG }}
 
       - name: Create Tag and Release
         uses: ncipollo/release-action@v1
@@ -53,5 +54,3 @@ jobs:
           generateReleaseNotes: true
           prerelease: false
           draft: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT_INSOMNIA_INFRA }}
