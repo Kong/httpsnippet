@@ -37,9 +37,6 @@ jobs:
       - name: Create new package version
         run: npm version "${{ env.TAG }}"
 
-      - name: Git Commit
-        run: git commit -am "Bump version to ${{ env.TAG }}"
-
       - name: Tag the Repository
         run: |
           git tag ${{ env.TAG }}
