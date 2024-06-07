@@ -1,9 +1,11 @@
-name: Build
+name: Build and Publish Httpsnippet
 
 on:
   push:
     branches:
       - master
+    tags:
+      - '*' # Restrict any specific tag formats
   pull_request:
     types:
       - opened
@@ -11,7 +13,28 @@ on:
   workflow_dispatch:
 
 jobs:
+  scan:
+    permissions:
+      packages: write 
+      contents: write # publish sbom to GH releases/tag assets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v3
+        with:
+          path: ${{ github.repository }}
+
+      # Perform SCA analysis for the code repository
+      # Produces SBOM and CVE report
+      # Helps understand vulnerabilities / license compliance across third party dependencies
+      - id: sca-project
+        uses: Kong/public-shared-actions/security-actions/sca@2f02738ecb1670f01391162e43fe3f5d4e7942a1 # v2.2.2
+        with:
+          dir: ${{ github.repository }}
+          upload-sbom-release-assets: true
+
   build:
+    needs: [scan]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -37,3 +60,35 @@ jobs:
 
       - name: Build
         run: npm run build
+
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write # For using token to sign images
+      actions: read # For getting workflow run info to build provenance
+      packages: write # Required for publishing provenance. Issue: https://github.com/slsa-framework/slsa-github-generator/tree/main/internal/builders/container#known-issues
+    if: ${{ github.ref_type == 'tag' && github.repository_owner == 'Kong' }}
+    steps:
+      # checkout tag
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.9.0
+          registry-url: 'https://registry.npmjs.org'
+    
+      - name: Install
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Publish to NPM
+        run: npm publish --no-git-checks --provenance --tag ${{ github.sha }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
