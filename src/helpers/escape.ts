@@ -38,23 +38,21 @@ export function escapeString(rawValue: any, options: EscapeOptions = {}) {
   return [...stringValue]
     .map(c => {
       if (c === '\b') {
-        return `${escapeChar  }b`;
+        return `${escapeChar}b`;
       } else if (c === '\t') {
-        return `${escapeChar  }t`;
+        return `${escapeChar}t`;
       } else if (c === '\n') {
         if (escapeNewlines) {
-          return `${escapeChar  }n`;
-        } 
-          return c; // Don't just continue, or this is caught by < \u0020
-        
+          return `${escapeChar}n`;
+        }
+        return c; // Don't just continue, or this is caught by < \u0020
       } else if (c === '\f') {
-        return `${escapeChar  }f`;
+        return `${escapeChar}f`;
       } else if (c === '\r') {
         if (escapeNewlines) {
-          return `${escapeChar  }r`;
-        } 
-          return c; // Don't just continue, or this is caught by < \u0020
-        
+          return `${escapeChar}r`;
+        }
+        return c; // Don't just continue, or this is caught by < \u0020
       } else if (c === escapeChar) {
         return escapeChar + escapeChar;
       } else if (c === delimiter) {
@@ -65,9 +63,8 @@ export function escapeString(rawValue: any, options: EscapeOptions = {}) {
         // using this primarily for header values that are generally (though not 100%
         // strictly?) ASCII-only, this should almost never happen.
         return JSON.stringify(c).slice(1, -1);
-      } 
-        return c;
-      
+      }
+      return c;
     })
     .join('');
 }

@@ -135,7 +135,7 @@ export const httr: Client = {
       .join(', ');
 
     if (headerAdditions) {
-      request += `, ${  headerAdditions}`;
+      request += `, ${headerAdditions}`;
     }
 
     if (postData.text || postData.jsonObj || postData.params) {

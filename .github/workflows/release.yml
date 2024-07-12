@@ -52,7 +52,7 @@ jobs:
         id: core_tag_and_release
         with:
           tag: v${{ env.TAG }}
-          name: "httpsnippet v${{ env.TAG }} 📦"
+          name: 'httpsnippet v${{ env.TAG }} 📦'
           generateReleaseNotes: true
           prerelease: false
           draft: false
