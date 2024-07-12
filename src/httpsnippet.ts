@@ -53,7 +53,7 @@ interface Entry {
   request: Partial<HarRequest>;
 }
 
-interface HarEntry {
+export interface HarEntry {
   log: {
     version: string;
     creator: {
@@ -64,7 +64,7 @@ interface HarEntry {
   };
 }
 
-const isHarEntry = (value: any): value is HarEntry =>
+export const isHarEntry = (value: any): value is HarEntry =>
   typeof value === 'object' &&
   'log' in value &&
   typeof value.log === 'object' &&

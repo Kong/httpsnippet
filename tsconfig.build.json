@@ -1,15 +1,16 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "src",
     "allowJs": true,
-    "resolveJsonModule": true,
-    "strict": true,
-    "esModuleInterop": true,
+    "declaration": true,
+    "declarationMap": true,
     "downlevelIteration": true,
     "lib": ["ESNext"],
-    "declaration": true,
-    "declarationMap": true
+    "esModuleInterop": true,
+    "outDir": "dist",
+    "resolveJsonModule": true,
+    "rootDir": "src",
+    "sourceMap": true,
+    "strict": true
   },
   "include": ["src"],
   "exclude": ["dist", "**/*.test.ts"]
