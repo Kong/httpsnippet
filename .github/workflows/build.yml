@@ -89,6 +89,6 @@ jobs:
         run: npm run build
 
       - name: Publish to NPM
-        run: npm publish --no-git-checks --provenance --tag ${{ github.sha }}
+        run: npm publish --no-git-checks --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
