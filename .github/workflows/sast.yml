@@ -4,9 +4,8 @@ on:
   pull_request: {}
   push:
     branches:
-    - master
+      - master
   workflow_dispatch: {}
-
 
 jobs:
   semgrep:

@@ -7,7 +7,7 @@ At HTTPSnippet, we take security issues very seriously. If you believe you have 
 ## How to Report
 
 1. **Do not publicly disclose the vulnerability**: Please do not create a GitHub issue or post the vulnerability on public forums. Instead, contact us directly at [vulnerability@konghq.com](mailto:vulnerability@konghq.com).
-2. **Provide detailed information**: When reporting a vulnerability, please include as much information as possible to help us understand and reproduce the issue. This may include:
+1. **Provide detailed information**: When reporting a vulnerability, please include as much information as possible to help us understand and reproduce the issue. This may include:
    - Description of the vulnerability
    - Steps to reproduce the issue
    - Potential impact

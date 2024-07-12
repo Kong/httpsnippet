@@ -15,7 +15,7 @@ on:
 jobs:
   scan:
     permissions:
-      packages: write 
+      packages: write
       contents: write # publish sbom to GH releases/tag assets
     runs-on: ubuntu-latest
     steps:
@@ -74,14 +74,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20.9.0
           registry-url: 'https://registry.npmjs.org'
-    
+
       - name: Install
         run: npm ci
 
@@ -92,4 +92,3 @@ jobs:
         run: npm publish --no-git-checks --provenance --tag ${{ github.sha }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
