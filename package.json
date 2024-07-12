@@ -86,6 +86,7 @@
     "typescript": "^4.6.3"
   },
   "dependencies": {
+    "ajv": "^8.16.0",
     "chalk": "^4.1.2",
     "event-stream": "4.0.1",
     "form-data": "4.0.0",
