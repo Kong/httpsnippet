@@ -33,6 +33,20 @@ Array [
   Object {
     "clients": Array [
       Object {
+        "description": "Crystal HTTP client",
+        "key": "native",
+        "link": "https://crystal-lang.org/api/master/HTTP/Client.html",
+        "title": "http::client",
+      },
+    ],
+    "default": "native",
+    "extname": ".cr",
+    "key": "crystal",
+    "title": "Crystal",
+  },
+  Object {
+    "clients": Array [
+      Object {
         "description": ".NET Standard HTTP Client",
         "key": "httpclient",
         "link": "https://docs.microsoft.com/en-us/dotnet/api/system.net.http.httpclient",
