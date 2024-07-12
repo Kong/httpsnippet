@@ -26,7 +26,7 @@ export const generatePowershellConvert = (command: PowershellCommand) => {
       'PATCH',
       'POST',
       'PUT',
-      'TRACE'
+      'TRACE',
     ];
     const methodArg = methods.includes(method.toUpperCase()) ? '-Method' : '-CustomMethod';
 
@@ -73,7 +73,9 @@ export const generatePowershellConvert = (command: PowershellCommand) => {
       commandOptions.push(`-Body '${postData.text}'`);
     }
 
-    push(`$response = ${command} -Uri '${fullUrl}' ${methodArg} ${method} ${commandOptions.join(' ')}`);
+    push(
+      `$response = ${command} -Uri '${fullUrl}' ${methodArg} ${method} ${commandOptions.join(' ')}`,
+    );
     return join();
   };
   return convert;

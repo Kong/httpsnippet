@@ -9,7 +9,7 @@ export const faraday: Client = {
     link: 'https://github.com/lostisland/faraday',
     description: 'Faraday HTTP client',
   },
-  convert: ({ uriObj, queryObj, method: rawMethod, fullUrl, postData, allHeaders }, options = {}) => {
+  convert: ({ uriObj, queryObj, method: rawMethod, postData, allHeaders }) => {
     const { push, blank, join } = new CodeBuilder();
 
     // To support custom methods we check for the supported methods
@@ -30,8 +30,8 @@ export const faraday: Client = {
       'TRACE',
     ];
 
-    if(!methods.includes(method)) {
-      push(`# Faraday cannot currently run ${method} requests. Please use another client.`)
+    if (!methods.includes(method)) {
+      push(`# Faraday cannot currently run ${method} requests. Please use another client.`);
       return join();
     }
 
@@ -39,7 +39,7 @@ export const faraday: Client = {
     blank();
 
     // Write body to beginning of script
-    if(postData.mimeType === 'application/x-www-form-urlencoded') {
+    if (postData.mimeType === 'application/x-www-form-urlencoded') {
       if (postData.params) {
         push(`data = {`);
         postData.params.forEach(param => {
@@ -52,8 +52,12 @@ export const faraday: Client = {
 
     push(`conn = Faraday.new(`);
     push(`  url: '${uriObj.protocol}//${uriObj.host}',`);
-    if(allHeaders['content-type'] || allHeaders['Content-Type']) {
-      push(`  headers: {'Content-Type' => '${allHeaders['content-type'] || allHeaders['Content-Type']}'}`);
+    if (allHeaders['content-type'] || allHeaders['Content-Type']) {
+      push(
+        `  headers: {'Content-Type' => '${
+          allHeaders['content-type'] || allHeaders['Content-Type']
+        }'}`,
+      );
     }
     push(`)`);
 
@@ -63,7 +67,7 @@ export const faraday: Client = {
     const headers = Object.keys(allHeaders);
     if (headers.length) {
       headers.forEach(key => {
-        if(key.toLowerCase() !== 'content-type') {
+        if (key.toLowerCase() !== 'content-type') {
           push(`  req.headers['${key}'] = '${escapeForSingleQuotes(allHeaders[key])}'`);
         }
       });
@@ -72,9 +76,9 @@ export const faraday: Client = {
     Object.keys(queryObj).forEach(name => {
       const value = queryObj[name];
       if (Array.isArray(value)) {
-        push(`  req.params['${name}'] = ${JSON.stringify(value)}`)
+        push(`  req.params['${name}'] = ${JSON.stringify(value)}`);
       } else {
-        push(`  req.params['${name}'] = '${value}'`)
+        push(`  req.params['${name}'] = '${value}'`);
       }
     });
 
@@ -98,7 +102,7 @@ export const faraday: Client = {
     }
 
     push('end');
-    blank()
+    blank();
     push('puts response.status');
     push('puts response.body');
 
