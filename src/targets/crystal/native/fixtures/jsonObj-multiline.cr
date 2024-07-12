@@ -1,8 +1,10 @@
 require "http/client"
 
-response = HTTP::Client.post(
-  url: "http://mockbin.com/har",
-  headers: HTTP::Headers{"content-type" => "application/json"},
-  body: "{\n  \"foo\": \"bar\"\n}"
-)
+url = "http://mockbin.com/har"
+headers = HTTP::Headers{
+  "content-type" => "application/json"
+}
+reqBody = "{\n  \"foo\": \"bar\"\n}"
+
+response = HTTP::Client.post url, headers: headers, body: reqBody
 puts response.body

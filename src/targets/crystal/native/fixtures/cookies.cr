@@ -1,8 +1,9 @@
 require "http/client"
 
-client = HTTP::Client.new "mockbin.com"
-request = HTTP::Request.new "POST", resource: "/har"
-request.cookies["foo"] = "bar"
-request.cookies["bar"] = "baz"
-response = client.exec request
+url = "http://mockbin.com/har"
+headers = HTTP::Headers{
+  "cookie" => "foo=bar; bar=baz"
+}
+
+response = HTTP::Client.post url, headers: headers
 puts response.body

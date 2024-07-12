@@ -1,4 +1,6 @@
 require "http/client"
 
-response = HTTP::Client.get "https://mockbin.com/har"
+url = "https://mockbin.com/har"
+
+response = HTTP::Client.get url
 puts response.body

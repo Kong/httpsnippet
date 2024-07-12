@@ -1,4 +1,6 @@
 require "http/client"
 
-response = HTTP::Client.exec "PROPFIND", "http://mockbin.com/har"
+url = "http://mockbin.com/har"
+
+response = HTTP::Client.exec "PROPFIND", url
 puts response.body

@@ -7,9 +7,8 @@
  *
  * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
  */
-
 import { CodeBuilder } from '../../../helpers/code-builder';
-import { escapeForSingleQuotes } from '../../../helpers/escape';
+import { escapeForDoubleQuotes } from '../../../helpers/escape';
 import { Client } from '../../targets';
 
 export interface CrystalNativeOptions {
