@@ -16,11 +16,19 @@ export const generatePowershellConvert = (command: PowershellCommand) => {
     allHeaders,
   }) => {
     const { push, join } = new CodeBuilder();
-    const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'];
-
-    if (!methods.includes(method.toUpperCase())) {
-      return 'Method not supported';
-    }
+    const methods = [
+      'DEFAULT',
+      'DELETE',
+      'GET',
+      'HEAD',
+      'MERGE',
+      'OPTIONS',
+      'PATCH',
+      'POST',
+      'PUT',
+      'TRACE'
+    ];
+    const methodArg = methods.includes(method.toUpperCase()) ? '-Method' : '-CustomMethod';
 
     const commandOptions = [];
 
@@ -65,7 +73,7 @@ export const generatePowershellConvert = (command: PowershellCommand) => {
       commandOptions.push(`-Body '${postData.text}'`);
     }
 
-    push(`$response = ${command} -Uri '${fullUrl}' -Method ${method} ${commandOptions.join(' ')}`);
+    push(`$response = ${command} -Uri '${fullUrl}' ${methodArg} ${method} ${commandOptions.join(' ')}`);
     return join();
   };
   return convert;

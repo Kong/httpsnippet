@@ -1,1 +1,1 @@
-Method not supported
+$response = Invoke-RestMethod -Uri 'http://mockbin.com/har' -CustomMethod PROPFIND 
