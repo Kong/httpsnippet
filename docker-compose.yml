@@ -22,7 +22,7 @@ services:
       - HTTPS_KEY_FILE=/https-cert/httpbin.org-key.pem
     networks:
       default:
-        # on the docker-compose network, this proxy will be aliased as
+        # on the `docker compose` network, this proxy will be aliased as
         # httpbin.org. To make this work with HTTPS, each integration test
         # container needs to install the root CA contained in
         # ./integrations/https-cert/rootCA.pem
