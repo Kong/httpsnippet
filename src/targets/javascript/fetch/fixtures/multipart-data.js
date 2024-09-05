@@ -7,6 +7,6 @@ const options = {method: 'POST'};
 options.body = form;
 
 fetch('https://httpbin.org/anything', options)
-  .then(response => response.json())
-  .then(response => console.log(response))
+  .then(res => res.json())
+  .then(res => console.log(res))
   .catch(err => console.error(err));

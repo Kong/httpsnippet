@@ -87,8 +87,8 @@ export const jquery: Client = {
 
     push(`const settings = ${stringifiedSettings};`);
     blank();
-    push('$.ajax(settings).done(function (response) {');
-    push('console.log(response);', 1);
+    push('$.ajax(settings).done(res => {');
+    push('console.log(res);', 1);
     push('});');
 
     return join();

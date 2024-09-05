@@ -10,6 +10,6 @@ const settings = {
   data: '{\n  "foo": "bar"\n}'
 };
 
-$.ajax(settings).done(function (response) {
-  console.log(response);
+$.ajax(settings).done(res => {
+  console.log(res);
 });
