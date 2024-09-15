@@ -20,8 +20,15 @@ export const restsharp: Client = {
       return 'Method not supported';
     }
 
+    function toPascalCase(str: string): string {
+      return str.replace(
+        /\w+/g,
+        word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
+      );
+    }
+
     push(`var client = new RestClient("${fullUrl}");`);
-    push(`var request = new RestRequest(Method.${method.toUpperCase()});`);
+    push(`var request = new RestRequest("", Method.${toPascalCase(method)});`);
 
     // Add headers, including the cookies
 
@@ -39,7 +46,7 @@ export const restsharp: Client = {
       push(`request.AddParameter("${header}", ${text}, ParameterType.RequestBody);`);
     }
 
-    push('IRestResponse response = client.Execute(request);');
+    push('var response = client.Execute(request);');
     return join();
   },
 };
