@@ -13,9 +13,8 @@ jobs:
     strategy:
       matrix:
         node-version:
-          - lts/-1
-          - lts/*
-          - latest
+          - 18
+          - 20
 
     steps:
       - uses: actions/checkout@v4

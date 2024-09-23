@@ -31,7 +31,7 @@ const targetFilter: TargetId[] = [
 /** useful for debuggin, only run a particular set of targets */
 const clientFilter: ClientId[] = [
   // put your clientId here:
-  // 'axios',
+  // 'unirest',
 ];
 
 /** useful for debuggin, only run a particular set of fixtures */

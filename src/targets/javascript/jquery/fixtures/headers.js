@@ -11,6 +11,6 @@ const settings = {
   }
 };
 
-$.ajax(settings).done(res => {
-  console.log(res);
+$.ajax(settings).done(function (response) {
+  console.log(response);
 });

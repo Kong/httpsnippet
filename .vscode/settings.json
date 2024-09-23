@@ -1,15 +1,10 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit"
   },
-  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
 
   // controlled by the .editorconfig at root since we can't map vscode settings directly to files
   // https://github.com/microsoft/vscode/issues/35350
-  "files.insertFinalNewline": false,
-
-  "search.exclude": {
-    "coverage": true
-  }
+  "files.insertFinalNewline": false
 }

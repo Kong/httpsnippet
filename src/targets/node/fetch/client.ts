@@ -1,3 +1,12 @@
+/**
+ * @description
+ * HTTP code snippet generator for Node.js using node-fetch.
+ *
+ * @author
+ * @hirenoble
+ *
+ * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
+ */
 import type { Client } from '../../index.js';
 
 import stringifyObject from 'stringify-object';
@@ -8,10 +17,11 @@ import { getHeaderName } from '../../../helpers/headers.js';
 export const fetch: Client = {
   info: {
     key: 'fetch',
-    title: 'fetch',
-    link: 'https://nodejs.org/docs/latest/api/globals.html#fetch',
-    description: 'Perform asynchronous HTTP requests with the Fetch API',
-    extname: '.js',
+    title: 'Fetch',
+    link: 'https://github.com/bitinn/node-fetch',
+    description: 'Simplified HTTP node-fetch client',
+    extname: '.cjs',
+    installation: 'npm install node-fetch@2 --save',
   },
   convert: ({ method, fullUrl, postData, headersObj, cookies }, options) => {
     const opts = {
@@ -22,6 +32,7 @@ export const fetch: Client = {
     let includeFS = false;
     const { blank, push, join, unshift } = new CodeBuilder({ indent: opts.indent });
 
+    push("const fetch = require('node-fetch');");
     const url = fullUrl;
     const reqOpts: Record<string, any> = {
       method,
@@ -33,14 +44,15 @@ export const fetch: Client = {
 
     switch (postData.mimeType) {
       case 'application/x-www-form-urlencoded':
+        unshift("const { URLSearchParams } = require('url');");
         push('const encodedParams = new URLSearchParams();');
+        blank();
 
         postData.params?.forEach(param => {
           push(`encodedParams.set('${param.name}', '${param.value}');`);
         });
 
         reqOpts.body = 'encodedParams';
-        blank();
         break;
 
       case 'application/json':
@@ -56,14 +68,16 @@ export const fetch: Client = {
           break;
         }
 
-        // The FormData API automatically adds a `Content-Type` header for `multipart/form-data` content and if we add our own here data won't be correctly transmitted.
+        // The `form-data` module automatically adds a `Content-Type` header for `multipart/form-data` content and if we add our own here data won't be correctly transmitted.
         // eslint-disable-next-line no-case-declarations -- We're only using `contentTypeHeader` within this block.
         const contentTypeHeader = getHeaderName(headersObj, 'content-type');
         if (contentTypeHeader) {
           delete headersObj[contentTypeHeader];
         }
 
+        unshift("const FormData = require('form-data');");
         push('const formData = new FormData();');
+        blank();
 
         postData.params.forEach(param => {
           if (!param.fileName && !param.fileName && !param.contentType) {
@@ -73,17 +87,9 @@ export const fetch: Client = {
 
           if (param.fileName) {
             includeFS = true;
-
-            // Whenever we drop support for Node 18 we can change this blob work to use
-            // `fs.openAsBlob('filename')`.
-            push(
-              `formData.append('${param.name}', await new Response(fs.createReadStream('${param.fileName}')).blob());`,
-            );
+            push(`formData.append('${param.name}', fs.createReadStream('${param.fileName}'));`);
           }
         });
-
-        reqOpts.body = 'formData';
-        blank();
         break;
 
       default:
@@ -104,7 +110,7 @@ export const fetch: Client = {
         reqOpts.headers.cookie = cookiesString;
       }
     }
-
+    blank();
     push(`const url = '${url}';`);
 
     // If we ultimately don't have any headers to send then we shouldn't add an empty object into the request options.
@@ -131,16 +137,19 @@ export const fetch: Client = {
     blank();
 
     if (includeFS) {
-      unshift("import fs from 'fs';\n");
+      unshift("const fs = require('fs');");
     }
-
+    if (postData.params && postData.mimeType === 'multipart/form-data') {
+      push('options.body = formData;');
+      blank();
+    }
     push('fetch(url, options)');
     push('.then(res => res.json())', 1);
     push('.then(json => console.log(json))', 1);
-    push('.catch(err => console.error(err));', 1);
+    push(".catch(err => console.error('error:' + err));", 1);
 
     return join()
       .replace(/'encodedParams'/, 'encodedParams')
-      .replace(/'formData'/, 'formData');
+      .replace(/"fs\.createReadStream\(\\"(.+)\\"\)"/, 'fs.createReadStream("$1")');
   },
 };

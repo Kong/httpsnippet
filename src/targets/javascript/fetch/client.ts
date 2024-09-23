@@ -121,8 +121,8 @@ export const fetch: Client<FetchOptions> = {
     }
 
     push(`fetch('${fullUrl}', options)`);
-    push('.then(res => res.json())', 1);
-    push('.then(res => console.log(res))', 1);
+    push('.then(response => response.json())', 1);
+    push('.then(response => console.log(response))', 1);
     push('.catch(err => console.error(err));', 1);
 
     return join();

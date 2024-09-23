@@ -99,8 +99,12 @@ export const axios: Client = {
 
     push('axios');
     push('.request(options)', 1);
-    push('.then(res => console.log(res.data))', 1);
-    push('.catch(err => console.error(err));', 1);
+    push('.then(function (response) {', 1);
+    push('console.log(response.data);', 2);
+    push('})', 1);
+    push('.catch(function (error) {', 1);
+    push('console.error(error);', 2);
+    push('});', 1);
 
     return join();
   },

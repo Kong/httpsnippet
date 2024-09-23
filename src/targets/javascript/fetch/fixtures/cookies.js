@@ -1,6 +1,6 @@
 const options = {method: 'GET', headers: {cookie: 'foo=bar; bar=baz'}};
 
 fetch('https://httpbin.org/cookies', options)
-  .then(res => res.json())
-  .then(res => console.log(res))
+  .then(response => response.json())
+  .then(response => console.log(response))
   .catch(err => console.error(err));
