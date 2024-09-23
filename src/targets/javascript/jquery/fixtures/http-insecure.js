@@ -6,6 +6,6 @@ const settings = {
   headers: {}
 };
 
-$.ajax(settings).done(function (response) {
-  console.log(response);
+$.ajax(settings).done(res => {
+  console.log(res);
 });

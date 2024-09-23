@@ -13,10 +13,7 @@ WORKDIR /src
 ADD package.json /src/
 
 # https://www.npmjs.com/package/axios
-# https://www.npmjs.com/package/request
-# Installing node-fetch@2 because as of 3.0 is't now an ESM-only package.
-# https://www.npmjs.com/package/node-fetch
-RUN npm install axios request node-fetch@2 && \
+RUN npm install axios && \
   npm install
 
 ADD . /src

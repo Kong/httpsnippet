@@ -9,7 +9,7 @@ export const javascript: Target = {
   info: {
     key: 'javascript',
     title: 'JavaScript',
-    default: 'xhr',
+    default: 'fetch',
   },
 
   clientsById: {

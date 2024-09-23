@@ -1,15 +1,15 @@
 import type { Target } from '../targets/index.js';
 
-import { request } from '../targets/node/request/client.js';
+import { axios } from '../targets/node/axios/client.js';
 
 export const customTarget = {
   info: {
-    key: 'js-variant',
-    title: 'JavaScript Variant',
+    key: 'node-variant',
+    title: 'Node Variant',
     extname: '.js',
-    default: 'request',
+    default: 'axios',
   },
   clientsById: {
-    request,
+    axios,
   },
 } as unknown as Target;
