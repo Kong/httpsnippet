@@ -21,7 +21,7 @@ const ENVIRONMENT_CONFIG = {
     c: ['libcurl'],
     csharp: ['httpclient', 'restsharp'],
     go: ['native'],
-    node: ['axios', 'fetch'],
+    node: ['axios', 'fetch', 'native', 'request'],
     php: ['curl', 'guzzle'],
     python: ['requests'],
     shell: ['curl'],
@@ -30,7 +30,7 @@ const ENVIRONMENT_CONFIG = {
     // When running tests locally, or within a CI environment, we shold limit the targets that
     // we're testing so as to not require a mess of dependency requirements that would be better
     // served within a container.
-    node: ['fetch'],
+    node: ['native'],
     php: ['curl'],
     python: ['requests'],
     shell: ['curl'],

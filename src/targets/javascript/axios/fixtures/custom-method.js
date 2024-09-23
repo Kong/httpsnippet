@@ -4,5 +4,9 @@ const options = {method: 'PROPFIND', url: 'https://httpbin.org/anything'};
 
 axios
   .request(options)
-  .then(res => console.log(res.data))
-  .catch(err => console.error(err));
+  .then(function (response) {
+    console.log(response.data);
+  })
+  .catch(function (error) {
+    console.error(error);
+  });

@@ -109,8 +109,8 @@ console.log(
   }),
 );
 
-// generate Node.js: Axios output
-console.log(snippet.convert('node', 'axios'));
+// generate Node.js: Unirest output
+console.log(snippet.convert('node', 'unirest'));
 ```
 
 ### addTarget(target)

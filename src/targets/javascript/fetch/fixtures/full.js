@@ -9,6 +9,6 @@ const options = {
 };
 
 fetch('https://httpbin.org/anything?foo=bar&foo=baz&baz=abc&key=value', options)
-  .then(res => res.json())
-  .then(res => console.log(res))
+  .then(response => response.json())
+  .then(response => console.log(response))
   .catch(err => console.error(err));

@@ -19,7 +19,7 @@ export const axios: Client = {
     title: 'Axios',
     link: 'https://github.com/axios/axios',
     description: 'Promise based HTTP client for the browser and node.js',
-    extname: '.js',
+    extname: '.cjs',
     installation: 'npm install axios --save',
   },
   convert: ({ method, fullUrl, allHeaders, postData }, options) => {
@@ -29,8 +29,7 @@ export const axios: Client = {
     };
     const { blank, join, push, addPostProcessor } = new CodeBuilder({ indent: opts.indent });
 
-    push("import axios from 'axios';");
-    blank();
+    push("const axios = require('axios');");
 
     const reqOpts: Record<string, any> = {
       method,
@@ -44,6 +43,9 @@ export const axios: Client = {
     switch (postData.mimeType) {
       case 'application/x-www-form-urlencoded':
         if (postData.params) {
+          push("const { URLSearchParams } = require('url');");
+          blank();
+
           push('const encodedParams = new URLSearchParams();');
           postData.params.forEach(param => {
             push(`encodedParams.set('${param.name}', '${param.value}');`);
@@ -58,12 +60,14 @@ export const axios: Client = {
         break;
 
       case 'application/json':
+        blank();
         if (postData.jsonObj) {
           reqOpts.data = postData.jsonObj;
         }
         break;
 
       default:
+        blank();
         if (postData.text) {
           reqOpts.data = postData.text;
         }
@@ -75,8 +79,12 @@ export const axios: Client = {
 
     push('axios');
     push('.request(options)', 1);
-    push('.then(res => console.log(res.data))', 1);
-    push('.catch(err => console.error(err));', 1);
+    push('.then(function (response) {', 1);
+    push('console.log(response.data);', 2);
+    push('})', 1);
+    push('.catch(function (error) {', 1);
+    push('console.error(error);', 2);
+    push('});', 1);
 
     return join();
   },

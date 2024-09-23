@@ -22,7 +22,7 @@ describe('extname', () => {
     expect(extname('c', 'libcurl')).toBe('.c');
     expect(extname('clojure', 'clj_http')).toBe('.clj');
     expect(extname('javascript', 'axios')).toBe('.js');
-    expect(extname('node', 'axios')).toBe('.js');
+    expect(extname('node', 'axios')).toBe('.cjs');
   });
 
   it('returns empty string if the extension is not found', () => {
