@@ -1,6 +1,5 @@
 export { CodeBuilder, CodeBuilderOptions, PostProcessor } from './helpers/code-builder';
 export { EscapeOptions, escapeString } from './helpers/escape';
-export { HARError, validateHarRequest } from './helpers/har-validator';
 export { getHeader, getHeaderName } from './helpers/headers';
 export { AvailableTarget, availableTargets, extname } from './helpers/utils';
 export {
