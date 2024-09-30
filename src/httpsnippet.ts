@@ -1,11 +1,11 @@
 import { map as eventStreamMap } from 'event-stream';
 import FormData from 'form-data';
 import { Param, PostDataCommon, Request as NpmHarRequest } from 'har-format';
+import { validateRequest } from "har-validator-compiled";
 import { stringify as queryStringify } from 'querystring';
 import { format as urlFormat, parse as urlParse, UrlWithParsedQuery } from 'url';
 
 import { formDataIterator, isBlob } from './helpers/form-data';
-import { validateHarRequest } from './helpers/har-validator';
 import { getHeaderName } from './helpers/headers';
 import { ReducedHelperObject, reducer } from './helpers/reducer';
 import { ClientId, TargetId, targets } from './targets/targets';
@@ -106,7 +106,7 @@ export class HTTPSnippet {
         },
       };
 
-      if (validateHarRequest(req)) {
+      if (validateRequest(req)) {
         this.requests.push(this.prepare(req));
       }
     });
