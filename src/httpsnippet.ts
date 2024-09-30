@@ -1,7 +1,7 @@
 import { map as eventStreamMap } from 'event-stream';
 import FormData from 'form-data';
 import { Param, PostDataCommon, Request as NpmHarRequest } from 'har-format';
-import { validateRequest } from "har-validator-compiled";
+import { validateRequest } from 'har-validator-compiled';
 import { stringify as queryStringify } from 'querystring';
 import { format as urlFormat, parse as urlParse, UrlWithParsedQuery } from 'url';
 
