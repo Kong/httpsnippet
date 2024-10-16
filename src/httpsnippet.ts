@@ -13,10 +13,12 @@ import { ClientId, TargetId, targets } from './targets/targets';
 export { availableTargets, extname } from './helpers/utils';
 export { addTarget, addTargetClient } from './targets/targets';
 
-// @ts-ignore — we're implementing the logic for which FormData object ourselves
+// We're implementing the logic for which FormData object to use, ourselves.
 // This allows us to use the native FormData object in the browser and the `form-data` module in Node,
 // instead of relying on the package entrypoint to handle that.
-const resolveFormData = typeof window !== 'undefined' && window.FormData ? window.FormData : FormData;
+const resolveFormData =
+  // @ts-expect-error — we're only using window.FormData if it exists
+  typeof window !== 'undefined' && window.FormData ? window.FormData : FormData;
 
 const DEBUG_MODE = false;
 
