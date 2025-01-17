@@ -169,12 +169,16 @@ exports.curl = {
                 else {
                     push("".concat(binary ? '--data-binary' : arg('data'), " ").concat((0, shell_1.quote)(postData.text)));
                 }
+
+                if (method === 'PUT') {
+                    push("".concat("-X", " PUT"));
+                }
                 break;
             default: {
                 // raw request body
                 if (!postData.text) {
-                    if (method === 'POST') {
-                      push("".concat("-X", " POST"));
+                    if (['POST', 'PUT'].includes(method)) {
+                    push("".concat("-X", ` ${method}`));
                     }
                     break;
                 }
