@@ -22,7 +22,7 @@ jobs:
           token: ${{ secrets.PAT_INSOMNIA_INFRA }}
 
       - name: Configure Git user
-        uses: Homebrew/actions/git-user-config@master
+        uses: Homebrew/actions/git-user-config@266845213695c3047d210b2e8fbc42ecdaf45802 # master
         with:
           username: ${{ (github.event_name == 'workflow_dispatch' && github.actor) || 'insomnia-infra' }}
 
@@ -48,7 +48,7 @@ jobs:
           git push origin master
 
       - name: Create Tag and Release
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@440c8c1cb0ed28b9f43e4d1d670870f059653174 # v1
         id: core_tag_and_release
         with:
           tag: v${{ env.TAG }}

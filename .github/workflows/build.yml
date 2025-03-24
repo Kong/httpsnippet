@@ -28,7 +28,7 @@ jobs:
       # Produces SBOM and CVE report
       # Helps understand vulnerabilities / license compliance across third party dependencies
       - id: sca-project
-        uses: Kong/public-shared-actions/security-actions/sca@2f02738ecb1670f01391162e43fe3f5d4e7942a1 # v2.2.2
+        uses: Kong/public-shared-actions/security-actions/sca@a18abf762d6e2444bcbfd20de70451ea1e3bc1b1
         with:
           dir: ${{ github.repository }}
           upload-sbom-release-assets: true
