@@ -88,7 +88,7 @@
   "dependencies": {
     "chalk": "^4.1.2",
     "event-stream": "4.0.1",
-    "form-data": "4.0.0",
+    "form-data": "4.0.4",
     "har-validator-compiled": "^1.0.0",
     "stringify-object": "3.3.0",
     "yargs": "^17.4.0"
