@@ -1,7 +1,6 @@
-# Ignore everything by default
-# NOTE: NPM publish will never ignore package.json, package-lock.json, README, LICENSE, CHANGELOG
-# https://npm.github.io/publishing-pkgs-docs/publishing/the-npmignore-file.html
-*
 
-# Don't ignore dist folder
-!dist/**
+# Originally this repo ignored everything except the !dist folder.
+# However, this is a fork and we are not publishing an actual package.
+# The code will be installed directly in package.json like this:
+# "httpsnippet": "git+https://github.com/jci-metasys/httpsnippet.git#v3.0.9-jci1",
+# Due to this, all ignores are removed.
