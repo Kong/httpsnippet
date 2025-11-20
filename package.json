@@ -79,7 +79,7 @@
     "eslint-plugin-jest-formatting": "^3.1.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "jest": "^27.5.1",
-    "markdownlint-cli2": "^0.5.1",
+    "markdownlint-cli2": "^0.14.0",
     "prettier": "^2.6.2",
     "ts-jest": "^27.1.4",
     "type-fest": "^2.12.2",
@@ -88,7 +88,7 @@
   "dependencies": {
     "chalk": "^4.1.2",
     "event-stream": "4.0.1",
-    "form-data": "4.0.0",
+    "form-data": "4.0.4",
     "har-validator-compiled": "^1.0.0",
     "stringify-object": "3.3.0",
     "yargs": "^17.4.0"
