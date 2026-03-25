@@ -40,6 +40,11 @@ jobs:
       - name: Install
         run: npm ci
 
+      - name: Configure git for Insomnia Automation
+        run: |
+          git config user.name "insomnia-automation[bot]"
+          git config user.email "2326064+insomnia-automation@users.noreply.github.com"
+
       - name: Create new package version
         run: npm version "${{ env.TAG }}"
 
