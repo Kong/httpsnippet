@@ -7,6 +7,9 @@ on:
         description: 'Tag version to release'
         required: true
 
+permissions:
+  contents: write
+
 env:
   # Release Tag to build and publish
   TAG: ${{ github.event.inputs.version }}
@@ -15,16 +18,19 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      - name: Generate Insomnia Automation app token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.GHA_INSOMNIA_AUTOMATION_APP_ID }}
+          private-key: ${{ secrets.GHA_INSOMNIA_AUTOMATION_PRIVATE_KEY }}
+
       - name: Checkout code
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-          token: ${{ secrets.PAT_INSOMNIA_INFRA }}
-
-      - name: Configure Git user
-        uses: Homebrew/actions/git-user-config@266845213695c3047d210b2e8fbc42ecdaf45802 # master
-        with:
-          username: ${{ (github.event_name == 'workflow_dispatch' && github.actor) || 'insomnia-infra' }}
+          token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: true
 
       - name: Setup Node
         uses: actions/setup-node@v6
@@ -42,7 +48,7 @@ jobs:
           git tag --list
           git remote -v
 
-      - name: Merge version commit into master
+      - name: Push version commit and tags
         run: |
           git push origin v${{ env.TAG }}
           git push origin master
@@ -56,3 +62,4 @@ jobs:
           generateReleaseNotes: true
           prerelease: false
           draft: false
+          token: ${{ steps.app-token.outputs.token }}
