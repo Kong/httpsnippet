@@ -39,7 +39,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [16, 18, 20, 22, 24]
+        node-version: [20, 22, 24]
     steps:
       - name: Checkout branch
         uses: actions/checkout@v6
@@ -79,7 +79,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 20.9.0
+          node-version: 24
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install
