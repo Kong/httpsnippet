@@ -48,7 +48,7 @@ export const httr: Client = {
 
     if (entriesCount === 1) {
       const entry = entries[0];
-      push(`queryString <- list(${entry[0]} = "${entry[1]}")`);
+      push(`queryString <- list(\`${entry[0]}\` = "${entry[1]}")`);
       blank();
     } else if (entriesCount > 1) {
       push('queryString <- list(');
@@ -56,7 +56,7 @@ export const httr: Client = {
       entries.forEach(([key, value], i) => {
         const isLastItem = i !== entriesCount - 1;
         const maybeComma = isLastItem ? ',' : '';
-        push(`${key} = "${value}"${maybeComma}`, 1);
+        push(`\`${key}\` = "${value}"${maybeComma}`, 1);
       });
 
       push(')');
