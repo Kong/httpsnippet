@@ -22,6 +22,7 @@ import { ruby } from './ruby/target';
 import { rust } from './rust/target';
 import { shell } from './shell/target';
 import { swift } from './swift/target';
+import { scala } from './scala/target';
 
 export type TargetId = keyof typeof targets;
 
@@ -79,6 +80,7 @@ export const targets = {
   rust,
   shell,
   swift,
+  scala
 };
 
 export const isTarget = (target: Target): target is Target => {
@@ -131,8 +133,7 @@ export const isTarget = (target: Target): target is Target => {
 
   if (!Object.prototype.hasOwnProperty.call(target.clientsById, target.info.default)) {
     throw new Error(
-      `target ${target.info.key} is configured with a default client ${
-        target.info.default
+      `target ${target.info.key} is configured with a default client ${target.info.default
       }, but no such client was found in the property \`clientsById\` (found ${JSON.stringify(
         Object.keys(target.clientsById),
       )})`,
