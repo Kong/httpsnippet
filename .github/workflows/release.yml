@@ -20,6 +20,11 @@ jobs:
     permissions:
       contents: read # writes use the GitHub App token
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+
       - name: Generate Insomnia Automation app token
         id: app-token
         uses: actions/create-github-app-token@v3

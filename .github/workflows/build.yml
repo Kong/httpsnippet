@@ -26,6 +26,11 @@ jobs:
       contents: write # publish sbom to GH releases/tag assets
     runs-on: ubuntu-24.04
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+
       - name: Checkout branch
         uses: actions/checkout@v6
         with:
@@ -52,6 +57,11 @@ jobs:
       matrix:
         node-version: [20, 22, 24]
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+
       - name: Checkout branch
         uses: actions/checkout@v6
         with:
@@ -82,6 +92,11 @@ jobs:
       id-token: write # npm provenance (OIDC)
     if: ${{ github.ref_type == 'tag' && github.repository_owner == 'Kong' }}
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@v2
+        with:
+          egress-policy: audit
+
       # checkout tag
       - name: Checkout code
         uses: actions/checkout@v6
