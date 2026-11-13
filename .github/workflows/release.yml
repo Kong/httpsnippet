@@ -7,8 +7,7 @@ on:
         description: 'Tag version to release'
         required: true
 
-permissions:
-  contents: write
+permissions: {}
 
 env:
   # Release Tag to build and publish
@@ -16,7 +15,10 @@ env:
 
 jobs:
   release:
-    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read # writes use the GitHub App token
     steps:
       - name: Generate Insomnia Automation app token
         id: app-token
@@ -30,7 +32,7 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ steps.app-token.outputs.token }}
-          persist-credentials: true
+          persist-credentials: true # required: later steps push with the app token
 
       - name: Setup Node
         uses: actions/setup-node@v6
@@ -46,7 +48,7 @@ jobs:
           git config user.email "2326064+insomnia-automation@users.noreply.github.com"
 
       - name: Create new package version
-        run: npm version "${{ env.TAG }}"
+        run: npm version "$TAG"
 
       - name: DEBUG see tags
         run: |
@@ -55,7 +57,7 @@ jobs:
 
       - name: Push version commit and tags
         run: |
-          git push origin v${{ env.TAG }}
+          git push origin "v${TAG}"
           git push origin master
 
       - name: Create Tag and Release

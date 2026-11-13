@@ -12,17 +12,25 @@ on:
       - synchronize
   workflow_dispatch:
 
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref_type != 'tag' && github.ref != 'refs/heads/master' }}
+
 jobs:
   scan:
+    timeout-minutes: 15
     permissions:
       packages: write
       contents: write # publish sbom to GH releases/tag assets
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout branch
         uses: actions/checkout@v6
         with:
           path: ${{ github.repository }}
+          persist-credentials: false
 
       # Perform SCA analysis for the code repository
       # Produces SBOM and CVE report
@@ -35,7 +43,10 @@ jobs:
 
   build:
     needs: [scan]
-    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -43,6 +54,8 @@ jobs:
     steps:
       - name: Checkout branch
         uses: actions/checkout@v6
+        with:
+          persist-credentials: false
 
       - name: Setup Node
         uses: actions/setup-node@v6
@@ -62,12 +75,11 @@ jobs:
         run: npm run build
 
   publish:
-    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    runs-on: ubuntu-24.04
     permissions:
-      contents: write
-      id-token: write # For using token to sign images
-      actions: read # For getting workflow run info to build provenance
-      packages: write # Required for publishing provenance. Issue: https://github.com/slsa-framework/slsa-github-generator/tree/main/internal/builders/container#known-issues
+      contents: read
+      id-token: write # npm provenance (OIDC)
     if: ${{ github.ref_type == 'tag' && github.repository_owner == 'Kong' }}
     steps:
       # checkout tag
@@ -75,6 +87,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -89,6 +102,6 @@ jobs:
         run: npm run build
 
       - name: Publish to NPM
-        run: npm publish --no-git-checks --provenance --tag ${{ github.sha }}
+        run: npm publish --no-git-checks --provenance --tag "$GITHUB_SHA"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
