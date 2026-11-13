@@ -21,26 +21,26 @@ jobs:
       contents: read # writes use the GitHub App token
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@v2
+        uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
         with:
           egress-policy: audit
 
       - name: Generate Insomnia Automation app token
         id: app-token
-        uses: actions/create-github-app-token@v3
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         with:
           app-id: ${{ secrets.GHA_INSOMNIA_AUTOMATION_APP_ID }}
           private-key: ${{ secrets.GHA_INSOMNIA_AUTOMATION_PRIVATE_KEY }}
 
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           token: ${{ steps.app-token.outputs.token }}
           persist-credentials: true # required: later steps push with the app token
 
       - name: Setup Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24
 
@@ -66,7 +66,7 @@ jobs:
           git push origin master
 
       - name: Create Tag and Release
-        uses: ncipollo/release-action@440c8c1cb0ed28b9f43e4d1d670870f059653174 # v1
+        uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1.21.0
         id: core_tag_and_release
         with:
           tag: v${{ env.TAG }}

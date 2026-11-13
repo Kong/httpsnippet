@@ -27,12 +27,12 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@v2
+        uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
         with:
           egress-policy: audit
 
       - name: Checkout branch
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           path: ${{ github.repository }}
           persist-credentials: false
@@ -41,7 +41,7 @@ jobs:
       # Produces SBOM and CVE report
       # Helps understand vulnerabilities / license compliance across third party dependencies
       - id: sca-project
-        uses: Kong/public-shared-actions/security-actions/sca@a18abf762d6e2444bcbfd20de70451ea1e3bc1b1
+        uses: Kong/public-shared-actions/security-actions/sca@e33f6f6d5ccdaa8af245f29896a51fada48c5d7e # sca@4.1.4
         with:
           dir: ${{ github.repository }}
           upload-sbom-release-assets: true
@@ -58,17 +58,17 @@ jobs:
         node-version: [20, 22, 24]
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@v2
+        uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
         with:
           egress-policy: audit
 
       - name: Checkout branch
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - name: Setup Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -93,19 +93,19 @@ jobs:
     if: ${{ github.ref_type == 'tag' && github.repository_owner == 'Kong' }}
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@v2
+        uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
         with:
           egress-policy: audit
 
       # checkout tag
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24
           registry-url: 'https://registry.npmjs.org'
