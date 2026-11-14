@@ -32,4 +32,4 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: Kong/public-shared-actions/security-actions/semgrep@916a6f6221b7eab6f5ae53d061274d588c965ae6 # semgrep@4.0.4
+      - uses: Kong/public-shared-actions/security-actions/semgrep@a18abf762d6e2444bcbfd20de70451ea1e3bc1b1 # semgrep@4.0.1 (4.0.4 fails: semgrep needs pkg_resources)
