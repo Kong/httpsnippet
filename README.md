@@ -86,9 +86,12 @@ console.log(output);
 | <pre>npm install --global httpsnippet</pre> | <pre>yarn global add httpsnippet</pre> |
 
 ```text
-httpsnippet [harFilePath]
+httpsnippet <harFilePaths..>
 
 the default command
+
+Positionals:
+  harFilePaths  HAR input files
 
 Options:
       --help     Show help                                   [boolean]
@@ -100,6 +103,12 @@ Options:
 
 Examples:
   httpsnippet my_har.json --target rust --client actix --output my_src_directory
+```
+
+To convert multiple files, pass their paths or let your shell expand a glob:
+
+```shell
+httpsnippet ./requests/*.json --target shell --client curl --output ./snippets
 ```
 
 ### Example

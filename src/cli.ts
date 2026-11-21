@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { readFileSync, writeFileSync } from 'fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'fs';
 import path from 'path';
 import { hideBin } from 'yargs/helpers';
 import yargs from 'yargs/yargs';
@@ -19,7 +19,7 @@ interface CliOptions {
   target: TargetId;
   client?: ClientId;
   output?: string;
-  harFilePath: string;
+  harFilePaths: string[];
   options?: any;
 }
 
@@ -27,10 +27,14 @@ export const go = () =>
   yargs(hideBin(process.argv))
     .version(packageJson.version)
     .command<CliOptions>(
-      '$0 [harFilePath]',
+      '$0 <harFilePaths..>',
       'the default command',
       builder => {
         builder
+          .positional('harFilePaths', {
+            type: 'string',
+            describe: 'HAR input files',
+          })
           .option('target', {
             alias: 't',
             type: 'string',
@@ -59,42 +63,46 @@ export const go = () =>
           .showHelpOnFail(true)
           .help();
       },
-      ({ target: targetId, client, output, options, harFilePath }) => {
-        const har = JSON.parse(readFileSync(harFilePath).toString()) as HarRequest;
-        const httpsnippet = new HTTPSnippet(har);
-
+      ({ target: targetId, client, output, options, harFilePaths }) => {
         try {
           if (options) {
             options = JSON.parse(options);
           }
         } catch (error) {
           if (error instanceof Error) {
-            bad(`${cyan.bold(harFilePath)} failed to read JSON: ${red(error.message)}`);
+            bad(`failed to parse --options as JSON: ${red(error.message)}`);
           }
           return;
         }
 
-        const result = httpsnippet.convert(targetId, client, options);
-
-        if (!result) {
-          throw new Error('something went wrong');
+        if (output) {
+          mkdirSync(output, { recursive: true });
         }
 
-        if (!output) {
-          console.log(result);
-          return;
-        }
+        for (const harFilePath of harFilePaths) {
+          const har = JSON.parse(readFileSync(harFilePath, 'utf8')) as HarRequest;
+          const result = new HTTPSnippet(har).convert(targetId, client, options);
 
-        const file = path.parse(harFilePath).name;
-        const writeFilePath = path.join(output, `${file}${extname(targetId)}`);
-        writeFileSync(writeFilePath, String(result));
-        const target = targets[targetId];
-        const clientId = target.clientsById[client || target.info.default].info.key;
-        good(
-          `converted ${cyan.bold(harFilePath)} with ${yellow(targetId)}[${yellow(
-            clientId,
-          )}] at ${cyan(writeFilePath)}\n\n${result}`,
-        );
+          if (!result) {
+            throw new Error('something went wrong');
+          }
+
+          if (!output) {
+            console.log(result);
+            continue;
+          }
+
+          const file = path.parse(harFilePath).name;
+          const writeFilePath = path.join(output, `${file}${extname(targetId)}`);
+          writeFileSync(writeFilePath, String(result));
+          const target = targets[targetId];
+          const clientId = target.clientsById[client || target.info.default].info.key;
+          good(
+            `converted ${cyan.bold(harFilePath)} with ${yellow(targetId)}[${yellow(
+              clientId,
+            )}] at ${cyan(writeFilePath)}\n\n${result}`,
+          );
+        }
       },
     )
     .example('$0 my_har.json', '--target rust --client actix --output my_src_directory').argv;
